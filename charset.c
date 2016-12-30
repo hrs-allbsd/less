@@ -872,6 +872,18 @@ init_charset()
 		return;
 	}
 
+#if HAVE_LOCALE
+	/*
+	 * Use setlocale.
+	 */
+	ilocale();
+#else
+#if MSDOS_COMPILER
+	/*
+	 * Default to "dos".
+	 */
+	(void) icharset("dos");
+#else
 #if HAVE_STRSTR
 	/*
 	 * Check whether LC_ALL, LC_CTYPE or LANG look like UTF-8 is used.
@@ -888,19 +900,6 @@ init_charset()
 				return;
 	}
 #endif
-
-#if HAVE_LOCALE
-	/*
-	 * Use setlocale.
-	 */
-	ilocale();
-#else
-#if MSDOS_COMPILER
-	/*
-	 * Default to "dos".
-	 */
-	(void) icharset("dos");
-#else
 	/*
 	 * All variables are not defined either, default to DEFCHARSET.
 	 * DEFCHARSET is defined in defines.h.
