@@ -14,14 +14,14 @@ SRC = \
 	help.c ifile.c input.c jump.c line.c linenum.c \
 	lsystem.c mark.c optfunc.c option.c opttbl.c os.c \
 	output.c position.c prompt.c search.c signal.c \
-	tags.c ttyin.c version.c  
+	tags.c ttyin.c version.c multi.c unify.c  
 DISTFILES_W = \
 	defines.ds  Makefile.dsb Makefile.dsg Makefile.dsu \
 	defines.o2  Makefile.o2e \
 	defines.o9  Makefile.o9c Makefile.o9u \
 	defines.wn  Makefile.wnm Makefile.wnb
 DISTFILES = \
-	${SRC} regexp.c regexp.h \
+	${SRC} regexp.c regexp.h multi.h \
 	COPYING INSTALL LICENSE Makefile.in Makefile.aut NEWS README \
 	configure configure.ac lesskey.c lessecho.c scrsize.c \
 	cmd.h funcs.h lglob.h less.h lesskey.h option.h pckeys.h position.h \

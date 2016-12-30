@@ -38,7 +38,7 @@ OBJ =	main.${O} screen.${O} brac.${O} ch.${O} charset.${O} cmdbuf.${O} \
 	help.${O} ifile.${O} input.${O} jump.${O} line.${O} linenum.${O} \
 	lsystem.${O} mark.${O} optfunc.${O} option.${O} opttbl.${O} os.${O} \
 	output.${O} position.${O} prompt.${O} search.${O} signal.${O} \
-	tags.${O} ttyin.${O} version.${O}
+	tags.${O} ttyin.${O} version.${O} multi.${O} unify.${O}
 
 all: less lesskey lessecho
 
@@ -54,7 +54,7 @@ lessecho: lessecho.${O} version.${O}
 defines.h: defines.ds
 	command.com /c copy $< $@
 
-${OBJ}: ${srcdir}/less.h defines.h ${srcdir}/funcs.h
+${OBJ}: ${srcdir}/less.h ${srcdir}/multi.h defines.h ${srcdir}/funcs.h
 
 install: all ${srcdir}/less.man ${srcdir}/lesskey.man
 	${INSTALL_PROGRAM} less.exe ${bindir}/less.exe

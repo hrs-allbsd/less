@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 #define	MAX_USERCMD		500
@@ -65,6 +71,10 @@
 #define	A_REMOVE_FILE		52
 #define	A_NEXT_TAG		53
 #define	A_PREV_TAG		54
+
+#if JAPANESE
+#define A_ROT_RCODESET		80
+#endif
 
 #define	A_INVALID		100
 #define	A_NOACTION		101

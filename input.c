@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -33,6 +39,7 @@ extern POSITION end_attnpos;
 extern int hilite_search;
 extern int size_linebuf;
 #endif
+extern IFILE curr_ifile;
 
 /*
  * Get the next line.
@@ -49,6 +56,13 @@ forw_line(curr_pos)
 	register int c;
 	int blankline;
 	int endline;
+#if ISO
+	char *cbuf;
+	CHARSET *csbuf;
+	int i;
+	POSITION pos;
+	int ret;
+#endif
 
 	if (curr_pos == NULL_POSITION)
 	{
@@ -75,6 +89,9 @@ forw_line(curr_pos)
 
 	prewind();
 	plinenum(curr_pos);
+#if ISO
+	multi_start_buffering(get_mulbuf(curr_ifile), curr_pos);
+#endif
 	(void) ch_seek(curr_pos);
 
 	c = ch_forw_get();
@@ -94,6 +111,10 @@ forw_line(curr_pos)
 		}
 		if (c == '\n' || c == EOI)
 		{
+#if ISO
+			multi_buffering(get_mulbuf(curr_ifile), -1, NULL, &cbuf, &csbuf, &i, &pos);
+			ret = pappend_multi(cbuf, csbuf, i, pos);
+#endif
 			/*
 			 * End of the line.
 			 */
@@ -105,7 +126,14 @@ forw_line(curr_pos)
 		/*
 		 * Append the char to the line and get the next char.
 		 */
-		if (pappend(c, ch_tell()-1))
+#if ISO
+		pos = ch_tell() - 1;
+		multi_buffering(get_mulbuf(curr_ifile), c, &pos, &cbuf, &csbuf, &i, &pos);
+		ret = pappend_multi(cbuf, csbuf, i, pos);
+#else
+		ret = pappend(c, control_char(c) ? WRONGCS : ASCII, 1, ch_tell()-1);
+#endif
+		if (ret != 0)
 		{
 			/*
 			 * The char won't fit in the line; the line
@@ -114,16 +142,32 @@ forw_line(curr_pos)
 			 */
 			if (chopline || hshift > 0)
 			{
+#if ISO
+				c = ch_forw_get();
+				while (c != '\n' && c != EOI)
+				{
+					multi_parsing(get_mulbuf(curr_ifile),
+						      c);
+					c = ch_forw_get();
+				}
+				multi_parsing(get_mulbuf(curr_ifile), -1);
+#else
 				do
 				{
 					c = ch_forw_get();
 				} while (c != '\n' && c != EOI);
+#endif
 				new_pos = ch_tell();
 				endline = TRUE;
 				quit_if_one_screen = FALSE;
 			} else
 			{
+#if ISO
+				multi_parsing(get_mulbuf(curr_ifile), -1);
+				new_pos = pos;
+#else
 				new_pos = ch_tell() - 1;
+#endif
 				endline = FALSE;
 			}
 			break;
@@ -167,6 +211,13 @@ back_line(curr_pos)
 	POSITION new_pos, begin_new_pos;
 	int c;
 	int endline;
+#if ISO
+	char *cbuf;
+	CHARSET *csbuf;
+	int i;
+	POSITION pos;
+	int ret;
+#endif
 
 	if (curr_pos == NULL_POSITION || curr_pos <= ch_zero())
 	{
@@ -267,6 +318,9 @@ back_line(curr_pos)
 	begin_new_pos = new_pos;
 	prewind();
 	plinenum(new_pos);
+#if ISO
+	multi_start_buffering(get_mulbuf(curr_ifile), new_pos);
+#endif
 	(void) ch_seek(new_pos);
 
 	do
@@ -280,11 +334,25 @@ back_line(curr_pos)
 		new_pos++;
 		if (c == '\n')
 		{
+#if ISO
+			multi_buffering(get_mulbuf(curr_ifile), -1, NULL, &cbuf, &csbuf, &i, &pos);
+			ret = pappend_multi(cbuf, csbuf, i, pos);
+#endif
 			endline = TRUE;
 			break;
 		}
-		if (pappend(c, ch_tell()-1))
+#if ISO
+		pos = ch_tell() - 1;
+		multi_buffering(get_mulbuf(curr_ifile), c, &pos, &cbuf, &csbuf, &i, &pos);
+		ret = pappend_multi(cbuf, csbuf, i, pos);
+#else
+		ret = pappend(c, control_char(c) ? WRONGCS : ASCII, 1, ch_tell()-1);
+#endif
+		if (ret != 0)
 		{
+#if ISO
+			multi_parsing(get_mulbuf(curr_ifile), -1);
+#endif
 			/*
 			 * Got a full printable line, but we haven't
 			 * reached our curr_pos yet.  Discard the line
@@ -296,12 +364,23 @@ back_line(curr_pos)
 				quit_if_one_screen = FALSE;
 				break;
 			}
+#if ISO
+			pdone(0);
+			i = ch_tell() - pos;
+			new_pos -= i;
+			while (--i >= 0)
+				ch_back_get();
+#else
 			pdone(0);
 			(void) ch_back_get();
 			new_pos--;
+#endif
 			goto loop;
 		}
 	} while (new_pos < curr_pos);
+#if ISO
+	multi_parsing(get_mulbuf(curr_ifile), -1);
+#endif
 
 	pdone(endline);
 

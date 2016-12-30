@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -152,6 +158,10 @@ static unsigned char cmdtable[] =
 	'v',0,				A_VISUAL,
 	'!',0,				A_SHELL,
 	'+',0,				A_FIRSTCMD,
+
+#if JAPANESE
+	'@',0,				A_ROT_RCODESET,
+#endif
 
 	'H',0,				A_HELP,
 	'h',0,				A_HELP,

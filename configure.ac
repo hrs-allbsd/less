@@ -13,6 +13,13 @@ AC_INIT(less, 1)
 AC_CONFIG_SRCDIR([forwback.c])
 AC_CONFIG_HEADER([defines.h])
 
+# Checks for arguments.
+AC_ARG_WITH(cs-regex, [  --with-cs-regex         Regular expression library with character set detection], have_regex_cs=$withval, have_regex_cs=no)
+msb_enable=unknown
+AC_ARG_ENABLE(msb, [  --disable-msb           Disable the MSB of non ASCII characters], msb_enable=$enableval)
+jisx0213_enable=unknown
+AC_ARG_ENABLE(jisx0213, [  --disable-jisx0213      Disable the JIS X 0213 mapping for SJIS and UJIS], jisx0213_enable=$enableval)
+
 # Checks for programs.
 AC_PROG_CC
 AC_ISC_POSIX
@@ -150,6 +157,8 @@ AC_TYPE_SIZE_T
 AC_HEADER_TIME
 
 # Autoheader templates for symbols defined later by AC_DEFINE.
+#AH_TEMPLATE([HAVE_POSIX_REGCOMP_CS],
+#	[POSIX regcomp() and regex.h with character set detection])
 AH_TEMPLATE([HAVE_POSIX_REGCOMP],
 	[POSIX regcomp() and regex.h])
 AH_TEMPLATE([HAVE_PCRE],
@@ -298,6 +307,22 @@ AC_TRY_LINK(, [extern short ospeed; ospeed = 0;],
 fi
 
 # Checks for regular expression functions.
+if test $have_regex_cs != no; then
+AC_DEFINE(CS_REGEX)
+# try to find it with character set detection.
+have_regex=no
+if test $have_regex = no && test -f ${srcdir}/regex_cs.c; then
+AC_MSG_RESULT(using POSIX regcomp_cs -- local source); AC_DEFINE(HAVE_POSIX_REGCOMP_CS) REGEX_O='regex_cs.$(O)' AC_SUBST(REGEX_O) have_regex=yes
+fi
+if test $have_regex = no && test -f ${srcdir}/regexp_cs.c; then
+AC_MSG_RESULT(using V8 regcomp_cs -- local source); AC_DEFINE(HAVE_V8_REGCOMP_CS) REGEX_O='regexp_cs.$(O)' AC_SUBST(REGEX_O) have_regex=yes
+fi
+if test $have_regex = no; then
+AC_MSG_RESULT(cannot find regular expression library with character set detection); AC_DEFINE(NO_REGEX)
+fi
+else
+AC_DEFINE(CS_REGEX, 0)
+# try to find it without character set detection.
 have_regex=no
 have_posix_regex=unknown
 AC_MSG_CHECKING(for regcomp)
@@ -378,6 +403,32 @@ fi
 if test $have_regex = no; then
 AC_MSG_RESULT(cannot find regular expression library); AC_DEFINE(NO_REGEX)
 fi
+fi
+
+case $msb_enable in
+yes) AC_MSG_RESULT(enable the MSB of non ASCII characters)
+     AC_DEFINE(MSB_ENABLE);;
+no)  AC_MSG_RESULT(disable the MSB of non ASCII characters)
+     AC_DEFINE(MSB_ENABLE, 0);;
+unknown)
+     if test $have_regex_cs = no; then
+     AC_MSG_RESULT(decide to enable the MSB of non ASCII characters)
+     AC_DEFINE(MSB_ENABLE)
+     else
+     AC_MSG_RESULT(decide to disable the MSB of non ASCII characters)
+     AC_DEFINE(MSB_ENABLE, 0)
+     fi;;
+esac
+
+case $jisx0213_enable in
+unknown|yes)
+     AC_MSG_RESULT(enable the JIS X 0213 mapping for SJIS and UJIS)
+     AC_DEFINE(SJIS0213, 1)
+     AC_DEFINE(UJIS0213, 1);;
+no)  AC_MSG_RESULT(disable the JIS X 0213 mapping for SJIS and UJIS)
+     AC_DEFINE(SJIS0213, 0)
+     AC_DEFINE(UJIS0213, 0);;
+esac
 
 AC_ARG_WITH(editor,
   [  --with-editor=PROGRAM   use PROGRAM as the default editor [vi]],

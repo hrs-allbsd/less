@@ -1,4 +1,4 @@
-.TH LESSKEY 1 "Version 382: 03 Feb 2004"
+.TH LESSKEY 1 "Version 382+iso258: 04 Sep 2005"
 .SH NAME
 lesskey \- specify key bindings for less
 .SH SYNOPSIS
@@ -220,6 +220,7 @@ default command keys used by less:
 	v		visual 
 	!		shell 
 	+		firstcmd 
+	@		rotate-right 
 	H		help 
 	h		help 
 	V		version 
@@ -382,3 +383,9 @@ Mark Nudelman <markn@greenwoodsoftware.com>
 .br
 Send bug reports or comments to the above address or to bug-less@gnu.org.
 
+.SH PATCH
+Copyright (c) 1994-2005  Kazushi (Jam) Marukawa, Japanized routines only
+.br
+Comments to: jam@pobox.com
+.br
+You may distribute under the terms of the Less License.

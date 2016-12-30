@@ -368,6 +368,9 @@ edit_ifile(ifile)
 	curr_altpipe = alt_pipe;
 	set_open(curr_ifile); /* File has been opened */
 	get_pos(curr_ifile, &initial_scrpos);
+#if ISO
+	init_multi(get_mulbuf(curr_ifile));
+#endif
 	new_file = TRUE;
 	ch_init(f, chflags);
 
@@ -399,7 +402,7 @@ edit_ifile(ifile)
 #if HILITE_SEARCH
 		clr_hilite();
 #endif
-		cmd_addhist(ml_examine, filename);
+		cmd_addhist(ml_examine, filename, NULL);
 		if (no_display && errmsgs > 0)
 		{
 			/*

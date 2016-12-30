@@ -161,6 +161,46 @@
 #define	HAVE_DUP	1
 
 /*
+ * COMPRESS is 1 if you want to read comressed file.
+ */
+#define	COMPRESS	1
+
+/*
+ * ISO is 1 if you want to read code which contain many character sets
+ * by using iso 2022 code extension techniques.
+ */
+#define	ISO		1
+
+/*
+ * JAPANESE is 1 if you want to read several KANJI code.
+ */
+#define	JAPANESE	1
+#if JAPANESE && !ISO
+# define ISO 1
+#endif
+
+/*
+ * DEFCHARSET is name of the default character set.
+ * This used as LESSCHARSET envrionment variable if user did not define it.
+ * The value of this must equal one of the available value which can use as
+ * LESSCHARSET environment variable
+ */
+#define	DEFCHARSET	"iso8"
+
+/*
+ * DEFPLANESET is name of the default plane set of iso 2022 extension.
+ * This used as LESSPLANESET envrionment variable if user did not define it.
+ * The value of this must equal one of the available value which can use as
+ * LESSPLANESET environment variable or any escape sequence for setting up.
+ */
+#define	DEFPLANESET	"ctext"
+
+/*
+ * DEFKEYCHARSET is name of the default character set for keyboard input.
+ */
+#define	DEFKEYCHARSET	"japanese-iso7"
+
+/*
  * Sizes of various buffers.
  */
 #define	CMDBUF_SIZE	512	/* Buffer for multichar commands */
@@ -175,6 +215,9 @@
 
 /* Settings automatically determined by configure.  */
 
+
+/* Does regular expression library detect character set?  */
+#undef CS_REGEX
 
 /* Define EDIT_PGM to your editor. */
 #undef EDIT_PGM
@@ -235,6 +278,9 @@
 
 /* POSIX regcomp() and regex.h */
 #undef HAVE_POSIX_REGCOMP
+
+/* POSIX regcomp() and regex.h with character set detection */
+#undef HAVE_POSIX_REGCOMP_CS
 
 /* System V regcmp() */
 #undef HAVE_REGCMP
@@ -332,6 +378,9 @@
 /* Henry Spencer V8 regcomp() and regexp.h */
 #undef HAVE_V8_REGCOMP
 
+/* Henry Spencer V8 regcomp() and regexp.h with character set detection */
+#undef HAVE_V8_REGCOMP_CS
+
 /* Define to 1 if you have the <values.h> header file. */
 #undef HAVE_VALUES_H
 
@@ -341,6 +390,14 @@
 /* Define to 1 if you have the `_setjmp' function. */
 #undef HAVE__SETJMP
 
+/*
+ * Define MSB_ENABLE if you want to enable a MSB of non ASCII characters.
+ * It will be help if your library has not ability to detect a character set.
+ * If it has ability, this should be 0.  If your system was not worked well,
+ * try to change following into 0 by hand.
+ */
+#undef MSB_ENABLE
+
 /* Define MUST_DEFINE_ERRNO if you have errno but it is not define in errno.h.
    */
 #undef MUST_DEFINE_ERRNO
@@ -349,7 +406,8 @@
    termcap.h. */
 #undef MUST_DEFINE_OSPEED
 
-/* pattern matching is supported, but without metacharacters. */
+/* pattern matching with character set detection is supported,
+   but without metacharacters. */
 #undef NO_REGEX
 
 /* Define to the address where bug reports for this package should be sent. */
@@ -370,11 +428,23 @@
 /* Define as the return type of signal handlers (`int' or `void'). */
 #undef RETSIGTYPE
 
+/*
+ * Define SJIS0213 if you want to enable a JIS X 0213:2000 mapping of
+ * SJIS encoding.
+ */
+#undef SJIS0213
+
 /* Define to 1 if the `S_IS*' macros in <sys/stat.h> do not work properly. */
 #undef STAT_MACROS_BROKEN
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
+
+/*
+ * Define UJIS0213 if you want to enable a JIS X 0213:2000 mapping of
+ * UJIS encoding.
+ */
+#undef UJIS0213
 
 /* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
 #undef TIME_WITH_SYS_TIME

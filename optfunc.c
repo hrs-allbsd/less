@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -61,6 +67,10 @@ extern int bo_fg_color, bo_bg_color;
 extern int ul_fg_color, ul_bg_color;
 extern int so_fg_color, so_bg_color;
 extern int bl_fg_color, bl_bg_color;
+#endif
+#if JAPANESE
+extern char *opt_charset;
+extern int opt_Z_var;
 #endif
 
 
@@ -345,6 +355,66 @@ opt_i(type, s)
 	}
 }
 
+#if JAPANESE
+/*
+ * Handlers for -K option.
+ */
+	public void
+opt_K(type, s)
+	int type;
+	char *s;
+{
+	switch (type)
+	{
+	case INIT:
+		opt_charset = s;
+		init_charset();
+		break;
+	}
+}
+
+/*
+ * Handler for the -Z option.
+ */
+	/*ARGSUSED*/
+	public void
+opt_Z(type, s)
+	int type;
+	char *s;
+{
+	switch (type)
+	{
+	case INIT:
+		if (opt_Z_var == OPT_ON)
+			init_def_priority(sjis);
+		else if (opt_Z_var == OPT_OFF)
+			init_def_priority(ujis);
+		break;
+	case QUERY:
+		break;
+	case TOGGLE:
+		switch (get_priority(get_mulbuf(curr_ifile))) {
+		case sjis:
+			opt_Z_var = OPT_OFF;
+			break;
+		case ujis:
+			opt_Z_var = OPT_ON;
+			break;
+		case noconv:
+		default:
+			opt_Z_var = OPT_ONPLUS;	/* we use this to mean error */
+			return;
+		}
+		if (opt_Z_var == OPT_ON)
+			init_def_priority(sjis);
+		else if (opt_Z_var == OPT_OFF)
+			init_def_priority(ujis);
+		init_priority(get_mulbuf(curr_ifile));
+		break;
+	}
+}
+#endif
+
 /*
  * Handler for the -V option.
  */
@@ -372,6 +442,8 @@ opt__V(type, s)
 		putstr("For information about the terms of redistribution,\n");
 		putstr("see the file named README in the less distribution.\n");
 		putstr("Homepage: http://www.greenwoodsoftware.com/less\n");
+		putstr("\nJapanized part of Less\n");
+	     	putstr("Copyright (c) 1994-2005  Kazushi (Jam) Marukawa\n");
 		quit(QUIT_OK);
 		break;
 	}

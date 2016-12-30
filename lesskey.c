@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -149,6 +155,9 @@ struct cmdname cmdnames[] =
 	{ "undo-hilite",	A_UNDO_SEARCH },
 	{ "version",		A_VERSION },
 	{ "visual",		A_VISUAL },
+#if JAPANESE
+	{ "rotate-right",	A_ROT_RCODESET },
+#endif
 	{ NULL, 0 }
 };
 

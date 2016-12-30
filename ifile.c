@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -33,6 +39,9 @@ struct ifile {
 	int h_hold;			/* Hold count */
 	char h_opened;			/* Has this ifile been opened? */
 	struct scrpos h_scrpos;		/* Saved position within the file */
+#if ISO
+	MULBUF *h_mp;			/* MULBUF for multi bytes character */
+#endif
 };
 
 /*
@@ -46,7 +55,11 @@ struct ifile {
  * Anchor for linked list.
  */
 static struct ifile anchor = { &anchor, &anchor, NULL, NULL, 0, 0, '\0',
-				{ NULL_POSITION, 0 } };
+				{ NULL_POSITION, 0 }
+#if ISO
+			       ,NULL
+#endif
+			     };
 static int ifiles = 0;
 
 	static void
@@ -119,6 +132,10 @@ new_ifile(filename, prev)
 	p->h_opened = 0;
 	p->h_hold = 0;
 	p->h_filestate = NULL;
+#if ISO
+	p->h_mp = new_multi();
+	init_priority(p->h_mp);
+#endif
 	link_ifile(p, prev);
 	return (p);
 }
@@ -144,6 +161,9 @@ del_ifile(h)
 	p = int_ifile(h);
 	unlink_ifile(p);
 	free(p->h_filename);
+#if ISO
+	free(p->h_mp);
+#endif
 	free(p);
 }
 
@@ -277,6 +297,20 @@ get_pos(ifile, scrpos)
 	struct scrpos *scrpos;
 {
 	*scrpos = int_ifile(ifile)->h_scrpos;
+}
+
+/*
+ * Get the MULBUF associated with a ifile.
+ */
+	public MULBUF *
+get_mulbuf(ifile)
+	IFILE ifile;
+{
+#if ISO
+	if (ifile != NULL)
+		return (int_ifile(ifile)->h_mp);
+#endif
+	return (NULL);
 }
 
 /*

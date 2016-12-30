@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -50,6 +56,10 @@ public int status_col;		/* Display a status column */
 public int use_lessopen;	/* Use the LESSOPEN filter */
 #if HILITE_SEARCH
 public int hilite_search;	/* Highlight matched search patterns? */
+#endif
+#if JAPANESE
+public int opt_Z_var;		/* Initial variable for opt_Z */
+extern int markwrongchar;	/* Display marker instead of wrong character */
 #endif
 
 /*
@@ -101,6 +111,11 @@ static struct optname x_optname      = { "tabs",                 NULL };
 static struct optname X__optname     = { "no-init",              NULL };
 static struct optname y_optname      = { "max-forw-scroll",      NULL };
 static struct optname z_optname      = { "window",               NULL };
+#if JAPANESE
+static struct optname K_optname      = { "charset",              NULL };
+static struct optname Y_optname      = { "mark-wrong-char",      NULL };
+static struct optname Z_optname      = { "change-priority",      NULL };
+#endif
 static struct optname quote_optname  = { "quotes",               NULL };
 static struct optname tilde_optname  = { "tilde",                NULL };
 static struct optname query_optname  = { "help",                 NULL };
@@ -245,6 +260,12 @@ static struct loption option[] =
 		{ NULL, NULL, NULL }
 	},
 #endif
+#if JAPANESE
+	{ 'K', &K_optname,
+		STRING|NO_TOGGLE|NO_QUERY, 0, NULL, opt_K,
+		NULL, NULL, NULL
+	},
+#endif
 	{ 'l', NULL,
 		STRING|NO_TOGGLE|NO_QUERY, 0, NULL, opt_l,
 		{ NULL, NULL, NULL }
@@ -377,6 +398,14 @@ static struct loption option[] =
 			NULL
 		}
 	},
+#if JAPANESE
+	{ 'Y', &Y_optname,
+		BOOL|REPAINT, OPT_OFF, &markwrongchar, NULL,
+		"Display marker instead of wrong character",
+		"Display wrong character",
+		NULL
+	},
+#endif
 	{ 'z', &z_optname,
 		NUMBER, -1, &swindow, NULL,
 		{
@@ -385,6 +414,19 @@ static struct loption option[] =
 			NULL
 		}
 	},
+#if JAPANESE
+#ifdef SJIS_PRE
+#define OPT_Z OPT_ON
+#else
+#define OPT_Z OPT_OFF
+#endif
+	{ 'Z', &Z_optname,
+		BOOL|REPAINT, OPT_Z, &opt_Z_var, opt_Z,
+		"Give priority to the UJIS over the SJIS",
+		"Give priority to the SJIS over the UJIS",
+		"Cannot give priority since Japanese is not treated now",
+	},
+#endif
 	{ '"', &quote_optname,
 		STRING, 0, NULL, opt_quote,
 		{ "quotes: ", NULL, NULL }
@@ -439,6 +481,12 @@ init_option()
 		if (o->otype & INIT_HANDLER)
 			(*(o->ofunc))(INIT, (char *) NULL);
 	}
+#if JAPANESE
+	if (opt_Z_var == OPT_ON)
+		init_def_priority(sjis);
+	else if (opt_Z_var == OPT_OFF)
+		init_def_priority(ujis);
+#endif
 }
 
 /*

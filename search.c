@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -16,9 +22,19 @@
 #include "less.h"
 #include "position.h"
 
+#include <assert.h>
+
 #define	MINPOS(a,b)	(((a) < (b)) ? (a) : (b))
 #define	MAXPOS(a,b)	(((a) > (b)) ? (a) : (b))
 
+#if HAVE_POSIX_REGCOMP_CS
+#include <regex_cs.h>
+#ifdef REG_EXTENDED
+#define	REGCOMP_FLAG	REG_EXTENDED
+#else
+#define	REGCOMP_FLAG	0
+#endif
+#endif
 #if HAVE_POSIX_REGCOMP
 #include <regex.h>
 #ifdef REG_EXTENDED
@@ -39,6 +55,9 @@ char *regcmp();
 char *regex();
 extern char *__loc1;
 #endif
+#if HAVE_V8_REGCOMP_CS
+#include "regexp_cs.h"
+#endif
 #if HAVE_V8_REGCOMP
 #include "regexp.h"
 #endif
@@ -53,6 +72,7 @@ extern int sc_height;
 extern int jump_sline;
 extern int bs_mode;
 extern int ctldisp;
+extern IFILE curr_ifile;
 extern int status_col;
 extern POSITION start_attnpos;
 extern POSITION end_attnpos;
@@ -80,7 +100,7 @@ static struct hilite hilite_anchor = { NULL, NULL_POSITION, NULL_POSITION };
  * These are the static variables that represent the "remembered"
  * search pattern.  
  */
-#if HAVE_POSIX_REGCOMP
+#if HAVE_POSIX_REGCOMP_CS || HAVE_POSIX_REGCOMP
 static regex_t *regpattern = NULL;
 #endif
 #if HAVE_PCRE
@@ -92,7 +112,7 @@ int re_pattern = 0;
 #if HAVE_REGCMP
 static char *cpattern = NULL;
 #endif
-#if HAVE_V8_REGCOMP
+#if HAVE_V8_REGCOMP_CS || HAVE_V8_REGCOMP
 static struct regexp *regpattern = NULL;
 #endif
 
@@ -100,6 +120,95 @@ static int is_caseless;
 static int is_ucase_pattern;
 static int last_search_type;
 static char *last_pattern = NULL;
+static CHARSET *last_charset = NULL;
+
+#if ISO && !NO_REGEX && (!CS_REGEX || MSB_ENABLE)
+/*
+ * Normalize text.  Add quote for some non ASCII characters or enable MSB
+ * of them since some regular expression library parse them as ASCII.
+ */
+	static char *
+normalize_text(src, cs, search_type)
+	char *src;
+	CHARSET *cs;
+	int search_type;
+{
+	static char *buf = NULL;
+	static int size = 0;
+	int len = strlen_cs(src, cs) * 2;
+	char *dst;
+
+	if (len + 1 > size)
+	{
+		size = (len + 1 + 255) / 256 * 256;
+		if (buf)
+			free(buf);
+		buf = (char *) ecalloc(size, sizeof(char));
+	}
+	dst = buf;
+	while (*src != '\0')
+	{
+#if MSB_ENABLE
+		if (CSISASCII(*cs) || CSISWRONG(*cs))
+			*dst++ = *src++;
+		else
+			*dst++ = *src++ | 0x80;
+		cs++;
+#else
+		if (!CSISASCII(*cs++) && !(search_type & SRCH_NO_REGEX))
+		{
+			switch (*src) {
+			/* Basic Regular Expressions */
+			case '[':
+			case ']':
+			case '.':
+			case '*':
+			case '\\':
+			case '^':
+			case '$':
+#if (HAVE_POSIX_REGCOMP_CS || HAVE_POSIX_REGCOMP) && defined(REG_EXTENDED)
+			/* Extended Regular Expressions */
+			case '+':
+			case '?':
+			case '|':
+			case '(':
+			case ')':
+			case '{':
+			case '}':
+#endif
+#if HAVE_RE_COMP
+			/* No Extended Regular Expressions */
+#endif
+#if HAVE_REGCMP
+			/* Extended Regular Expressions */
+			case '+':
+			case '(':
+			case ')':
+			case '{':
+			case '}':
+#endif
+#if HAVE_V8_REGCOMP_CS || HAVE_V8_REGCOMP
+			/* Extended Regular Expressions */
+			case '+':
+			case '?':
+			case '|':
+			case '(':
+			case ')':
+#endif
+				*dst++ = '\\';
+				/* fall through */
+			default:
+				*dst++ = *src++;
+				break;
+			}
+		} else
+			*dst++ = *src++;
+#endif
+	}
+	*dst = '\0';
+	return (buf);
+}
+#endif
 
 /*
  * Convert text.  Perform one or more of these transformations:
@@ -108,9 +217,12 @@ static char *last_pattern = NULL;
 #define	CVT_BS		02	/* Do backspace processing */
 #define	CVT_CRLF	04	/* Remove CR after LF */
 #define	CVT_ANSI	010	/* Remove ANSI escape sequences */
+#define	CVT_TO_INT	020	/* Convert all multi bytes characters into */
+				/* internal form */
+#define	CVT_PAD		040	/* Remove padding character */
 
 	static void
-cvt_text(odst, osrc, ops)
+cvt_text_ascii(odst, osrc, ops)
 	char *odst;
 	char *osrc;
 	int ops;
@@ -141,6 +253,202 @@ cvt_text(odst, osrc, ops)
 	*dst = '\0';
 }
 
+	static void
+cvt_text(odst, odstcs, osrc, osrccs, pos, ops)
+	char *odst;
+	CHARSET *odstcs;
+	char *osrc;
+	CHARSET *osrccs;
+	POSITION pos;
+	int ops;
+{
+	char *src = osrc;
+	CHARSET *srccs = osrccs;
+	char *dst = odst;
+	CHARSET *dstcs = odstcs;
+	int bufcount;
+	char *cbuf;
+	CHARSET *csbuf;
+	char cbuffer[10];
+	CHARSET csbuffer[10];
+	int donef = 0;
+
+#if ISO
+	if (!(ops & CVT_TO_INT) && srccs == NULL)
+	{
+		cvt_text_ascii(dst, src, ops);
+		if (dstcs)
+			while (*dst++ != '\0')
+				*dstcs++ = ASCII;
+		return;
+	}
+
+	multi_start_buffering(get_mulbuf(curr_ifile), pos);
+	while ((srccs != NULL && (*src != NULCH || !CSISNULLCS(*srccs))) ||
+	       (srccs == NULL && !donef))
+	{
+		if (ops & CVT_TO_INT)
+		{
+			if (srccs == NULL)
+			{
+				int i, j;
+				if (*src == '\0')
+				{
+					/* flush buffer */
+					multi_buffering(get_mulbuf(curr_ifile),
+						-1, NULL, &cbuf, &csbuf,
+						&bufcount, NULL);
+					donef = 1;
+				} else
+				{
+					/* make charset */
+					multi_buffering(get_mulbuf(curr_ifile),
+						(unsigned char) *src,
+						&pos, &cbuf, &csbuf,
+						&bufcount, NULL);
+				}
+				if (bufcount == 0)
+				{
+					if (donef)
+					{
+						/* adjust the address */
+						dst--;
+						if (dstcs) dstcs--;
+					} else
+					{
+						/* fill pad */
+						*dst = PADCH;
+						if (dstcs)
+							*dstcs = ASCII;
+					}
+				}
+				cbuf[bufcount] = NULCH;
+				csbuf[bufcount] = NULLCS;
+
+				/* unify character(s) in buffer */
+				i = 0;
+				j = 0;
+				while (i < bufcount) {
+					chunify_cs(&cbuf[i], &csbuf[i],
+						   &cbuffer[j], &csbuffer[j]);
+					i += chlen_cs(&cbuf[i], &csbuf[i]);
+					j += chlen_cs(&cbuffer[j],
+						      &csbuffer[j]);
+				}
+				bufcount = j;
+				cbuf = cbuffer;
+				csbuf = csbuffer;
+			} else
+			{
+				int i;
+				cbuf = cbuffer;
+				csbuf = csbuffer;
+				chunify_cs(src, srccs, cbuf, csbuf);
+				bufcount = chlen_cs(src, srccs);
+				src += bufcount - 1;
+				if (srccs) srccs += bufcount - 1;
+				for (i = 0; i < bufcount - 1; i++)
+				{
+					*dst++ = PADCH;
+					if (dstcs)
+						*dstcs++ = ASCII;
+				}
+				bufcount = chlen_cs(cbuf, csbuf);
+			}
+		} else
+		{
+			static CHARSET dummy_cs[] = { ASCII, ASCII };
+			bufcount = 1;
+			cbuf = src;
+			csbuf = srccs ? srccs : dummy_cs;
+		}
+
+		assert(dst - odst >= bufcount - 1);
+
+		while (--bufcount >= 0)
+		{
+#if MSB_ENABLE
+			if (!CSISASCII(*csbuf) && !CSISWRONG(*csbuf))
+				*cbuf |= 0x80;
+#endif
+			if ((ops & CVT_TO_LC) && CSISASCII(*csbuf) &&
+			    isupper((unsigned char) *cbuf))
+			{
+				/* Convert uppercase to lowercase. */
+				dst[-bufcount] = tolower((unsigned char) *cbuf);
+				if (dstcs)
+					dstcs[-bufcount] = *csbuf;
+			} else if ((ops & CVT_BS) && CSISWRONG(*csbuf) &&
+				   *cbuf == '\b' && dst > odst)
+			{
+				/* Delete BS and preceding char. */
+				if (bufcount == 0)
+				{
+					dst -= 2;
+					if (dstcs)
+						dstcs -= 2;
+				} else
+				{
+					dst -= 1;
+					if (dstcs)
+						dstcs -= 1;
+				}
+			} else 
+			{
+				/* Just copy. */
+				dst[-bufcount] = *cbuf;
+				if (dstcs)
+					dstcs[-bufcount] = *csbuf;
+			}
+			cbuf++;
+			csbuf++;
+		}
+		src++;
+		dst++;
+		pos++;
+		if (srccs) srccs++;
+		if (dstcs) dstcs++;
+	}
+	*dst = NULCH;
+	if (dstcs) *dstcs = NULLCS;
+
+	if (odstcs && (ops & CVT_PAD))
+	{
+		src = odst;
+		srccs = odstcs;
+		dst = odst;
+		dstcs = odstcs;
+		while (*src != NULCH || !CSISNULLCS(*srccs))
+		{
+			if (*src != PADCH || !CSISNULLCS(*srccs))
+			{
+				*dst++ = *src;
+				*dstcs++ = *srccs;
+			}
+			src++;
+			srccs++;
+		}
+		*dst = NULCH;
+		*dstcs = NULLCS;
+	}
+#else
+	cvt_text_ascii(dst, src, ops);
+	if (dstcs)
+	{
+		while (*dst++ != '\0')
+			*dstcs++ = ASCII;
+		*dstcs = NULLCS;
+	}
+#endif
+	if ((ops & CVT_CRLF) && dst > odst && dst[-1] == '\r') {
+		*--dst = NULCH;
+		if (dstcs)
+		{
+		    *--dstcs = NULLCS;
+		}
+	}
+}
+
 /*
  * Determine which conversions to perform.
  */
@@ -169,13 +477,14 @@ get_cvt_ops()
  * Are there any uppercase letters in this string?
  */
 	static int
-is_ucase(s)
+is_ucase(s, cs)
 	char *s;
+	CHARSET *cs;
 {
 	register char *p;
 
-	for (p = s;  *p != '\0';  p++)
-		if (isupper((unsigned char) *p))
+	for (p = s;  *p != '\0';  p++, cs++)
+		if (CSISASCII(*cs) && isupper((unsigned char) *p))
 			return (1);
 	return (0);
 }
@@ -188,7 +497,7 @@ prev_pattern()
 {
 	if (last_search_type & SRCH_NO_REGEX)
 		return (last_pattern != NULL);
-#if HAVE_POSIX_REGCOMP
+#if HAVE_POSIX_REGCOMP_CS || HAVE_POSIX_REGCOMP
 	return (regpattern != NULL);
 #endif
 #if HAVE_PCRE
@@ -200,7 +509,7 @@ prev_pattern()
 #if HAVE_REGCMP
 	return (cpattern != NULL);
 #endif
-#if HAVE_V8_REGCOMP
+#if HAVE_V8_REGCOMP_CS || HAVE_V8_REGCOMP
 	return (regpattern != NULL);
 #endif
 #if NO_REGEX
@@ -325,12 +634,27 @@ undo_search()
  * Compile a search pattern, for future use by match_pattern.
  */
 	static int
-compile_pattern(pattern, search_type)
+compile_pattern(pattern, charset, search_type)
 	char *pattern;
+	CHARSET *charset;
 	int search_type;
 {
+	int len = strlen_cs(pattern, charset);
+
 	if ((search_type & SRCH_NO_REGEX) == 0)
 	{
+#if HAVE_POSIX_REGCOMP_CS
+		regex_t *s = (regex_t *) ecalloc(1, sizeof(regex_t));
+		if (regcomp_cs(s, pattern, charset, REGCOMP_FLAG))
+		{
+			free(s);
+			error("Invalid pattern", NULL_PARG);
+			return (-1);
+		}
+		if (regpattern != NULL)
+			regfree_cs(regpattern);
+		regpattern = s;
+#endif
 #if HAVE_POSIX_REGCOMP
 		regex_t *s = (regex_t *) ecalloc(1, sizeof(regex_t));
 		if (regcomp(s, pattern, REGCOMP_FLAG))
@@ -378,6 +702,20 @@ compile_pattern(pattern, search_type)
 			free(cpattern);
 		cpattern = s;
 #endif
+#if HAVE_V8_REGCOMP_CS
+		struct regexp *s;
+		if ((s = regcomp_cs(pattern, charset)) == NULL)
+		{
+			/*
+			 * regcomp has already printed an error message 
+			 * via regerror().
+			 */
+			return (-1);
+		}
+		if (regpattern != NULL)
+			free(regpattern);
+		regpattern = s;
+#endif
 #if HAVE_V8_REGCOMP
 		struct regexp *s;
 		if ((s = regcomp(pattern)) == NULL)
@@ -396,9 +734,10 @@ compile_pattern(pattern, search_type)
 
 	if (last_pattern != NULL)
 		free(last_pattern);
-	last_pattern = (char *) calloc(1, strlen(pattern)+1);
-	if (last_pattern != NULL)
-		strcpy(last_pattern, pattern);
+	if (last_charset != NULL)
+		free(last_charset);
+
+	last_pattern = strdup_cs(pattern, charset, &last_charset);
 
 	last_search_type = search_type;
 	return (0);
@@ -410,6 +749,11 @@ compile_pattern(pattern, search_type)
 	static void
 uncompile_pattern()
 {
+#if HAVE_POSIX_REGCOMP_CS
+	if (regpattern != NULL)
+		regfree_cs(regpattern);
+	regpattern = NULL;
+#endif
 #if HAVE_POSIX_REGCOMP
 	if (regpattern != NULL)
 		regfree(regpattern);
@@ -428,12 +772,13 @@ uncompile_pattern()
 		free(cpattern);
 	cpattern = NULL;
 #endif
-#if HAVE_V8_REGCOMP
+#if HAVE_V8_REGCOMP_CS || HAVE_V8_REGCOMP
 	if (regpattern != NULL)
 		free(regpattern);
 	regpattern = NULL;
 #endif
 	last_pattern = NULL;
+	last_charset = NULL;
 }
 
 /*
@@ -441,8 +786,9 @@ uncompile_pattern()
  * Set sp and ep to the start and end of the matched string.
  */
 	static int
-match_pattern(line, sp, ep, notbol)
+match_pattern(line, charset, sp, ep, notbol)
 	char *line;
+	CHARSET *charset;
 	char **sp;
 	char **ep;
 	int notbol;
@@ -450,8 +796,19 @@ match_pattern(line, sp, ep, notbol)
 	int matched;
 
 	if (last_search_type & SRCH_NO_REGEX)
-		return (match(last_pattern, line, sp, ep));
+		return (match(last_pattern, last_charset, line, charset,
+			      sp, ep));
 
+#if HAVE_POSIX_REGCOMP_CS
+	{
+		regmatch_t rm;
+		matched = !regexec_cs(regpattern, line, charset, 1, &rm, 0);
+		if (!matched)
+			return (0);
+		*sp = line + rm.rm_so;
+		*ep = line + rm.rm_eo;
+	}
+#endif
 #if HAVE_POSIX_REGCOMP
 	{
 		regmatch_t rm;
@@ -494,6 +851,13 @@ match_pattern(line, sp, ep, notbol)
 		return (0);
 	*sp = __loc1;
 #endif
+#if HAVE_V8_REGCOMP_CS
+	matched = regexec_cs(regpattern, line, charset);
+	if (!matched)
+		return (0);
+	*sp = regpattern->startp[0];
+	*ep = regpattern->endp[0];
+#endif
 #if HAVE_V8_REGCOMP
 #if HAVE_REGEXEC2
 	matched = regexec2(regpattern, line, notbol);
@@ -506,7 +870,7 @@ match_pattern(line, sp, ep, notbol)
 	*ep = regpattern->endp[0];
 #endif
 #if NO_REGEX
-	matched = match(last_pattern, line, sp, ep);
+	matched = match(last_pattern, last_charset, line, charset, sp, ep);
 #endif
 	return (matched);
 }
@@ -707,9 +1071,10 @@ adj_hilite(anchor, linepos, cvt_ops)
  * sp,ep delimit the first match already found.
  */
 	static void
-hilite_line(linepos, line, sp, ep, cvt_ops)
+hilite_line(linepos, line, charset, sp, ep, cvt_ops)
 	POSITION linepos;
 	char *line;
+	CHARSET *charset;
 	char *sp;
 	char *ep;
 	int cvt_ops;
@@ -753,13 +1118,29 @@ hilite_line(linepos, line, sp, ep, cvt_ops)
 		 * move to the first char after the string we matched.
 		 * If we matched zero, just move to the next char.
 		 */
+#if ISO
+		if (ep > searchp)
+		{
+			charset += ep - searchp;
+			searchp = ep;
+		} else if (*searchp != '\0')
+		{
+			do
+			{
+				searchp++;
+				charset++;
+			} while (CSISREST(*charset));
+		} else /* end of line */
+			break;
+#else
 		if (ep > searchp)
 			searchp = ep;
 		else if (*searchp != '\0')
 			searchp++;
 		else /* end of line */
 			break;
-	} while (match_pattern(searchp, &sp, &ep, 1));
+#endif
+	} while (match_pattern(searchp, charset, &sp, &ep, 1));
 
 	/*
 	 * If there were backspaces in the original line, they
@@ -930,6 +1311,11 @@ search_range(pos, endpos, search_type, matches, maxlines, plinepos, pendpos)
 	int cvt_ops;
 	POSITION linepos, oldpos;
 
+	static CHARSET *charset = NULL;
+#if ISO
+	static int charset_len = 0;
+#endif
+
 	linenum = find_linenum(pos);
 	oldpos = pos;
 	for (;;)
@@ -1008,14 +1394,57 @@ search_range(pos, endpos, search_type, matches, maxlines, plinepos, pendpos)
 		 * If we're doing backspace processing, delete backspaces.
 		 */
 		cvt_ops = get_cvt_ops();
-		cvt_text(line, line, cvt_ops);
+#if ISO
+		if (1)
+#else
+		if (is_caseless || bs_mode == BS_SPECIAL)
+#endif
+		{
+			int ops = 0;
+#if ISO
+			int len;
+#endif
+
+			if (is_caseless) 
+				ops |= CVT_TO_LC;
+			if (bs_mode == BS_SPECIAL)
+				ops |= CVT_BS;
+			if (bs_mode != BS_CONTROL)
+				ops |= CVT_CRLF;
+#if ISO
+			ops |= CVT_TO_INT;
+#endif
+
+#if ISO
+			/*
+			 * Make charset buffer and convert input lines
+			 * into internal codes and its charsets.
+			 */
+			len = (strlen(line) + 1 + 1023) / 1024 * 1024;
+			if (len > charset_len)
+			{
+				charset_len = len;
+				if (charset)
+					free(charset);
+				charset = (CHARSET *)
+					ecalloc(len, sizeof(CHARSET));
+			}
+
+			cvt_text(line, charset, line, NULL, linepos, ops);
+#else
+			cvt_text(line, NULL, line, NULL, NULL_POSITION, ops);
+#endif
+		} else if (bs_mode != BS_CONTROL)
+		{
+			cvt_text(line, NULL, line, NULL, NULL_POSITION, CVT_CRLF);
+		}
 
 		/*
 		 * Test the next line to see if we have a match.
 		 * We are successful if we either want a match and got one,
 		 * or if we want a non-match and got one.
 		 */
-		line_match = match_pattern(line, &sp, &ep, 0);
+		line_match = match_pattern(line, charset, &sp, &ep, 0);
 		line_match = (!(search_type & SRCH_NO_MATCH) && line_match) ||
 				((search_type & SRCH_NO_MATCH) && !line_match);
 		if (!line_match)
@@ -1032,7 +1461,7 @@ search_range(pos, endpos, search_type, matches, maxlines, plinepos, pendpos)
 			 * hilite list and keep searching.
 			 */
 			if (line_match)
-				hilite_line(linepos, line, sp, ep, cvt_ops);
+				hilite_line(linepos, line, charset, sp, ep, cvt_ops);
 #endif
 		} else if (--matches <= 0)
 		{
@@ -1049,7 +1478,7 @@ search_range(pos, endpos, search_type, matches, maxlines, plinepos, pendpos)
 				 */
 				clr_hilite();
 				if (line_match)
-					hilite_line(linepos, line, sp, ep, cvt_ops);
+					hilite_line(linepos, line, charset, sp, ep, cvt_ops);
 			}
 #endif
 			if (plinepos != NULL)
@@ -1069,9 +1498,10 @@ search_range(pos, endpos, search_type, matches, maxlines, plinepos, pendpos)
  * if less than n matches are found in this file.
  */
 	public int
-search(search_type, pattern, n)
+search(search_type, pattern, charset, n)
 	int search_type;
 	char *pattern;
+	CHARSET *charset;
 	int n;
 {
 	POSITION pos;
@@ -1116,13 +1546,40 @@ search(search_type, pattern, n)
 	} else
 	{
 		/*
+		 * Save the pattern.
+		 */
+		char* save_pattern;
+		CHARSET* save_charset;
+		save_pattern = strdup_cs(pattern, charset, &save_charset);
+		pattern = save_pattern;
+		charset = save_charset;
+		/*
 		 * Compile the pattern.
 		 */
-		ucase = is_ucase(pattern);
+		ucase = is_ucase(pattern, charset);
 		if (caseless == OPT_ONPLUS)
-			cvt_text(pattern, pattern, CVT_TO_LC);
-		if (compile_pattern(pattern, search_type) < 0)
+			cvt_text(pattern, charset, pattern, charset,
+				 NULL_POSITION, CVT_TO_LC | CVT_TO_INT | CVT_PAD);
+		else 
+			cvt_text(pattern, charset, pattern, charset,
+				 NULL_POSITION, CVT_TO_INT | CVT_PAD);
+#if ISO && !NO_REGEX && (!CS_REGEX || MSB_ENABLE)
+		/*
+		 * The normalize_text must not change charset if it is
+		 * used in regex.  Otherwise charset will be dicared
+		 * in regex, so there are no problem.
+		 */
+		pattern = normalize_text(pattern, charset, search_type);
+#endif
+		if (compile_pattern(pattern, charset, search_type) < 0)
 			return (-1);
+		/*
+		 * Free the saved pattern.
+		 */
+		if (save_pattern != NULL)
+			free(save_pattern);
+		if (save_charset != NULL)
+			free(save_charset);
 		/*
 		 * Ignore case if -I is set OR
 		 * -i is set AND the pattern is all lowercase.
@@ -1344,14 +1801,76 @@ prep_hilite(spos, epos, maxlines)
  * It supports no metacharacters like *, etc.
  */
 	static int
-match(pattern, buf, pfound, pend)
-	char *pattern, *buf;
+match(pattern, charset, buf, bufcharset, pfound, pend)
+	char *pattern;
+	CHARSET *charset;
+	char *buf;
+	CHARSET *bufcharset;
 	char **pfound, **pend;
 {
 	register char *pp, *lp;
+#if ISO
+	register CHARSET *pc, *lc;
+#endif
 
-	for ( ;  *buf != '\0';  buf++)
+#if 0
+write(2, "pa1: ", 5);
+write(2, pattern, strlen(pattern));
+write(2, "\r\n", 2);
+write(2, "cs1: ", 5);
+write(2, charset, strlen(pattern)*2);
+write(2, "\r\n", 2);
+write(2, "pa2: ", 5);
+write(2, buf, strlen(buf));
+write(2, "\r\n", 2);
+write(2, "cs2: ", 5);
+write(2, bufcharset, strlen(buf)*2);
+write(2, "\r\n", 2);
+#endif
+	while (*buf != '\0')
 	{
+#if ISO
+		pp = pattern;
+		pc = charset;
+		lp = buf;
+		lc = bufcharset;
+		while (1)
+		{
+			if ((*pp == NULCH && *pc == NULLCS) ||
+			    (*lp == NULCH && *lc == NULLCS))
+				break;
+
+			while (*pp == PADCH && CSISASCII(*pc))
+			{
+				pp++;
+				pc++;
+			}
+			while (*lp == PADCH && CSISASCII(*lc))
+			{
+				lp++;
+				lc++;
+			}
+			if (*pp != *lp || *pc != *lc)
+				break;
+			pp++;
+			pc++;
+			lp++;
+			lc++;
+		}
+		if (*pp == NULCH && *pc == NULLCS)
+		{
+			if (pfound != NULL)
+				*pfound = buf;
+			if (pend != NULL)
+				*pend = lp;
+			return (1);
+		}
+		do
+		{
+			buf++;
+			bufcharset++;
+		} while (CSISREST(*bufcharset));
+#else
 		for (pp = pattern, lp = buf;  *pp == *lp;  pp++, lp++)
 			if (*pp == '\0' || *lp == '\0')
 				break;
@@ -1363,11 +1882,13 @@ match(pattern, buf, pfound, pend)
 				*pend = lp;
 			return (1);
 		}
+		buf++;
+#endif
 	}
 	return (0);
 }
 
-#if HAVE_V8_REGCOMP
+#if HAVE_V8_REGCOMP_CS || HAVE_V8_REGCOMP
 /*
  * This function is called by the V8 regcomp to report 
  * errors in regular expressions.

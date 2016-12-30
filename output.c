@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -47,6 +53,7 @@ put_line()
 	register int c;
 	register int i;
 	int a;
+	int cs;
 	int curr_attr;
 
 	if (ABORT_SIGS())
@@ -60,7 +67,7 @@ put_line()
 
 	curr_attr = AT_NORMAL;
 
-	for (i = 0;  (c = gline(i, &a)) != '\0';  i++)
+	for (i = 0;  (c = gline(i, &cs, &a)) != '\0';  i++)
 	{
 		if (a != curr_attr)
 		{
@@ -90,7 +97,11 @@ put_line()
 		if (c == '\b')
 			putbs();
 		else
+#if ISO
+			putmchr(c, cs);
+#else
 			putchr(c);
+#endif
 	}
 
 	switch (curr_attr)
@@ -357,7 +368,7 @@ flush()
  * Output a character.
  */
 	public int
-putchr(c)
+putchr_raw(c)
 	int c;
 {
 	if (need_clr)
@@ -369,12 +380,12 @@ putchr(c)
 	if (c == '\n' && is_tty)
 	{
 		/* remove_top(1); */
-		putchr('\r');
+		putchr_raw('\r');
 	}
 #else
 #ifdef _OSK
 	if (c == '\n' && is_tty)  /* In OS-9, '\n' == 0x0D */
-		putchr(0x0A);
+		putchr_raw(0x0A);
 #endif
 #endif
 	/*
@@ -391,11 +402,85 @@ putchr(c)
  * Output a string.
  */
 	public void
-putstr(s)
+putstr_raw(s)
 	register char *s;
 {
 	while (*s != '\0')
-		putchr(*s++);
+		putchr_raw(*s++);
+}
+
+/*
+ * Output a character as ASCII.
+ */
+	public int
+putchr(c)
+	int c;
+{
+#if ISO
+	char *p = outchar(c & 0377, ASCII);
+	putstr_raw(p);
+	return (c);
+#else
+	return (putchr_raw(c));
+#endif
+}
+
+/*
+ * Output a string as ASCII.
+ */
+	public void
+putstr(s)
+	char *s;
+{
+#if ISO
+	char *p = outbuf(s, ASCII);
+	putstr_raw(p);
+#else
+	putstr_raw(s);
+#endif
+}
+
+/*
+ * Output a character which is a part of multi-bytes character.
+ */
+	public int
+putmchr(c, cs)
+	int c;
+	CHARSET cs;
+{
+#if ISO
+	char *p = outchar(c & 0377, cs);
+	putstr_raw(p);
+#else
+	putchr_raw(c);
+#endif
+	return (c);
+}
+
+/*
+ * Output a part of multi-bytes character.
+ */
+	public int
+putmchrs(s, cs)
+	char *s;
+	CHARSET cs;
+{
+	int c = *s;
+	while (*s != '\0')
+		putmchr(*s++, cs);
+	return (c);
+}
+
+/*
+ * Output a string of multi-bytes character.
+ */
+	public void
+putmstr(s, cs)
+	char *s;
+	CHARSET *cs;
+{
+	while (*s != '\0')
+		putmchr(*s++, *cs++);
 }
 
 

@@ -1,4 +1,4 @@
-.TH LESS 1 "Version 382: 03 Feb 2004"
+.TH LESS 1 "Version 382+iso258: 04 Sep 2005"
 .SH NAME
 less \- opposite of more
 .SH SYNOPSIS
@@ -10,11 +10,13 @@ less \- opposite of more
 .br
 .B "less --version"
 .br
-.B "less [-[+]aBcCdeEfFgGiIJLmMnNqQrRsSuUVwWX~]"
+.B "less [-[+]aBcCdeEfFgGiIJLmMnNqQrRsSuUVwWXYZ~]"
 .br
 .B "     [-b \fIspace\fP] [-h \fIlines\fP] [-j \fIline\fP] [-k \fIkeyfile\fP]"
 .br
-.B "     [-{oO} \fIlogfile\fP] [-p \fIpattern\fP] [-P \fIprompt\fP] [-t \fItag\fP]"
+.B "     [-K \fIcharacter set\fP] [-{oO} \fIlogfile\fP]"
+.br
+.B "     [-p \fIpattern\fP] [-P \fIprompt\fP] [-t \fItag\fP]"
 .br
 .B "     [-T \fItagsfile\fP] [-x \fItab\fP,...] [-y \fIlines\fP] [-[z] \fIlines\fP]"
 .br
@@ -300,6 +302,13 @@ and the line number and byte offset of the bottom line being displayed.
 If possible, it also prints the length of the file,
 the number of lines in the file
 and the percent of the file above the last displayed line.
+.IP "@"
+Rotate the code recognition method of the current file.
+Enhanced
+.I less
+has 7 methods for recognition, default (which is chosen
+by the JLESSCHARSET environment variable), japanese, ujis, sjis,
+iso8, noconv and none.
 .IP \-
 Followed by one of the command line option letters (see OPTIONS below),
 this will change the setting of that option
@@ -396,6 +405,8 @@ Most options may be changed while
 .I less 
 is running, via the "\-" command.
 .PP
+Options are also taken from the environment variable "LESS" and "JLESS".
+.PP
 Most options may be given in one of two forms: 
 either a dash followed by a single letter,
 or two dashes followed by a long option name.
@@ -427,8 +438,8 @@ On MS-DOS, you don't need the quotes, but you should replace any
 percent signs in the options string by double percent signs.
 .sp
 The environment variable is parsed before the command line,
-so command line options override the LESS environment variable.
-If an option appears in the LESS variable, it can be reset
+so command line options override the LESS and JLESS environment variables.
+If an option appears in the LESS and JLESS variables, it can be reset
 to its default value on the command line by beginning the command
 line option with "\-+".
 .sp
@@ -585,6 +596,11 @@ Ignore the LESSOPEN environment variable
 This option can be set from within \fIless\fP, 
 but it will apply only to files opened subsequently, not to the 
 file which is currently open.
+.IP -K\fIcharset\fP
+Causes
+.I less
+to use this charset instead of a charset defined in the JLESSCHARSET or
+LESSCHARSET environment variable.
 .IP "-m or --long-prompt"
 Causes 
 .I less
@@ -640,11 +656,11 @@ to start at the first occurrence of \fIpattern\fP in the file.
 .IP "-P\fIprompt\fP or --prompt=\fIprompt\fP"
 Provides a way to tailor the three prompt
 styles to your own preference.
-This option would normally be put in the LESS environment
-variable, rather than being typed in with each 
+This option would normally be put in the LESS and JLESS environment
+variables, rather than being typed in with each 
 .I less
 command.
-Such an option must either be the last option in the LESS variable,
+Such an option must either be the last option in the LESS and JLESS variables,
 or be terminated by a dollar sign.
 -Ps followed by a string changes the default (short) prompt 
 to that string.
@@ -789,6 +805,9 @@ the screen is repainted instead.
 The -c or -C option may be used to repaint from the top of
 the screen if desired.
 By default, any forward movement causes scrolling.
+.IP -Y
+Causes mark characters to be used to represent wrong characters.
+By default, such wrong characters displayed as binary.
 .IP "-[z]\fIn\fP or --window=\fIn\fP"
 Changes the default scrolling window size to \fIn\fP lines.
 The default is one screenful.
@@ -803,6 +822,10 @@ lines less than the current screen size.
 For example, if the screen is 24 lines, \fI-z-4\fP sets the 
 scrolling window to 20 lines.  If the screen is resized to 40 lines,
 the scrolling window automatically changes to 36 lines.
+.IP -Z
+Causes to give priority to the SJIS over the UJIS if a "japanese" was selected
+by the JLESSCHARSET environment variable.  The default value is
+to give priority to the UJIS over the SJIS.
 .IP "-\fI\(dqcc\fP\ or\ --quotes=\fIcc\fP"
 Changes the filename quoting character.
 This may be necessary if you are trying to name a file
@@ -1102,8 +1125,15 @@ in text files.
 .PP
 A "character set" is simply a description of which characters are to
 be considered normal, control, and binary.
-The LESSCHARSET environment variable may be used to select a character set.
-Possible values for LESSCHARSET are:
+The JLESSCHARSET and LESSCHARSET environment variables may be used to select
+a character set.  There is no difference between them in program of
+.I less.
+But I suppose you should use the JLESSCHARSET environment variable
+because not enhanced
+.I less
+will make errors if you use enhanced character set in 
+your LESSCHARSET environment variable.
+Possible values for them are:
 .IP ascii
 BS, TAB, NL, CR, and formfeed are control characters,
 all chars with values between 32 and 126 are normal,
@@ -1131,6 +1161,156 @@ Selects a Russian character set.
 Selects a character set appropriate for NeXT computers.
 .IP utf-8
 Selects the UTF-8 encoding of the ISO 10646 character set.
+.PP
+And possible values for only JLESSCHARSET are:
+.IP iso7
+Multi character sets with the ISO 2022 code extension techniques
+in 7 bits are assumed.
+Characters with values between 128 and 255 are treated as binary.
+The level of implementation of
+.I Less
+is level 3 of ISO 2022.
+.IP iso8
+Multi character sets with the ISO 2022 code extension techniques
+in 8 bits are assumed.
+The level of implementation of
+.I Less
+is level 3 of ISO 2022.
+.IP jis
+Only Japanese character sets with the ISO 2022 code extension
+techniques in 7 bits are assumed.
+.IP ujis
+If characters has values between 32 and 127,
+the ASCII character set are assumed.
+If characters has values between 162 and 254,
+the JISX 0208 character set,
+a right half of the JISX 0201 character set and
+the JISX 0212 character set with the UJIS coding are assumed.
+Otherwise, characters are treated as binary.
+.IP euc
+Same as ujis.
+.IP sjis
+If characters has values between 32 and 127,
+the ASCII character set are assumed.
+If characters has values between 128 and 252,
+the JISX 0208 character set and
+a right half of the JISX 0201 character set are assumed.
+Otherwise, characters are treated as binary.
+.IP japanese
+All Japanese character sets, jis, ujis and sjis, are assumed.  But
+.I less
+output only the jis.
+.PP
+Japanese has several code sets (not character sets).
+Thus
+.I less
+must convert among them to display them correctly.
+Possible values with this conversion for only JLESSCHARSET are:
+.IP ujis-iso7
+The ujis and iso7 are assumend.  But
+.I less
+output only the iso7.
+.IP euc-iso7
+Same as ujis-iso7.
+.IP sjis-iso7
+The sjis and iso7 are assumend.  But
+.I less
+output only the iso7.
+.IP ujis-jis
+The ujis and jis are assumend.  But
+.I less
+output only the jis.
+.IP euc-jis
+Same as ujis-jis.
+.IP sjis-jis
+The sjis and jis are assumend.  But
+.I less
+output only the jis.
+.IP jis-ujis
+The jis and ujis are assumend.  But
+.I less
+output only the ujis.
+.IP jis-euc
+Same as jis-ujis.
+.IP jis-sjis
+The jis and sjis are assumend.  But
+.I less
+output only the sjis.
+.IP japanese-iso7
+The japanese and iso7 are assumend.  But
+.I less
+output only the iso7.
+.IP japanese-jis
+The japanese is assumend.  But
+.I less
+output only the jis.
+Same as japanese.
+.IP japanese-ujis
+The japanese is assumend.  But
+.I less
+output only the ujis.
+.IP japanese-euc
+Same as japanese-ujis.
+.IP japanese-sjis
+The japanese is assumend.  But
+.I less
+output only the sjis.
+.IP ujis-sjis
+The ujis is assumend.  But
+.I less
+output only the sjis.
+.IP euc-sjis
+Same as ujis-sjis.
+.IP sjis-ujis
+The sjis is assumend.  But
+.I less
+output only the ujis.
+.IP sjis-euc
+Same as sjis-ujis.
+.PP
+Other way to select a character set is to use the LANG environment variable.
+If it start with "ja_JP" or "japan",
+.I less
+read all Japanese coded characters as some Japanese character set,
+and a rest of the LANG environment variable specify output coding.
+.PP
+The ISO 2022 code extension techniques define
+4 planes to display many character sets easy.
+Default setting of planes is selected by
+the JLESSPLANESET environment variable.
+If the JLESSPLANESET vriable is equal to "japanese", "ujis" or "euc",
+.I less
+treat g1 plane as JISX 0208, g2 plane as JISX 0201 right half, g3 plane
+as JISX 0212.  If it is equal to "latin1", "latin2", "latin3", "latin4",
+"greek", "arabic", "hebrew", "cyrillic" or "latin5",
+.I less
+treat g1 plane as one of ISO 8859.
+Otherwise,
+.I less
+try to parse the JLESSPLANESET variable as 
+real escape sequences for setting up, and "\\e" in JLESSPLANESET
+is treated as escape code when parsing.
+.PP
+.I Less
+understand almost all escape sequence about character set
+in the ISO 2022 code extension techniques.  There are many escape sequences
+to select the character set.  On the one hand,
+.I less
+output only 6 escape sequences to select a character
+set: '^[(', '^[-', '^[$(', '^[$-', '^N' and '^O'.
+It means
+.I less
+is friendly to a terminal and a terminal emulator.
+.PP
+And there is special "character set" for keyboard inputs.
+The JLESSKEYCHARSET environment variable is used
+for such purpose.  Possible values of it are equal
+to the JLESSCHARSET environment variable.
+.PP
+If the LESSCHARSET environment variable is not set,
+the default character set is latin1.
+However, if the string "UTF-8" is found in the LC_ALL, LC_CTYPE or LANG
+environment variables, then the default character set is utf-8 instead.
 .PP
 In special cases, it may be desired to tailor
 .I less
@@ -1266,6 +1446,8 @@ Causes any trailing spaces to be removed.
 Usually used at the end of the string, but may appear anywhere.
 .IP "%x"
 Replaced by the name of the next input file in the list.
+.IP "%K"
+Replaced by the name of the last non ASCII character set or code set.
 .PP
 If any item is unknown (for example, the file size if input
 is a pipe), a question mark is printed instead.
@@ -1446,6 +1628,8 @@ Language for determining the character set.
 Options which are passed to 
 .I less
 automatically.
+.IP JLESS
+same as the LESS environment variable.
 .IP LESSANSIENDCHARS
 Characters which are assumed to end an ANSI color escape sequence
 (default "m").
@@ -1453,8 +1637,14 @@ Characters which are assumed to end an ANSI color escape sequence
 Format for displaying non-printable, non-control characters.
 .IP LESSCHARDEF
 Defines a character set.
-.IP LESSCHARSET
+.IP JLESSCHARSET
 Selects a predefined character set.
+.IP LESSCHARSET
+Selects a predefined character set if JLESSCHARSET is not defined.
+.IP JLESSKEYCHARSET
+Selects a predefined character set for keyboard inputs.
+.IP JLESSPLANESET
+Selects a predefined plane set of the ISO 2022 code extension techniques.
 .IP LESSCLOSE
 Command line to invoke the (optional) input-postprocessor.
 .IP LESSECHO
@@ -1575,3 +1765,11 @@ Mark Nudelman <markn@greenwoodsoftware.com>
 Send bug reports or comments to the above address or to bug-less@gnu.org.
 .br
 For more information, see the less homepage at http://www.greenwoodsoftware.com/less.
+
+.SH PATCH
+Copyright (c) 1994-2005  Kazushi (Jam) Marukawa, Japanized routines only
+.br
+Comments about this part to: jam@pobox.com
+.br
+You may distribute under the terms of the Less License.
+

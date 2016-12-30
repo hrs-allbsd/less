@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -646,6 +652,102 @@ v380 11/24/02	Make LINENUM same as POSITION.
 v381 11/28/02	Make -N use 7 columns for line number if possible.
 -----------------------------------------------------------------
 v382   2/3/04	Remove copyrighted code.
+
+-----------------------------------------------------------------
+   Other patches by jam@pobox.com
+kanji  7/18/91	Support Kanji as one of the charset.
+zcat   4/21/94	Add easy uncompressing feature by invoking zcat.
+iso    8/11/94	Support ISO2022 encoding and special Japanese KANJI encodings
+		as one of the charset.
+iso2   9/21/94	Fix a variety of bugs of iso patch.
+iso2p1 10/22/94	Fix a variety of bugs.
+iso202 12/1/96	Chang to fit less version 330 and fixed some bugs.
+iso203 12/5/96	Fix line termination bug.
+iso204 12/15/96	Change all internal data structure.  Add CHARSET and
+		"CHARSET charset[]" in line.c.
+iso205 12/16/96	Add CODESET and structure of CODESET in multi.c and
+		made buffering_multi() recursively.
+iso206 12/21/96	Support multi bytes characters in command buffer.
+		And add rotate-right command for rotating the code set in the
+		right plane.
+iso207 12/22/96	Support search of multi bytes characters.
+iso208 12/23/96	Encapsulate multi bytes buffering data.  And change
+		the structure of CHARSET.
+iso209 1/5/97	Fix bugs of KANJI search and sophisticate SJIS routines.
+iso210 1/12/97	Fix BS handling and add priority argument of KANJI code.
+iso211 1/19/97	Add and change comments.
+iso212 1/21/97	Fix a bug about UJIS_REGEXP search.
+iso213 1/22/97	Fix a bug about 8-bit error message.
+iso214 1/24/97	Fix a bug about handling of BS character.
+iso215 1/25/97	Change to invert -Z option if SJIS_PRE is defined
+iso216 3/9/97	Fix a bug about buffering of KANJI supplement.
+iso217 4/13/97	Fix a bug about initialization of priority table.
+iso218 4/13/97	Change search routines to check the CHARSET at any time.
+iso219 5/5/97	Fix a typo and some codes which are warned.
+iso220 5/5/97	Changed the name of UJIS_REGEXP macro to EIGHTBIT_REGEXP.
+iso221 5/6/97	Changed to use USE_CHARSET macro well.
+iso222 12/2/97	Support private character sets and empty character set.
+iso223 12/8/97	Fix some typos and warnings.
+iso224 12/10/97	Fix a converting bug about WRONGCS.
+iso225 2/8/98	Use appropriate matching when looking for a charset.
+iso226 2/9/98	Add -K option to choose CHARSET easy.
+iso227 2/15/98	Fix some bugs in code conversion routines.
+iso228 2/16/98	Change to ignore all user defined characters in SJIS and UJIS.
+iso229 3/5/98	Display blank characters instead of delete them when a part of
+		a multi column character needed to display.
+iso230 3/6/98	Support regular expression library with character set ability.
+iso231 3/7/98	Fixed typo.
+iso232 3/8/98	Change a configure script.
+iso233 3/10/98	Fixed typo and made multi.h.
+iso234 3/12/98	Removed prewind_multi and pdone_multi because it depend on
+		less.  Add init_multi and clear_multi instead of them.
+iso235 3/13/98	Add unify.c for chcmp_cs function.
+iso236 3/14/98	Fixed MSB_ENABLE bugs.
+iso237 3/16/98	Add unification among JIS X 0208, ASCII, Cyrillic and Greek.
+iso238 3/17/98	Add NULLCS to represent a terminator.
+		Changed a character set for control characters to WRONGCS.
+		Add chunify_cs and chconvert_cs as external function.
+iso239 3/20/98	Fixed a bug in match() and add assertion in chunify_cs().
+iso240 3/25/98	Corrected all cmdbuf and cmdcs buffers' handling.
+		Fixed a control character handling bug.
+		Changed to remove padded codes from search pattern.
+iso241 4/2/98	Fixed small bugs in search.c.
+iso242 5/18/98	Fixed a buffering problem of search.
+iso243 7/1/98	Add elimination of wrong characters for JIS C 6226-1978,
+		JIS X 0208-1983 and JIS X 0208:1990/1997.
+iso244 7/2/98	Add elimination of wrong characters for SJIS and UJIS.
+iso245 7/2/98	Fix a bug about elimination for SJIS.
+iso246 8/8/98	Add one locale for Win32, eliminate all MSB_ENABLE stuff
+		from unify.c, and fix eliminating table for JIS C 6226-1978.
+iso247 8/8/98	Add -W option.  And change the point of putting a mark.  Now
+		multi.c call checking function, then mark wrong characters.
+iso248 8/12/98	Fix a problem of outputting WRONGCS.  Add checking table
+		for JIS X 0212:1990.
+iso249 10/29/00	Joined with less-358.  Fixed some bugs caused by join.
+iso250 11/21/00	Support JIS X 0213:2000.  Added support of cygwin.
+		Thanks to nayuta-san.
+iso251 11/22/00	Support SJIS and UJIS using JIS X 0213:2000.
+iso252 11/24/00	Fixed a problem to output JIS X 0212:1990 using jis style.
+iso253 12/2/00	Fixed a problem to output SJIS.  Thanks to nayuta-san.
+		Fixed assertion problem in search.c.  Thanks to SAKAKI
+		Kiyotake, Tanaka Akira, and Yuichi SATO.
+iso254 12/5/00	Fixed a problem to output JIS X 0213:2000 plane 2 into SJIS.
+		Thanks to Shinya Hanataka.
+iso255 8/30/05	Joined with less-378.
+iso256 8/30/05	Joined with less-381.
+iso257 9/4/05	Fixed problems caused by merge.
+		Changed buffering mechanism to track exact POSITION through
+		code set conversion.  This helped hiliting routine and improved
+		less running speed.
+		Changed to parse text from the beginning of physical line when
+		less jumps into the middle of text.  This fixed major problems
+		on stateful text like ISO-2022.
+		Fixed JIS X 0213:2000 related problems.  Thanks to Takeshi
+		WATANABE.  Also, fixed a problem reported by him.  Less will
+		not split one wrong multi-byte character into different lines
+		even it is not fit in first line.  Less moves entire text to
+		represent the character into second line.
+iso258 9/4/05	Joined with less-382.
 */
 
-char version[] = "382";
+char version[] = "382+iso258";

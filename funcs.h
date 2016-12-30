@@ -50,9 +50,13 @@
 	public void ch_close ();
 	public int ch_getflags ();
 	public void ch_dump ();
+	public CODESET left_codeset_of_charset ();
+	public CODESET right_codeset_of_charset ();
+	public void init_planeset ();
 	public void init_charset ();
 	public int binary_char ();
 	public int control_char ();
+	public void change_control_char ();
 	public char * prchar ();
 	public void cmd_reset ();
 	public void clear_cmd ();
@@ -64,6 +68,7 @@
 	public int cmd_char ();
 	public LINENUM cmd_int ();
 	public char * get_cmdbuf ();
+	public CHARSET * get_cmdcs ();
 	public int in_mca ();
 	public void dispversion ();
 	public int getcc ();
@@ -126,6 +131,7 @@
 	public void store_pos ();
 	public void get_pos ();
 	public void set_open ();
+	public MULBUF * get_mulbuf ();
 	public int opened ();
 	public void hold_ifile ();
 	public int held_ifile ();
@@ -146,6 +152,7 @@
 	public void plinenum ();
 	public int is_ansi_end ();
 	public int pappend ();
+	public int pappend_multi ();
 	public void pdone ();
 	public int gline ();
 	public void null_line ();
@@ -170,12 +177,14 @@
 	public void opt__O ();
 	public void opt_l ();
 	public void opt_k ();
+	public void opt_K ();
 	public void opt_t ();
 	public void opt__T ();
 	public void opt_p ();
 	public void opt__P ();
 	public void opt_b ();
 	public void opt_i ();
+	public void opt_Z ();
 	public void opt__V ();
 	public void opt_D ();
 	public void opt_x ();
@@ -201,8 +210,13 @@
 	public int  os9_signal ();
 	public void put_line ();
 	public void flush ();
+	public int putchr_raw ();
+	public void putstr_raw ();
 	public int putchr ();
 	public void putstr ();
+	public int putmchr ();
+	public int putmchrs ();
+	public void putmstr ();
 	public void get_return ();
 	public void error ();
 	public void ierror ();

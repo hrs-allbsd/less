@@ -44,7 +44,7 @@ OBJ =	main.${O} screen.${O} brac.${O} ch.${O} charset.${O} cmdbuf.${O} \
 	help.${O} ifile.${O} input.${O} jump.${O} line.${O} linenum.${O} \
 	lsystem.${O} mark.${O} optfunc.${O} option.${O} opttbl.${O} os.${O} \
 	output.${O} position.${O} prompt.${O} search.${O} signal.${O} \
-	tags.${O} ttyin.${O} version.${O}  @REGEX_O@
+	tags.${O} ttyin.${O} version.${O}  @REGEX_O@ multi.${O} unify.${O}
 
 all: less lesskey lessecho
 
@@ -57,7 +57,7 @@ lesskey: lesskey.${O} version.${O}
 lessecho: lessecho.${O} version.${O}
 	${CC} ${LDFLAGS} -o $@ lessecho.${O} version.${O}
 
-${OBJ}: ${srcdir}/less.h ${srcdir}/funcs.h defines.h 
+${OBJ}: ${srcdir}/less.h ${srcdir}/funcs.h ${srcdir}/multi.h defines.h 
 
 install: all ${srcdir}/less.nro ${srcdir}/lesskey.nro installdirs
 	${INSTALL_PROGRAM} less ${bindir}/${binprefix}less

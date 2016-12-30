@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -47,7 +53,7 @@ static constant char m_proto[] =
 static constant char M_proto[] =
   "?f%f .?n?m(%T %i of %m) ..?ltlines %lt-%lb?L/%L. :byte %bB?s/%s. .?e(END) ?x- Next\\: %x.:?pB%pB\\%..%t";
 static constant char e_proto[] =
-  "?f%f .?m(%T %i of %m) .?ltlines %lt-%lb?L/%L. .byte %bB?s/%s. ?e(END) :?pB%pB\\%..%t";
+  "?f%f .?m(%T %i of %m) .?ltlines %lt-%lb?L/%L. .byte %bB?s/%s. ?e(END) :?pB%pB\\%.. code %K%t";
 static constant char h_proto[] =
   "HELP -- ?eEND -- Press g to see it again:Press RETURN for more., or q when done";
 static constant char w_proto[] =
@@ -364,6 +370,13 @@ protochar(c, where, iseditproto)
 			ap_str(get_filename(h));
 		else
 			ap_quest();
+		break;
+	case 'K':	/* Character set or code set of last non ASCII char. */
+#if ISO
+		ap_str(get_icharset_string(get_mulbuf(curr_ifile)));
+#else
+		ap_str("");
+#endif
 		break;
 	}
 }

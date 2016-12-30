@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -162,7 +168,7 @@ typedef off_t		LINENUM;
 /*
  * Flags for open()
  */
-#if MSDOS_COMPILER || OS2
+#if MSDOS_COMPILER || OS2 || __CYGWIN__
 #define	OPEN_READ	(O_RDONLY|O_BINARY)
 #else
 #ifdef _OSK
@@ -192,7 +198,7 @@ typedef off_t		LINENUM;
 #if MSDOS_COMPILER==MSOFTC
 #define	SET_BINARY(f)	_setmode(f, _O_BINARY);
 #else
-#if MSDOS_COMPILER || OS2
+#if MSDOS_COMPILER || OS2 || __CYGWIN__
 #define	SET_BINARY(f)	setmode(f, O_BINARY)
 #else
 #define	SET_BINARY(f)
@@ -296,6 +302,11 @@ struct textlist
 #define	AT_BLINK	(3)
 #define	AT_INVIS	(4)
 #define	AT_STANDOUT	(5)
+
+/*
+ * Defines for multi character set and code set.
+ */
+#include "multi.h"
 
 #if '0' == 240
 #define IS_EBCDIC_HOST 1

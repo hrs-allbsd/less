@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of compress file treating routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -780,6 +786,30 @@ lglob(filename)
 	return (gfilename);
 }
 
+#if COMPRESS
+/*
+ * Check a name of input file and easy execution some uncompressing program.
+ */
+	static char*
+easy_lessopen_for_compressedfile(filename)
+	register char *filename;
+{
+	register int length = strlen(filename);
+
+	if (strcmp(".Z", &filename[length - 2]) == 0 ||
+	    strcmp(".z", &filename[length - 2]) == 0)
+		return ("| zcat %s");
+	else if (strcmp(".gz", &filename[length - 3]) == 0 ||
+		 strcmp(".GZ", &filename[length - 3]) == 0)
+		return ("| gzip -cd %s");
+	else if (strcmp(".bz2", &filename[length - 4]) == 0 ||
+		 strcmp(".BZ2", &filename[length - 4]) == 0)
+		return ("| bzip2 -cd %s");
+	else
+		return (NULL);
+}
+#endif
+
 /*
  * See if we should open a "replacement file" 
  * instead of the file we're about to open.
@@ -804,6 +834,9 @@ open_altfile(filename, pf, pfd)
 		return (NULL);
 	ch_ungetchar(-1);
 	if ((lessopen = lgetenv("LESSOPEN")) == NULL)
+#if COMPRESS
+	    if ((lessopen = easy_lessopen_for_compressedfile(filename)) == NULL)
+#endif
 		return (NULL);
 	if (strcmp(filename, "-") == 0)
 		return (NULL);

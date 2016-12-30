@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /* OS/2 definition file for less.  */
@@ -162,6 +168,46 @@
 #define	HAVE_DUP	1
 
 /*
+ * COMPRESS is 1 if you want to read comressed file.
+ */
+#define	COMPRESS	1
+
+/*
+ * ISO is 1 if you want to read code which contain many character sets
+ * by using iso 2022 code extension techniques.
+ */
+#define	ISO		1
+
+/*
+ * JAPANESE is 1 if you want to read several KANJI code.
+ */
+#define	JAPANESE	1
+#if JAPANESE && !ISO
+# define ISO 1
+#endif
+
+/*
+ * DEFCHARSET is name of the default character set.
+ * This used as LESSCHARSET envrionment variable if user did not define it.
+ * The value of this must equal one of the available value which can use as
+ * LESSCHARSET environment variable
+ */
+#define	DEFCHARSET	"iso8"
+
+/*
+ * DEFPLANESET is name of the default plane set of iso 2022 extension.
+ * This used as LESSPLANESET envrionment variable if user did not define it.
+ * The value of this must equal one of the available value which can use as
+ * LESSPLANESET environment variable or any escape sequence for setting up.
+ */
+#define	DEFPLANESET	"ctext"
+
+/*
+ * DEFKEYCHARSET is name of the default character set for keyboard input.
+ */
+#define	DEFKEYCHARSET	"japanese-iso7"
+
+/*
  * Sizes of various buffers.
  */
 #define	CMDBUF_SIZE	512	/* Buffer for multichar commands */
@@ -186,19 +232,38 @@
 
 /*
  * Regular expression library.
+ * Some are extended to detect character set.
  * Define exactly one of the following to be 1:
+ * HAVE_POSIX_REGCOMP_CS: extended POSIX regcomp() and regex.h
+ * HAVE_V8_REGCOMP_CS: extended Henry Spencer V8 regcomp() and regexp.h
  * HAVE_POSIX_REGCOMP: POSIX regcomp() and regex.h
  * HAVE_RE_COMP: BSD re_comp()
  * HAVE_REGCMP: System V regcmp()
  * HAVE_V8_REGCOMP: Henry Spencer V8 regcomp() and regexp.h
- * NO_REGEX: pattern matching is supported, but without metacharacters.
+ * NO_REGEX: pattern matching with character set detection is supported,
+ *           but without metacharacters.
  */
+/* #undef HAVE_POSIX_REGCOMP_CS */
+/* #undef HAVE_V8_REGCOMP_CS */
 /* #undef HAVE_POSIX_REGCOMP */
 /* #undef HAVE_RE_COMP */
 /* #undef HAVE_REGCMP */
 #define HAVE_V8_REGCOMP 1
 /* #undef NO_REGEX */
 #define HAVE_REGEXEC2 1
+
+/*
+ * Does regular expression library detect character set?
+ */
+#define CS_REGEX 0
+
+/*
+ * Define MSB_ENABLE if you want to enable a MSB of non ASCII characters.
+ * It will be help if your library has not ability to detect a character set.
+ * If it has ability, this should be 0.  If your system was not worked well,
+ * try to change following into 0 by hand.
+ */
+#define MSB_ENABLE 1
 
 /* Define HAVE_VOID if your compiler supports the "void" type. */
 #define HAVE_VOID 1

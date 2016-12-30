@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1998-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -112,12 +118,18 @@ main(argc, argv)
 	get_term();
 	init_cmds();
 	init_prompt();
+	init_planeset();
 	init_charset();
 	init_line();
 	init_option();
 	s = lgetenv("LESS");
 	if (s != NULL)
 		scan_option(save(s));
+#if ISO
+	s = lgetenv("JLESS");
+	if (s != NULL)
+		scan_option(save(s));
+#endif
 
 #define	isoptstring(s)	(((s)[0] == '-' || (s)[0] == '+') && (s)[1] != '\0')
 	while (argc > 0 && (isoptstring(*argv) || isoptpending()))

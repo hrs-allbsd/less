@@ -23,7 +23,7 @@ OBJ =	main.obj screen.obj brac.obj ch.obj charset.obj cmdbuf.obj command.obj \
 	input.obj jump.obj line.obj linenum.obj lsystem.obj \
 	mark.obj optfunc.obj option.obj opttbl.obj os.obj output.obj \
 	position.obj prompt.obj search.obj signal.obj tags.obj \
-	ttyin.obj version.obj
+	ttyin.obj version.obj multi.obj unify.obj
 
 all: less$(EXT) lesskey$(EXT)
 
@@ -41,7 +41,7 @@ defines.h: defines.ds
 	-del defines.h
 	-copy defines.ds defines.h
 
-$(OBJ): less.h defines.h
+$(OBJ): less.h multi.h defines.h
 
 clean:
 	-del *.obj 

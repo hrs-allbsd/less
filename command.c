@@ -7,6 +7,12 @@
  * For more information about less, or for information on how to 
  * contact the author, see the README file.
  */
+/*
+ * Copyright (c) 1997-2005  Kazushi (Jam) Marukawa
+ * All rights of japanized routines are reserved.
+ *
+ * You may distribute under the terms of the Less License.
+ */
 
 
 /*
@@ -179,15 +185,17 @@ mca_opt_toggle()
 exec_mca()
 {
 	register char *cbuf;
+	CHARSET *csbuf;
 
 	cmd_exec();
 	cbuf = get_cmdbuf();
+	csbuf = get_cmdcs();
 
 	switch (mca)
 	{
 	case A_F_SEARCH:
 	case A_B_SEARCH:
-		multi_search(cbuf, (int) number);
+		multi_search(cbuf, csbuf, (int) number);
 		break;
 	case A_FIRSTCMD:
 		/*
@@ -740,8 +748,9 @@ ungetsc(s)
  * If SRCH_PAST_EOF is set, continue the search thru multiple files.
  */
 	static void
-multi_search(pattern, n)
+multi_search(pattern, charset, n)
 	char *pattern;
+	CHARSET *charset;
 	int n;
 {
 	register int nomore;
@@ -772,7 +781,7 @@ multi_search(pattern, n)
 
 	for (;;)
 	{
-		n = search(search_type, pattern, n);
+		n = search(search_type, pattern, charset, n);
 		/*
 		 * The SRCH_NO_MOVE flag doesn't "stick": it gets cleared
 		 * after being used once.  This allows "n" to work after
@@ -1225,7 +1234,7 @@ commands()
 #define	DO_SEARCH()	if (number <= 0) number = 1;	\
 			mca_search();			\
 			cmd_exec();			\
-			multi_search((char *)NULL, (int) number);
+			multi_search((char *)NULL, (CHARSET *)NULL, (int) number);
 
 
 		case A_F_SEARCH:
@@ -1609,6 +1618,16 @@ commands()
 			}
 			c = getcc();
 			goto again;
+
+#if JAPANESE
+		case A_ROT_RCODESET:
+			parg.p_string =
+				rotate_right_codeset(get_mulbuf(curr_ifile));
+			screen_trashed = 1;
+			make_display();
+			error("%s codeset is used in right plane", &parg);
+			break;
+#endif
 
 		case A_NOACTION:
 			break;

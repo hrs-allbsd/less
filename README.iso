@@ -1,0 +1,240 @@
+=========================================================================
+    This is the distribution of enhanced less.
+    It support ISO 2022 code extension techniques and Japanese codes.
+    Please report any problems of it to the author at jam@pobox.com.
+    See http://www.pobox.com/~jam/less/ for the latest info.
+=========================================================================
+
+
+**Features**
+
+ - Support ISO 2022 code extension techniques in 7bits and 8bits.
+ - Understand all following codes.
+   - ISO 2022 level 3.
+   - a special sequence, ESC 2/4[$] 2/12[,] FE, which is used in MULE.
+   - LESS-JIS, UJIS and SJIS.
+     - LESS-JIS may contain JIS C 6226-1978, JIS X 0208-1983,
+       JIS X 0208:1990/1997, JIS X 0212:1990, JIS X 0213:2000,
+       JIS X 0201:1976/1997 left/right planes, and ASCII.
+     - UJIS may contain one of JIS C 6226-1978, JIS X 0208-1983,
+       JIS X 0208:1990/1997, or JIS X 0213:2000 plane 1, one of
+       JIS X 0201:1976/1997 left plane or ASCII, JIS X 0201:1976/1997
+       right plane, and both JIS X 0212:1990 and JIS X 0213:2000
+       plane 2.
+     - SJIS may contain one of JIS C 6226-1978, JIS X 0208-1983,
+       JIS X 0208:1990/1997, or JIS X 0213:2000 plane 1, one of
+       JIS X 0201:1976/1997 left plane or ASCII, JIS X 0201:1976/1997
+       right plane, and JIS X 0213:2000 plane 2.
+ - Output following codes.
+   - iso8 (CTEXT, which is defined in X11)
+   - iso7 with only GZDM4, GZD4, G1DM4, G1DM6, G1D4, G1D6, SI and SO
+     escape sequences.
+   - LESS-JIS, UJIS and SJIS.
+     - LESS-JIS may contain JIS X 0208-1983 with an assumption
+       that its face is the same as JIS X 0213:2000 plane 1,
+       JIS X 0201:1976/1997 left/right planes and ASCII.
+       It does not contain JIS X 0212:1990 or JIS X 0213:2000 plane 2,
+       so those are marked as wrong character on the fly.
+       If you need more restricted JIS sequence, please use iso7 or iso8.
+     - UJIS may contain one of JIS C 6226-1978, JIS X 0208-1983,
+       JIS X 0208:1990/1997, or JIS X 0213:2000 plane 1, one of
+       JIS X 0201:1976/1997 left plane or ASCII, JIS X 0201:1976/1997
+       right plane, and both JIS X 0212:1990 and JIS X 0213:2000
+       plane 2.
+     - SJIS may contain one of JIS C 6226-1978, JIS X 0208-1983,
+       JIS X 0208:1990/1997, or JIS X 0213:2000 plane 1, one of
+       JIS X 0201:1976/1997 left plane or ASCII, JIS X 0201:1976/1997
+       right plane, and JIS X 0213:2000 plane 2.
+ - Automatic decompression of compressed files.
+
+**Problems**
+
+ - To search, the less program compares characters after conversion into
+   internal codes.  If converted codes contain some gaps, a regular expression
+   library may be confused.  e.g. "あa" which contains an escape
+   sequence and JIS X 0201 Japanese (Katakana).  Search this text using UJIS
+   Katakana pattern may cause problems.
+ - If you have a regular expression library with ability to detect
+   character set, you will be ok since such regular expression library
+   doesn't confuse among different character sets.
+ - If you don't have such library, you still can use less without regular
+   expression by simply typing '^R'.  This trigger simple search library
+   implemented in less that support multiple character sets.
+
+**Enhancements**
+
+ - The JLESSCHARSET environment variable choose codes for input and
+   output.  For example, if you set "japanese-iso7", the less read all
+   Japanese codes and iso7 and write iso7.  If you set "ujis", the
+   less read and write only UJIS.  Currently you can use followings.
+   - Same as LESSCHARSET: ascii, latin1, dos, koi8-r, next
+   - Others: iso7, iso8, ujis-iso7, euc-iso7, sjis-iso7, jis,
+	     ujis-jis, euc-jis, sjis-jis, ujis, euc, jis-ujis,
+	     jis-euc, sjis, jis-sjis, japanese, japanese-iso7,
+	     japanese-jis, japanese-ujis, japanese-euc, japanese-sjis
+ - Following values of JLESSCHARSET are treated for input and output
+   separately.  For example, if you set "ujis-sjis", the less read
+   only UJIS and write only SJIS.
+   - Values: ujis-sjis, euc-sjis, sjis-ujis, sjis-euc
+ - The JLESSPLANESET environment variable choose plane of iso8 and
+   iso7.  Please read a manual about details.
+ - The JLESSKEYCHARSET environment variable choose codes for input
+   from keyboard.  All values for the JLESSCHARSET environment
+   variable are used for this.
+ - Sometime the less may mistake automatic handling of Japanese codes.
+   The user change the status for it by '@' key.  The function name of
+   it is "rotate-right".
+ - If you have a regular expression library with character set
+   detection, invoke configure script with "--with-cs-regex" option to
+   use it.  Then compile the less.
+
+**History about Japanized and ISO 2022-ized less**
+
+ - About Japanization of less
+   - Kato-san posted a difference which give less an ability for
+     special escape sequence.
+   - Kameyama-san posted a patch for UJIS code.
+   - Shinoda-san posted a less.exe for SJIS code.
+   - Tachi-san posted two patches for JIS and SJIS code.
+   - Saito-san posted kanji conversion filter for less.
+   - Ohta-san posted other less which convert roma-ji into kana.
+   - Yamakita-san posted other patch for convert them into kanji.
+   - Yoshida-san posted two patches of less-73 for UJIS and SJIS code.
+   - Yoshida-san posted two patches of less-97 for UJIS and SJIS code.
+   - Kato-san posted a patch of less-97(UJIS) for JIS code.
+   - Ishii-san posted a patch of less-97(UJIS or SJIS) for JIS code.
+   - Tanaka-san posted a modified less-123 for SJIS code.
+   - Kawakami-san posted a patch of it for JIS code.
+   - I changed less-177 for all Japanese codes.
+   - Kusakabe-san changed less-178 by using patches for less-177.
+   - Senda-san add printing function of Japanese code for less-177.
+   - Sakai-san changed less-200 by using patches for less-178.
+   - I changed less-205 for all Japanese codes and ISO 2022 codes.
+   - Ushine-san changed less-321 by using patches for less-290.
+   - I changed less-330 by using patches for less-290.  It is named
+     iso202.
+   - I removed some bugs and made jless-330-iso203.
+   - I re-wrote jless and made jless-330-iso208.
+   - I released patches to correct bugs.
+
+ - About jless
+   - I put 2 unofficial patches of KANJI searching enhancements for
+     ISO 2022-ized less-237 on ftp.
+   - I put an unofficial patch to use gawk-2.15.6-mb1.04's KANJI
+     regular expression library for jless-330-iso210 on ftp.  It will
+     works with iso212 and following.
+   - I put a less.hlp file which is translated into Japanese.  It will
+     works with iso212 and following.
+
+ - Read version.c for more details.
+
+**FAQ**
+
+ Q: When I try to view a Japanese text, the less shows inverse
+    characters only.  How do I view Japanese?
+ A: You have to set JLESSCHARSET environment variable as "japanese".
+    Or, you have to set "ja_JP" to the LANG environment variable if your
+    computer support it.  Either way works similary.  Choose either way
+    depend on your style.
+
+ Q: When I try to view a Japanese text, the less shows strange
+    characters only like '$' and others.  How do I view Japanese?
+ A: Does your terminal or terminal emulator have ability to show
+    Japanese?  If so, I guess you have to adjust output of the less by
+    setting JLESSCHARSET environment variblae as "japanese-ujis" or
+    "japanese-sjis".
+
+ Q: When I try to view compressed text, the less doesn't work.  How do
+    I view them?
+ A: The less uses the name of a text file to check whether it is
+    compressed or not, and uses a "zcat" program to uncompress it.  So
+    the compressed file has to be finished with ".z", ".gz" or ".Z"
+    and a "zcat" program has to have ability to uncompress it.
+
+ Q: How to set JLESSCHARSET environment variable for all users?
+ A: You can use a DEFCHARSET declaration in "defines.h".  This value is
+    treated default values and compiled into less binary at compile time.
+    In addition, if your computer has a LANG property, you may need to set
+    HAVE_LOCALE to 0 in "defines.h" too.  Note: be carefule.  this file is
+    often automatically generated by "configure" program.  Don't forget to
+    edit this file each time you run "configure".
+
+ Q: Sometime my terminal shows non ASCII characters only although I type
+    "hello".
+ A: Some terminal emulators have bugs in handling the ISO 2022.  You
+    should tell the less to display only JIS by setting "japanese-jis"
+    to the JLESSCHARSET environment variable.  And, you also need to
+    restart/reset your terminal emulator.
+
+ Q: Sometime the less shows wrong Japanese characters when I try to
+    view SJIS coded files.
+ A: Less detect Japanese code automatically, but it is not perfect.
+    Please type '^L' to re-display it.  If it doesn't work fine,
+    try to type '@' to change Japanese code by hand.
+
+    On the other hand, if you use the less with a -Z option, the less
+    give priority to SJIS over UJIS in automatic handling routine.
+    And you can change the default value of priority and invert the
+    means of a -Z option by compiling with SJIS_PRE declaration.
+
+    Or if you know the file uses SJIS, you can simply type "less -Ksjis"
+    to diable the automatic handling routine.
+
+ Q: How do I use SJIS as typing string?
+ A: You should set "sjis-jis" to the JLESSKEYCHARSET environment
+    variable.  Or, you also be able to set "sjis-jis" to a DEFKEYCHARSET
+    declaration in "defines.h".
+
+ Q: Can I use regular expression with Japanese?
+ A: There are 2 ways.  You can use multi bytes regular expression
+    library.  Or you can use regular expression library with ability
+    to detect character sets.
+
+    Please read "http://www.poboxes.com/~jam/less/".
+
+ Q: When I looking up with Kanji, the less shows strange behavior.
+ A: The less turns on MSB of all bytes of all non ASCII characters to
+    decrease the possibility of mis-matching between an ASCII character
+    and an non ASCII characters.  But your regular expression library
+    might not support characters with MSB.  Please invoke configure
+    script with "--disable-msb" option to disable it.  Then compile
+    and install less again.
+
+ Q: How do I input search pattern by JIS?
+ A: Normally the less uses "\e$" sequence.  You should write following
+    in your "~/.lesskey" file and execute a "lesskey" program to
+    cancel it.
+
+#line-edit
+\e$	insert ^V\e$
+
+ Q: How do I use emacs-like key binding?
+ A: You should write following in your "~/.lesskey" file and execute a
+    "lesskey" program.
+
+#line-edit
+^A	home
+^E	end
+^P	up
+^N	down
+^F	right
+^B	left
+\ef	word-right
+^D	delete
+\ed	word-delete
+
+ Q: The os.c was not compiled on NEWS-OS 4.0C.
+ A: Add following before "#include <setjmp.h>".
+
+#define LANGUAGE_C   1
+
+**Conclusion**
+
+ - Please mail to "jam@pobox.com" if you have a problem or a suggestion.
+ - See http://www.pobox.com/~jam/less/ for the latest info.
+
+
+Local Variables:
+mode: indented-text
+fill-column: 70
+End:
