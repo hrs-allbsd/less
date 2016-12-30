@@ -783,4 +783,4 @@ ext-03 05/25/11	Support JIS C 6223 alternative mapping (used by Emacs-23).
                 Fix combining conversion bug.
 */
 
-char version[] = "382+iso262+ext03";
+char version[] = "382+iso262+ext3+regex_cs-lwp9k";
