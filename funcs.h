@@ -50,8 +50,8 @@
 	public void ch_close ();
 	public int ch_getflags ();
 	public void ch_dump ();
-	public CODESET left_codeset_of_charset ();
-	public CODESET right_codeset_of_charset ();
+	public ENCSET left_codeset_of_charset ();
+	public ENCSET right_codeset_of_charset ();
 	public void init_planeset ();
 	public void init_charset ();
 	public int binary_char ();

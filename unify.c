@@ -1015,51 +1015,34 @@ static convtab eliminate_wrong_jisx0213_2[] = {
 };
 static convtable etable_jisx0213_2 = { eliminate_wrong_jisx0213_2, NULL };
 
+static convtab eliminate_wrong_jisx02132004_1[] = {
+	/* no empty row */
+
+	/* sequences of empty columns */
+	/* 4 KU 0x247C($(Q$|(B)-0x247E($(Q$~(B) -> 0x222E($B".(B) */
+	{ "$|", "$~", "\".", JISX0208KANJI },
+	/* 8 KU 0x285F($(Q(_(B)-0x2866($(Q(f(B) -> 0x222E($B".(B) */
+	{ "(_", "(f", "\".", JISX0208KANJI },
+	/* 8 KU 0x287D($(Q(}(B)-0x287E($(Q(~(B) -> 0x222E($B".(B) */
+	{ "(}", "(~", "\".", JISX0208KANJI },
+	/* 12 KU 0x2C74($(Q,t(B)-0x2C7C($(Q,|(B) -> 0x222E($B".(B) */
+	{ ",t", ",|", "\".", JISX0208KANJI },
+	/* 13 KU 0x2D58($(Q-X(B)-0x2D5E($(Q-^(B) -> 0x222E($B".(B) */
+	{ "-X", "-^", "\".", JISX0208KANJI },
+	/* 13 KU 0x2D70($(Q-p(B)-0x2D72($(Q-r(B) -> 0x222E($B".(B) */
+	{ "-p", "-r", "\".", JISX0208KANJI },
+	/* 13 KU 0x2D74($(Q-t(B)-0x2D77($(Q-w(B) -> 0x222E($B".(B) */
+	{ "-t", "-w", "\".", JISX0208KANJI },
+	/* 13 KU 0x2D7A($(Q-z(B)-0x2D7C($(Q-|(B) -> 0x222E($B".(B) */
+	{ "-z", "-|", "\".", JISX0208KANJI },
+
+	/* NULL */
+	{ 0, 0, 0, 0 }
+};
+static convtable etable_jisx02132004_1 = { eliminate_wrong_jisx02132004_1, NULL };
+static convtable etable_jisx02132004_2 = { eliminate_wrong_jisx0213_2, NULL };
+
 static convtab eliminate_wrong_sjis[] = {
-#if SJIS0213
-	/* JIS X 0213:2000 plane 1 for SJIS0213 */
-
-	/* no empty row */
-
-	/* sequences of empty columns */
-	/* 4 KU 0x82FA($(O$|(B)-0x82FC($(O$~(B) -> 0x222E($B".(B) */
-	{ "\202\372", "\202\374", "\201\254", SJIS },
-	/* 8 KU 0x84DD($(O(_(B)-0x84E4($(O(f(B) -> 0x222E($B".(B) */
-	{ "\204\335", "\204\344", "\201\254", SJIS },
-	/* 8 KU 0x84FB($(O(}(B)-0x84FC($(O(~(B) -> 0x222E($B".(B) */
-	{ "\204\373", "\204\374", "\201\254", SJIS },
-	/* 12 KU 0x86F2($(O,t(B)-0x86FA($(O,|(B) -> 0x222E($B".(B) */
-	{ "\206\362", "\206\372", "\201\254", SJIS },
-	/* 13 KU 0x8777($(O-X(B)-0x877D($(O-^(B) -> 0x222E($B".(B) */
-	{ "\207\167", "\207\175", "\201\254", SJIS },
-	/* 13 KU 0x8790($(O-p(B)-0x8792($(O-r(B) -> 0x222E($B".(B) */
-	{ "\207\220", "\207\222", "\201\254", SJIS },
-	/* 13 KU 0x8794($(O-t(B)-0x8797($(O-w(B) -> 0x222E($B".(B) */
-	{ "\207\224", "\207\227", "\201\254", SJIS },
-	/* 13 KU 0x879A($(O-z(B)-0x879C($(O-|(B) -> 0x222E($B".(B) */
-	{ "\207\232", "\207\234", "\201\254", SJIS },
-	/* 14 KU 0x879F($(O.!(B) -> 0x222E($B".(B) */
-	{ "\207\237", NULL, "\201\254", SJIS },
-	/* 15 KU 0x889E($(O/~(B) -> 0x222E($B".(B) */
-	{ "\210\236", NULL, "\201\254", SJIS },
-	/* 47 KU 0x9873($(OOT(B) -> 0x222E($B".(B) */
-	{ "\230\163", NULL, "\201\254", SJIS },
-	/* 47 KU 0x989E($(OO~(B) -> 0x222E($B".(B) */
-	{ "\230\236", NULL, "\201\254", SJIS },
-	/* 84 KU 0xEAA5($(Ot'(B) -> 0x222E($B".(B) */
-	{ "\352\245", NULL, "\201\254", SJIS },
-	/* 94 KU 0xEFF8($(O~z(B)-0xEFFC($(O~~(B) -> 0x222E($B".(B) */
-	{ "\357\370", "\357\374", "\201\254", SJIS },
-
-	/* JIS X 0213:2000 plane 2 for SJIS0213 */
-	/* In SJIS0213, JIS X 0213:2000 occupies from 96 to 120 KU */
-
-	/* no empty row */
-
-	/* sequences of empty columns */
-	/* 94 KU 0xFCF5($(P~w(B)-0xFCFC($(P~~(B) -> 0x222E($B".(B) */
-	{ "\374\365", "\374\374", "\201\254", SJIS },
-#else /* SJIS0213 */
 	/* JIS X 0208:1990 for SJIS */
 	/* 2 KU 0x81AD(&@$B"/(B)-0x81B7(&@$B"9(B) -> 0x81AC($B".(B) */
 	{ "\201\255", "\201\267", "\201\254", SJIS },
@@ -1110,64 +1093,99 @@ static convtab eliminate_wrong_sjis[] = {
 	{ "\353\100", "\357\374", "\201\254", SJIS },
 	/* 95-120 KU 0xF040(none)-0xFC9E(none) -> 0x81AC($B".(B) */
 	{ "\360\100", "\374\374", "\201\254", SJIS },
-#endif /* SJIS0213 */
 
 	/* NULL */
 	{ 0, 0, 0, 0 }
 };
 static convtable etable_sjis = { eliminate_wrong_sjis, NULL };
 
-static convtab eliminate_wrong_ujis[] = {
-#if UJIS0213
-	/* JIS X 0213:2000 plane 1 for UJIS0213 */
+static convtab eliminate_wrong_sjis2000[] = {
+	/* JIS X 0213:2000 plane 1 for SJIS2000 */
 
 	/* no empty row */
 
 	/* sequences of empty columns */
-	/* 4 KU 0xA4FC($(O$|(B)-0xA4FE($(O$~(B) -> 0xA2AE($B".(B) */
-	{ "\244\374", "\244\376", "\242\256", UJIS },
-	/* 8 KU 0xA8DF($(O(_(B)-0xA8E6($(O(f(B) -> 0xA2AE($B".(B) */
-	{ "\250\337", "\250\346", "\242\256", UJIS },
-	/* 8 KU 0xA8FD($(O(}(B)-0xA8FE($(O(~(B) -> 0xA2AE($B".(B) */
-	{ "\250\375", "\250\376", "\242\256", UJIS },
-	/* 12 KU 0xACF4($(O,t(B)-0xACFC($(O,|(B) -> 0xA2AE($B".(B) */
-	{ "\254\364", "\254\374", "\242\256", UJIS },
-	/* 13 KU 0xADD8($(O-X(B)-0xADDE($(O-^(B) -> 0xA2AE($B".(B) */
-	{ "\255\330", "\255\336", "\242\256", UJIS },
-	/* 13 KU 0xADF0($(O-p(B)-0xADF2($(O-r(B) -> 0xA2AE($B".(B) */
-	{ "\255\360", "\255\362", "\242\256", UJIS },
-	/* 13 KU 0xADF4($(O-t(B)-0xADF7($(O-w(B) -> 0xA2AE($B".(B) */
-	{ "\255\364", "\255\367", "\242\256", UJIS },
-	/* 13 KU 0xADFA($(O-z(B)-0xADFC($(O-|(B) -> 0xA2AE($B".(B) */
-	{ "\255\372", "\255\374", "\242\256", UJIS },
-	/* 14 KU 0xAEA1($(O.!(B) -> 0xA2AE($B".(B) */
-	{ "\256\241", NULL, "\242\256", UJIS },
-	/* 15 KU 0xAFFE($(O/~(B) -> 0xA2AE($B".(B) */
-	{ "\257\376", NULL, "\242\256", UJIS },
-	/* 47 KU 0xCFD4($(OOT(B) -> 0xA2AE($B".(B) */
-	{ "\317\324", NULL, "\242\256", UJIS },
-	/* 47 KU 0xCFFE($(OO~(B) -> 0xA2AE($B".(B) */
-	{ "\317\376", NULL, "\242\256", UJIS },
-	/* 84 KU 0xF4A7($(Ot'(B) -> 0xA2AE($B".(B) */
-	{ "\364\247", NULL, "\242\256", UJIS },
-	/* 94 KU 0xFEFA($(O~z(B)-0xFEFE($(O~~(B) -> 0xA2AE($B".(B) */
-	{ "\376\372", "\376\376", "\242\256", UJIS },
+	/* 4 KU 0x82FA($(O$|(B)-0x82FC($(O$~(B) -> 0x222E($B".(B) */
+	{ "\202\372", "\202\374", "\201\254", SJIS },
+	/* 8 KU 0x84DD($(O(_(B)-0x84E4($(O(f(B) -> 0x222E($B".(B) */
+	{ "\204\335", "\204\344", "\201\254", SJIS },
+	/* 8 KU 0x84FB($(O(}(B)-0x84FC($(O(~(B) -> 0x222E($B".(B) */
+	{ "\204\373", "\204\374", "\201\254", SJIS },
+	/* 12 KU 0x86F2($(O,t(B)-0x86FA($(O,|(B) -> 0x222E($B".(B) */
+	{ "\206\362", "\206\372", "\201\254", SJIS },
+	/* 13 KU 0x8777($(O-X(B)-0x877D($(O-^(B) -> 0x222E($B".(B) */
+	{ "\207\167", "\207\175", "\201\254", SJIS },
+	/* 13 KU 0x8790($(O-p(B)-0x8792($(O-r(B) -> 0x222E($B".(B) */
+	{ "\207\220", "\207\222", "\201\254", SJIS },
+	/* 13 KU 0x8794($(O-t(B)-0x8797($(O-w(B) -> 0x222E($B".(B) */
+	{ "\207\224", "\207\227", "\201\254", SJIS },
+	/* 13 KU 0x879A($(O-z(B)-0x879C($(O-|(B) -> 0x222E($B".(B) */
+	{ "\207\232", "\207\234", "\201\254", SJIS },
+	/* 14 KU 0x879F($(O.!(B) -> 0x222E($B".(B) */
+	{ "\207\237", NULL, "\201\254", SJIS },
+	/* 15 KU 0x889E($(O/~(B) -> 0x222E($B".(B) */
+	{ "\210\236", NULL, "\201\254", SJIS },
+	/* 47 KU 0x9873($(OOT(B) -> 0x222E($B".(B) */
+	{ "\230\163", NULL, "\201\254", SJIS },
+	/* 47 KU 0x989E($(OO~(B) -> 0x222E($B".(B) */
+	{ "\230\236", NULL, "\201\254", SJIS },
+	/* 84 KU 0xEAA5($(Ot'(B) -> 0x222E($B".(B) */
+	{ "\352\245", NULL, "\201\254", SJIS },
+	/* 94 KU 0xEFF8($(O~z(B)-0xEFFC($(O~~(B) -> 0x222E($B".(B) */
+	{ "\357\370", "\357\374", "\201\254", SJIS },
 
-	/*
-	 * UJIS0213 shares G2 space by JIS X 0213:2000 plane 2 and
-	 * JIS X 0212:1990.  later has some empty rows and some empty
-	 * columns in particular rows.  JIS X 0213:2000 plane 2 shares
-	 * those empty rows.  So, totally UJIS0213 has no empty row.
-	 */
+	/* JIS X 0213:2000 plane 2 for SJIS2000 */
+	/* In SJIS2000, JIS X 0213:2000 occupies from 96 to 120 KU */
 
-	/* JIS X 0212:1990 for UJIS0213 */
-	/* Empty columns in particular rows are defined after below #endif */
+	/* no empty row */
 
-	/* JIS X 0213:2000 plane 2 for UJIS0213 */
 	/* sequences of empty columns */
-	/* 94 KU 0xFEF7($(P~w(B)-0xFEFE($(P~~(B) -> 0xA2AE($B".(B) */
-	{ "\217\376\367", "\217\376\376", "\242\256", UJIS },
-#else /* UJIS0213 */
+	/* 94 KU 0xFCF5($(P~w(B)-0xFCFC($(P~~(B) -> 0x222E($B".(B) */
+	{ "\374\365", "\374\374", "\201\254", SJIS },
+
+	/* NULL */
+	{ 0, 0, 0, 0 }
+};
+static convtable etable_sjis2000 = { eliminate_wrong_sjis2000, NULL };
+
+static convtab eliminate_wrong_sjis2004[] = {
+	/* JIS X 0213:2004 plane 1 for SJIS2004 */
+
+	/* no empty row */
+
+	/* sequences of empty columns */
+	/* 4 KU 0x82FA($(Q$|(B)-0x82FC($(Q$~(B) -> 0x222E($B".(B) */
+	{ "\202\372", "\202\374", "\201\254", SJIS },
+	/* 8 KU 0x84DD($(Q(_(B)-0x84E4($(Q(f(B) -> 0x222E($B".(B) */
+	{ "\204\335", "\204\344", "\201\254", SJIS },
+	/* 8 KU 0x84FB($(Q(}(B)-0x84FC($(Q(~(B) -> 0x222E($B".(B) */
+	{ "\204\373", "\204\374", "\201\254", SJIS },
+	/* 12 KU 0x86F2($(Q,t(B)-0x86FA($(Q,|(B) -> 0x222E($B".(B) */
+	{ "\206\362", "\206\372", "\201\254", SJIS },
+	/* 13 KU 0x8777($(Q-X(B)-0x877D($(Q-^(B) -> 0x222E($B".(B) */
+	{ "\207\167", "\207\175", "\201\254", SJIS },
+	/* 13 KU 0x8790($(Q-p(B)-0x8792($(Q-r(B) -> 0x222E($B".(B) */
+	{ "\207\220", "\207\222", "\201\254", SJIS },
+	/* 13 KU 0x8794($(Q-t(B)-0x8797($(Q-w(B) -> 0x222E($B".(B) */
+	{ "\207\224", "\207\227", "\201\254", SJIS },
+	/* 13 KU 0x879A($(Q-z(B)-0x879C($(Q-|(B) -> 0x222E($B".(B) */
+	{ "\207\232", "\207\234", "\201\254", SJIS },
+
+	/* JIS X 0213:2004 plane 2 for SJIS2004 */
+	/* In SJIS2004, JIS X 0213:2004 occupies from 96 to 120 KU */
+
+	/* no empty row */
+
+	/* sequences of empty columns */
+	/* 94 KU 0xFCF5($(P~w(B)-0xFCFC($(P~~(B) -> 0x222E($B".(B) */
+	{ "\374\365", "\374\374", "\201\254", SJIS },
+
+	/* NULL */
+	{ 0, 0, 0, 0 }
+};
+static convtable etable_sjis2004 = { eliminate_wrong_sjis2004, NULL };
+
+static convtab eliminate_wrong_ujis[] = {
 	/* UJIS uses JIS X 0208 1983 */
 
 	/* empty rows */
@@ -1234,7 +1252,7 @@ static convtab eliminate_wrong_ujis[] = {
 	{ "\217\254\241", "\217\257\376", "\242\256", UJIS },
 	/* 78-94 KU 0xEEA1($(Dn!(B)-0xFEFE($(D~~(B) -> 0xA2AE($B".(B) */
 	{ "\217\356\241", "\217\376\376", "\242\256", UJIS },
-#endif /* UJIS0213 */
+
 	/* JIS X 0212:1990 */
 	/*
 	 * Here, we defines only empty columns in particular rows
@@ -1296,6 +1314,204 @@ static convtab eliminate_wrong_ujis[] = {
 	{ 0, 0, 0, 0 }
 };
 static convtable etable_ujis = { eliminate_wrong_ujis, NULL };
+
+static convtab eliminate_wrong_ujis2000[] = {
+	/* JIS X 0213:2000 plane 1 for UJIS2000 */
+
+	/* no empty row */
+
+	/* sequences of empty columns */
+	/* 4 KU 0xA4FC($(O$|(B)-0xA4FE($(O$~(B) -> 0xA2AE($B".(B) */
+	{ "\244\374", "\244\376", "\242\256", UJIS },
+	/* 8 KU 0xA8DF($(O(_(B)-0xA8E6($(O(f(B) -> 0xA2AE($B".(B) */
+	{ "\250\337", "\250\346", "\242\256", UJIS },
+	/* 8 KU 0xA8FD($(O(}(B)-0xA8FE($(O(~(B) -> 0xA2AE($B".(B) */
+	{ "\250\375", "\250\376", "\242\256", UJIS },
+	/* 12 KU 0xACF4($(O,t(B)-0xACFC($(O,|(B) -> 0xA2AE($B".(B) */
+	{ "\254\364", "\254\374", "\242\256", UJIS },
+	/* 13 KU 0xADD8($(O-X(B)-0xADDE($(O-^(B) -> 0xA2AE($B".(B) */
+	{ "\255\330", "\255\336", "\242\256", UJIS },
+	/* 13 KU 0xADF0($(O-p(B)-0xADF2($(O-r(B) -> 0xA2AE($B".(B) */
+	{ "\255\360", "\255\362", "\242\256", UJIS },
+	/* 13 KU 0xADF4($(O-t(B)-0xADF7($(O-w(B) -> 0xA2AE($B".(B) */
+	{ "\255\364", "\255\367", "\242\256", UJIS },
+	/* 13 KU 0xADFA($(O-z(B)-0xADFC($(O-|(B) -> 0xA2AE($B".(B) */
+	{ "\255\372", "\255\374", "\242\256", UJIS },
+	/* 14 KU 0xAEA1($(O.!(B) -> 0xA2AE($B".(B) */
+	{ "\256\241", NULL, "\242\256", UJIS },
+	/* 15 KU 0xAFFE($(O/~(B) -> 0xA2AE($B".(B) */
+	{ "\257\376", NULL, "\242\256", UJIS },
+	/* 47 KU 0xCFD4($(OOT(B) -> 0xA2AE($B".(B) */
+	{ "\317\324", NULL, "\242\256", UJIS },
+	/* 47 KU 0xCFFE($(OO~(B) -> 0xA2AE($B".(B) */
+	{ "\317\376", NULL, "\242\256", UJIS },
+	/* 84 KU 0xF4A7($(Ot'(B) -> 0xA2AE($B".(B) */
+	{ "\364\247", NULL, "\242\256", UJIS },
+	/* 94 KU 0xFEFA($(O~z(B)-0xFEFE($(O~~(B) -> 0xA2AE($B".(B) */
+	{ "\376\372", "\376\376", "\242\256", UJIS },
+
+	/*
+	 * UJIS2000 shares G2 space by JIS X 0213:2000 plane 2 and
+	 * JIS X 0212:1990.  later has some empty rows and some empty
+	 * columns in particular rows.  JIS X 0213:2000 plane 2 shares
+	 * those empty rows.  So, totally UJIS2000 has no empty row.
+	 */
+
+	/* JIS X 0213:2000 plane 2 for UJIS2000 */
+	/* sequences of empty columns */
+	/* 94 KU 0xFEF7($(P~w(B)-0xFEFE($(P~~(B) -> 0xA2AE($B".(B) */
+	{ "\217\376\367", "\217\376\376", "\242\256", UJIS },
+
+	/* JIS X 0212:1990 for UJIS2000 */
+	/* sequences of empty columns */
+	/* 2 KU 0xA2A1($(D"!(B)-0xA2AE($(D".(B) -> 0xA2AE($B".(B) */
+	{ "\217\242\241", "\217\242\256", "\242\256", UJIS },
+	/* 2 KU 0xA2BA($(D":(B)-0xA2C1($(D"A(B) -> 0xA2AE($B".(B) */
+	{ "\217\242\272", "\217\242\301", "\242\256", UJIS },
+	/* 2 KU 0xA2C5($(D"E(B)-0xA2EA($(D"j(B) -> 0xA2AE($B".(B) */
+	{ "\217\242\305", "\217\242\352", "\242\256", UJIS },
+	/* 2 KU 0xA2F2($(D"r(B)-0xA2FE($(D"~(B) -> 0xA2AE($B".(B) */
+	{ "\217\242\362", "\217\242\376", "\242\256", UJIS },
+	/* 6 KU 0xA6A1($(D&!(B)-0xA6E0($(D&`(B) -> 0xA2AE($B".(B) */
+	{ "\217\246\241", "\217\246\340", "\242\256", UJIS },
+	/* 6 KU 0xA6E6($(D&f(B) -> 0xA2AE($B".(B) */
+	{ "\217\246\346", NULL, "\242\256", UJIS },
+	/* 6 KU 0xA6E8($(D&h(B) -> 0xA2AE($B".(B) */
+	{ "\217\246\350", NULL, "\242\256", UJIS },
+	/* 6 KU 0xA6EB($(D&k(B) -> 0xA2AE($B".(B) */
+	{ "\217\246\353", NULL, "\242\256", UJIS },
+	/* 6 KU 0xA6ED($(D&m(B)-0xA6F0($(D&p(B) -> 0xA2AE($B".(B) */
+	{ "\217\246\355", "\217\246\360", "\242\256", UJIS },
+	/* 6 KU 0xA6FD($(D&}(B)-0xA6FE($(D&~(B) -> 0xA2AE($B".(B) */
+	{ "\217\246\375", "\217\246\376", "\242\256", UJIS },
+	/* 7 KU 0xA7A1($(D'!(B)-0xA7C1($(D'A(B) -> 0xA2AE($B".(B) */
+	{ "\217\247\241", "\217\247\301", "\242\256", UJIS },
+	/* 7 KU 0xA7CF($(D'O(B)-0xA7F1($(D'q(B) -> 0xA2AE($B".(B) */
+	{ "\217\247\317", "\217\247\361", "\242\256", UJIS },
+	/* 9 KU 0xA9A3($(D)#(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\243", NULL, "\242\256", UJIS },
+	/* 9 KU 0xA9A5($(D)%(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\245", NULL, "\242\256", UJIS },
+	/* 9 KU 0xA9A7($(D)'(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\247", NULL, "\242\256", UJIS },
+	/* 9 KU 0xA9AA($(D)*(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\252", NULL, "\242\256", UJIS },
+	/* 9 KU 0xA9AE($(D).(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\256", NULL, "\242\256", UJIS },
+	/* 9 KU 0xA9B1($(D)1(B)-0xA9C0($(D)@(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\261", "\217\251\300", "\242\256", UJIS },
+	/* 9 KU 0xA9D1($(D)Q(B)-0xA9FE($(D)~(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\321", "\217\251\376", "\242\256", UJIS },
+	/* 10 KU 0xAAB9($(D*9(B) -> 0xA2AE($B".(B) */
+	{ "\217\252\271", NULL, "\242\256", UJIS },
+	/* 10 KU 0xAAF8($(D*x(B)-0xAAFE($(D*~(B) -> 0xA2AE($B".(B) */
+	{ "\217\252\370", "\217\252\376", "\242\256", UJIS },
+	/* 11 KU 0xABBC($(D+<(B) -> 0xA2AE($B".(B) */
+	{ "\217\253\274", NULL, "\242\256", UJIS },
+	/* 11 KU 0xABC4($(D+D(B) -> 0xA2AE($B".(B) */
+	{ "\217\253\304", NULL, "\242\256", UJIS },
+	/* 11 KU 0xABF8($(D+x(B)-0xABFE($(D+~(B) -> 0xA2AE($B".(B) */
+	{ "\217\253\370", "\217\253\376", "\242\256", UJIS },
+	/* 77 KU 0xEDE4($(Dmd(B)-0xEDFE($(Dm~(B) -> 0xA2AE($B".(B) */
+	{ "\217\355\344", "\217\355\376", "\242\256", UJIS },
+
+	/* NULL */
+	{ 0, 0, 0, 0 }
+};
+static convtable etable_ujis2000 = { eliminate_wrong_ujis2000, NULL };
+
+static convtab eliminate_wrong_ujis2004[] = {
+	/* JIS X 0213:2004 plane 1 for UJIS2004 */
+
+	/* no empty row */
+
+	/* sequences of empty columns */
+	/* 4 KU 0xA4FC($(Q$|(B)-0xA4FE($(Q$~(B) -> 0xA2AE($B".(B) */
+	{ "\244\374", "\244\376", "\242\256", UJIS },
+	/* 8 KU 0xA8DF($(Q(_(B)-0xA8E6($(Q(f(B) -> 0xA2AE($B".(B) */
+	{ "\250\337", "\250\346", "\242\256", UJIS },
+	/* 8 KU 0xA8FD($(Q(}(B)-0xA8FE($(Q(~(B) -> 0xA2AE($B".(B) */
+	{ "\250\375", "\250\376", "\242\256", UJIS },
+	/* 12 KU 0xACF4($(Q,t(B)-0xACFC($(Q,|(B) -> 0xA2AE($B".(B) */
+	{ "\254\364", "\254\374", "\242\256", UJIS },
+	/* 13 KU 0xADD8($(Q-X(B)-0xADDE($(Q-^(B) -> 0xA2AE($B".(B) */
+	{ "\255\330", "\255\336", "\242\256", UJIS },
+	/* 13 KU 0xADF0($(Q-p(B)-0xADF2($(Q-r(B) -> 0xA2AE($B".(B) */
+	{ "\255\360", "\255\362", "\242\256", UJIS },
+	/* 13 KU 0xADF4($(Q-t(B)-0xADF7($(Q-w(B) -> 0xA2AE($B".(B) */
+	{ "\255\364", "\255\367", "\242\256", UJIS },
+	/* 13 KU 0xADFA($(Q-z(B)-0xADFC($(Q-|(B) -> 0xA2AE($B".(B) */
+	{ "\255\372", "\255\374", "\242\256", UJIS },
+
+	/*
+	 * UJIS2004 shares G2 space by JIS X 0213:2004 plane 2 and
+	 * JIS X 0212:1990.  later has some empty rows and some empty
+	 * columns in particular rows.  JIS X 0213:2004 plane 2 shares
+	 * those empty rows.  So, totally UJIS2004 has no empty row.
+	 */
+
+	/* JIS X 0213:2004 plane 2 for UJIS2004 */
+	/* sequences of empty columns */
+	/* 94 KU 0xFEF7($(P~w(B)-0xFEFE($(P~~(B) -> 0xA2AE($B".(B) */
+	{ "\217\376\367", "\217\376\376", "\242\256", UJIS },
+
+	/* JIS X 0212:1990 for UJIS2004 */
+	/* sequences of empty columns */
+	/* 2 KU 0xA2A1($(D"!(B)-0xA2AE($(D".(B) -> 0xA2AE($B".(B) */
+	{ "\217\242\241", "\217\242\256", "\242\256", UJIS },
+	/* 2 KU 0xA2BA($(D":(B)-0xA2C1($(D"A(B) -> 0xA2AE($B".(B) */
+	{ "\217\242\272", "\217\242\301", "\242\256", UJIS },
+	/* 2 KU 0xA2C5($(D"E(B)-0xA2EA($(D"j(B) -> 0xA2AE($B".(B) */
+	{ "\217\242\305", "\217\242\352", "\242\256", UJIS },
+	/* 2 KU 0xA2F2($(D"r(B)-0xA2FE($(D"~(B) -> 0xA2AE($B".(B) */
+	{ "\217\242\362", "\217\242\376", "\242\256", UJIS },
+	/* 6 KU 0xA6A1($(D&!(B)-0xA6E0($(D&`(B) -> 0xA2AE($B".(B) */
+	{ "\217\246\241", "\217\246\340", "\242\256", UJIS },
+	/* 6 KU 0xA6E6($(D&f(B) -> 0xA2AE($B".(B) */
+	{ "\217\246\346", NULL, "\242\256", UJIS },
+	/* 6 KU 0xA6E8($(D&h(B) -> 0xA2AE($B".(B) */
+	{ "\217\246\350", NULL, "\242\256", UJIS },
+	/* 6 KU 0xA6EB($(D&k(B) -> 0xA2AE($B".(B) */
+	{ "\217\246\353", NULL, "\242\256", UJIS },
+	/* 6 KU 0xA6ED($(D&m(B)-0xA6F0($(D&p(B) -> 0xA2AE($B".(B) */
+	{ "\217\246\355", "\217\246\360", "\242\256", UJIS },
+	/* 6 KU 0xA6FD($(D&}(B)-0xA6FE($(D&~(B) -> 0xA2AE($B".(B) */
+	{ "\217\246\375", "\217\246\376", "\242\256", UJIS },
+	/* 7 KU 0xA7A1($(D'!(B)-0xA7C1($(D'A(B) -> 0xA2AE($B".(B) */
+	{ "\217\247\241", "\217\247\301", "\242\256", UJIS },
+	/* 7 KU 0xA7CF($(D'O(B)-0xA7F1($(D'q(B) -> 0xA2AE($B".(B) */
+	{ "\217\247\317", "\217\247\361", "\242\256", UJIS },
+	/* 9 KU 0xA9A3($(D)#(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\243", NULL, "\242\256", UJIS },
+	/* 9 KU 0xA9A5($(D)%(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\245", NULL, "\242\256", UJIS },
+	/* 9 KU 0xA9A7($(D)'(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\247", NULL, "\242\256", UJIS },
+	/* 9 KU 0xA9AA($(D)*(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\252", NULL, "\242\256", UJIS },
+	/* 9 KU 0xA9AE($(D).(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\256", NULL, "\242\256", UJIS },
+	/* 9 KU 0xA9B1($(D)1(B)-0xA9C0($(D)@(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\261", "\217\251\300", "\242\256", UJIS },
+	/* 9 KU 0xA9D1($(D)Q(B)-0xA9FE($(D)~(B) -> 0xA2AE($B".(B) */
+	{ "\217\251\321", "\217\251\376", "\242\256", UJIS },
+	/* 10 KU 0xAAB9($(D*9(B) -> 0xA2AE($B".(B) */
+	{ "\217\252\271", NULL, "\242\256", UJIS },
+	/* 10 KU 0xAAF8($(D*x(B)-0xAAFE($(D*~(B) -> 0xA2AE($B".(B) */
+	{ "\217\252\370", "\217\252\376", "\242\256", UJIS },
+	/* 11 KU 0xABBC($(D+<(B) -> 0xA2AE($B".(B) */
+	{ "\217\253\274", NULL, "\242\256", UJIS },
+	/* 11 KU 0xABC4($(D+D(B) -> 0xA2AE($B".(B) */
+	{ "\217\253\304", NULL, "\242\256", UJIS },
+	/* 11 KU 0xABF8($(D+x(B)-0xABFE($(D+~(B) -> 0xA2AE($B".(B) */
+	{ "\217\253\370", "\217\253\376", "\242\256", UJIS },
+	/* 77 KU 0xEDE4($(Dmd(B)-0xEDFE($(Dm~(B) -> 0xA2AE($B".(B) */
+	{ "\217\355\344", "\217\355\376", "\242\256", UJIS },
+
+	/* NULL */
+	{ 0, 0, 0, 0 }
+};
+static convtable etable_ujis2004 = { eliminate_wrong_ujis2004, NULL };
 
 
 static int iso646p(cs)
@@ -1470,18 +1686,27 @@ int flag;	/* quote regexp pattern */
 		}
 		ostr[2] = NULCH;
 		ocs[2] = NULLCS;
-	} else if (CS2CHARSET(*ics) == JISX0208KANJI) {
-		/* convert JIS X 0208-1983 into JIS X 0208:1990 */
+	} else if (CS2CHARSET(*ics) == JISX0208KANJI ||
+		   CS2CHARSET(*ics) == JISX0213KANJI1 ||
+		   CS2CHARSET(*ics) == JISX02132004KANJI1) {
+		/*
+		 * JIS X 0208:1990 has two additional characters from JIS X
+		 * 0208-1983.  It's addition.  So, no need to change code.
+		 * We simply treat JIS X 0208-1983 as JIS X 0208:1990
+		 *
+		 * JIS X 0213:2000 has several additional characters from JIS
+		 * X 0208:1990.  Again, it's just addition.  We ignore them
+		 * and treat JIS X 0213:2000 as JIS X 0208:1990
+		 *
+		 * JIS X 0213:2004 has 10 additional characters from JIS X
+		 * 0213:2000.  Again, it's just addition.  We ignore them
+		 * and treat JIS X 0213:2004 as JIS X 0208:1990
+		 */
 		ostr[0] = istr[0];
 		ostr[1] = istr[1];
+		ostr[2] = NULCH;
 		ocs[0] = JISX0208_90KANJI;
 		ocs[1] = JISX0208_90KANJI | REST_MASK;
-
-		/*
-		 * Difference betwen 1983 and 1990 are two added characters,
-		 * 0x7425 and 0x7426.  So, here is nothing to do.
-		 */
-		ostr[2] = NULCH;
 		ocs[2] = NULLCS;
 	} else if (CS2CHARSET(*ics) == JISX0201ROMAN) {
 		/* convert JIS X 0201:1976 into ASCII */
@@ -1637,9 +1862,35 @@ CHARSET* ics;
 			return 0;
 		else
 			return 1;
+	} else if (CS2CHARSET(*ics) == JISX02132004KANJI1) {
+		ptab = find_convtab(&etable_jisx02132004_1, istr);
+		if (ptab)
+			return 0;
+		else
+			return 1;
+	} else if (CS2CHARSET(*ics) == JISX02132004KANJI2) {
+		ptab = find_convtab(&etable_jisx02132004_2, istr);
+		if (ptab)
+			return 0;
+		else
+			return 1;
 	} else if (CS2CHARSET(*ics) == SJIS) {
 		/* eliminate wrong codes */
 		ptab = find_convtab(&etable_sjis, istr);
+		if (ptab)
+			return 0;
+		else
+			return 1;
+	} else if (CS2CHARSET(*ics) == SJIS2000) {
+		/* eliminate wrong codes */
+		ptab = find_convtab(&etable_sjis2000, istr);
+		if (ptab)
+			return 0;
+		else
+			return 1;
+	} else if (CS2CHARSET(*ics) == SJIS2004) {
+		/* eliminate wrong codes */
+		ptab = find_convtab(&etable_sjis2004, istr);
 		if (ptab)
 			return 0;
 		else
@@ -1652,6 +1903,20 @@ CHARSET* ics;
 		else
 			return 1;
 		/* TODO: G2 */
+	} else if (CS2CHARSET(*ics) == UJIS2000) {
+		/* eliminate wrong codes */
+		ptab = find_convtab(&etable_ujis2000, istr);
+		if (ptab)
+			return 0;
+		else
+			return 1;
+	} else if (CS2CHARSET(*ics) == UJIS2004) {
+		/* eliminate wrong codes */
+		ptab = find_convtab(&etable_ujis2004, istr);
+		if (ptab)
+			return 0;
+		else
+			return 1;
 	}
 	return 1;
 }

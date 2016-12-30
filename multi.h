@@ -134,7 +134,7 @@ typedef unsigned short CHARSET;
 #define CYRILLIC		(TYPE_96_CHARSET | FT2CS('L'))
 #define LATIN5			(TYPE_96_CHARSET | FT2CS('M'))
 /*
- * JISX0208_78KANJI means JIS C 6226-1978 (called JIS X 0208-1978)
+ * JISX0208_78KANJI means JIS C 6226-1978
  * JISX0208KANJI means JIS X 0208-1983 (same as JIS C 6226-1983)
  *   This is similar to JIS C 6226-1978.  Several characters are moved
  *   or exchanged in code space.  Conversion table is available in unify.c.
@@ -188,12 +188,30 @@ typedef unsigned short CHARSET;
  * UJIS2004 contains ASCII, JIS X 0201:1976, JIS X 0213:2004,
  * and JIS X 0212:1990
  */
-#define SJIS			(IRR2CS(1) | TYPE_94N_CHARSET | FT_MASK)
-#define SJIS2000		(IRR2CS(2) | TYPE_94N_CHARSET | FT_MASK)
-#define SJIS2004		(IRR2CS(3) | TYPE_94N_CHARSET | FT_MASK)
-#define UJIS			(IRR2CS(1) | TYPE_94N_CHARSET | (FT_MASK-1))
-#define UJIS2000		(IRR2CS(2) | TYPE_94N_CHARSET | (FT_MASK-1))
-#define UJIS2004		(IRR2CS(3) | TYPE_94N_CHARSET | (FT_MASK-1))
+#define SJIS			(IRR2CS(0) | TYPE_94N_CHARSET | FT_MASK)
+#define SJIS2000		(IRR2CS(1) | TYPE_94N_CHARSET | FT_MASK)
+#define SJIS2004		(IRR2CS(2) | TYPE_94N_CHARSET | FT_MASK)
+#define UJIS			(IRR2CS(0) | TYPE_94N_CHARSET | (FT_MASK-1))
+#define UJIS2000		(IRR2CS(1) | TYPE_94N_CHARSET | (FT_MASK-1))
+#define UJIS2004		(IRR2CS(2) | TYPE_94N_CHARSET | (FT_MASK-1))
+
+#define UTF8			(IRR2CS(0) | TYPE_94N_CHARSET | (FT_MASK-2))
+
+/*
+ * Make SJIS/UJIS character set from mp.
+ *
+ * SJIS and UJIS are using only fixed number of plane sets.  Therefore,
+ * it is impossible to use JIS X 0208:1990 and JIS X 0213:2004 at the
+ * same time.  SJIS use only one of them.  And, it is declared by
+ * MULBUF->io.right.  This function constructs appropriate SJIS 
+ * character set number from it.
+ *
+ * Usage: sjiscs = MAKESUJISCS(mp, SJIS);
+ *        ujiscs = MAKESUJISCS(mp, UJIS);
+ */
+#define MAKESUJISCS(mp,su) \
+	((su)| (((mp)->io.right&CJISX0213_2004)?IRR2CS(2):\
+		(((mp)->io.right&CJISX0213_2000)?IRR2CS(1):0)))
 #endif
 #endif
 
@@ -228,53 +246,101 @@ typedef int CHARVAL;
 
 
 /*
- * Definition of code sets.  The code set is not character set.
- * It is only means of code, and we use these value when we
- * decide what input data are.
+ * Definition of SETCHARSET.
+ *
+ * SETCHARSET represents a set of character sets.  This is used to
+ * specify character sets less accepts.
+ *
+ * Although, ISO 2022 can accept any character sets, the output device
+ * cannot represents all.  Therefore, we add less ability to specify
+ * character sets that a user want to use.
+ *
+ * SCSASCII is a value to specify ASCII character set.
+ * SCSJISX0201_1976..SCSJISX0213_2004 specify Japanese character sets.
+ *   All of these are character sets are defined in Japan.  However,
+ *   Japanese terminal devices can display only few of them.  So, we
+ *   decide to give users the ability to specify character sets that
+ *   their terminal device can display.
+ * SCSOTHERISO is used to allow all other ISO 2022 character sets.
+ *   There are too many character sets in the world.  And the number
+ *   of them is increasing.  Therefore, we also decide to give users
+ *   the ability to try all of them.  ;-)
+ */
+typedef int SETCHARSET;
+#define SCSASCII		0x0000
+#define SCSJISX0201_1976	0x0001
+#define SCSJISC6226_1978	0x0002
+#define SCSJISX0208_1983	0x0004
+#define SCSJISX0208_1990	0x0008
+#define SCSJISX0212_1990	0x0010
+#define SCSJISX0213_2000	0x0020
+#define SCSJISX0213_2004	0x0040
+#define SCSJISX0213_2ND		0x0080	/* 2nd plane of JIS X 0213:2000 and */
+					/* JIS X 0213:2004 */
+#define SCSOTHERISO		0x0100
+#define SCSUTF8			0x0200
+/*
+ * SCSALLJIS - everything
+ * SCSALLJISTRAD - everything except JIS X 0213 plane 2 and JIS X 0212.
+ * SCSALLSJIS - everything except JIS X 0212
+ */
+#define SCSALLJIS	(SCSJISX0201_1976|SCSJISC6226_1978|SCSJISX0208_1983|\
+			 SCSJISX0208_1990|SCSJISX0213_2000|SCSJISX0213_2004|\
+			 SCSJISX0213_2ND|SCSJISX0212_1990)
+#define SCSALLJISTRAD	(SCSJISX0201_1976|SCSJISC6226_1978|SCSJISX0208_1983|\
+			 SCSJISX0208_1990|SCSJISX0213_2000|SCSJISX0213_2004)
+#define SCSALLSJIS	(SCSJISX0201_1976|SCSJISC6226_1978|SCSJISX0208_1983|\
+			 SCSJISX0208_1990|SCSJISX0213_2000|SCSJISX0213_2004|\
+			 SCSJISX0213_2ND)
+
+/*
+ * Definition of ENCSET.
+ *
+ * ENCSET represents a set of encoding schemes less accepts.  ENCSET is
+ * used as a triplet like { input, inputr, output }.  "input" represents
+ * a set of encoding schemes for input stream left plane (0x00..0x7f).
+ * "inputr" represents a set of encoding schemes for input stream right
+ * plane (0x80..0xff).  "output" represents an encoding scheme for output
+ * stream.
+ *
+ * ESNONE has to be used exclusively to specify no-data.  This is used
+ *   as only "inputr" to specify no right plane (0x80..0xff) data.
+ * ESNOCONV has to be used exclusively to specify no-conversion.
+ * ESISO7 and ESISO8 specify ISO style encoding techniques.  ESISO7 can
+ *   be used as "input" or "output".  ESISO8 can be used as "inputr" or
+ *   "output".
+ * ESJIS83, ESSJIS, and ESUJIS specify Japanese encoding techniques.
+ *   Note: As input, users can use any combination of these values.
+ *   However, as output, users need to use only one of them.
+ *   Note: If ESJIS83 is used as "output", less output all KANJI
+ *   character set using only JIS X 0208-1983 character set (ESC$B) with
+ *   a hope that user's terminal device is using glyph of JIS X 0213:2004
+ *   plane 1 character set as its default glyph.  It is hard to update
+ *   terminal device to understand JIS X 0213:2004 completely, but it is
+ *   easy to change the glyph.
+ * ESUTF8 specifies encoding technique and character set.  This have to
+ *   be used exclusively as output.
+ */
+typedef int ENCSET;
+#define ESNONE		0x0000
+#define ESNOCONV	0x0001
+#define ESISO7		0x0002
+#define ESISO8		0x0004
+#define ESJIS83		0x0008
+#define ESSJIS		0x0010
+#define ESUJIS		0x0020
+#define ESUTF8		0x0040
+#define ESALLJA		(ESSJIS|ESUJIS|ESUTF8)
+
+/*
+ * J_PRIORITY: priority to select either UJIS or SJIS as encoding scheme.
  */
 typedef enum {
-	/* code sets for left, right and output plane */
-	noconv,		/* A code set which doesn't need converting */
-	/* code sets for left and output plane */
-	jis,		/* A subset of ISO 2022 */
-		/*
-		 * It may contain JIS C 6226-1978, JIS X 0208-1983, 
-		 * JIS X 0208:1990/1997, JIS X 0212:1990,
-		 * JIS X 0213:2000/2004, JIS X 0201:1976/1997 left/right
-		 * planes, and ASCII.
-		 *
-		 * If less is specified to use "jis" as its encoding scheme
-		 * for input stream, less accepts all above character sets.
-		 * e.g. jis-ujis or jis-sjis in JLESSCHARSET.
-		 *
-		 * If less is specified to use "jis" as its encoding scheme
-		 * for output stream, less outputs all characters in
-		 * JIS C 6226-1978 as JIS X 0208-1983 with conversion
-		 * and all other characters in JIS X 0208:1990/1997,
-		 * and JIS X 0213:2000/2004 plane 1 using JIS X 0208-1983
-		 * (ESC$B) encoding scheme without any conversion.
-		 * Less doesn't convert here with a hope that an output
-		 * device may use JIS X 0213:2004 plane 1 character set
-		 * as its glyph.
-		 * e.g. iso7-jis or ujis-jis in JLESSCHARSET.
-		 *
-		 * In addition, less rejects JIS X 0212:1990 and JIS X
-		 * 0213:2000 plane 2 if "jis" is specified as its encoding
-		 * scheme for output stream.
-		 * e.g. jis or ujis-jis in JLESSCHARSET.
-		 *
-		 * If you need to use JIS X 0213:2004 or any other character
-		 * sets as the output, please use iso7 or iso8.
-		 */
-	iso7,		/* A code set which is extented by iso2022 */
-	/* code sets for only right plane */
-	none,		/* No code set */
-	japanese,	/* Both of UJIS and SJIS */
-	/* code sets for right and output plane */
-	ujis,		/* Japanese code set named UJIS */
-	sjis,		/* Japanese code set named SJIS */
-	iso8		/* A code set which is extented by iso2022 */
-} CODESET;
+    PUJIS,
+    PSJIS,
+    PUTF8,
+    PNONE
+} J_PRIORITY;
 
 /*
  * A structure used as a return value in multi_parse().
@@ -297,10 +363,10 @@ typedef struct multibuf MULBUF;
  * in multi.c
  */
 extern int set_planeset ();
-extern void init_def_codesets ();
+extern void init_def_scs_es ();
 extern void init_def_priority ();
 extern void init_priority ();
-extern CODESET get_priority ();
+extern J_PRIORITY get_priority ();
 extern void set_priority ();
 extern MULBUF * new_multibuf ();
 extern void clear_multibuf ();

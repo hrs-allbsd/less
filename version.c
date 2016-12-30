@@ -748,9 +748,14 @@ iso257 9/4/05	Fixed problems caused by merge.
 		even if it is not fit in first line.  Less moves entire text
 		to second line.
 iso258 9/4/05	Joined with less-382.
-iso259 9/6/05	Changed an algorithm to detect the gap of parsing input stream.
+iso259 9/6/05	Changed the algorithm to detect the gap of parsing input stream.
 		This fixed a problem on long JIS/English text.
 		Fixed '\r' problem.
+iso260 9/19/05	Changed the algorithm handling input and output character sets.
+		Now jless use two variables, one represents supporting
+		character sets for input stream, and the other represents
+		encoding scheme for output stream.
+		Changed to support JISX1983:2004.
 */
 
-char version[] = "382+iso259";
+char version[] = "382+iso260";

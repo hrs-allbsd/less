@@ -17,8 +17,6 @@ AC_CONFIG_HEADER([defines.h])
 AC_ARG_WITH(cs-regex, [  --with-cs-regex         Regular expression library with character set detection], have_regex_cs=$withval, have_regex_cs=no)
 msb_enable=unknown
 AC_ARG_ENABLE(msb, [  --disable-msb           Disable the MSB of non ASCII characters], msb_enable=$enableval)
-jisx0213_enable=unknown
-AC_ARG_ENABLE(jisx0213, [  --disable-jisx0213      Disable the JIS X 0213 mapping for SJIS and UJIS], jisx0213_enable=$enableval)
 
 # Checks for programs.
 AC_PROG_CC
@@ -418,16 +416,6 @@ unknown)
      AC_MSG_RESULT(decide to disable the MSB of non ASCII characters)
      AC_DEFINE(MSB_ENABLE, 0)
      fi;;
-esac
-
-case $jisx0213_enable in
-unknown|yes)
-     AC_MSG_RESULT(enable the JIS X 0213 mapping for SJIS and UJIS)
-     AC_DEFINE(SJIS0213, 1)
-     AC_DEFINE(UJIS0213, 1);;
-no)  AC_MSG_RESULT(disable the JIS X 0213 mapping for SJIS and UJIS)
-     AC_DEFINE(SJIS0213, 0)
-     AC_DEFINE(UJIS0213, 0);;
 esac
 
 AC_ARG_WITH(editor,

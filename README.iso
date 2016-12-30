@@ -12,39 +12,18 @@
  - Understand all following codes.
    - ISO 2022 level 3.
    - a special sequence, ESC 2/4[$] 2/12[,] FE, which is used in MULE.
-   - LESS-JIS, UJIS and SJIS.
-     - LESS-JIS may contain JIS C 6226-1978, JIS X 0208-1983,
-       JIS X 0208:1990/1997, JIS X 0212:1990, JIS X 0213:2000,
-       JIS X 0201:1976/1997 left/right planes, and ASCII.
-     - UJIS may contain one of JIS C 6226-1978, JIS X 0208-1983,
-       JIS X 0208:1990/1997, or JIS X 0213:2000 plane 1, one of
-       JIS X 0201:1976/1997 left plane or ASCII, JIS X 0201:1976/1997
-       right plane, and both JIS X 0212:1990 and JIS X 0213:2000
-       plane 2.
-     - SJIS may contain one of JIS C 6226-1978, JIS X 0208-1983,
-       JIS X 0208:1990/1997, or JIS X 0213:2000 plane 1, one of
-       JIS X 0201:1976/1997 left plane or ASCII, JIS X 0201:1976/1997
-       right plane, and JIS X 0213:2000 plane 2.
+   - JIS C 6226-1978, JIS X 0208-1983, JIS X 0208:1990/1997, JIS X 0212:1990,
+     JIS X 0213:2000/2004, JIS X 0201:1976/1997 left/right planes, and ASCII.
+   - UJIS
+   - SJIS
  - Output following codes.
    - iso8 (CTEXT, which is defined in X11)
    - iso7 with only GZDM4, GZD4, G1DM4, G1DM6, G1D4, G1D6, SI and SO
      escape sequences.
-   - LESS-JIS, UJIS and SJIS.
-     - LESS-JIS may contain JIS X 0208-1983 with an assumption
-       that its face is the same as JIS X 0213:2000 plane 1,
-       JIS X 0201:1976/1997 left/right planes and ASCII.
-       It does not contain JIS X 0212:1990 or JIS X 0213:2000 plane 2,
-       so those are marked as wrong character on the fly.
-       If you need more restricted JIS sequence, please use iso7 or iso8.
-     - UJIS may contain one of JIS C 6226-1978, JIS X 0208-1983,
-       JIS X 0208:1990/1997, or JIS X 0213:2000 plane 1, one of
-       JIS X 0201:1976/1997 left plane or ASCII, JIS X 0201:1976/1997
-       right plane, and both JIS X 0212:1990 and JIS X 0213:2000
-       plane 2.
-     - SJIS may contain one of JIS C 6226-1978, JIS X 0208-1983,
-       JIS X 0208:1990/1997, or JIS X 0213:2000 plane 1, one of
-       JIS X 0201:1976/1997 left plane or ASCII, JIS X 0201:1976/1997
-       right plane, and JIS X 0213:2000 plane 2.
+   - JIS C 6226-1978, JIS X 0208-1983, JIS X 0208:1990/1997, JIS X 0212:1990,
+     JIS X 0213:2000/2004, JIS X 0201:1976/1997 left/right planes, and ASCII.
+   - UJIS
+   - SJIS
  - Automatic decompression of compressed files.
 
 **Problems**

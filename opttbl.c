@@ -483,9 +483,9 @@ init_option()
 	}
 #if JAPANESE
 	if (opt_Z_var == OPT_ON)
-		init_def_priority(sjis);
+		init_def_priority(PSJIS);
 	else if (opt_Z_var == OPT_OFF)
-		init_def_priority(ujis);
+		init_def_priority(PUJIS);
 #endif
 }
 

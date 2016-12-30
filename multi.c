@@ -61,7 +61,7 @@ int markwrongchar = 1;
 
 
 /*
- * Kanji convetion
+ * Macro for character detection
  */
 #define ISJIS(c)		(0x21 <= (c) && (c) <= 0x7e)
 #define ISUJIS(c)		(0xa1 <= (c) && (c) <= 0xfe)
@@ -78,6 +78,20 @@ int markwrongchar = 1;
 #define ISSJISKANJI1(c)		((0x81 <= (c) && (c) <= 0x9f) || \
 				 (0xe0 <= (c) && (c) <= 0xfc))
 #define ISSJISKANA(c)		(0xa1 <= (c) && (c) <= 0xdf)
+#define ISUTF8_HEAD(c)		(0xc0 <= (c) && (c) < 0xfe)
+#define ISUTF8_REST(c)		(((c) & 0xc0) == 0x80)
+#define ISUTF8_1(c)		((c) <= 0x7f)
+#define ISUTF8_2(c1,c2)		(((c1) & 0xe0) == 0xc0 && ISUTF8_REST(c2))
+#define ISUTF8_3(c1,c2,c3)	(((c1) & 0xf0) == 0xe0 && ISUTF8_REST(c2) && \
+				 ISUTF8_REST(c3))
+#define ISUTF8_4(c1,c2,c3,c4)	(((c1) & 0xf8) == 0xf0 && ISUTF8_REST(c2) && \
+				 ISUTF8_REST(c3) && ISUTF8_REST(c4))
+#define ISUTF8_5(c1,c2,c3,c4,c5) \
+	(((c1) & 0xfc) == 0xf8 && ISUTF8_REST(c2) && ISUTF8_REST(c3) && \
+	 ISUTF8_REST(c4) && ISUTF8_REST(c5))
+#define ISUTF8_6(c1,c2,c3,c4,c5,c6) \
+	(((c1) & 0xfe) == 0xfc && ISUTF8_REST(c2) && ISUTF8_REST(c3) && \
+	 ISUTF8_REST(c4) && ISUTF8_REST(c5) && ISUTF8_REST(c6))
 #endif
 
 
@@ -107,8 +121,9 @@ enum escape_sequence {
 };
 
 
-static CODESET def_left = iso7;		/* Default code set of left plane */
-static CODESET def_right = iso8;	/* Default code set of right plane */
+static SETCHARSET def_scs = SCSASCII | SCSOTHERISO;
+static ENCSET def_input = ESISO7;	/* Default character set of left plane */
+static ENCSET def_inputr = ESISO8;	/* Default character set of right plane */
 static int def_gs[4] = {
     ASCII,				/* Default g0 plane status */
     WRONGCS,				/* Default g1 plane status */
@@ -116,9 +131,9 @@ static int def_gs[4] = {
     WRONGCS				/* Default g3 plane status */
 };
 
-static CODESET output = iso8;		/* Code set for output */
+static ENCSET output = ESISO8;		/* Character set for output */
 #if JAPANESE
-static CODESET def_priority = ujis;	/* Which code was given priority. */
+static J_PRIORITY def_priority = PUJIS;	/* Which code was given priority. */
 #endif
 
 typedef POSITION m_position;
@@ -148,11 +163,12 @@ struct m_status {
 
 struct multibuf {
     struct {
-	CODESET left;
-	CODESET right;
+	SETCHARSET scs;
+	ENCSET input;
+	ENCSET inputr;
     } io;
 
-    CODESET orig_io_right;
+    ENCSET orig_io_right;
     int rotation_io_right;
 
     enum escape_sequence eseq;
@@ -162,11 +178,11 @@ struct multibuf {
     int cs;			/* Current character set */
     struct m_status* ms;
 #if JAPANESE
-    CODESET priority;		/* Which code was given priority. */
+    J_PRIORITY priority;	/* Which code was given priority. */
     int sequence_counter;	/* Special counter for detect UJIS KANJI. */
 #endif
 
-    int icharset;		/* Last non ASCII character set of input */
+    CHARSET icharset;		/* Last non ASCII character set of input */
 
     /*
      * Small buffers to hold all parsing bytes of multi-byte characters.
@@ -211,6 +227,9 @@ struct multibuf {
 #define INBUF0(mp)	((mp)->inbuf[(mp)->startpos%sizeof((mp)->inbuf)])
 #define INBUF1(mp)	((mp)->inbuf[((mp)->startpos+1)%sizeof((mp)->inbuf)])
 #define INBUF2(mp)	((mp)->inbuf[((mp)->startpos+2)%sizeof((mp)->inbuf)])
+#define INBUF3(mp)	((mp)->inbuf[((mp)->startpos+3)%sizeof((mp)->inbuf)])
+#define INBUF4(mp)	((mp)->inbuf[((mp)->startpos+4)%sizeof((mp)->inbuf)])
+#define INBUF5(mp)	((mp)->inbuf[((mp)->startpos+5)%sizeof((mp)->inbuf)])
 #define INBUFI(mp,i)	((mp)->inbuf[(i)%sizeof((mp)->inbuf)])
 
 static int code_length(mp, cs)
@@ -227,12 +246,16 @@ CHARSET cs;
 #if JAPANESE
     switch (CS2CHARSET(cs)) {
     case UJIS:
+    case UJIS2000:
+    case UJIS2004:
 	c = INBUF0(mp);
 	if (ISUJISKANJI1(c)) return 2;
 	if (ISUJISKANA1(c)) return 2;
 	if (ISUJISKANJISUP1(c)) return 3;
 	return 1;
     case SJIS:
+    case SJIS2000:
+    case SJIS2004:
 	c = INBUF0(mp);
 	if (ISSJISKANJI1(c)) return 2;
 	if (ISSJISKANA(c)) return 1;
@@ -332,7 +355,11 @@ MULBUF *mp;
 	case JISX0213KANJI1:
 	case JISX0213KANJI2:
 	case UJIS:
+	case UJIS2000:
+	case UJIS2004:
 	case SJIS:
+	case SJIS2000:
+	case SJIS2004:
 	    put_wrongmark(mp);
 	    break;
 	case GB2312:
@@ -341,10 +368,7 @@ MULBUF *mp;
 	    break;
 	}
     } else {
-	int i;
-
-	i = code_length(mp, mp->multics[mp->intindex]);
-	while (--i >= 0) {
+	while (mp->startpos <= mp->lastpos) {
 	    wrongcs1(mp);
 	}
     }
@@ -434,247 +458,439 @@ MULBUF *mp;
 	     * less ignore the undefined codes
 	     */
 	wrongchar(mp);
-	mp->startpos = pos;
-	multi_reparse(mp);
     }
 }
 
 #if JAPANESE
 /*
- * Internalize input stream.
- * We recognized input data as using UJIS coding set.
+ * Internalize input stream encoded by UJIS encoding scheme.
+ *
+ * Return 1 if input is recognized well.
+ * Return 0 if input is rejected.
  */
-static void internalize_ujis(mp)
+static int internalize_ujis(mp)
 MULBUF *mp;
 {
     if (mp->lastpos - mp->startpos + 1 == 1) {
-	/* do nothing */
+	/* do nothing.  return 1 to get next byte */
+	return 1;
     } else if (mp->lastpos - mp->startpos + 1 == 2) {
-	if (ISUJISKANA(INBUF0(mp), INBUF1(mp))) {
-	    mp->multiint[mp->intindex] = INBUF1(mp) & 0x7f;
+	int c0 = INBUF0(mp);
+	int c1 = INBUF1(mp);
+	if (ISUJISKANA(c0, c1)) {
+	    mp->cs = JISX0201KANA;
+	    mp->icharset = UJIS;
+	    mp->multiint[mp->intindex] = c1 & 0x7f;
 	    mp->multics[mp->intindex] = mp->cs;
 	    mp->intindex += 1;
 	    mp->startpos = mp->lastpos + 1;
-	} else if (ISUJISKANJI(INBUF0(mp), INBUF1(mp))) {
-	    mp->multiint[mp->intindex] = INBUF0(mp);
-	    mp->multics[mp->intindex] = UJIS;
-	    mp->multiint[mp->intindex + 1] = INBUF1(mp);
-	    mp->multics[mp->intindex + 1] = REST_MASK | UJIS;
+	    return 1;
+	} else if (ISUJISKANJI(c0, c1)) {
+	    if (mp->io.scs & SCSJISX0213_2004) {
+		mp->icharset = UJIS2004;
+		mp->cs = JISX02132004KANJI1;
+	    } else if (mp->io.scs & SCSJISX0213_2000) {
+		mp->icharset = UJIS2000;
+		mp->cs = JISX0213KANJI1;
+	    } else {
+		mp->icharset = UJIS;
+		mp->cs = JISX0208KANJI;
+	    }
+	    mp->multiint[mp->intindex] = c0;
+	    mp->multics[mp->intindex] = mp->icharset;
+	    mp->multiint[mp->intindex + 1] = c1;
+	    mp->multics[mp->intindex + 1] = REST_MASK | mp->icharset;
 
-	    /*
-	     * Eliminate some wrong codes
-	     */
+	    /* Check character whether it has defined glyph or not */
 	    if (chisvalid_cs(&mp->multiint[mp->intindex],
 			     &mp->multics[mp->intindex])) {
-		/* JIS X 0208:1997 */
-		mp->multiint[mp->intindex] &= 0x7f;
+		/* defined */
+		mp->multiint[mp->intindex] = c0 & 0x7f;
 		mp->multics[mp->intindex] = mp->cs;
-		mp->multiint[mp->intindex + 1] &= 0x7f;
+		mp->multiint[mp->intindex + 1] = c1 & 0x7f;
 		mp->multics[mp->intindex + 1] = REST_MASK | mp->cs;
 		mp->intindex += 2;
 		mp->startpos = mp->lastpos + 1;
 	    } else {
-		/*
-		 * less ignore the undefined codes
-		 */
+		/* undefined.  less ignore them */
 		wrongchar(mp);
-		mp->startpos = mp->lastpos + 1;
-		multi_reparse(mp);
 	    }
+	    /* data are recognized as kanji or wrong data, so return 1 */
+	    return 1;
+	} else if (ISUJISKANJISUP(c0, c1, 0xa1)) {
+	    /* do nothing.  return 1 to get next byte */
+	    return 1;
 	}
-    } else if (mp->lastpos - mp->startpos + 1 == 3 &&
-	       ISUJISKANJISUP(INBUF0(mp), INBUF1(mp), INBUF2(mp))) {
-	mp->multiint[mp->intindex] = INBUF0(mp);
-	mp->multics[mp->intindex] = UJIS;
-	mp->multiint[mp->intindex + 1] = INBUF1(mp);
-	mp->multics[mp->intindex + 1] = REST_MASK | UJIS;
-	mp->multiint[mp->intindex + 2] = INBUF2(mp);
-	mp->multics[mp->intindex + 2] = REST_MASK | UJIS;
+    } else if (mp->lastpos - mp->startpos + 1 == 3) {
+	int c0 = INBUF0(mp);
+	int c1 = INBUF1(mp);
+	int c2 = INBUF2(mp);
+	if (ISUJISKANJISUP(c0, c1, c2)) {
+	    mp->cs = JISX0212KANJISUP;
+	    mp->icharset = UJIS;
+	    mp->multiint[mp->intindex] = c0;
+	    mp->multics[mp->intindex] = UJIS;
+	    mp->multiint[mp->intindex + 1] = c1;
+	    mp->multics[mp->intindex + 1] = REST_MASK | UJIS;
+	    mp->multiint[mp->intindex + 2] = c2;
+	    mp->multics[mp->intindex + 2] = REST_MASK | UJIS;
 
-	/*
-	 * Eliminate some wrong codes
-	 */
-	if (chisvalid_cs(&mp->multiint[mp->intindex],
-			 &mp->multics[mp->intindex])) {
-	    register int c1;
-	    static unsigned char table[] = {
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-#if UJIS0213
-		   0, 0x21,    0, 0x23, 0x24, 0x25,    0,    0,
-		0x28,    0,    0,    0, 0x2C, 0x2D, 0x2E, 0x2F,
-#else
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-#endif
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-#if UJIS0213
-		   0,    0,    0,    0,    0,    0,    0,    0,
-		   0,    0,    0,    0,    0,    0, 0x6E, 0x6F,
-		0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77,
-		0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E,    0
-#else
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-#endif
-	    };
-	    c1 = mp->multiint[mp->intindex + 1] & 0x7f;
-	    if (table[c1] != 0) {
-		/* JIS X 0213:2000 plane 2 */
-		if (output == jis) {
-		    /* JIS cannot output JIS X 0213:2000 plane 2 */
-		    wrongcs1(mp);
-		    multi_reparse(mp);
+	    /* Check character whether it has defined glyph or not */
+	    if (chisvalid_cs(&mp->multiint[mp->intindex],
+			     &mp->multics[mp->intindex])) {
+		/* defined */
+		static unsigned char table_ujis[] = {
+		    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		       0, 0x21,    0, 0x23, 0x24, 0x25,    0,    0,
+		    0x28,    0,    0,    0, 0x2C, 0x2D, 0x2E, 0x2F,
+		    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		       0,    0,    0,    0,    0,    0,    0,    0,
+		       0,    0,    0,    0,    0,    0, 0x6E, 0x6F,
+		    0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77,
+		    0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E,    0
+		};
+		c1 &= 0x7f;
+		if (table_ujis[c1] != 0) {
+		    /* JIS X 0213:2000 plane 2 */
+		    if (output & ESJIS83) {
+			/* JIS cannot output JIS X 0213:2000 plane 2 */
+			wrongchar(mp);
+		    } else {
+			mp->cs = JISX0213KANJI2;
+			mp->multiint[mp->intindex] = c1;
+			mp->multics[mp->intindex] = mp->cs;
+			mp->multiint[mp->intindex + 1] = c2 & 0x7f;
+			mp->multics[mp->intindex + 1] = REST_MASK | mp->cs;
+			mp->intindex += 2;
+			mp->startpos = mp->lastpos + 1;
+		    }
 		} else {
-		    mp->multiint[mp->intindex] = c1;
-		    mp->multics[mp->intindex] =
-			    JISX0213KANJI2;
-		    mp->multiint[mp->intindex + 1] =
-			    mp->multiint[mp->intindex + 2] & 0x7f;
-		    mp->multics[mp->intindex + 1] =
-			    REST_MASK | JISX0213KANJI2;
-		    mp->intindex += 2;
-		    mp->startpos = mp->lastpos + 1;
+		    /* JIS X 0212:1990 */
+		    if (output & (ESSJIS | ESJIS83)) {
+			/* SJIS cannot output JIS X 0212:1990 */
+			wrongchar(mp);
+		    } else {
+			mp->multiint[mp->intindex] = c1;
+			mp->multics[mp->intindex] = mp->cs;
+			mp->multiint[mp->intindex + 1] = c2 & 0x7f;
+			mp->multics[mp->intindex + 1] = REST_MASK | mp->cs;
+			mp->intindex += 2;
+			mp->startpos = mp->lastpos + 1;
+		    }
 		}
 	    } else {
-		/* JIS X 0212:1990 */
-		if (output == sjis || output == jis) {
-		    /* SJIS cannot output JIS X 0212:1990 */
-		    wrongcs1(mp);
-		    multi_reparse(mp);
-		} else {
-		    mp->multiint[mp->intindex] = c1;
+		/* undefined.  less ignore them */
+		wrongchar(mp);
+	    }
+	    /* data are recognized as kanji or wrong data, so return 1 */
+	    return 1;
+	}
+    }
+    /* return 0 because this data sequence is not matched to UJIS */
+    return 0;
+}
+
+/*
+ * Internalize input stream encoded by SJIS encoding scheme.
+ *
+ * Return 1 if input is recognized well.
+ * Return 0 if input is rejected.
+ */
+static int internalize_sjis(mp)
+MULBUF *mp;
+{
+    if (mp->lastpos - mp->startpos + 1 == 1) {
+	int c0 = INBUF(mp);
+	if (ISSJISKANA(c0)) {
+	    mp->cs = JISX0201KANA;
+	    mp->icharset = SJIS;
+	    mp->multiint[mp->intindex] = c0 & 0x7f;
+	    mp->multics[mp->intindex] = mp->cs;
+	    mp->intindex += 1;
+	    mp->startpos = mp->lastpos + 1;
+	    return 1;
+	} else {
+	    /* do nothing.  return 1 to get next byte */
+	    return 1;
+	}
+    } else if (mp->lastpos - mp->startpos + 1 == 2) {
+	int c0 = INBUF0(mp);
+	int c1 = INBUF1(mp);
+	if (ISSJISKANJI(c0, c1)) {
+	    if (mp->io.scs & SCSJISX0213_2004) {
+		mp->icharset = SJIS2004;
+		mp->cs = JISX02132004KANJI1;
+	    } else if (mp->io.scs & SCSJISX0213_2000) {
+		mp->icharset = SJIS2000;
+		mp->cs = JISX0213KANJI1;
+	    } else {
+		mp->icharset = SJIS;
+		mp->cs = JISX0208KANJI;
+	    }
+
+	    mp->multiint[mp->intindex] = c0;
+	    mp->multics[mp->intindex] = mp->icharset;
+	    mp->multiint[mp->intindex + 1] = c1;
+	    mp->multics[mp->intindex + 1] = REST_MASK | mp->icharset;
+
+	    /*
+	     * Check the correctness of SJIS encoded characters and
+	     * convert them into internal representation.
+	     */
+	    if (chisvalid_cs(&mp->multiint[mp->intindex],
+			     &mp->multics[mp->intindex])) {
+		int c2, c3;
+		static unsigned char table_sjis[] = {
+		       0, 0x21, 0x23, 0x25, 0x27, 0x29, 0x2B, 0x2D,
+		    0x2F, 0x31, 0x33, 0x35, 0x37, 0x39, 0x3B, 0x3D,
+		    0x3F, 0x41, 0x43, 0x45, 0x47, 0x49, 0x4B, 0x4D,
+		    0x4F, 0x51, 0x53, 0x55, 0x57, 0x59, 0x5B, 0x5D,
+		    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		    0x5F, 0x61, 0x63, 0x65, 0x67, 0x69, 0x6B, 0x6D,
+		    0x6F, 0x71, 0x73, 0x75, 0x77, 0x79, 0x7B, 0x7D,
+		    0x80, 0xA3, 0x81, 0xAD, 0x82, 0xEF, 0xF1, 0xF3,
+		    0xF5, 0xF7, 0xF9, 0xFB, 0xFD,    0,    0,    0
+		};
+
+		c0 = table_sjis[c0 & 0x7f];
+		c2 = c1 - ((unsigned char)c1 >= 0x80 ? 1 : 0);
+		c1 = c0;
+		c3 = c2 >= 0x9e;
+		if (c1 < 0x80) {
+		    /* JIS X 0213:2000 plane 1 or JIS X 0208:1997 */
+		    mp->multiint[mp->intindex] =
+			    (c1 + (c3 ? 1 : 0));
 		    mp->multics[mp->intindex] = mp->cs;
 		    mp->multiint[mp->intindex + 1] =
-			    mp->multiint[mp->intindex + 2] & 0x7f;
+			    (c2 - (c3 ? 0x9e - 0x21 : 0x40 - 0x21));
 		    mp->multics[mp->intindex + 1] =
 			    REST_MASK | mp->cs;
 		    mp->intindex += 2;
 		    mp->startpos = mp->lastpos + 1;
+		} else {
+		    /* JIS X 0213:2000 plane 2 */
+		    if (output & ESJIS83) {
+			/* JIS cannot output JIS X 0213:2000 plane 2 */
+			wrongchar(mp);
+		    } else {
+			mp->cs = JISX0213KANJI2;
+			if (c1 > 0xA0) {
+			    /* row 3-4, 13-14, and 79-94 */
+			    mp->multiint[mp->intindex] =
+				    ((c1 & 0x7f) + (c3 ? 1 : 0));
+			} else if (c1 == 0x80) {
+			    /* row 1 or 8 */
+			    mp->multiint[mp->intindex] =
+				    c3 ? 0x28 : 0x21;
+			} else if (c1 == 0x81) {
+			    /* row 5 or 12 */
+			    mp->multiint[mp->intindex] =
+				    c3 ? 0x2C : 0x25;
+			} else {
+			    /* row 15 or 78 */
+			    mp->multiint[mp->intindex] =
+				    c3 ? 0x6E : 0x2F;
+			}
+			mp->multics[mp->intindex] = JISX0213KANJI2;
+			mp->multiint[mp->intindex + 1] =
+				(c2 - (c3 ? 0x9e - 0x21 : 0x40 - 0x21));
+			mp->multics[mp->intindex + 1] =
+				REST_MASK | JISX0213KANJI2;
+			mp->intindex += 2;
+			mp->startpos = mp->lastpos + 1;
+		    }
 		}
+	    } else {
+		/* undefined.  less ignore them */
+		wrongchar(mp);
 	    }
-	} else {
-	    wrongchar(mp);
-	    mp->startpos = mp->lastpos + 1;
-	    multi_reparse(mp);
+	    /* data are recognized as kanji or wrong data, so return 1 */
+	    return 1;
 	}
-    } else {
-	wrongcs1(mp);
-	multi_reparse(mp);
     }
+    /* return 0 because this data sequence is not matched to UJIS */
+    return 0;
 }
 
 /*
- * Check and normalize all SJIS codes
+ * Internalize input stream encoded by UTF8 encoding scheme.
+ *
+ * Return 1 if input is recognized well.
+ * Return 0 if input is rejected.
  */
-static void internalize_sjis(mp)
+static int internalize_utf8(mp)
 MULBUF *mp;
 {
     if (mp->lastpos - mp->startpos + 1 == 1) {
-	if (!ISSJISKANA(INBUF(mp))) {
-	    wrongcs1(mp);
-	} else {
-	    mp->multiint[mp->intindex] = INBUF(mp) & 0x7f;
+	/* do nothing.  return 1 to get next byte */
+	return 1;
+    } else if (mp->lastpos - mp->startpos + 1 == 2) {
+	int c0 = INBUF0(mp);
+	int c1 = INBUF1(mp);
+	if (ISUTF8_2(c0, c1)) {
+	    mp->cs = UTF8;
+	    mp->icharset = UTF8;
+	    mp->multiint[mp->intindex] = c0;
 	    mp->multics[mp->intindex] = mp->cs;
-	    mp->intindex += 1;
-	    mp->startpos = mp->lastpos + 1;
-	}
-    } else if (mp->lastpos - mp->startpos + 1 == 2 &&
-	       ISSJISKANJI(INBUF0(mp), INBUF1(mp))) {
-	mp->multiint[mp->intindex] = INBUF0(mp);
-	mp->multics[mp->intindex] = SJIS;
-	mp->multiint[mp->intindex + 1] = INBUF1(mp);
-	mp->multics[mp->intindex + 1] = REST_MASK | SJIS;
+	    mp->multiint[mp->intindex + 1] = c1;
+	    mp->multics[mp->intindex + 1] = REST_MASK | mp->cs;
+	    if (output & ESUTF8) {
+		mp->intindex += 2;
+		mp->startpos = mp->lastpos + 1;
+		return 1;
+	    } else {
+		mp->intindex += 2;
+		mp->startpos = mp->lastpos + 1;
+		return 1;
+	    }
+	} else if (ISUJISKANJI(c0, c1)) {
+	    if (mp->io.scs & SCSJISX0213_2004) {
+		mp->icharset = UJIS2004;
+		mp->cs = JISX02132004KANJI1;
+	    } else if (mp->io.scs & SCSJISX0213_2000) {
+		mp->icharset = UJIS2000;
+		mp->cs = JISX0213KANJI1;
+	    } else {
+		mp->icharset = UJIS;
+		mp->cs = JISX0208KANJI;
+	    }
+	    mp->multiint[mp->intindex] = c0;
+	    mp->multics[mp->intindex] = mp->icharset;
+	    mp->multiint[mp->intindex + 1] = c1;
+	    mp->multics[mp->intindex + 1] = REST_MASK | mp->icharset;
 
-	/*
-	 * Check the correctness of SJIS encoded characters and
-	 * convert them into internal representation.
-	 */
-	if (chisvalid_cs(&mp->multiint[mp->intindex],
-			 &mp->multics[mp->intindex])) {
-	    register int c1, c2, c3;
-	    static unsigned char table[] = {
-		   0, 0x21, 0x23, 0x25, 0x27, 0x29, 0x2B, 0x2D,
-		0x2F, 0x31, 0x33, 0x35, 0x37, 0x39, 0x3B, 0x3D,
-		0x3F, 0x41, 0x43, 0x45, 0x47, 0x49, 0x4B, 0x4D,
-		0x4F, 0x51, 0x53, 0x55, 0x57, 0x59, 0x5B, 0x5D,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0x5F, 0x61, 0x63, 0x65, 0x67, 0x69, 0x6B, 0x6D,
-#if SJIS0213
-		0x6F, 0x71, 0x73, 0x75, 0x77, 0x79, 0x7B, 0x7D,
-		0x80, 0xA3, 0x81, 0xAD, 0x82, 0xEF, 0xF1, 0xF3,
-		0xF5, 0xF7, 0xF9, 0xFB, 0xFD,    0,    0,    0
-#else
-		0x6F, 0x71, 0x73,    0,    0,    0,    0,    0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-#endif
-	    };
-
-	    c1 = table[INBUF0(mp) & 0x7f];
-	    c2 = INBUF(mp) - ((unsigned char)INBUF(mp) >= 0x80 ? 1 : 0);
-	    c3 = c2 >= 0x9e;
-	    if (c1 < 0x80) {
-		/* JIS X 0213:2000 plane 1 or JIS X 0208:1997 */
-		mp->multiint[mp->intindex] =
-			(c1 + (c3 ? 1 : 0));
+	    /* Check character whether it has defined glyph or not */
+	    if (chisvalid_cs(&mp->multiint[mp->intindex],
+			     &mp->multics[mp->intindex])) {
+		/* defined */
+		mp->multiint[mp->intindex] = c0 & 0x7f;
 		mp->multics[mp->intindex] = mp->cs;
-		mp->multiint[mp->intindex + 1] =
-			(c2 - (c3 ? 0x9e - 0x21 : 0x40 - 0x21));
-		mp->multics[mp->intindex + 1] =
-			REST_MASK | mp->cs;
+		mp->multiint[mp->intindex + 1] = c1 & 0x7f;
+		mp->multics[mp->intindex + 1] = REST_MASK | mp->cs;
 		mp->intindex += 2;
 		mp->startpos = mp->lastpos + 1;
 	    } else {
-		/* JIS X 0213:2000 plane 2 */
-		if (output == jis) {
-		    /* JIS cannot output JIS X 0213:2000 plane 2 */
-		    wrongcs1(mp);
-		    multi_reparse(mp);
-		} else {
-		    if (c1 > 0xA0) {
-			/* row 3-4, 13-14, and 79-94 */
-			mp->multiint[mp->intindex] =
-				((c1 & 0x7f) + (c3 ? 1 : 0));
-		    } else if (c1 == 0x80) {
-			/* row 1 or 8 */
-			mp->multiint[mp->intindex] =
-				c3 ? 0x28 : 0x21;
-		    } else if (c1 == 0x81) {
-			/* row 5 or 12 */
-			mp->multiint[mp->intindex] =
-				c3 ? 0x2C : 0x25;
-		    } else {
-			/* row 15 or 78 */
-			mp->multiint[mp->intindex] =
-				c3 ? 0x6E : 0x2F;
-		    }
-		    mp->multics[mp->intindex] = JISX0213KANJI2;
-		    mp->multiint[mp->intindex + 1] =
-			    (c2 - (c3 ? 0x9e - 0x21 : 0x40 - 0x21));
-		    mp->multics[mp->intindex + 1] =
-			    REST_MASK | JISX0213KANJI2;
-		    mp->intindex += 2;
-		    mp->startpos = mp->lastpos + 1;
-		}
+		/* undefined.  less ignore them */
+		wrongchar(mp);
 	    }
-	} else {
-	    /*
-	     * Less ignores undefined characters after marking
-	     * them as wrong characters.
-	     */
-	    wrongchar(mp);
-	    mp->startpos = mp->lastpos + 1;
-	    multi_reparse(mp);
+	    /* data are recognized as kanji or wrong data, so return 1 */
+	    return 1;
+	} else if (ISUTF8_HEAD(c0) && ISUTF8_REST(c1)) {
+	    /* do nothing.  return 1 to get next byte */
+	    return 1;
 	}
-    } else {
-	wrongcs1(mp);
-	multi_reparse(mp);
+    } else if (mp->lastpos - mp->startpos + 1 == 3) {
+	int c0 = INBUF0(mp);
+	int c1 = INBUF1(mp);
+	int c2 = INBUF2(mp);
+	if (ISUTF8_3(c0, c1, c2)) {
+	    mp->cs = UTF8;
+	    mp->icharset = UTF8;
+	    mp->multiint[mp->intindex] = c0;
+	    mp->multics[mp->intindex] = mp->cs;
+	    mp->multiint[mp->intindex + 1] = c1;
+	    mp->multics[mp->intindex + 1] = REST_MASK | mp->cs;
+	    mp->multiint[mp->intindex + 2] = c2;
+	    mp->multics[mp->intindex + 2] = REST_MASK | mp->cs;
+	    mp->intindex += 3;
+	    mp->startpos = mp->lastpos + 1;
+	    /* data are recognized as kanji or wrong data, so return 1 */
+	    return 1;
+	} else if (ISUTF8_HEAD(c0) && ISUTF8_REST(c1) && ISUTF8_REST(c2)) {
+	    /* do nothing.  return 1 to get next byte */
+	    return 1;
+	}
+    } else if (mp->lastpos - mp->startpos + 1 == 4) {
+	int c0 = INBUF0(mp);
+	int c1 = INBUF1(mp);
+	int c2 = INBUF2(mp);
+	int c3 = INBUF3(mp);
+	if (ISUTF8_4(c0, c1, c2, c3)) {
+	    mp->cs = UTF8;
+	    mp->icharset = UTF8;
+	    mp->multiint[mp->intindex] = c0;
+	    mp->multics[mp->intindex] = mp->cs;
+	    mp->multiint[mp->intindex + 1] = c1;
+	    mp->multics[mp->intindex + 1] = REST_MASK | mp->cs;
+	    mp->multiint[mp->intindex + 2] = c2;
+	    mp->multics[mp->intindex + 2] = REST_MASK | mp->cs;
+	    mp->multiint[mp->intindex + 3] = c3;
+	    mp->multics[mp->intindex + 3] = REST_MASK | mp->cs;
+	    mp->intindex += 4;
+	    mp->startpos = mp->lastpos + 1;
+	    /* data are recognized as kanji or wrong data, so return 1 */
+	    return 1;
+	} else if (ISUTF8_HEAD(c0) && ISUTF8_REST(c1) && ISUTF8_REST(c2) &&
+		   ISUTF8_REST(c3)) {
+	    /* do nothing.  return 1 to get next byte */
+	    return 1;
+	}
+    } else if (mp->lastpos - mp->startpos + 1 == 5) {
+	int c0 = INBUF0(mp);
+	int c1 = INBUF1(mp);
+	int c2 = INBUF2(mp);
+	int c3 = INBUF3(mp);
+	int c4 = INBUF4(mp);
+	if (ISUTF8_5(c0, c1, c2, c3, c4)) {
+	    mp->cs = UTF8;
+	    mp->icharset = UTF8;
+	    mp->multiint[mp->intindex] = c0;
+	    mp->multics[mp->intindex] = mp->cs;
+	    mp->multiint[mp->intindex + 1] = c1;
+	    mp->multics[mp->intindex + 1] = REST_MASK | mp->cs;
+	    mp->multiint[mp->intindex + 2] = c2;
+	    mp->multics[mp->intindex + 2] = REST_MASK | mp->cs;
+	    mp->multiint[mp->intindex + 3] = c3;
+	    mp->multics[mp->intindex + 3] = REST_MASK | mp->cs;
+	    mp->multiint[mp->intindex + 4] = c4;
+	    mp->multics[mp->intindex + 4] = REST_MASK | mp->cs;
+	    mp->intindex += 5;
+	    mp->startpos = mp->lastpos + 1;
+	    /* data are recognized as kanji or wrong data, so return 1 */
+	    return 1;
+	} else if (ISUTF8_HEAD(c0) && ISUTF8_REST(c1) && ISUTF8_REST(c2) &&
+		   ISUTF8_REST(c3) && ISUTF8_REST(c4)) {
+	    /* do nothing.  return 1 to get next byte */
+	    return 1;
+	}
+    } else if (mp->lastpos - mp->startpos + 1 == 6) {
+	int c0 = INBUF0(mp);
+	int c1 = INBUF1(mp);
+	int c2 = INBUF2(mp);
+	int c3 = INBUF3(mp);
+	int c4 = INBUF4(mp);
+	int c5 = INBUF5(mp);
+	if (ISUTF8_6(c0, c1, c2, c3, c4, c5)) {
+	    mp->cs = UTF8;
+	    mp->icharset = UTF8;
+	    mp->multiint[mp->intindex] = c0;
+	    mp->multics[mp->intindex] = mp->cs;
+	    mp->multiint[mp->intindex + 1] = c1;
+	    mp->multics[mp->intindex + 1] = REST_MASK | mp->cs;
+	    mp->multiint[mp->intindex + 2] = c2;
+	    mp->multics[mp->intindex + 2] = REST_MASK | mp->cs;
+	    mp->multiint[mp->intindex + 3] = c3;
+	    mp->multics[mp->intindex + 3] = REST_MASK | mp->cs;
+	    mp->multiint[mp->intindex + 4] = c4;
+	    mp->multics[mp->intindex + 4] = REST_MASK | mp->cs;
+	    mp->multiint[mp->intindex + 5] = c5;
+	    mp->multics[mp->intindex + 5] = REST_MASK | mp->cs;
+	    mp->intindex += 6;
+	    mp->startpos = mp->lastpos + 1;
+	    /* data are recognized as kanji or wrong data, so return 1 */
+	    return 1;
+	}
     }
+    /* return 0 because this data sequence is not matched to UTF8 */
+    return 0;
 }
+
 #endif
 
 static void internalize(mp)
@@ -683,8 +899,8 @@ MULBUF *mp;
     int c = INBUF(mp);
 
     if (mp->lastpos - mp->startpos + 1 == 1) {
-	if ((c <= 0x7f && mp->io.left == noconv) ||
-	    (c >= 0x80 && mp->io.right == noconv)) {
+	if ((c <= 0x7f && mp->io.input == ESNOCONV) ||
+	    (c >= 0x80 && mp->io.inputr == ESNOCONV)) {
 #if JAPANESE
 	    mp->sequence_counter = 0;
 #endif
@@ -694,7 +910,7 @@ MULBUF *mp;
 		    noconv1(mp);
 	    }
 	    return;
-	} else if (c >= 0x80 && mp->io.right == none) {
+	} else if (c >= 0x80 && mp->io.inputr == ESNONE) {
 #if JAPANESE
 	    mp->sequence_counter = 0;
 #endif
@@ -710,7 +926,7 @@ MULBUF *mp;
 	    wrongcs1(mp);
 	    return;
 	} else if (c <= 0x7f ||
-		   (mp->io.right == iso8 && (0xa0 <= c && c <= 0xff))) {
+		   ((mp->io.inputr & ESISO8) && (0xa0 <= c && c <= 0xff))) {
 #if JAPANESE
 	    mp->sequence_counter = 0;
 #endif
@@ -722,19 +938,20 @@ MULBUF *mp;
 	     * Check cs that fit for output code set.
 	     */
 	    /* JIS cannot output JISX0212, JISX0213_2, or ISO2022 */
-	    if (output == jis && mp->cs != ASCII &&
+	    if ((output & ESJIS83) && mp->cs != ASCII &&
 		mp->cs != JISX0201KANA &&
 		mp->cs != JISX0201ROMAN &&
 		mp->cs != JISX0208_78KANJI &&
 		mp->cs != JISX0208KANJI &&
 		mp->cs != JISX0208_90KANJI &&
-		mp->cs != JISX0213KANJI1) {
+		mp->cs != JISX0213KANJI1 &&
+		mp->cs != JISX02132004KANJI1) {
 		wrongcs1(mp);
 		multi_reparse(mp);
 		return;
 	    }
 	    /* UJIS cannot output regular ISO2022 except JIS */
-	    if (output == ujis && mp->cs != ASCII &&
+	    if ((output & ESUJIS) && mp->cs != ASCII &&
 		mp->cs != JISX0201KANA &&
 		mp->cs != JISX0201ROMAN &&
 		mp->cs != JISX0208_78KANJI &&
@@ -742,20 +959,22 @@ MULBUF *mp;
 		mp->cs != JISX0208_90KANJI &&
 		mp->cs != JISX0212KANJISUP &&
 		mp->cs != JISX0213KANJI1 &&
-		mp->cs != JISX0213KANJI2) {
+		mp->cs != JISX0213KANJI2 &&
+		mp->cs != JISX02132004KANJI1) {
 		wrongcs1(mp);
 		multi_reparse(mp);
 		return;
 	    }
 	    /* SJIS cannot output JISX0212 or ISO2022 */
-	    if (output == sjis && mp->cs != ASCII &&
+	    if ((output & ESSJIS) && mp->cs != ASCII &&
 		mp->cs != JISX0201KANA &&
 		mp->cs != JISX0201ROMAN &&
 		mp->cs != JISX0208_78KANJI &&
 		mp->cs != JISX0208KANJI &&
 		mp->cs != JISX0208_90KANJI &&
 		mp->cs != JISX0213KANJI1 &&
-		mp->cs != JISX0213KANJI2) {
+		mp->cs != JISX0213KANJI2 &&
+		mp->cs != JISX02132004KANJI1) {
 		wrongcs1(mp);
 		multi_reparse(mp);
 		return;
@@ -773,8 +992,8 @@ MULBUF *mp;
 	    return;
 	}
 #if JAPANESE
-	if (mp->priority == sjis && ISSJISKANA(c)) {
-	    if (mp->io.right == japanese) {
+	if (mp->priority == PSJIS && ISSJISKANA(c)) {
+	    if (mp->io.inputr & ESUJIS) {
 		mp->sequence_counter++;
 		if (mp->sequence_counter % 2 == 1 &&
 		    INBUF0(mp) != 0xa4) /* ???? */
@@ -785,16 +1004,13 @@ MULBUF *mp;
 		    /*
 		     * It looks like a sequence of UJIS
 		     * hiragana.  Thus we give priority
-		     * to not sjis.
+		     * to not PSJIS.
 		     */
-		    mp->priority = ujis;
+		    mp->priority = PUJIS;
 	    }
-	    mp->cs = JISX0201KANA;
-	    mp->icharset = SJIS;
 	    internalize_sjis(mp);
 	    return;
-	} else if (mp->io.right == ujis || mp->io.right == sjis ||
-		   mp->io.right == japanese) {
+	} else if (mp->io.inputr & (ESUJIS | ESSJIS)) {
 	    mp->sequence_counter = 0;
 	    return;
 	}
@@ -813,7 +1029,7 @@ MULBUF *mp;
 	return;
     } else if (mp->cs != ASCII &&
 	       (c <= 0x7f ||
-		(mp->io.right == iso8 && 0xa0 <= c && c <= 0xff))) {
+		((mp->io.inputr & ESISO8) && 0xa0 <= c && c <= 0xff))) {
 	if (mp->cs != FINDCS(mp, c)) {
 	    wrongcs1(mp);
 	    multi_reparse(mp);
@@ -828,78 +1044,72 @@ MULBUF *mp;
     }
 #if JAPANESE
     if (mp->lastpos - mp->startpos + 1 == 2) {
-	int c0 = INBUF0(mp);
-	if (mp->priority == sjis && ISSJISKANJI(c0, c)) {
-#if UJIS0213
-	    mp->cs = JISX0213KANJI1;
-#else
-	    mp->cs = JISX0208KANJI;
-#endif
-	    mp->icharset = SJIS;
-	    internalize_sjis(mp);
-	    return;
-	} else if (mp->priority == ujis) {
-	    if (ISUJISKANA(c0, c)) {
-		mp->cs = JISX0201KANA;
-		mp->icharset = UJIS;
-		internalize_ujis(mp);
+	if (mp->priority == PSJIS) {
+	    if (internalize_sjis(mp)) {
 		return;
-	    } else if (ISUJISKANJI(c0, c)) {
-#if UJIS0213
-		mp->cs = JISX0213KANJI1;
-#else
-		mp->cs = JISX0208KANJI;
-#endif
-		mp->icharset = UJIS;
-		internalize_ujis(mp);
+	    }
+	} else if (mp->priority == PUJIS) {
+	    if (internalize_ujis(mp)) {
 		return;
-	    } else if (ISUJISKANJISUP(c0, c, 0xa1)) {
+	    }
+	} else if (mp->priority == PUTF8) {
+	    if (internalize_utf8(mp)) {
 		return;
 	    }
 	}
 
-	if ((mp->io.right == sjis || mp->io.right == japanese) &&
-	    ISSJISKANJI(c0, c)) {
-#if UJIS0213
-	    mp->cs = JISX0213KANJI1;
-#else
-	    mp->cs = JISX0208KANJI;
-#endif
-	    mp->priority = sjis;
-	    mp->icharset = SJIS;
-	    internalize_sjis(mp);
-	    return;
-	} else if ((mp->io.right == ujis || mp->io.right == japanese)) {
-	    if (ISUJISKANA(c0, c)) {
-		mp->cs = JISX0201KANA;
-		mp->priority = ujis;
-		mp->icharset = UJIS;
-		internalize_ujis(mp);
+	if (mp->io.inputr & ESUJIS) {
+	    if (internalize_ujis(mp)) {
+		mp->priority = PUJIS;
 		return;
-	    } else if (ISUJISKANJI(c0, c)) {
-#if UJIS0213
-		    mp->cs = JISX0213KANJI1;
-#else
-		    mp->cs = JISX0208KANJI;
-#endif
-		    mp->priority = ujis;
-		    mp->icharset = UJIS;
-		    internalize_ujis(mp);
-		    return;
-	    } else if (ISUJISKANJISUP(c0, c, 0xa1))
-	    {
-		    return;
 	    }
 	}
-    } else if (mp->lastpos - mp->startpos + 1 == 3 &&
-	       (mp->priority == ujis ||
-		mp->io.right == ujis || mp->io.right == japanese) &&
-	       ISUJISKANJISUP(INBUF0(mp), INBUF1(mp), c)) {
-	    mp->cs = JISX0212KANJISUP;
-	    mp->priority = ujis;
-	    mp->icharset = UJIS;
-	    internalize_ujis(mp);
-	    return;
+	if (mp->io.inputr & ESUTF8) {
+	    if (internalize_utf8(mp)) {
+		mp->priority = PUTF8;
+		return;
+	    }
+	}
+	if (mp->io.inputr & ESSJIS) {
+	    if (internalize_sjis(mp)) {
+		mp->priority = PSJIS;
+		return;
+	    }
+	}
+    } else if (mp->lastpos - mp->startpos + 1 == 3) {
+	if (mp->io.inputr & ESUJIS) {
+	    if (internalize_ujis(mp)) {
+		mp->priority = PUJIS;
+		return;
+	    }
+	}
+	if (mp->io.inputr & ESUJIS) {
+	    if (internalize_utf8(mp)) {
+		mp->priority = PUTF8;
+		return;
+	    }
+	}
+    } else if (mp->lastpos - mp->startpos + 1 == 4) {
+	if (mp->io.inputr & ESUJIS) {
+	    if (internalize_utf8(mp)) {
+		mp->priority = PUTF8;
+		return;
+	    }
+	}
+    } else if (mp->lastpos - mp->startpos + 1 == 5) {
+	if (mp->io.inputr & ESUJIS) {
+	    if (internalize_utf8(mp)) {
+		mp->priority = PUTF8;
+		return;
+	    }
+	}
+    } else if (mp->lastpos - mp->startpos + 1 == 6) {
+	if (mp->io.inputr & ESUJIS) {
+	    if (internalize_utf8(mp)) {
+		mp->priority = PUTF8;
+		return;
+	    }
+	}
     }
 #endif
     wrongcs1(mp);
@@ -915,33 +1125,46 @@ register int c;
 int type;
 int *plane;
 {
-    if (mp->io.left == jis) {
-	/*
-	 * If the target code system is traditional jis,
-	 * allow only JIS C6226-1978, JIS X0208-1983, JIS X0208-1990,
-	 * JIS X0213-2000, JIS X0212-1990, ASCII,
-	 * JIS X0201 right, and JIS X0201 left.
-	 */
-	if ((type == TYPE_94N_CHARSET &&
-	     (c == '@' || c == 'B' || c == 'D' ||
-	      c == 'O' || c == 'P')) ||
-	    (type == TYPE_94_CHARSET &&
-	     (c == 'B' || c == 'I' || c == 'J'))) {
-	    *plane = (mp->ms->irr ? IRR2CS(mp->ms->irr) : 0) | TYPE2CS(type) | FT2CS(c);
-	    mp->ms->irr = 0;
-	    mp->eseq = NOESC;
-	    return (0);
+    if (type == TYPE_94_CHARSET) {
+	switch (c) {
+	case 'B': /* ASCII */
+	    goto ok;
+	case 'I': /* JIS X 0201 right half (Katakana) */
+	case 'J': /* JIS X 0201 left half (Roman) */
+	    if (mp->io.scs & SCSJISX0201_1976) goto ok;
 	}
-    } else if (0x30 <= c && c <= 0x7e) {
-	/*
-	 * Otherwise, accept all.
-	 */
-	*plane = (mp->ms->irr ? IRR2CS(mp->ms->irr) : 0) | TYPE2CS(type) | FT2CS(c);
-	mp->ms->irr = 0;
-	mp->eseq = NOESC;
-	return (0);
+    } else if (type == TYPE_94N_CHARSET) {
+	switch (c) {
+	case '@': /* JIS C 6226-1978 */
+	    if (mp->io.scs & SCSJISC6226_1978) goto ok;
+	    break;
+	case 'B': /* JIS X 0208-1983, JIS X 0208:1990, or JIS X 0208:1997 */
+	    if (mp->io.scs & (SCSJISX0208_1983 | SCSJISX0208_1990)) goto ok;
+	    break;
+	case 'D': /* JIS X 0212:1990 */
+	    if (mp->io.scs & SCSJISX0212_1990) goto ok;
+	    break;
+	case 'O': /* JIS X 0213:2000 plane 1 */
+	    if (mp->io.scs & SCSJISX0213_2000) goto ok;
+	    break;
+	case 'P': /* JIS X 0213:2000 plane 2 or JIS X 0213:2004 plane 2 */
+	    if (mp->io.scs & (SCSJISX0213_2000 | SCSJISX0213_2004)) goto ok;
+	    break;
+	case 'Q': /* JIS X 0213:2004 plane 1 */
+	    if (mp->io.scs & SCSJISX0213_2004) goto ok;
+	    break;
+	}
+    }
+    if ((mp->io.scs & SCSOTHERISO) && 0x30 <= c && c <= 0x7e) {
+	/* accepting all other ISO, so OK */
+	goto ok;
     }
     return (-1);
+ok:
+    *plane = (mp->ms->irr ? IRR2CS(mp->ms->irr) : 0) | TYPE2CS(type) | FT2CS(c);
+    mp->ms->irr = 0;
+    mp->eseq = NOESC;
+    return (0);
 }
 
 static int check_irr(mp, c)
@@ -1007,11 +1230,11 @@ MULBUF *mp;
 	case 'O': mp->ms->sg = 3; mp->eseq = NOESC; /*SS3*/break;
 	case 'n': mp->ms->gl = 2; mp->eseq = NOESC; break;
 	case 'o': mp->ms->gl = 3; mp->eseq = NOESC; break;
-	case '|': if (mp->io.right != iso8) goto wrong;
+	case '|': if (!(mp->io.inputr & ESISO8)) goto wrong;
 		  mp->ms->gr = 3; mp->eseq = NOESC; break;
-	case '}': if (mp->io.right != iso8) goto wrong;
+	case '}': if (!(mp->io.inputr & ESISO8)) goto wrong;
 		  mp->ms->gr = 2; mp->eseq = NOESC; break;
-	case '~': if (mp->io.right != iso8) goto wrong;
+	case '~': if (!(mp->io.inputr & ESISO8)) goto wrong;
 		  mp->ms->gr = 1; mp->eseq = NOESC; break;
 	default:  goto wrong;
 	}
@@ -1084,14 +1307,14 @@ MULBUF *mp;
 	/*
 	 * This sequence is wrong if we buffered some data.
 	 */
-	if (mp->lastpos != mp->startpos) {
+	if (mp->lastpos > mp->startpos) {
 	    switch (c) {
 	    case 0033:
 	    case 0016:
 	    case 0017:
 	    case 0031: goto wrong;
 	    case 0216:
-	    case 0217: if (mp->io.right == iso8) goto wrong;
+	    case 0217: if (mp->io.inputr & ESISO8) goto wrong;
 	    default:   goto wrongone;
 	    }
 	}
@@ -1103,9 +1326,9 @@ MULBUF *mp;
 	case 0016: mp->ms->gl = 1; mp->eseq = NOESC; break;
 	case 0017: mp->ms->gl = 0; mp->eseq = NOESC; break;
 	case 0031: mp->ms->sg = 2; mp->eseq = NOESC; /*SS2*/ break;
-	case 0216: if (mp->io.right != iso8) goto wrongone;
+	case 0216: if (!(mp->io.inputr & ESISO8)) goto wrongone;
 		   mp->ms->sg = 2; mp->eseq = NOESC; /*SS2*/ break;
-	case 0217: if (mp->io.right != iso8) goto wrongone;
+	case 0217: if (!(mp->io.inputr & ESISO8)) goto wrongone;
 		   mp->ms->sg = 3; mp->eseq = NOESC; /*SS3*/ break;
 	default:   goto wrongone;
 	}
@@ -1197,21 +1420,23 @@ register char *name;
     return 0;
 }
 
-void init_def_codesets(left, right, out)
-CODESET left;
-CODESET right;
-CODESET out;
+void init_def_scs_es(scs, input, inputr, out)
+SETCHARSET scs;
+ENCSET input;
+ENCSET inputr;
+ENCSET out;
 {
-    def_left = left;
-    def_right = right;
+    def_scs = scs;
+    def_input = input;
+    def_inputr = inputr;
     output = out;
 }
 
 void init_def_priority(pri)
-CODESET pri;
+J_PRIORITY pri;
 {
 #if JAPANESE
-    assert(pri == sjis || pri == ujis);
+    assert(pri == PUJIS || pri == PSJIS || pri == PUTF8);
     def_priority = pri;
 #endif
 }
@@ -1220,34 +1445,36 @@ void init_priority(mp)
 MULBUF *mp;
 {
 #if JAPANESE
-    if (mp->io.right == sjis)
-	mp->priority = sjis;
-    else if (mp->io.right == ujis)
-	mp->priority = ujis;
-    else if (mp->io.right == japanese)
+    if ((mp->io.inputr & ESSJIS) && (mp->io.inputr & ESUJIS))
 	mp->priority = def_priority;
+    else if (mp->io.inputr & ESUJIS)
+	mp->priority = PUJIS;
+    else if (mp->io.inputr & ESUTF8)
+	mp->priority = PUTF8;
+    else if (mp->io.inputr & ESSJIS)
+	mp->priority = PSJIS;
     else
-	mp->priority = noconv;
+	mp->priority = PNONE;
     mp->sequence_counter = 0;
 #endif
 }
 
-CODESET get_priority(mp)
+J_PRIORITY get_priority(mp)
 MULBUF *mp;
 {
 #if JAPANESE
     return (mp->priority);
 #else
-    return (noconv);
+    return (PNONE);
 #endif
 }
 
 void set_priority(mp, pri)
 MULBUF *mp;
-CODESET pri;
+J_PRIORITY pri;
 {
 #if JAPANESE
-    assert(pri == sjis || pri == ujis || pri == noconv);
+    assert(pri == PSJIS || pri == PUJIS || pri == PUTF8 || pri == PNONE);
     mp->priority = pri;
 #endif
 }
@@ -1255,9 +1482,10 @@ CODESET pri;
 MULBUF *new_multibuf()
 {
     MULBUF *mp = (MULBUF*) ecalloc(1, sizeof(MULBUF));
-    mp->io.left = def_left;
-    mp->io.right = def_right;
-    mp->orig_io_right = def_right;
+    mp->io.scs = def_scs;
+    mp->io.input = def_input;
+    mp->io.inputr = def_inputr;
+    mp->orig_io_right = def_inputr;
     mp->rotation_io_right = 0;
     mp->eseq = NOESC;
     mp->ms = (struct m_status*) ecalloc(1, sizeof(struct m_status));
@@ -1312,7 +1540,7 @@ MULBUF *mp;
 {
     m_position last_startpos = mp->startpos;
 
-    if (mp->io.left == jis || mp->io.left == iso7 || mp->io.right == iso8) {
+    if (mp->io.input & (ESJIS83 | ESISO7 | ESISO8)) {
 	if (check_escape_sequence(mp) == 0) {
 	    return;		/* going process well */
 	}
@@ -1359,15 +1587,15 @@ MULBUF *mp;
 #if JAPANESE
     /*
      * Quick japanese code hack.
-     * Check whether character is SJIS KANA or no.
+     * Check whether character is SJIS KANA or not.
      * If it is SJIS KANA, it means our prediction was failed.
      * Now going to fall back to SJIS KANA mode.
      */
-    if ((mp->priority == sjis ||
-	 mp->io.right == sjis || mp->io.right == japanese) &&
+    if ((mp->priority == PSJIS || (mp->io.inputr & ESSJIS)) &&
+	CSISWRONG(mp->multics[mp->intindex - 1]) &&
 	ISSJISKANA(mp->multiint[mp->intindex - 1])) {
 	mp->cs = JISX0201KANA;
-	mp->priority = sjis;
+	mp->priority = PSJIS;
 	mp->icharset = SJIS;
 	mp->multiint[mp->intindex - 1] &= 0x7f;
 	mp->multics[mp->intindex - 1] = mp->cs;
@@ -1549,13 +1777,13 @@ MULBUF* mp;
     multi_parse(mp, -1, NULL_POSITION, NULL);
 }
 
-void set_codesets(mp, left, right)
+void set_codesets(mp, input, inputr)
 MULBUF *mp;
-CODESET left;
-CODESET right;
+ENCSET input;
+ENCSET inputr;
 {
-    mp->io.left = left;
-    mp->io.right = right;
+    mp->io.input = input;
+    mp->io.inputr = inputr;
 }
 
 /*
@@ -1574,7 +1802,11 @@ MULBUF *mp;
 	 * Code set
 	 */
 	case SJIS:		return ("SJIS");
+	case SJIS2000:		return ("SJIS2000");
+	case SJIS2004:		return ("SJIS2004");
 	case UJIS:		return ("UJIS");
+	case UJIS2000:		return ("UJIS2000");
+	case UJIS2004:		return ("UJIS2004");
 #endif
 	/*
 	 * Character set
@@ -1599,6 +1831,7 @@ MULBUF *mp;
 	case JISX0212KANJISUP:	return ("JIS-KANJISUP");
 	case JISX0213KANJI1:	return ("JISX0213KANJI1");
 	case JISX0213KANJI2:	return ("JISX0213KANJI2");
+	case JISX02132004KANJI1:return ("JISX0213:2004KANJI1");
 	}
 	switch (CS2TYPE(mp->icharset))
 	{
@@ -1645,13 +1878,17 @@ int charset;
 
 	p[0] = '\033';
 	len = 1;
-	if ((output == iso7 || output == iso8) && CS2IRR(charset) > 0)
+	if ((output & (ESISO7 | ESISO8)) && CS2IRR(charset) > 0)
 	{
 		p[len] = '&';
 		p[len + 1] = IRR2CODE(CS2IRR(charset));
 		p[len + 2] = '\033';
 		len += 3;
 	}
+	/*
+	 * Call 94 or 94N character set to G0 plane.
+	 * Call 96 or 96N character set to G1 plane.
+	 */
 	switch (CS2TYPE(charset))
 	{
 	case TYPE_94_CHARSET:
@@ -1689,7 +1926,12 @@ int charset;
 		len += 3;
 		break;
 	}
-	if (output != iso8)
+	/*
+	 * If output is not ESISO8, use SO and SI to call G1 to GL.
+	 * Otherwise, we use GR directly, so no need to call G1
+	 * since G1 is called GR already.
+	 */
+	if (!(output & ESISO8))
 	{
 		switch (CS2TYPE(charset))
 		{
@@ -1731,7 +1973,7 @@ int cs;
 	register unsigned char *p;
 	static char buffer2[2];
 
-	if (output == iso8 && c != 0 &&
+	if ((output & ESISO8) && c != 0 &&
 	    (CS2TYPE(cs) == TYPE_96_CHARSET ||
 	     CS2TYPE(cs) == TYPE_96N_CHARSET))
 		c |= 0x80;
@@ -1810,6 +2052,13 @@ int cs;
 		assert(cvindex == 2);
 		cvindex = 0;
 	} else if (cs == JISX0213KANJI1)
+	{
+		if (cvindex == 1)
+			return (nullcvbuffer);
+		assert(cvindex == 2);
+		cvindex = 0;
+		cs = JISX0208KANJI;
+	} else if (cs == JISX02132004KANJI1)
 	{
 		if (cvindex == 1)
 			return (nullcvbuffer);
@@ -1945,22 +2194,14 @@ int cs;
 		   cs == JISX0208_90KANJI || cs == JISX0213KANJI1)
 	{
 		register int c1, c2, c3;
-		static unsigned char table[] = {
+		static unsigned char table_sjis[] = {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			   0, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
 			0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F,
 			0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97,
-#if SJIS0213
 			0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F,
-#else
-			0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E,    0,
-#endif
 			0xE0, 0xE1, 0xE2, 0xE3, 0xE4, 0xE5, 0xE6, 0xE7,
-#if SJIS0213
 			0xE8, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE, 0xEF,
-#else
-			0xE8, 0xE9, 0xEA,    0,    0,    0,    0,    0,
-#endif
 		};
 
 		if (cvindex == 1)
@@ -1971,7 +2212,7 @@ int cs;
 		c3 = cvbuffer[0] & 0x7f;
 		c1 = c3 & 1;
 		c2 = (cvbuffer[1] & 0x7f) + (c1 ? 0x40 - 0x21 : 0x9e - 0x21);
-		c1 = table[c3 / 2 + c1];
+		c1 = table_sjis[c3 / 2 + c1];
 		cvbuffer[0] = c1;
 		cvbuffer[1] = c2 + (c2 >= 0x7f ? 1 : 0);
 		cvindex = 0;
@@ -2012,6 +2253,53 @@ int cs;
 }
 #endif
 
+static char *convert_to_utf8(c, cs)
+int c;
+int cs;
+{
+	if (c == 0)
+	{
+		cvindex = 0;
+		return (nullcvbuffer);
+	}
+
+	cvbuffer[cvindex++] = c;
+	cvbuffer[cvindex] = '\0';
+
+	if (CSISWRONG(cs))
+	{
+		cs = ASCII;
+	}
+
+	cs = CS2CHARSET(cs);
+
+	assert(0);
+	if (cs == ASCII || cs == JISX0201ROMAN)
+	{
+		assert(cvindex == 1);
+		cvindex = 0;
+		return (cvbuffer);
+	} else if (cs == JISX0201KANA)
+	{
+		assert(cvindex == 1);
+		cvbuffer[0] |= 0x80;
+		cvindex = 0;
+		return (cvbuffer);
+	} else if (cs == JISX0208_78KANJI || cs == JISX0208KANJI ||
+		   cs == JISX0208_90KANJI || cs == JISX0213KANJI1)
+	{
+		cvindex = 0;
+		return (cvbuffer);
+	} else if (cs == JISX0213KANJI2)
+	{
+		cvindex = 0;
+		return (cvbuffer);
+	}
+	assert(0);
+	cvindex = 0;
+	return (cvbuffer);
+}
+
 char *outchar(c, cs)
 int c;
 CHARSET cs;
@@ -2022,16 +2310,18 @@ CHARSET cs;
 		cs = ASCII;
 	}
 
-	if (output == iso7 || output == iso8)
+	if (output & (ESISO7 | ESISO8))
 		return (convert_to_iso(c, cs));
-	if (output == jis)
+	if (output & ESJIS83)
 		return (convert_to_jis(c, cs));
 #if JAPANESE
-	if (output == ujis)
+	if (output & ESUJIS)
 		return (convert_to_ujis(c, cs));
-	if (output == sjis)
+	if (output & ESSJIS)
 		return (convert_to_sjis(c, cs));
 #endif
+	if (output & ESUTF8)
+		return (convert_to_utf8(c, cs));
 	cvbuffer[0] = c;
 	cvbuffer[1] = '\0';
 	return (cvbuffer);
@@ -2084,13 +2374,13 @@ MULBUF *mp;
 	mp->rotation_io_right++;
 	mp->rotation_io_right %= 7;
 	switch (mp->rotation_io_right) {
-	case 0: p = "original"; mp->io.right = mp->orig_io_right; break;
-	case 1: p = "japanese"; mp->io.right = japanese; break;
-	case 2: p = "ujis"; mp->io.right = ujis; break;
-	case 3: p = "sjis"; mp->io.right = sjis; break;
-	case 4: p = "iso8"; mp->io.right = iso8; break;
-	case 5: p = "noconv"; mp->io.right = noconv; break;
-	case 6: p = "none"; mp->io.right = none; break;
+	case 0: p = "original"; mp->io.inputr = mp->orig_io_right; break;
+	case 1: p = "japanese"; mp->io.inputr = ESUJIS | ESSJIS; break;
+	case 2: p = "ujis"; mp->io.inputr = ESUJIS; break;
+	case 3: p = "sjis"; mp->io.inputr = ESSJIS; break;
+	case 4: p = "iso8"; mp->io.inputr = ESISO8; break;
+	case 5: p = "noconv"; mp->io.inputr = ESNOCONV; break;
+	case 6: p = "none"; mp->io.inputr = ESNONE; break;
 	default: assert(0); break;
 	}
 	init_priority(mp);

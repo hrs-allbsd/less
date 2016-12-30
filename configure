@@ -843,7 +843,6 @@ Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --disable-msb           Disable the MSB of non ASCII characters
-  --disable-jisx0213      Disable the JIS X 0213 mapping for SJIS and UJIS
   --disable-largefile     omit support for large files
 
 Optional Packages:
@@ -1328,12 +1327,6 @@ msb_enable=unknown
 if test "${enable_msb+set}" = set; then
   enableval="$enable_msb"
   msb_enable=$enableval
-fi;
-jisx0213_enable=unknown
-# Check whether --enable-jisx0213 or --disable-jisx0213 was given.
-if test "${enable_jisx0213+set}" = set; then
-  enableval="$enable_jisx0213"
-  jisx0213_enable=$enableval
 fi;
 
 # Checks for programs.
@@ -6618,30 +6611,6 @@ echo "${ECHO_T}decide to disable the MSB of non ASCII characters" >&6
 _ACEOF
 
      fi;;
-esac
-
-case $jisx0213_enable in
-unknown|yes)
-     echo "$as_me:$LINENO: result: enable the JIS X 0213 mapping for SJIS and UJIS" >&5
-echo "${ECHO_T}enable the JIS X 0213 mapping for SJIS and UJIS" >&6
-     cat >>confdefs.h <<\_ACEOF
-#define SJIS0213 1
-_ACEOF
-
-     cat >>confdefs.h <<\_ACEOF
-#define UJIS0213 1
-_ACEOF
-;;
-no)  echo "$as_me:$LINENO: result: disable the JIS X 0213 mapping for SJIS and UJIS" >&5
-echo "${ECHO_T}disable the JIS X 0213 mapping for SJIS and UJIS" >&6
-     cat >>confdefs.h <<\_ACEOF
-#define SJIS0213 0
-_ACEOF
-
-     cat >>confdefs.h <<\_ACEOF
-#define UJIS0213 0
-_ACEOF
-;;
 esac
 
 
