@@ -1,0 +1,38 @@
+=========================================================================
+    This is the distribution of a regex_cs library for a enhanced less.
+    It support a regular expression of multi bytes character.
+    Please report any problems of it to me, jam@pobox.com, or the author
+    at HFH03650@niftyserve.or.jp.
+=========================================================================
+
+
+**特徴**
+
+ - キャラクタセットを認識する正規表現ライブラリ。
+
+**利用方法**
+
+ 1. less-332-iso233か、それ以降のlessが展開されているディレクトリで、
+    このファイルを展開します。
+ 2. "./configure --with-cs-regex"として、lessに新しい正規表現ライブラ
+    リを認識させます。
+ 3. lessをコンパイルします。
+
+**この正規表現ライブラリに関する歴史**
+
+ - 元々のコードはGNUの正規表現ライブラリ、バージョン0.12から来ています。
+ - 谷本さんが、gawk-2.15.6と、その中に入ってた正規表現ライブラリを、複
+   数バイトの日本語コードに対応させました。そのパッチは、
+   "gawk-2.15.6-mb1.04.diff.gz"という名前で、ftpサーバから拾ってこれま
+   す。
+ - 渥美さんが、その正規表現ライブラリをキャラクタセットを認識するよう
+   変更しました。そしてless-332-iso241へのパッチと共に公開しました。こ
+   のパッチは、"lw332i241p9k.patch.gz"という名前で、拾ってこれます。
+ - 丸川が、簡単に新しい正規表現ライブラリが使えるように、そのパッチの
+   中から必要なものだけ抜き出したのが、このファイルです。
+
+
+Local Variables:
+mode: indented-text
+fill-column: 70
+End:

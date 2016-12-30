@@ -1,0 +1,274 @@
+
+lw patchの使い方について
+
+less-332 に対して iso2022 patch を当てた後に 当てるようになってます。
+本patchは、iso241に対応しています。
+
+＜手順＞
+>ls
+less-332.tar.gz                 lw332i241p9k.patch.gz
+>gtar xvfz less-332.tar.gz
+  ...
+>cd less-332
+>gzip -dc ../less-332-iso241.patch.gz | patch 
+>gzip -dc ../lw332i241p9k.patch.gz | patch
+
+必要に応じて、define.h.in を書き換えます。
+・LESW_CALL_NEW_SHELL は、HAVE_SHELL が定義されていても、新しいshellを起動
+  しない様にします。UNIX環境では、LESW_CALL_NEW_SHELL を1 に設定すると若干
+  高速になります。
+・HAVE_SHELL を 0 にするとcompile error が出ますが、これはless-330 のバグの
+ようです。(less-332は調べてません)
+
+---------
+a) less + iso + lw をつくる場合は、そのまま
+
+>./configure
+> gmake
+
+として作成します。
+
+> gmake install
+
+で lesw/leswecho/leswkeyとしてinstallできます。
+---------
+b) less + iso + lw で、lessecho を使用するようにしたい場合は、
+
+>./configure  --without-leswecho
+> gmake
+
+として作成します。
+
+> gmake install
+
+で lesw/lessecho/leswkeyとしてinstallできます。
+---------
+c)  less  + iso をつくるときは、
+
+>./configure  --disable-lesw
+> gmake 
+
+として作成します。
+
+> gmake install
+
+でless/lessecho/lesskeyとしてinstallできます。
+
+＊＊＊＊＊＊ 注意 ＊＊＊＊＊＊＊
+originalのless、jlessとleswの混在をする方は、同名での上書きに注意しましょう。
+
+
+＊＊＊＊＊＊ 条件など ＊＊＊＊＊＊＊
+ 本patchの取扱いに関しては、GPLに従うことにします。
+ regex_cs.[ch]は、gawk-2.15.6+mb1.04に含まれている regex.[ch]を
+ 流用してます。なお、regex_cs.[ch]は、かなりの改変が加えられています。
+
+
+＊＊＊＊＊＊ いろいろ ＊＊＊＊＊＊＊
+このpatchのlw拡張について
+
+lw拡張の機能は、ISO 機能が有効である事を必要としています。
+ISO機能を殺すと必然的に、lw拡張は無効になります。
+
+キーバインドの変更／追加
+・左右シフトを "h" "l" キーに割り振ってあります。
+  helpは、"H"になります。
+・"i" キーに左右シフトを 0 カラムにもどす機能を付加してあります。
+
+コマンドラインオプションの追加／デフォルトの変更
+・-J オプションで、左右シフトのデフォルト量(8)を変更できます。
+・-A オプションで、行頭から半角換算で指定文字数分だけシフトしない
+  ようにできます。
+・デフォルトで、line chop にしてあります。 -S オプション on の状態。
+・lwp5 以降は、デフォルトで、-c オプションが有効(repaint by line)に
+  なってます。
+・-v オプション指定で、表示を大文字にします。(単なるわがままです。)
+・:uc で、unify を行うかどうかを制御できるようにしました。
+
+機能の追加
+・シフトはcolumn 単位になってます。半欠けの漢字などは、blank に置き換えて
+  表示されます。
+・prompt に シフト量を表示できるように、%c を追加してあります。
+・LESW の環境変数を認識しますから、本来のless と異なる設定は、LESW に
+  指定できます。
+・lwp5 からは、処理の高速化のために、shellcmd 関数で、defaultでは、新しい
+  shell を生成しないようになりました。
+  生成するようにする場合には LESW_CALL_NEW_SHELL を define.h 内で 1 に
+  define してください。
+
+
+＊＊＊＊＊＊ leswの歴史 ＊＊＊＊＊＊＊
+・lw patch とは
+less330 にlesw/lv の機能と操作性を求めて作られたパッチです。
+でも、日本語化は、かずし氏の iso2022 化patchに全面的に依存しています。
+現在は、iso2022化patchがless332に移行したため、less332に対応したものに
+なってます。
+よって、less332 にiso2022 化のpatch を当てた上で、このpatch をあてる
+ようになってます。
+
+  本 patch は、less-321 に左右シフトの機能が導入されているのを見つけて、
+lesw の実装が楽かもしれないと思い立って作成をはじめたものです。
+当時は、less-321 に対するiso patch がなかったので、less-290 用の
+iso patch をむりやり当てていました。
+  そうこうしているうちに、less-330が出たので早速乗り換え、
+かずし氏から、新iso patch が出ると早速対応するといった過程を経て
+現在にいたります。
+
+  lw とは、一応、lesw を略してlw と称しているのですが、現状では、
+作者の「わがまま」がいっぱい入っているため、l(ess-)w(agamama) patch の
+略という噂もあったりします。
+less-290ベースのleswと区別するときは、lwを用います。
+(less-237,290をベースとしたバージョンのleswとは作者が異なります)
+
+
+・lesw(less-wide だったらしい) とは
+もともとは、less に "h" "l" キーによる左右移動の機能をつけたものです。
+less-237 がベースでしたが、less-290 をベースにしたものもあります。
+
+・lv(list-viewer という噂)とは
+lesw 同様左右シフトができるのですが、行頭の 8 columnだか 10 column だかの
+表示が変化しないようになっています。program list など左はしにアドレス等が
+あるリストを表示するのに重宝したといわれています。
+less-237 がベースです。lesw の作者により、less-290 ベースに移植されたものも
+あるらしいです。
+
+
+-------< history >-----------
+lwp9k	4/05/98 lesw patch 9k for iso241.
+			Makefile.in/man を修正。
+lwp9j	4/04/98 lesw patch 9j for iso241.
+			:uc をhelpに追加。
+lwp9i	4/03/98 lesw patch 9i for iso241.
+			:ucで、unify機能を変更したときに、画面のhiliteも
+			変更に即時追従するようにした。
+lwp9h	3/31/98 lesw patch 9h for iso240.
+			半角英数と全角英数を区別したいという要望があったので、
+			unify をoffにできるようにした。:uc の入力で
+			unify 機能の有効／無効の制御に移行できる。
+lwp9g   3/28/98 lesw patch 9g for iso240. 
+		 	regexec_cs.c:
+			  wordboundary の検出をすこしマトモにした。
+			search.c:
+			  LESW_HAT_PATTERN のコードを外し、かわりに、
+			  行の中間から検索を再開する場合には、REG_NOTBOLを
+			  セットするようにした。
+			  charset = NULL で、regexec_csを呼び出すことが
+			  あったので、search_range()のcharsetのサイズを
+			  決定する部分を変更。
+lwp9f   3/28/98 lesw patch 9f for iso240. 
+			  除算と剰余の計算を減らす。(regex_cs.c)
+lwp9e   3/28/98 lesw patch 9e for iso240. 
+			      regex_cs.c のコードの一部見直し。また、p9dで、
+			      JISX201が検索できなくなっていたのを修正。
+lwp9d   3/27/98 lesw patch 9d for iso240. 
+			      regex_cs.c から、chcmp_csとunifyを呼ぶのをやめた。
+			      patternの長さを調べるのにstrlen でなくて、
+			      strlen_csを使うように変更。
+lwp9b   3/18/98 lesw patch 9b for iso237 with new regex_cs.
+lwp9a   3/15/98 lesw patch 9a for iso235 with new regex_cs(prototype).
+lwp9    3/11/98 lesw patch 9  for iso232.
+lwp8-f  1/29/98 lesw patch 8f clean up pshift() in line.c
+lwp8-e  1/17/98 lesw patch 8e Makefiles.inにlesw/leswecho/leswkeyを作成する
+			      ためのエントリ追加。difines.inにLESW_ECHO追加。
+lwp8-d 12/08/97 lesw patch 8d for iso222/iso224.
+lwp8-c  7/29/97 lesw patch 8c some clean ups.
+lwp8-b  7/20/97 lesw patch 8b search.c normalize_txt interface change.
+                              コンパイル時に "junk pointer"とかいわないように
+			      変更した。 
+lwp8-a  6/26/97 lesw patch 8a regbuf のcharset をreallocate する際に
+                              サイズをまちがえていたのを修正。 
+lwp8         97 lesw patch 8  regbuf にcharset をいれて動くようになった。
+lwp7-c  5/05/97 lesw patch 7c re_match_csとreg_compileの双方でcharsetを
+			      使用する場合には、半角かなのMSBを立てるように
+			      した。
+lwp7-b  5/05/97 lesw patch 7b reg_compile にcharset を通るようにした。
+lwp7-a  5/01/97 lesw patch 7a search with no_regex では、charset のmatchも
+			      見るようにした。また、半角かなについては、
+			      search pattern と line の中身を同じにした。
+			      半角かなは、これにより正規表現検索では、
+			      ASCIIコードの領域にはいるのでmatchが不正確に
+			      なった。
+lwp7    4/29/97 lesw patch 7  lwp6-kの機能で、LESW,LESW_MBE,LESW_HAT_PATTERN
+			      のdefine 値を独立に設定できるように修正。
+			      また、マルチバイト拡張がかかっていることを
+			      version情報で確認できるようにした。
+lwp6-k  4/25/97 lesw patch 6k " *$"という正規表現でsearch をかけると、
+			      core dump してしまうのを修正。(regex.c)
+lwp6-i  4/17/97 lesw patch 6i search.c の match() 関数が charsets を使うように
+			      した。正規表現なしのsearch では、"^"つきの
+			      pattern だという情報をクリアするように修正。
+lwp6-h  4/17/97 lesw patch 6h LESW_HAT_PATTERN の定義を追加。less のバグである
+			      "^." のような、先頭に"^"のある正規表現が誤動作
+			      する問題を修正するコードを追加する。
+                              LESW_MATCH_WITH_CS を追加。regex.c 中で
+                              re_match_cs 関数がcharset 情報を利用する。
+lwp6-g  4/14/97 lesw patch 6g LESW_FAKE_REGEX の定義を追加。一時しのぎの
+			      コード。
+lwp6-ef 4/12/97 lesw patch 6e/6f help.c の作りを変えた。
+lwp6-d  4/12/97 lesw patch 6d search_range で cvt_textを二重に呼んでたのを
+			      直した。
+lwp6-c  4/11/97 lesw patch 6c hilite searchで、無限ループするバグを修正。
+lwp6-b  4/11/97 lesw patch 6b regex.cの中から defines.h を参照するようにした。
+                              remove re_comp/re_exec func from regex.c
+lwp6-a  4/11/97 lesw patch 6a now hilte_line uses charset.
+lwp6    4/11/97 lesw patch 6 included gawk-2.15.6 multi byte extended 
+                             ujis regex library 
+lwp5    3/31/97 lesw patch 5 shellcmd option do not use new shell,
+                             repaint by lines is new default
+lwp4    3/11/97 lesw patch 4 add uppercase display function 
+lwp3    3/09/97 lesw patch 3 core dumps at JISX0212KANJISUP 
+                in convert_to_ujis of multi.c is fixed.
+                iso216 以降にはlwp2->lwp3 の変更はiso patch に入っている。
+lwp2    2/19/97 lesw patch 2 lesw core dump is fixed.
+lwp1    1/25/97 lesw patch 1 ujis/sjis priority re-init for cmdbuf
+lwp0   12/24/96 lesw patch 0 lesw330.patch3 を引き継いでlw シリーズに
+                変更。iso2022 patch が、iso208 に変貌したのに対応
+                した。
+
+lesw330.patch3 一部のkterm/xterm がLINES/COLUMNSの環境変数をセットするため、
+               sc_height/sc_width の評価に環境変数を優先するようになった
+               less-330では、window resize が反映されないので、評価順を
+               less-321のように戻した。
+
+lesw330.patch2 -Z option 更新時に first_ujis の値を初期化するようにして、
+               -Z をつけて起動したときに、先頭のSJIS半角かなが化けるのを
+               ふせいだ。
+
+lesw330.patch1 かずしさんの less-330のiso2022化パッチを参考にして、
+               line.c内のpshift関数で、pwidth 関数を使うようにして
+               見ためのカラム数との一致をとれるようにした。
+
+lesw330.patch  less-330 をベースに変更した。
+               prompt で、%c で、現在のシフト値を表示できるようにした。
+               これにあわせて、LESWの環境変数を理解するようにした。
+               LESS -> LESW の順に評価するので、LESW用に上書き可能。
+
+lesw.p8.patch  Z オプションのデフォルト値をSJIS_PREのdefineで変更できる
+               ようにした。p8では、デフォルトは、SJIS_PREを0にしている。
+               よって、デフォルトではp6と同じ判定をする。
+
+lesw.p7.patch  Z オプション追加。このオプションはJP patchの SJIS_PRE
+               判定の定義を変更するものです。デフォルトはSJIS_PREの
+               設定を有効にして、SJISっぽいものは全部SJISとみなします。
+
+lesw.p6.patch  A オプションに負の数を指定すると表示が変になるので、
+               負の数の時には 0 を指示したものとして扱うようにした。
+               J オプションを追加して左右のシフト量を 8 以外に変更
+               できるようにした。
+
+lesw.p5.patch  less.hlp に A オプションを記述。
+
+lesw.p4.patch  行頭の n byte char を固定的に表示する機能を追加した。
+               コマンドライン オプション A で固定する byte 数を指示する
+               ようにした。
+
+lesw.p3.patch  WRONG_CHAR の扱いが変だったので、
+               less-290-iso2.pl2のあたったless と同じようになるように
+               patch を追加した。
+
+lesw.p2.patch  less-290 用の less-290-iso2.pl1 を
+               less-321 にあてて、lesw 化した。
+               less-321 の ESC-[ を h, ESC-] を l に割り振り
+               i キーで、シフト量を 0 にもどすようにした。
+---
+渥美 <hfh03650@niftyserve.or.jp>

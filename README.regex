@@ -1,0 +1,38 @@
+=========================================================================
+    This is the distribution of a regex_cs library for a enhanced less.
+    It support a regular expression with character set detection.
+    Please report any problems of it to me, jam@pobox.com, or the author
+    at HFH03650@niftyserve.or.jp.
+=========================================================================
+
+
+**Features**
+
+ - Support a regular expression with character set detection.
+
+**How to use**
+
+ 1. Extract this at directory which contains less-332-iso233 and
+    following.
+ 2. Do "./configure --with-cs-regex" to copmile less with this, a
+    regular expression library with character set detection.
+ 3. Compile less.
+
+**History about this regular expression library**
+
+ - It is a GNU regex library version 0.12 originally.
+ - Tanimoto-san changed gawk-2.15.6 and its regex library to support
+   multi bytes Japanese codes.  You can take a patch named
+   "gawk-2.15.6-mb1.04.diff.gz" from anonymous ftp.
+ - Atsumi-san changed its regex library to support character sets and
+   made other changes for less-332-iso241.  You can take a patch for
+   less named "lw332i241p9k.patch.gz" from anonymous ftp.
+ - I picked only regex_cs.h, regex_cs.c and other files from it for
+   easy using of a regular expression library with character set
+   detection only.
+
+
+Local Variables:
+mode: indented-text
+fill-column: 70
+End:
