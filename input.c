@@ -57,10 +57,8 @@ forw_line(curr_pos)
 	int blankline;
 	int endline;
 #if ISO
-	char *cbuf;
-	CHARSET *csbuf;
-	int i;
-	POSITION pos;
+	MULBUF* mp = get_mulbuf(curr_ifile);
+	M_BUFDATA mbd;
 	int ret;
 #endif
 
@@ -90,7 +88,7 @@ forw_line(curr_pos)
 	prewind();
 	plinenum(curr_pos);
 #if ISO
-	multi_start_buffering(get_mulbuf(curr_ifile), curr_pos);
+	multi_start_buffering(mp, curr_pos);
 #endif
 	(void) ch_seek(curr_pos);
 
@@ -112,8 +110,8 @@ forw_line(curr_pos)
 		if (c == '\n' || c == EOI)
 		{
 #if ISO
-			multi_buffering(get_mulbuf(curr_ifile), -1, NULL, &cbuf, &csbuf, &i, &pos);
-			ret = pappend_multi(cbuf, csbuf, i, pos);
+			multi_flush(mp, &mbd);
+			(void) pappend_multi(&mbd);
 #endif
 			/*
 			 * End of the line.
@@ -127,9 +125,8 @@ forw_line(curr_pos)
 		 * Append the char to the line and get the next char.
 		 */
 #if ISO
-		pos = ch_tell() - 1;
-		multi_buffering(get_mulbuf(curr_ifile), c, &pos, &cbuf, &csbuf, &i, &pos);
-		ret = pappend_multi(cbuf, csbuf, i, pos);
+		multi_parse(mp, c, ch_tell()-1, &mbd);
+		ret = pappend_multi(&mbd);
 #else
 		ret = pappend(c, control_char(c) ? WRONGCS : ASCII, 1, ch_tell()-1);
 #endif
@@ -146,11 +143,10 @@ forw_line(curr_pos)
 				c = ch_forw_get();
 				while (c != '\n' && c != EOI)
 				{
-					multi_parsing(get_mulbuf(curr_ifile),
-						      c);
+					multi_parse(mp, c, NULL_POSITION, NULL);
 					c = ch_forw_get();
 				}
-				multi_parsing(get_mulbuf(curr_ifile), -1);
+				multi_discard(mp);
 #else
 				do
 				{
@@ -163,8 +159,8 @@ forw_line(curr_pos)
 			} else
 			{
 #if ISO
-				multi_parsing(get_mulbuf(curr_ifile), -1);
-				new_pos = pos;
+				multi_discard(mp);
+				new_pos = mbd.pos;
 #else
 				new_pos = ch_tell() - 1;
 #endif
@@ -212,10 +208,8 @@ back_line(curr_pos)
 	int c;
 	int endline;
 #if ISO
-	char *cbuf;
-	CHARSET *csbuf;
-	int i;
-	POSITION pos;
+	MULBUF* mp = get_mulbuf(curr_ifile);
+	M_BUFDATA mbd;
 	int ret;
 #endif
 
@@ -319,7 +313,7 @@ back_line(curr_pos)
 	prewind();
 	plinenum(new_pos);
 #if ISO
-	multi_start_buffering(get_mulbuf(curr_ifile), new_pos);
+	multi_start_buffering(mp, new_pos);
 #endif
 	(void) ch_seek(new_pos);
 
@@ -335,23 +329,22 @@ back_line(curr_pos)
 		if (c == '\n')
 		{
 #if ISO
-			multi_buffering(get_mulbuf(curr_ifile), -1, NULL, &cbuf, &csbuf, &i, &pos);
-			ret = pappend_multi(cbuf, csbuf, i, pos);
+			multi_flush(mp, &mbd);
+			(void) pappend_multi(&mbd);
 #endif
 			endline = TRUE;
 			break;
 		}
 #if ISO
-		pos = ch_tell() - 1;
-		multi_buffering(get_mulbuf(curr_ifile), c, &pos, &cbuf, &csbuf, &i, &pos);
-		ret = pappend_multi(cbuf, csbuf, i, pos);
+		multi_parse(mp, c, ch_tell()-1, &mbd);
+		ret = pappend_multi(&mbd);
 #else
 		ret = pappend(c, control_char(c) ? WRONGCS : ASCII, 1, ch_tell()-1);
 #endif
 		if (ret != 0)
 		{
 #if ISO
-			multi_parsing(get_mulbuf(curr_ifile), -1);
+			multi_discard(mp);
 #endif
 			/*
 			 * Got a full printable line, but we haven't
@@ -366,9 +359,9 @@ back_line(curr_pos)
 			}
 #if ISO
 			pdone(0);
-			i = ch_tell() - pos;
-			new_pos -= i;
-			while (--i >= 0)
+			ret = ch_tell() - mbd.pos;
+			new_pos -= ret;
+			while (--ret >= 0)
 				ch_back_get();
 #else
 			pdone(0);
@@ -379,7 +372,7 @@ back_line(curr_pos)
 		}
 	} while (new_pos < curr_pos);
 #if ISO
-	multi_parsing(get_mulbuf(curr_ifile), -1);
+	multi_discard(mp);
 #endif
 
 	pdone(endline);

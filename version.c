@@ -745,9 +745,12 @@ iso257 9/4/05	Fixed problems caused by merge.
 		Fixed JIS X 0213:2000 related problems.  Thanks to Takeshi
 		WATANABE.  Also, fixed a problem reported by him.  Less will
 		not split one wrong multi-byte character into different lines
-		even it is not fit in first line.  Less moves entire text to
-		represent the character into second line.
+		even if it is not fit in first line.  Less moves entire text
+		to second line.
 iso258 9/4/05	Joined with less-382.
+iso259 9/6/05	Changed an algorithm to detect the gap of parsing input stream.
+		This fixed a problem on long JIS/English text.
+		Fixed '\r' problem.
 */
 
-char version[] = "382+iso258";
+char version[] = "382+iso259";

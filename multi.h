@@ -26,6 +26,31 @@
 
 
 /*
+ * The design of data structure of jless
+ *
+ * We use char[] byte data and CHARSET[] character set data to represent
+ * multilingual text.  We defined CHARSET following ISO 2022 technique.
+ * All characters represented in ISO 2022 can be stored in less without
+ * any destructive conversion.
+ *
+ * For example, less can read text files using JIS C 6226-1978, JIS X
+ * 0208-1983, and JIS X 0208:1990 character sets and output everything
+ * using their original character set while searching a character encoded
+ * by JIS X 0213:2004.  Inside of less, it buffers all text files using
+ * their original character set, unifies them when matching with the
+ * searching character, and outputs using their original character sets.
+ *
+ * If less needs conversions when it outputs internal data, it converts
+ * them on the fly.
+ *
+ * On the other hand, text using SJIS or UJIS are buffered after
+ * conversion while less is reading input stream.
+ *
+ * In addition, UTF-8 is buffered as UTF-8.  Less converts it to appropriate
+ * character set/sets on the fly. (UTF-8 is notimplemented yet).
+ */
+
+/*
  * Definition of values to specify the character set.
  * And definitions some well known character sets and a types of set.
  */
@@ -108,6 +133,36 @@ typedef unsigned short CHARSET;
 #define HEBREW			(TYPE_96_CHARSET | FT2CS('H'))
 #define CYRILLIC		(TYPE_96_CHARSET | FT2CS('L'))
 #define LATIN5			(TYPE_96_CHARSET | FT2CS('M'))
+/*
+ * JISX0208_78KANJI means JIS C 6226-1978 (called JIS X 0208-1978)
+ * JISX0208KANJI means JIS X 0208-1983 (same as JIS C 6226-1983)
+ *   This is similar to JIS C 6226-1978.  Several characters are moved
+ *   or exchanged in code space.  Conversion table is available in unify.c.
+ * JISX0208_90KANJI means JIS X 0208:1990 (same as JIS X 0208-1990)
+ *   This is super set of JIS X 0208-1983.  Two characters are added from
+ *   JIS X 0208-1983.  In addition, this covers JIS X 0208:1997 too.
+ *   They have the same code space.  The difference between them is
+ *   historical description.  JIS X 0208:1997 defines ans describes
+ *   all characters.
+ * JISX0213KANJI1 means JIS X 0213:2000 plane 1
+ *   This is super set of JIS X 0208:1990 and JIS X 0208:1997.  Several
+ *   characters are added.
+ * JISX02132004KANJI1 means JIS X 0213:2004 plane 1
+ *   This is super set of JIS X 0213:2000.  10 characters are added.
+ *   And, glyph of several characters is modified.
+ *
+ * JISX0212KANJISUP means JIS X 0212:1990 (same as JIS X 0212-1990)
+ * JISX0213KANJI2 means JIS X 0213:2000 plane 1
+ * JISX02132004KANJI2 means JIS X 0213:2004 plane 1
+ *
+ * JISX0201KANA means JIS X 0201:1976 right plane (same as JIS X 0201-1976
+ * and JIS C 6220-1976 right plane)
+ * JISX0201ROMAN means JIS X 0201:1976 left plane (same as JIS X 0201-1976
+ * and JIS C 6220-1976 left plane)
+ *   These cover JIS X 0201:1997 too.  They have the same code space.
+ *   The difference between them is historical description.
+ *   JIS X 0201:1997 defines ans describes all characters.
+ */
 #define JISX0208_78KANJI	(TYPE_94N_CHARSET | FT2CS('@'))
 #define GB2312			(TYPE_94N_CHARSET | FT2CS('A'))
 #define JISX0208KANJI		(TYPE_94N_CHARSET | FT2CS('B'))
@@ -116,14 +171,29 @@ typedef unsigned short CHARSET;
 #define JISX0212KANJISUP	(TYPE_94N_CHARSET | FT2CS('D'))
 #define JISX0213KANJI1		(TYPE_94N_CHARSET | FT2CS('O'))
 #define JISX0213KANJI2		(TYPE_94N_CHARSET | FT2CS('P'))
+#define JISX02132004KANJI1	(TYPE_94N_CHARSET | FT2CS('Q'))
+#define JISX02132004KANJI2	(TYPE_94N_CHARSET | FT2CS('P'))
 #if JAPANESE
 /*
  * Special number for Japanese code set.  Only input_set use following with
- * above definitions.  The 07/15 is not valid for F.  Thus I use it to
- * indicate the special character sets.
+ * above definitions.  The 07/15 or 07/14 are not valid for F.  So, we are
+ * using them as indications of special character sets.
+ *
+ * SJIS contains ASCII, JIS X 0201:1976 right plane, and JIS X 0208:1997
+ * UJIS contains ASCII, JIS X 0201:1976, and JIS X 0208:1997
+ * SJIS2000 contains ASCII, JIS X 0201:1976 right plane, and JIS X 0213:2000
+ * UJIS2000 contains ASCII, JIS X 0201:1976, JIS X 0213:2000,
+ * and JIS X 0212:1990
+ * SJIS2004 contains ASCII, JIS X 0201:1976 right plane, and JIS X 0213:2004
+ * UJIS2004 contains ASCII, JIS X 0201:1976, JIS X 0213:2004,
+ * and JIS X 0212:1990
  */
 #define SJIS			(IRR2CS(1) | TYPE_94N_CHARSET | FT_MASK)
-#define UJIS			(IRR2CS(2) | TYPE_94N_CHARSET | FT_MASK)
+#define SJIS2000		(IRR2CS(2) | TYPE_94N_CHARSET | FT_MASK)
+#define SJIS2004		(IRR2CS(3) | TYPE_94N_CHARSET | FT_MASK)
+#define UJIS			(IRR2CS(1) | TYPE_94N_CHARSET | (FT_MASK-1))
+#define UJIS2000		(IRR2CS(2) | TYPE_94N_CHARSET | (FT_MASK-1))
+#define UJIS2004		(IRR2CS(3) | TYPE_94N_CHARSET | (FT_MASK-1))
 #endif
 #endif
 
@@ -169,18 +239,32 @@ typedef enum {
 	jis,		/* A subset of ISO 2022 */
 		/*
 		 * It may contain JIS C 6226-1978, JIS X 0208-1983, 
-		 * JIS X 0208:1990/1997, JIS X 0212:1990, JIS X 0213:2000,
-		 * JIS X 0201:1976/1997 left/right planes, and ASCII as input.
+		 * JIS X 0208:1990/1997, JIS X 0212:1990,
+		 * JIS X 0213:2000/2004, JIS X 0201:1976/1997 left/right
+		 * planes, and ASCII.
 		 *
-		 * In the case of output, this means all JIS C 6226-1978,
-		 * JIS X 0208-1983, JIS X 0208:1990/1997, and JIS X 0213:2000
-		 * are converted into JIS X 0208-1983 encode with an assumption
-		 * that character set of JIS X 0208-1983 encode is
-		 * JIS X 0213:2000.  And JIS X 0212:1990 and 2nd plane of
-		 * JIS X 0213:2000 are rejected when output.
+		 * If less is specified to use "jis" as its encoding scheme
+		 * for input stream, less accepts all above character sets.
+		 * e.g. jis-ujis or jis-sjis in JLESSCHARSET.
 		 *
-		 * If you need the same code as the output, please use iso7
-		 * or iso8.
+		 * If less is specified to use "jis" as its encoding scheme
+		 * for output stream, less outputs all characters in
+		 * JIS C 6226-1978 as JIS X 0208-1983 with conversion
+		 * and all other characters in JIS X 0208:1990/1997,
+		 * and JIS X 0213:2000/2004 plane 1 using JIS X 0208-1983
+		 * (ESC$B) encoding scheme without any conversion.
+		 * Less doesn't convert here with a hope that an output
+		 * device may use JIS X 0213:2004 plane 1 character set
+		 * as its glyph.
+		 * e.g. iso7-jis or ujis-jis in JLESSCHARSET.
+		 *
+		 * In addition, less rejects JIS X 0212:1990 and JIS X
+		 * 0213:2000 plane 2 if "jis" is specified as its encoding
+		 * scheme for output stream.
+		 * e.g. jis or ujis-jis in JLESSCHARSET.
+		 *
+		 * If you need to use JIS X 0213:2004 or any other character
+		 * sets as the output, please use iso7 or iso8.
 		 */
 	iso7,		/* A code set which is extented by iso2022 */
 	/* code sets for only right plane */
@@ -192,6 +276,15 @@ typedef enum {
 	iso8		/* A code set which is extented by iso2022 */
 } CODESET;
 
+/*
+ * A structure used as a return value in multi_parse().
+ */
+typedef struct {
+	char *cbuf;
+	CHARSET *csbuf;
+	int byte;
+	POSITION pos;
+} M_BUFDATA;
 
 /*
  * struct multibuf is internal data structure for multi.c.
@@ -209,12 +302,13 @@ extern void init_def_priority ();
 extern void init_priority ();
 extern CODESET get_priority ();
 extern void set_priority ();
-extern MULBUF * new_multi ();
-extern void clear_multi ();
-extern void init_multi ();
-extern void multi_start_buffering ();
-extern void multi_buffering ();
-extern void multi_parsing ();
+extern MULBUF * new_multibuf ();
+extern void clear_multibuf ();
+extern void init_multibuf ();
+extern void multi_start ();
+extern void multi_parse ();
+extern void multi_flush ();
+extern void multi_discard ();
 extern void set_codesets ();
 extern char * get_icharset_string ();
 extern char * outchar();

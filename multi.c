@@ -52,8 +52,7 @@ extern void* ecalloc ();
 
 #if ISO
 
-static void reject_first_byte();
-static void rebuffering_multi();
+static void multi_reparse();
 
 
 #if JAPANESE
@@ -170,8 +169,25 @@ struct multibuf {
     int icharset;		/* Last non ASCII character set of input */
 
     /*
-     * Buffers to keep all bytes of a multi-bytes character until it is
-     * proved to be right sequence.
+     * Small buffers to hold all parsing bytes of multi-byte characters.
+     *
+     * multi_parse() function receive a sequence of byte and buffer it.
+     * Each time multi_parse() recognize full data sequence to represent
+     * one character, it converts the data into internal data and returns
+     * converted data.
+     *
+     * Caller must buffer it somewhere and output it using outbuf() of
+     * outchar().  Those output functions() converts internal data into
+     * appropriate data stream for choosen output device.
+     *
+     * As internal data, we use char[] and CHARSET[] to keep byte and
+     * additional information, respectively.  We choose ISO-2022 style
+     * data format as our internal data format because it is most easy
+     * to work with.  It has completely separated planes for each
+     * character set.  This helps code conversion and others alot.
+     * For example, we don't need to work to separate Chinese and
+     * Japanese because they are separated from the beginning in ISO-2022
+     * although UTF-8 uses only single plane with all CJK character sets.
      */
     /*
      * Buffer for input/parsing
@@ -179,18 +195,22 @@ struct multibuf {
     m_position lastpos;		/* position of last byte */
     m_position startpos;	/* position of first byte buffered */
     unsigned char inbuf[20];
+    m_position laststartpos;	/* position of first byte buffered last time */
+    int lastsg;			/* last single-shifted plane (ms->sg) */
     /*
-     * Second buffer.
-     * All recognized data is buffered with character set tag.
+     * Buffer for internalized/converted data
      */
-    unsigned char multiint[10];	/* Buffer for recognized data */
-    CHARSET multics[10];	/* Buffer for character set marks */
+    unsigned char multiint[10];	/* Byte data */
+    CHARSET multics[10];	/* Character set data (no UJIS/SJIS/UTF */
+				/* because all of them are converted into */
+				/* internal data format) */
     int intindex;		/* Index of multiint */
-    m_position lastesqpos;	/* Last escape sequence position */
-				/* (point FIN char) */
 };
 
 #define INBUF(mp)	((mp)->inbuf[(mp)->lastpos%sizeof((mp)->inbuf)])
+#define INBUF0(mp)	((mp)->inbuf[(mp)->startpos%sizeof((mp)->inbuf)])
+#define INBUF1(mp)	((mp)->inbuf[((mp)->startpos+1)%sizeof((mp)->inbuf)])
+#define INBUF2(mp)	((mp)->inbuf[((mp)->startpos+2)%sizeof((mp)->inbuf)])
 #define INBUFI(mp,i)	((mp)->inbuf[(i)%sizeof((mp)->inbuf)])
 
 static int code_length(mp, cs)
@@ -207,13 +227,13 @@ CHARSET cs;
 #if JAPANESE
     switch (CS2CHARSET(cs)) {
     case UJIS:
-	c = INBUFI(mp, mp->startpos);
+	c = INBUF0(mp);
 	if (ISUJISKANJI1(c)) return 2;
 	if (ISUJISKANA1(c)) return 2;
 	if (ISUJISKANJISUP1(c)) return 3;
 	return 1;
     case SJIS:
-	c = INBUFI(mp, mp->startpos);
+	c = INBUF0(mp);
 	if (ISSJISKANJI1(c)) return 2;
 	if (ISSJISKANA(c)) return 1;
 	return 1;
@@ -247,7 +267,7 @@ CHARSET cs;
 static void noconv1(mp)
 MULBUF *mp;
 {
-    mp->multiint[mp->intindex] = INBUFI(mp, mp->startpos);
+    mp->multiint[mp->intindex] = INBUF0(mp);
     mp->multics[mp->intindex] = ASCII;
     mp->intindex++;
     mp->startpos++;
@@ -260,7 +280,7 @@ MULBUF *mp;
 static void wrongcs1(mp)
 MULBUF *mp;
 {
-    mp->multiint[mp->intindex] = INBUFI(mp, mp->startpos);
+    mp->multiint[mp->intindex] = INBUF0(mp);
     mp->multics[mp->intindex] = WRONGCS;
     mp->intindex++;
     mp->startpos++;
@@ -362,7 +382,7 @@ MULBUF *mp;
 		wrongcs1(mp);
 	    } else {
 		wrongcs1(mp);
-		rebuffering_multi();
+		multi_reparse(mp);
 	    }
 	    return;
 	} else if ((c & 0x7f) == 0x20) {
@@ -374,7 +394,7 @@ MULBUF *mp;
 		noconv1(mp);
 	    } else {
 		wrongcs1(mp);
-		rebuffering_multi();
+		multi_reparse(mp);
 	    }
 	    return;
 	}
@@ -415,7 +435,7 @@ MULBUF *mp;
 	     */
 	wrongchar(mp);
 	mp->startpos = pos;
-	rebuffering_multi(mp);
+	multi_reparse(mp);
     }
 }
 
@@ -430,15 +450,15 @@ MULBUF *mp;
     if (mp->lastpos - mp->startpos + 1 == 1) {
 	/* do nothing */
     } else if (mp->lastpos - mp->startpos + 1 == 2) {
-	if (ISUJISKANA(INBUFI(mp, mp->startpos), INBUF(mp))) {
-	    mp->multiint[mp->intindex] = INBUF(mp) & 0x7f;
+	if (ISUJISKANA(INBUF0(mp), INBUF1(mp))) {
+	    mp->multiint[mp->intindex] = INBUF1(mp) & 0x7f;
 	    mp->multics[mp->intindex] = mp->cs;
 	    mp->intindex += 1;
 	    mp->startpos = mp->lastpos + 1;
-	} else if (ISUJISKANJI(INBUFI(mp, mp->startpos), INBUF(mp))) {
-	    mp->multiint[mp->intindex] = INBUFI(mp, mp->startpos);
+	} else if (ISUJISKANJI(INBUF0(mp), INBUF1(mp))) {
+	    mp->multiint[mp->intindex] = INBUF0(mp);
 	    mp->multics[mp->intindex] = UJIS;
-	    mp->multiint[mp->intindex + 1] = INBUF(mp);
+	    mp->multiint[mp->intindex + 1] = INBUF1(mp);
 	    mp->multics[mp->intindex + 1] = REST_MASK | UJIS;
 
 	    /*
@@ -447,9 +467,9 @@ MULBUF *mp;
 	    if (chisvalid_cs(&mp->multiint[mp->intindex],
 			     &mp->multics[mp->intindex])) {
 		/* JIS X 0208:1997 */
-		mp->multiint[mp->intindex] = mp->multiint[0] & 0x7f;
+		mp->multiint[mp->intindex] &= 0x7f;
 		mp->multics[mp->intindex] = mp->cs;
-		mp->multiint[mp->intindex + 1] = mp->multiint[1] & 0x7f;
+		mp->multiint[mp->intindex + 1] &= 0x7f;
 		mp->multics[mp->intindex + 1] = REST_MASK | mp->cs;
 		mp->intindex += 2;
 		mp->startpos = mp->lastpos + 1;
@@ -459,17 +479,16 @@ MULBUF *mp;
 		 */
 		wrongchar(mp);
 		mp->startpos = mp->lastpos + 1;
-		rebuffering_multi(mp);
+		multi_reparse(mp);
 	    }
 	}
     } else if (mp->lastpos - mp->startpos + 1 == 3 &&
-	       ISUJISKANJISUP(INBUFI(mp, mp->startpos),
-			      INBUFI(mp, mp->startpos + 1), INBUF(mp))) {
-	mp->multiint[mp->intindex] = INBUFI(mp, mp->startpos);
+	       ISUJISKANJISUP(INBUF0(mp), INBUF1(mp), INBUF2(mp))) {
+	mp->multiint[mp->intindex] = INBUF0(mp);
 	mp->multics[mp->intindex] = UJIS;
-	mp->multiint[mp->intindex + 1] = INBUFI(mp, mp->startpos + 1);
+	mp->multiint[mp->intindex + 1] = INBUF1(mp);
 	mp->multics[mp->intindex + 1] = REST_MASK | UJIS;
-	mp->multiint[mp->intindex + 2] = INBUF(mp);
+	mp->multiint[mp->intindex + 2] = INBUF2(mp);
 	mp->multics[mp->intindex + 2] = REST_MASK | UJIS;
 
 	/*
@@ -500,19 +519,19 @@ MULBUF *mp;
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 #endif
 	    };
-	    c1 = mp->multiint[1] & 0x7f;
+	    c1 = mp->multiint[mp->intindex + 1] & 0x7f;
 	    if (table[c1] != 0) {
 		/* JIS X 0213:2000 plane 2 */
 		if (output == jis) {
 		    /* JIS cannot output JIS X 0213:2000 plane 2 */
 		    wrongcs1(mp);
-		    rebuffering_multi(mp);
+		    multi_reparse(mp);
 		} else {
 		    mp->multiint[mp->intindex] = c1;
 		    mp->multics[mp->intindex] =
 			    JISX0213KANJI2;
 		    mp->multiint[mp->intindex + 1] =
-			    mp->multiint[2] & 0x7f;
+			    mp->multiint[mp->intindex + 2] & 0x7f;
 		    mp->multics[mp->intindex + 1] =
 			    REST_MASK | JISX0213KANJI2;
 		    mp->intindex += 2;
@@ -523,12 +542,12 @@ MULBUF *mp;
 		if (output == sjis || output == jis) {
 		    /* SJIS cannot output JIS X 0212:1990 */
 		    wrongcs1(mp);
-		    rebuffering_multi(mp);
+		    multi_reparse(mp);
 		} else {
 		    mp->multiint[mp->intindex] = c1;
 		    mp->multics[mp->intindex] = mp->cs;
 		    mp->multiint[mp->intindex + 1] =
-			    mp->multiint[2] & 0x7f;
+			    mp->multiint[mp->intindex + 2] & 0x7f;
 		    mp->multics[mp->intindex + 1] =
 			    REST_MASK | mp->cs;
 		    mp->intindex += 2;
@@ -538,11 +557,11 @@ MULBUF *mp;
 	} else {
 	    wrongchar(mp);
 	    mp->startpos = mp->lastpos + 1;
-	    rebuffering_multi(mp);
+	    multi_reparse(mp);
 	}
     } else {
 	wrongcs1(mp);
-	rebuffering_multi(mp);
+	multi_reparse(mp);
     }
 }
 
@@ -562,10 +581,10 @@ MULBUF *mp;
 	    mp->startpos = mp->lastpos + 1;
 	}
     } else if (mp->lastpos - mp->startpos + 1 == 2 &&
-	       ISSJISKANJI(INBUFI(mp, mp->startpos), INBUF(mp))) {
-	mp->multiint[mp->intindex] = INBUFI(mp, mp->startpos);
+	       ISSJISKANJI(INBUF0(mp), INBUF1(mp))) {
+	mp->multiint[mp->intindex] = INBUF0(mp);
 	mp->multics[mp->intindex] = SJIS;
-	mp->multiint[mp->intindex + 1] = INBUF(mp);
+	mp->multiint[mp->intindex + 1] = INBUF1(mp);
 	mp->multics[mp->intindex + 1] = REST_MASK | SJIS;
 
 	/*
@@ -595,7 +614,7 @@ MULBUF *mp;
 #endif
 	    };
 
-	    c1 = table[INBUFI(mp, mp->startpos) & 0x7f];
+	    c1 = table[INBUF0(mp) & 0x7f];
 	    c2 = INBUF(mp) - ((unsigned char)INBUF(mp) >= 0x80 ? 1 : 0);
 	    c3 = c2 >= 0x9e;
 	    if (c1 < 0x80) {
@@ -614,7 +633,7 @@ MULBUF *mp;
 		if (output == jis) {
 		    /* JIS cannot output JIS X 0213:2000 plane 2 */
 		    wrongcs1(mp);
-		    rebuffering_multi(mp);
+		    multi_reparse(mp);
 		} else {
 		    if (c1 > 0xA0) {
 			/* row 3-4, 13-14, and 79-94 */
@@ -649,11 +668,11 @@ MULBUF *mp;
 	     */
 	    wrongchar(mp);
 	    mp->startpos = mp->lastpos + 1;
-	    rebuffering_multi(mp);
+	    multi_reparse(mp);
 	}
     } else {
 	wrongcs1(mp);
-	rebuffering_multi(mp);
+	multi_reparse(mp);
     }
 }
 #endif
@@ -711,7 +730,7 @@ MULBUF *mp;
 		mp->cs != JISX0208_90KANJI &&
 		mp->cs != JISX0213KANJI1) {
 		wrongcs1(mp);
-		rebuffering_multi(mp);
+		multi_reparse(mp);
 		return;
 	    }
 	    /* UJIS cannot output regular ISO2022 except JIS */
@@ -725,7 +744,7 @@ MULBUF *mp;
 		mp->cs != JISX0213KANJI1 &&
 		mp->cs != JISX0213KANJI2) {
 		wrongcs1(mp);
-		rebuffering_multi(mp);
+		multi_reparse(mp);
 		return;
 	    }
 	    /* SJIS cannot output JISX0212 or ISO2022 */
@@ -738,7 +757,7 @@ MULBUF *mp;
 		mp->cs != JISX0213KANJI1 &&
 		mp->cs != JISX0213KANJI2) {
 		wrongcs1(mp);
-		rebuffering_multi(mp);
+		multi_reparse(mp);
 		return;
 	    }
 
@@ -758,7 +777,7 @@ MULBUF *mp;
 	    if (mp->io.right == japanese) {
 		mp->sequence_counter++;
 		if (mp->sequence_counter % 2 == 1 &&
-		    INBUFI(mp, mp->startpos) != 0xa4) /* ???? */
+		    INBUF0(mp) != 0xa4) /* ???? */
 		{
 		    mp->sequence_counter = 0;
 		}
@@ -790,26 +809,26 @@ MULBUF *mp;
 #endif
     if (c < 0x20) {
 	wrongcs1(mp);
-	rebuffering_multi(mp);
+	multi_reparse(mp);
 	return;
     } else if (mp->cs != ASCII &&
 	       (c <= 0x7f ||
 		(mp->io.right == iso8 && 0xa0 <= c && c <= 0xff))) {
 	if (mp->cs != FINDCS(mp, c)) {
 	    wrongcs1(mp);
-	    rebuffering_multi(mp);
+	    multi_reparse(mp);
 	} else {
 	    internalize_iso(mp);
 	}
 	return;
     } else if (control_char(c)) {
 	wrongcs1(mp);
-	rebuffering_multi(mp);
+	multi_reparse(mp);
 	return;
     }
 #if JAPANESE
     if (mp->lastpos - mp->startpos + 1 == 2) {
-	int c0 = INBUFI(mp, mp->startpos);
+	int c0 = INBUF0(mp);
 	if (mp->priority == sjis && ISSJISKANJI(c0, c)) {
 #if UJIS0213
 	    mp->cs = JISX0213KANJI1;
@@ -875,8 +894,7 @@ MULBUF *mp;
     } else if (mp->lastpos - mp->startpos + 1 == 3 &&
 	       (mp->priority == ujis ||
 		mp->io.right == ujis || mp->io.right == japanese) &&
-	       ISUJISKANJISUP(INBUFI(mp, mp->startpos),
-			      INBUFI(mp, mp->startpos + 1), c)) {
+	       ISUJISKANJISUP(INBUF0(mp), INBUF1(mp), c)) {
 	    mp->cs = JISX0212KANJISUP;
 	    mp->priority = ujis;
 	    mp->icharset = UJIS;
@@ -885,7 +903,7 @@ MULBUF *mp;
     }
 #endif
     wrongcs1(mp);
-    rebuffering_multi(mp);
+    multi_reparse(mp);
 }
 
 /*
@@ -912,7 +930,6 @@ int *plane;
 	    *plane = (mp->ms->irr ? IRR2CS(mp->ms->irr) : 0) | TYPE2CS(type) | FT2CS(c);
 	    mp->ms->irr = 0;
 	    mp->eseq = NOESC;
-	    mp->lastesqpos = mp->lastpos;
 	    return (0);
 	}
     } else if (0x30 <= c && c <= 0x7e) {
@@ -922,7 +939,6 @@ int *plane;
 	*plane = (mp->ms->irr ? IRR2CS(mp->ms->irr) : 0) | TYPE2CS(type) | FT2CS(c);
 	mp->ms->irr = 0;
 	mp->eseq = NOESC;
-	mp->lastesqpos = mp->lastpos;
 	return (0);
     }
     return (-1);
@@ -935,7 +951,6 @@ register int c;
     if (0x40 <= c && c <= 0x7e) {
 	mp->ms->irr = CODE2IRR(c);
 	mp->eseq = NOESC;
-	mp->lastesqpos = mp->lastpos;
 	return (0);
     }
     return (-1);
@@ -1099,7 +1114,6 @@ MULBUF *mp;
 	assert(0);
     }
     if (mp->eseq == NOESC) {
-	mp->lastesqpos = mp->lastpos;
 	fix_status_for_escape_sequence(mp);
 	mp->startpos = mp->lastpos + 1;
 	return (0);
@@ -1110,9 +1124,8 @@ wrong:
 	mp->eseq = NOESC;
 	fix_status_for_escape_sequence(mp);
     }
-    mp->lastesqpos = mp->startpos;
     wrongcs1(mp);
-    rebuffering_multi(mp);
+    multi_reparse(mp);
     return (0);
 wrongone:
     assert(mp->eseq == NOESC);
@@ -1157,7 +1170,7 @@ register char *name;
 	    break;
 	}
     }
-    mp = new_multi();
+    mp = new_multibuf();
     init_priority(mp);
     while (*name) {
 	if (*name == '\\' &&
@@ -1239,7 +1252,7 @@ CODESET pri;
 #endif
 }
 
-MULBUF *new_multi()
+MULBUF *new_multibuf()
 {
     MULBUF *mp = (MULBUF*) ecalloc(1, sizeof(MULBUF));
     mp->io.left = def_left;
@@ -1248,15 +1261,17 @@ MULBUF *new_multi()
     mp->rotation_io_right = 0;
     mp->eseq = NOESC;
     mp->ms = (struct m_status*) ecalloc(1, sizeof(struct m_status));
-    init_multi(mp);
+    init_multibuf(mp);
     return (mp);
 }
 
-void clear_multi(mp)
+void clear_multibuf(mp)
 MULBUF *mp;
 {
     mp->lastpos = M_NULL_POS;
     mp->startpos = 0;
+    mp->laststartpos = 0;
+    mp->lastsg = WRONGPLANE;
     mp->intindex = 0;
 }
 
@@ -1273,24 +1288,20 @@ struct m_status *ms;
     ms->irr = 0;
 }
 
-void init_multi(mp)
+void init_multibuf(mp)
 MULBUF *mp;
 {
-#if 0
-    fprintf(stderr, "init_multi: %d, %d, %d, %d, %d, %d\n", mp->startpos, mp->lastpos, mp->lastesqpos);
-#endif
-    if (mp->eseq != NOESC) {
-	mp->eseq = NOESC;
-	fix_status_for_escape_sequence(mp);
-    }
     mp->cs = ASCII;
     init_ms(mp->ms);
+    if (mp->eseq != NOESC) {
+	mp->eseq = NOESC;
+    }
+    fix_status_for_escape_sequence(mp);
 #if JAPANESE
     mp->sequence_counter = 0;
 #endif
     mp->icharset = ASCII;
-    clear_multi(mp);
-    mp->lastesqpos = M_NULL_POS;
+    clear_multibuf(mp);
 }
 
 /*
@@ -1314,9 +1325,12 @@ MULBUF *mp;
      * If a character was detected in internalize(),
      * clean sg since single shift affect only one character.
      */
-    if (last_startpos != mp->startpos && mp->ms->sg != WRONGPLANE) {
-	mp->ms->sg = WRONGPLANE;
-	fix_status_for_escape_sequence(mp);
+    if (last_startpos != mp->startpos) {
+	mp->lastsg = mp->ms->sg;
+	if (mp->ms->sg != WRONGPLANE) {
+	    mp->ms->sg = WRONGPLANE;
+	    fix_status_for_escape_sequence(mp);
+	}
     }
 }
 
@@ -1327,7 +1341,7 @@ MULBUF *mp;
  * We firstly take out the first byte of buffered data before we call
  * this function.  This routine parse all rest of buffered data again.
  */
-static void rebuffering_multi(mp)
+static void multi_reparse(mp)
 MULBUF *mp;
 {
     m_position to;
@@ -1389,19 +1403,22 @@ m_position pos;
 
 	lpos = ch_tell();
 
-	while (lpos < pos) {
-	    c = ch_forw_get();
-	    assert(c != EOI && c != '\n');
-	    multi_parsing(mp, c);
-	    lpos++;
+	if (lpos != pos) {
+	    while (lpos < pos) {
+		c = ch_forw_get();
+		assert(c != EOI && c != '\n');
+		multi_parse(mp, c, NULL_POSITION, NULL);
+		lpos++;
+	    }
+	    ch_seek(pos);
 	}
-	ch_seek(pos);
     }
 }
 #endif
 
-#if 0
-int debug;
+#define DEBUG 0
+#if DEBUG
+int debug = 1;
 #endif
 
 /*
@@ -1411,49 +1428,64 @@ void multi_start_buffering(mp, pos)
 MULBUF *mp;
 m_position pos;
 {
-#if 0
-    if (pos == 1562)
-    debug = 1;
-#endif
-/* 	fprintf(stderr, "%d, %d, %d, %d, %d, %d, %d, %d\n", pos, mp->lastpos, mp->startpos, mp->lastesqpos); */
-    if (pos != mp->lastpos + 1) {
-#if 0
-	fprintf(stderr, "%d, %d, %d, %d, %d, %d, %d, %d\n", pos, mp->lastpos, mp->startpos, mp->lastesqpos);
-	fprintf(stderr, "oct %o, %o, %o, %o, %o, %o, %o, %o\n", pos, mp->lastpos, mp->startpos, mp->lastesqpos);
-#endif
-	assert(mp->lastpos < mp->startpos);
-	if (pos <= mp->lastpos && pos > mp->lastesqpos) {
-	    clear_multi(mp);
-	} else {
-	    init_multi(mp);
-#if LESS
-	    multi_find_cs(mp, pos);
-	    clear_multi(mp);
-#endif
+    /* buffer must be empty */
+    assert(mp->lastpos < mp->startpos);
+
+    /* initialize m_status if it is necessary */
+    if (pos == mp->lastpos + 2 || pos == mp->laststartpos) {
+	/*
+	 * pos == mp->lastpos+2 if this line is started after \n.
+	 * pos == mp->laststartpos if this line is started by a non-fit
+	 * character.
+	 */
+	/* restore backed up sg */
+	if (mp->ms->sg != mp->lastsg) {
+	    mp->ms->sg = mp->lastsg;
+	    fix_status_for_escape_sequence(mp);
 	}
+	/* adjust pointers */
+	mp->startpos = pos;
+	mp->lastpos = pos - 1;
     } else {
-	/* Nothing to do */
+	/*
+	 * pos == somewhere else if this function is called after jump_loc().
+	 */
+#if DEBUG
+	if (debug) {
+	    fprintf(stderr, "%qd, %qd, %qd, %qd\n", pos, mp->lastpos,
+		mp->startpos, mp->laststartpos);
+	    fprintf(stderr, "oct %qo, %qo, %qo, %qo\n", pos, mp->lastpos,
+		mp->startpos, mp->laststartpos);
+	}
+#endif
+	init_multibuf(mp);
+#if LESS
+	multi_find_cs(mp, pos);
+	clear_multibuf(mp);
+#endif
+
+	/* adjust pointers */
+	mp->startpos = pos;
+	mp->lastpos = pos - 1;
+	mp->laststartpos = pos;
     }
 }
 
 /*
  * Buffering characters untile get a guarantee that it is right sequence.
  */
-void multi_buffering(mp, c, pos, strbuf, csbuf, length, retpos)
+void multi_parse(mp, c, pos, mbd)
 MULBUF* mp;
 int c;
-m_position* pos;
-unsigned char** strbuf;
-CHARSET** csbuf;
-unsigned int* length;
-m_position* retpos;
+m_position pos;
+M_BUFDATA* mbd;
 {
     if (c < 0) {
-	if (retpos != NULL) {
-	    *retpos = mp->startpos;
+	if (mbd != NULL) {
+	    mbd->pos = mp->startpos;
 	}
 	/*
-	 * Force to flush out buffered characters.
+	 * Force to flush all buffering characters.
 	 */
 	if (mp->eseq != NOESC) {
 	    mp->eseq = NOESC;
@@ -1461,29 +1493,27 @@ m_position* retpos;
 	}
 	while (mp->startpos <= mp->lastpos) {
 	    wrongcs1(mp);
-	    rebuffering_multi(mp);
+	    multi_reparse(mp);
 	}
 
-	*strbuf = mp->multiint;
-	*csbuf = mp->multics;
-	*length = mp->intindex;
+	if (mbd != NULL) {
+	    mbd->cbuf = mp->multiint;
+	    mbd->csbuf = mp->multics;
+	    mbd->byte = mp->intindex;
+	}
 	mp->intindex = 0;
     } else {
-	if (pos != NULL) {
-	    if (*pos != mp->lastpos + 1) {
-		/* buffer must be empty */
-		assert(mp->lastpos < mp->startpos);
-		/* start buffering */
-		mp->startpos = *pos;
-	    }
-	    mp->lastpos = *pos;
+	if (pos != NULL_POSITION) {
+	    assert(pos == mp->lastpos + 1);
+	    mp->lastpos = pos;
 	} else {
 	    mp->lastpos++;
 	}
 	INBUF(mp) = c;
 
-	if (retpos != NULL) {
-	    *retpos = mp->startpos;
+	mp->laststartpos = mp->startpos;
+	if (mbd != NULL) {
+	    mbd->pos = mp->startpos;
 	}
 
 	/*
@@ -1491,25 +1521,32 @@ m_position* retpos;
 	 */
 	check_new_buffered_byte(mp);
 
-	*strbuf = mp->multiint;
-	*csbuf = mp->multics;
-	*length = mp->intindex;
+	if (mbd != NULL) {
+	    mbd->cbuf = mp->multiint;
+	    mbd->csbuf = mp->multics;
+	    mbd->byte = mp->intindex;
+	}
 	mp->intindex = 0;
     }
 }
 
 /*
- * Parse and discard characters.  This routine is used for chopping line.
+ * Flush buffered data.
  */
-void multi_parsing(mp, c)
-MULBUF *mp;
-int c;
+void multi_flush(mp, mbd)
+MULBUF* mp;
+M_BUFDATA* mbd;
 {
-	unsigned char *strbuf;
-	CHARSET *csbuf;
-	unsigned int length;
+    multi_parse(mp, -1, NULL_POSITION, mbd);
+}
 
-	multi_buffering(mp, c, NULL, &strbuf, &csbuf, &length, NULL);
+/*
+ * Discard buffered data.
+ */
+void multi_discard(mp)
+MULBUF* mp;
+{
+    multi_parse(mp, -1, NULL_POSITION, NULL);
 }
 
 void set_codesets(mp, left, right)
@@ -1517,8 +1554,8 @@ MULBUF *mp;
 CODESET left;
 CODESET right;
 {
-	mp->io.left = left;
-	mp->io.right = right;
+    mp->io.left = left;
+    mp->io.right = right;
 }
 
 /*

@@ -142,7 +142,7 @@ cmd_reset()
 	if (mp == NULL)
 	{
 		char *s = NULL;
-		mp = new_multi();
+		mp = new_multibuf();
 		s = getenv("JLESSKEYCHARSET");
 		if (s == NULL)
 			s = DEFKEYCHARSET;
@@ -150,7 +150,7 @@ cmd_reset()
 			     right_codeset_of_charset(s));
 		init_priority(mp);
 	}
-	init_multi(mp);
+	init_multibuf(mp);
 #endif
 }
 
@@ -383,11 +383,12 @@ cmd_ichar(c)
 #if ISO
 	if (in_mca())
 	{
-		char *cbuf;
-		CHARSET *csbuf;
+		M_BUFDATA mbd;
+		char *p;
 		int i, j;
 
-		multi_buffering(mp, c, NULL, &cbuf, &csbuf, &i, NULL);
+		multi_parse(mp, c, NULL_POSITION, &mbd);
+		i = mbd.byte;
 		if (i > 0)
 			for ((s = &cmdbuf[strlen_cs(cmdbuf, cmdcs)]),
 			     t = &cmdcs[strlen_cs(cmdbuf, cmdcs)];
@@ -398,15 +399,15 @@ cmd_ichar(c)
 			}
 		for (j = 0; j < i; j++)
 		{
-			cp[j] = cbuf[j];
-			csp[j] = csbuf[j];
+			cp[j] = mbd.cbuf[j];
+			csp[j] = mbd.csbuf[j];
 		}
-		cbuf = &cp[i];
+		p = &cp[i];
 		/*
 		 * Reprint the tail of the line from the inserted char.
 		 */
 		cmd_repaint(cp);
-		while (cp < cbuf)
+		while (cp < p)
 			cmd_right();
 		return (CC_OK);
 	}

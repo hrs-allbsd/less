@@ -133,7 +133,7 @@ new_ifile(filename, prev)
 	p->h_hold = 0;
 	p->h_filestate = NULL;
 #if ISO
-	p->h_mp = new_multi();
+	p->h_mp = new_multibuf();
 	init_priority(p->h_mp);
 #endif
 	link_ifile(p, prev);

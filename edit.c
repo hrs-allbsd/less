@@ -369,7 +369,7 @@ edit_ifile(ifile)
 	set_open(curr_ifile); /* File has been opened */
 	get_pos(curr_ifile, &initial_scrpos);
 #if ISO
-	init_multi(get_mulbuf(curr_ifile));
+	init_multibuf(get_mulbuf(curr_ifile));
 #endif
 	new_file = TRUE;
 	ch_init(f, chflags);

@@ -272,6 +272,10 @@ cvt_text(odst, odstcs, osrc, osrccs, pos, ops)
 	char cbuffer[10];
 	CHARSET csbuffer[10];
 	int donef = 0;
+#if ISO
+	M_BUFDATA mbd;
+	MULBUF* mp = get_mulbuf(curr_ifile);
+#endif
 
 #if ISO
 	if (!(ops & CVT_TO_INT) && srccs == NULL)
@@ -283,7 +287,7 @@ cvt_text(odst, odstcs, osrc, osrccs, pos, ops)
 		return;
 	}
 
-	multi_start_buffering(get_mulbuf(curr_ifile), pos);
+	multi_start_buffering(mp, pos);
 	while ((srccs != NULL && (*src != NULCH || !CSISNULLCS(*srccs))) ||
 	       (srccs == NULL && !donef))
 	{
@@ -295,17 +299,19 @@ cvt_text(odst, odstcs, osrc, osrccs, pos, ops)
 				if (*src == '\0')
 				{
 					/* flush buffer */
-					multi_buffering(get_mulbuf(curr_ifile),
-						-1, NULL, &cbuf, &csbuf,
-						&bufcount, NULL);
+					multi_flush(mp, &mbd);
+					cbuf = mbd.cbuf;
+					csbuf = mbd.csbuf;
+					bufcount = mbd.byte;
 					donef = 1;
 				} else
 				{
 					/* make charset */
-					multi_buffering(get_mulbuf(curr_ifile),
-						(unsigned char) *src,
-						&pos, &cbuf, &csbuf,
-						&bufcount, NULL);
+					multi_parse(mp, (unsigned char) *src,
+						pos, &mbd);
+					cbuf = mbd.cbuf;
+					csbuf = mbd.csbuf;
+					bufcount = mbd.byte;
 				}
 				if (bufcount == 0)
 				{
