@@ -39,7 +39,7 @@
 #include "config.h"
 #endif
 #include "defines.h"
-#include "multi.h"
+#include "less.h"
 #define ISCSDMY(c,cs)           (CSISASCII(cs) && (c == PADCH))
 
 #define SWITCH_ENUM_BUG
