@@ -22,13 +22,13 @@ exec_prefix = @exec_prefix@
 
 # Where the installed binary goes.
 bindir = @bindir@
-binprefix = 
+binprefix = j
 
 sysconfdir = @sysconfdir@
 
 mandir = @mandir@
 manext = 1
-manprefix = 
+manprefix = j
 
 #### End of system configuration section. ####
 
