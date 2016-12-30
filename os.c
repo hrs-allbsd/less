@@ -216,6 +216,7 @@ errno_message(filename)
 {
 	register char *p;
 	register char *m;
+	int len;
 #if HAVE_ERRNO
 #if MUST_DEFINE_ERRNO
 	extern int errno;
@@ -224,8 +225,9 @@ errno_message(filename)
 #else
 	p = "cannot open";
 #endif
-	m = (char *) ecalloc(strlen(filename) + strlen(p) + 3, sizeof(char));
-	sprintf(m, "%s: %s", filename, p);
+	len = strlen(filename) + strlen(p) + 3;
+	m = (char *) ecalloc(len, sizeof(char));
+	snprintf(m, len, "%s: %s", filename, p);
 	return (m);
 }
 

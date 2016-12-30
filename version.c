@@ -766,6 +766,21 @@ iso262 2/24/06	Removed POSITION variable from member variables of M_BUFDATA.
 		additional argument of few functions and keep data structure
 		as simple as possible.
 		This modification make regex_cs-lwp9k be able to compile.
+
+-----------------------------------------------------------------
+ext-01 09/25/09	Supprt UTF-8 (japanese characters only).
+		Change "japanese83" codeset, and add "japanesep1" codeset.
+		Change default GR/G1 from ISO-8859-1 to Unspecified.
+		Support ISO-8859-10,11,13,14,15,16.
+		Read JLESSCHARSET, LANG environment as caseless.
+		Fix multibyte search.
+		Support .xz file.
+		Backported some bug-fix patches from less-443.
+ext-02 05/25/10	Supprt Microsoft CP932 (aka Windows-31J).
+		Fix conversion preobrem of UTF-8 to EUC-JP (JIS Supplement).
+		Support JLESSUTFWIDTH environment to select Unicode Width.
+ext-03 05/25/11	Support JIS C 6223 alternative mapping (used by Emacs-23).
+                Fix combining conversion bug.
 */
 
-char version[] = "382+iso262";
+char version[] = "382+iso262+ext03";

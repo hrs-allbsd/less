@@ -415,16 +415,21 @@ static struct loption option[] =
 		}
 	},
 #if JAPANESE
+
 #ifdef SJIS_PRE
-#define OPT_Z OPT_ON
+#  define OPT_Z OPT_ONPLUS
 #else
-#define OPT_Z OPT_OFF
+#  ifdef UJIS_PRE
+#    define OPT_Z OPT_ON
+#  else
+#    define OPT_Z OPT_OFF
+#  endif
 #endif
 	{ 'Z', &Z_optname,
-		BOOL|REPAINT, OPT_Z, &opt_Z_var, opt_Z,
-		"Give priority to the UJIS over the SJIS",
-		"Give priority to the SJIS over the UJIS",
-		"Cannot give priority since Japanese is not treated now",
+		TRIPLE|REPAINT, OPT_Z, &opt_Z_var, opt_Z,
+		"Give priority to the UTF8",
+		"Give priority to the UJIS",
+		"Give priority to the SJIS",
 	},
 #endif
 	{ '"', &quote_optname,
@@ -482,10 +487,12 @@ init_option()
 			(*(o->ofunc))(INIT, (char *) NULL);
 	}
 #if JAPANESE
-	if (opt_Z_var == OPT_ON)
-		init_def_priority(PSJIS);
-	else if (opt_Z_var == OPT_OFF)
+	if (opt_Z_var == OPT_OFF)
+		init_def_priority(PUTF8);
+	else if (opt_Z_var == OPT_ON)
 		init_def_priority(PUJIS);
+	else if (opt_Z_var == OPT_ONPLUS)
+		init_def_priority(PSJIS);
 #endif
 }
 

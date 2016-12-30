@@ -22,6 +22,7 @@ extern int squished;
 extern int screen_trashed;
 extern int sc_width, sc_height;
 extern int show_attn;
+extern int top_scroll;
 
 /*
  * Jump to the end of the file.
@@ -279,7 +280,10 @@ jump_loc(pos, sline)
 			}
 		}
 		lastmark();
-		clear();
+		if (!top_scroll)
+			clear();
+		else
+			home();
 		screen_trashed = 0;
 		add_back_pos(pos);
 		back(sc_height-1, pos, 1, 0);

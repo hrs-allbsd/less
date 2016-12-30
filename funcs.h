@@ -151,6 +151,7 @@
 	public void prewind ();
 	public void plinenum ();
 	public int is_ansi_end ();
+	public int is_ansi_middle ();
 	public int pappend ();
 	public int pappend_multi ();
 	public void pdone ();

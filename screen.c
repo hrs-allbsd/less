@@ -165,6 +165,7 @@ static char
 	*sc_home,		/* Cursor home */
 	*sc_addline,		/* Add line, scroll down following lines */
 	*sc_lower_left,		/* Cursor to last line, first column */
+	*sc_return,		/* Cursor to beginning of current line */
 	*sc_move,		/* General cursor positioning */
 	*sc_clear,		/* Clear screen */
 	*sc_eol_clear,		/* Clear to end of line */
@@ -230,6 +231,7 @@ extern int sigs;
 extern int wscroll;
 extern int screen_trashed;
 extern int tty;
+extern int top_scroll;
 #if HILITE_SEARCH
 extern int hilite_search;
 #endif
@@ -1276,6 +1278,13 @@ get_term()
 	}
 	sc_lower_left = cheaper(t1, t2, "\r");
 
+        /*
+	 * Get carriage return string.
+	 */
+	sc_return = ltgetstr("cr", &sp);
+	if (sc_return == NULL)
+		sc_return = "\r";
+
 	/*
 	 * Choose between using "al" or "sr" ("add line" or "scroll reverse")
 	 * to add a line at the top of the screen.
@@ -1495,6 +1504,37 @@ win32_deinit_term()
 #endif
 
 /*
+ * Move cursor to left position of current line.
+ */
+	public void
+line_left()
+{
+#if !MSDOS_COMPILER
+	tputs(sc_return, 1, putchr);
+#else
+	int row;
+	flush();
+#if MSDOS_COMPILER==WIN32C
+	{
+		CONSOLE_SCREEN_BUFFER_INFO scr;
+		GetConsoleScreenBufferInfo(con_out, &scr);
+		row = scr.dwCursorPosition.Y - scr.srWindow.Top + 1;
+	}
+#else
+#if MSDOS_COMPILER==BORLANDC || MSDOS_COMPILER==DJGPPC
+		row = wherey();
+#else
+	{
+		struct rccoord tpos = _gettextposition();
+		row = tpos.row;
+	}
+#endif
+#endif
+	_settextposition(row, 1);
+#endif
+}
+
+/*
  * Initialize terminal
  */
 	public void
@@ -1505,6 +1545,20 @@ init()
 		tputs(sc_init, sc_height, putchr);
 	if (!no_keypad)
 		tputs(sc_s_keypad, sc_height, putchr);
+	if (top_scroll) 
+	{
+		int i;
+
+		/*
+		 * This is nice to terminals with no alternate screen,
+		 * but with saved scrolled-off-the-top lines.  This way,
+		 * no previous line is lost, but we start with a whole
+		 * screen to ourself.
+		 */
+		for (i = 1; i < sc_height; i++)
+			putchr('\n');
+	} else
+		line_left();
 #else
 #if MSDOS_COMPILER==WIN32C
 	if (!no_init)

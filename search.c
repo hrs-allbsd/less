@@ -121,6 +121,9 @@ static int is_ucase_pattern;
 static int last_search_type;
 static char *last_pattern = NULL;
 static CHARSET *last_charset = NULL;
+#if !defined(HAVE_POSIX_REGCOMP_CS) && !defined(HAVE_V8_REGCOMP_CS)
+static multibyte_search = 0;
+#endif
 
 #if ISO && !NO_REGEX && (!CS_REGEX || MSB_ENABLE)
 /*
@@ -496,12 +499,31 @@ is_ucase(s, cs)
 }
 
 /*
+ * convert uppercase to lowercase
+ */
+	static void
+to_lcase(s, cs)
+	char *s;
+	CHARSET *cs;
+{
+	register char *p;
+
+	for (p = s;  *p != '\0';  p++, cs++)
+		if (CSISASCII(*cs) && isupper((unsigned char) *p))
+			*p = tolower(*p);
+}
+
+/*
  * Is there a previous (remembered) search pattern?
  */
 	static int
 prev_pattern()
 {
+#if !defined(HAVE_POSIX_REGCOMP_CS) && !defined(HAVE_V8_REGCOMP_CS)
+	if ((last_search_type & SRCH_NO_REGEX) || multibyte_search)
+#else
 	if (last_search_type & SRCH_NO_REGEX)
+#endif
 		return (last_pattern != NULL);
 #if HAVE_POSIX_REGCOMP_CS || HAVE_POSIX_REGCOMP
 	return (regpattern != NULL);
@@ -647,7 +669,11 @@ compile_pattern(pattern, charset, search_type)
 {
 	int len = strlen_cs(pattern, charset);
 
+#if !defined(HAVE_POSIX_REGCOMP_CS) && !defined(HAVE_V8_REGCOMP_CS)
+	if (!multibyte_search  && (search_type & SRCH_NO_REGEX) == 0)
+#else
 	if ((search_type & SRCH_NO_REGEX) == 0)
+#endif
 	{
 #if HAVE_POSIX_REGCOMP_CS
 		regex_t *s = (regex_t *) ecalloc(1, sizeof(regex_t));
@@ -785,6 +811,9 @@ uncompile_pattern()
 #endif
 	last_pattern = NULL;
 	last_charset = NULL;
+#if !defined(HAVE_POSIX_REGCOMP_CS) && !defined(HAVE_V8_REGCOMP_CS)
+	multibyte_search = 0;
+#endif
 }
 
 /*
@@ -801,7 +830,11 @@ match_pattern(line, charset, sp, ep, notbol)
 {
 	int matched;
 
+#if !defined(HAVE_POSIX_REGCOMP_CS) && !defined(HAVE_V8_REGCOMP_CS)
+	if (multibyte_search || (last_search_type & SRCH_NO_REGEX))
+#else
 	if (last_search_type & SRCH_NO_REGEX)
+#endif
 		return (match(last_pattern, last_charset, line, charset,
 			      sp, ep));
 
@@ -1038,6 +1071,12 @@ adj_hilite(anchor, linepos, cvt_ops)
 		{
 			while (line[0] == ESC)
 			{
+#ifdef ISO
+				/* ignore ISO-2022 escape sequence */
+				if (line[1] == 0x24 || line[1] == 0x26
+				    || (line[1] >= 0x28 && line[1] <= 0x2f))
+					break;
+#endif
 				/*
 				 * Found an ESC.  The file position moves
 				 * forward past the entire ANSI escape sequence.
@@ -1512,6 +1551,9 @@ search(search_type, pattern, charset, n)
 {
 	POSITION pos;
 	int ucase;
+#if !defined(HAVE_POSIX_REGCOMP_CS) && !defined(HAVE_V8_REGCOMP_CS)
+	CHARSET *p;
+#endif
 
 	if (pattern == NULL || *pattern == '\0')
 	{
@@ -1559,16 +1601,26 @@ search(search_type, pattern, charset, n)
 		save_pattern = strdup_cs(pattern, charset, &save_charset);
 		pattern = save_pattern;
 		charset = save_charset;
+#if !defined(HAVE_POSIX_REGCOMP_CS) && !defined(HAVE_V8_REGCOMP_CS)
+		/*
+		 *  if multibyte characters, disbale regex search
+		 */
+		multibyte_search = 0;
+		for (p = charset; *p != NULLCS; ++ p) {
+			if (CS2CHARSET(*p) != ASCII) {
+				multibyte_search = 1;
+				break;
+			}
+		}
+#endif
 		/*
 		 * Compile the pattern.
 		 */
+		cvt_text(pattern, charset, pattern, charset,
+			 NULL_POSITION, CVT_TO_INT | CVT_PAD);
 		ucase = is_ucase(pattern, charset);
-		if (caseless == OPT_ONPLUS)
-			cvt_text(pattern, charset, pattern, charset,
-				 NULL_POSITION, CVT_TO_LC | CVT_TO_INT | CVT_PAD);
-		else 
-			cvt_text(pattern, charset, pattern, charset,
-				 NULL_POSITION, CVT_TO_INT | CVT_PAD);
+		if (ucase && caseless == OPT_ONPLUS)
+			to_lcase(pattern, charset);
 #if ISO && !NO_REGEX && (!CS_REGEX || MSB_ENABLE)
 		/*
 		 * The normalize_text must not change charset if it is

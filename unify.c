@@ -31,7 +31,8 @@
 
 #include "defines.h"
 #include "less.h"
-
+#include "kanji_map.h"
+#include "unicode_map.h"
 
 #if ISO
 
@@ -142,1377 +143,4303 @@ char* input;
 }
 
 static convtab conv_jisx0208_78_90[] = {
-	/* 0x3646($@6F(B) -> 0x7421(&@$Bt!(B) */
 	{ "6F", NULL, "t!", JISX0208_90KANJI },
-	/* 0x4B6A($@Kj(B) -> 0x7422(&@$Bt"(B) */
 	{ "Kj", NULL, "t\"", JISX0208_90KANJI },
-	/* 0x4D5A($@MZ(B) -> 0x7423(&@$Bt#(B) */
 	{ "MZ", NULL, "t#", JISX0208_90KANJI },
-	/* 0x6076($@`v(B) -> 0x7424(&@$Bt$(B) */
 	{ "`v", NULL, "t$", JISX0208_90KANJI },
-	/* 0x3033($@03(B) -> 0x724D(&@$BrM(B) */
+	{ "_f", NULL, "t&", JISX0208_90KANJI },
 	{ "03", NULL, "rM", JISX0208_90KANJI },
-	/* 0x724D($@rM(B) -> 0x3033(&@$B03(B) */
 	{ "rM", NULL, "03", JISX0208_90KANJI },
-	/* 0x3229($@2)(B) -> 0x7274(&@$Brt(B) */
 	{ "2)", NULL, "rt", JISX0208_90KANJI },
-	/* 0x7274($@rt(B) -> 0x3229(&@$B2)(B) */
 	{ "rt", NULL, "2)", JISX0208_90KANJI },
-	/* 0x3342($@3B(B) -> 0x695A(&@$BiZ(B) */
 	{ "3B", NULL, "iZ", JISX0208_90KANJI },
-	/* 0x695A($@iZ(B) -> 0x3342(&@$B3B(B) */
 	{ "iZ", NULL, "3B", JISX0208_90KANJI },
-	/* 0x3349($@3I(B) -> 0x5978(&@$BYx(B) */
 	{ "3I", NULL, "Yx", JISX0208_90KANJI },
-	/* 0x5978($@Yx(B) -> 0x3349(&@$B3I(B) */
 	{ "Yx", NULL, "3I", JISX0208_90KANJI },
-	/* 0x3376($@3v(B) -> 0x635E(&@$Bc^(B) */
 	{ "3v", NULL, "c^", JISX0208_90KANJI },
-	/* 0x635E($@c^(B) -> 0x3376(&@$B3v(B) */
 	{ "c^", NULL, "3v", JISX0208_90KANJI },
-	/* 0x3443($@4C(B) -> 0x5E75(&@$B^u(B) */
 	{ "4C", NULL, "^u", JISX0208_90KANJI },
-	/* 0x5E75($@^u(B) -> 0x3443(&@$B4C(B) */
 	{ "^u", NULL, "4C", JISX0208_90KANJI },
-	/* 0x3452($@4R(B) -> 0x6B5D(&@$Bk](B) */
 	{ "4R", NULL, "k]", JISX0208_90KANJI },
-	/* 0x6B5D($@k](B) -> 0x3452(&@$B4R(B) */
 	{ "k]", NULL, "4R", JISX0208_90KANJI },
-	/* 0x375B($@7[(B) -> 0x7074(&@$Bpt(B) */
 	{ "7[", NULL, "pt", JISX0208_90KANJI },
-	/* 0x7074($@pt(B) -> 0x375B(&@$B7[(B) */
 	{ "pt", NULL, "7[", JISX0208_90KANJI },
-	/* 0x395C($@9\(B) -> 0x6268(&@$Bbh(B) */
 	{ "9\\", NULL, "bh", JISX0208_90KANJI },
-	/* 0x6268($@bh(B) -> 0x395C(&@$B9\(B) */
 	{ "bh", NULL, "9\\", JISX0208_90KANJI },
-	/* 0x3C49($@<I(B) -> 0x6922(&@$Bi"(B) */
 	{ "<I", NULL, "i\"", JISX0208_90KANJI },
-	/* 0x6922($@i"(B) -> 0x3C49(&@$B<I(B) */
 	{ "i\"", NULL, "<I", JISX0208_90KANJI },
-	/* 0x3F59($@?Y(B) -> 0x7057(&@$BpW(B) */
 	{ "?Y", NULL, "pW", JISX0208_90KANJI },
-	/* 0x7057($@pW(B) -> 0x3F59(&@$B?Y(B) */
 	{ "pW", NULL, "?Y", JISX0208_90KANJI },
-	/* 0x4128($@A((B) -> 0x6C4D(&@$BlM(B) */
 	{ "A(", NULL, "lM", JISX0208_90KANJI },
-	/* 0x6C4D($@lM(B) -> 0x4128(&@$BA((B) */
 	{ "lM", NULL, "A(", JISX0208_90KANJI },
-	/* 0x445B($@D[(B) -> 0x5464(&@$BTd(B) */
 	{ "D[", NULL, "Td", JISX0208_90KANJI },
-	/* 0x5464($@Td(B) -> 0x445B(&@$BD[(B) */
 	{ "Td", NULL, "D[", JISX0208_90KANJI },
-	/* 0x4557($@EW(B) -> 0x626A(&@$Bbj(B) */
 	{ "EW", NULL, "bj", JISX0208_90KANJI },
-	/* 0x626A($@bj(B) -> 0x4557(&@$BEW(B) */
 	{ "bj", NULL, "EW", JISX0208_90KANJI },
-	/* 0x456E($@En(B) -> 0x5B6D(&@$B[m(B) */
 	{ "En", NULL, "[m", JISX0208_90KANJI },
-	/* 0x5B6D($@[m(B) -> 0x456E(&@$BEn(B) */
 	{ "[m", NULL, "En", JISX0208_90KANJI },
-	/* 0x4573($@Es(B) -> 0x5E39(&@$B^9(B) */
 	{ "Es", NULL, "^9", JISX0208_90KANJI },
-	/* 0x5E39($@^9(B) -> 0x4573(&@$BEs(B) */
 	{ "^9", NULL, "Es", JISX0208_90KANJI },
-	/* 0x4676($@Fv(B) -> 0x6D6E(&@$Bmn(B) */
 	{ "Fv", NULL, "mn", JISX0208_90KANJI },
-	/* 0x6D6E($@mn(B) -> 0x4676(&@$BFv(B) */
 	{ "mn", NULL, "Fv", JISX0208_90KANJI },
-	/* 0x4768($@Gh(B) -> 0x6A24(&@$Bj$(B) */
 	{ "Gh", NULL, "j$", JISX0208_90KANJI },
-	/* 0x6A24($@j$(B) -> 0x4768(&@$BGh(B) */
 	{ "j$", NULL, "Gh", JISX0208_90KANJI },
-	/* 0x4930($@I0(B) -> 0x5B58(&@$B[X(B) */
 	{ "I0", NULL, "[X", JISX0208_90KANJI },
-	/* 0x5B58($@[X(B) -> 0x4930(&@$BI0(B) */
 	{ "[X", NULL, "I0", JISX0208_90KANJI },
-	/* 0x4B79($@Ky(B) -> 0x5056(&@$BPV(B) */
 	{ "Ky", NULL, "PV", JISX0208_90KANJI },
-	/* 0x5056($@PV(B) -> 0x4B79(&@$BKy(B) */
 	{ "PV", NULL, "Ky", JISX0208_90KANJI },
-	/* 0x4C79($@Ly(B) -> 0x692E(&@$Bi.(B) */
 	{ "Ly", NULL, "i.", JISX0208_90KANJI },
-	/* 0x692E($@i.(B) -> 0x4C79(&@$BLy(B) */
 	{ "i.", NULL, "Ly", JISX0208_90KANJI },
-	/* 0x4F36($@O6(B) -> 0x6446(&@$BdF(B) */
 	{ "O6", NULL, "dF", JISX0208_90KANJI },
-	/* 0x6446($@dF(B) -> 0x4F36(&@$BO6(B) */
 	{ "dF", NULL, "O6", JISX0208_90KANJI },
-	/* NULL */
 	{ 0, 0, 0, 0 }
 };
 static convtable ctable_jisx0208_78_90 = { conv_jisx0208_78_90, NULL };
 
-static convtab unify_jisx0208[] = {
-	/* 0x2121(&@$B!!(B) -> 0x20( ) */
-	{ "!!", NULL, " ", ASCII },
-	/* 0x2122(&@$B!"(B) -> 0x2C(,) */
-	{ "!\"", NULL, ",", ASCII },
-	/* 0x2123(&@$B!#(B) -> 0x2E(.) */
-	{ "!#", NULL, ".", ASCII },
-	/* 0x2124(&@$B!$(B) -> 0x2C(,) */
-	{ "!$", NULL, ",", ASCII },
-	/* 0x2125(&@$B!%(B) -> 0x2E(.) */
-	{ "!%", NULL, ".", ASCII },
-	/* 0x2127(&@$B!'(B) -> 0x3A(:) */
-	{ "!'", NULL, ":", ASCII },
-	/* 0x2128(&@$B!((B) -> 0x3B(;) */
-	{ "!(", NULL, ";", ASCII },
-	/* 0x2129(&@$B!)(B) -> 0x3F(?) */
-	{ "!)", NULL, "?", ASCII },
-	/* 0x212A(&@$B!*(B) -> 0x21(!) */
-	{ "!*", NULL, "!", ASCII },
-	/* 0x2130(&@$B!0(B) -> 0x5E(^) */
-	{ "!0", NULL, "^", ASCII },
-	/* 0x2132(&@$B!2(B) -> 0x5F(_) */
-	{ "!2", NULL, "_", ASCII },
-	/* 0x213D(&@$B!=(B) -> 0x2D(-) */
-	{ "!=", NULL, "-", ASCII },
-	/* 0x213E(&@$B!>(B) -> 0x2D(-) */
-	{ "!>", NULL, "-", ASCII },
-	/* 0x213F(&@$B!?(B) -> 0x2F(/) */
-	{ "!?", NULL, "/", ASCII },
-	/* 0x2140(&@$B!@(B) -> 0x5C(\) */
-	{ "!@", NULL, "\\", ASCII },
-	/* 0x2141(&@$B!A(B) -> 0x2D(-) */
-	{ "!A", NULL, "-", ASCII },
-	/* 0x2143(&@$B!C(B) -> 0x7C(|) */
-	{ "!C", NULL, "|", ASCII },
-	/* 0x2146(&@$B!F(B) -> 0x27(') */
-	{ "!F", NULL, "'", ASCII },
-	/* 0x2147(&@$B!G(B) -> 0x27(') */
-	{ "!G", NULL, "'", ASCII },
-	/* 0x2148(&@$B!H(B) -> 0x22(") */
-	{ "!H", NULL, "\"", ASCII },
-	/* 0x2149(&@$B!I(B) -> 0x22(") */
-	{ "!I", NULL, "\"", ASCII },
-	/* 0x214A(&@$B!J(B) -> 0x28(() */
-	{ "!J", NULL, "(", ASCII },
-	/* 0x214B(&@$B!K(B) -> 0x29()) */
-	{ "!K", NULL, ")", ASCII },
-	/* 0x214C(&@$B!L(B) -> 0x5B([) */
-	{ "!L", NULL, "[", ASCII },
-	/* 0x214D(&@$B!M(B) -> 0x5D(]) */
-	{ "!M", NULL, "]", ASCII },
-	/* 0x214E(&@$B!N(B) -> 0x5B([) */
-	{ "!N", NULL, "[", ASCII },
-	/* 0x214F(&@$B!O(B) -> 0x5D(]) */
-	{ "!O", NULL, "]", ASCII },
-	/* 0x2150(&@$B!P(B) -> 0x7B({) */
-	{ "!P", NULL, "{", ASCII },
-	/* 0x2151(&@$B!Q(B) -> 0x7D(}) */
-	{ "!Q", NULL, "}", ASCII },
-	/* 0x2152(&@$B!R(B) -> 0x5B([) */
-	{ "!R", NULL, "[", ASCII },
-	/* 0x2153(&@$B!S(B) -> 0x5D(]) */
-	{ "!S", NULL, "]", ASCII },
-	/* 0x2154(&@$B!T(B) -> 0x5B([) */
-	{ "!T", NULL, "[", ASCII },
-	/* 0x2155(&@$B!U(B) -> 0x5D(]) */
-	{ "!U", NULL, "]", ASCII },
-	/* 0x2156(&@$B!V(B) -> 0x5B([) */
-	{ "!V", NULL, "[", ASCII },
-	/* 0x2157(&@$B!W(B) -> 0x5D(]) */
-	{ "!W", NULL, "]", ASCII },
-	/* 0x2158(&@$B!X(B) -> 0x5B([) */
-	{ "!X", NULL, "[", ASCII },
-	/* 0x2159(&@$B!Y(B) -> 0x5D(]) */
-	{ "!Y", NULL, "]", ASCII },
-	/* 0x215A(&@$B!Z(B) -> 0x5B([) */
-	{ "!Z", NULL, "[", ASCII },
-	/* 0x215B(&@$B![(B) -> 0x5D(]) */
-	{ "![", NULL, "]", ASCII },
-	/* 0x215C(&@$B!\(B) -> 0x2B(+) */
-	{ "!\\", NULL, "+", ASCII },
-	/* 0x215D(&@$B!](B) -> 0x2D(-) */
-	{ "!]", NULL, "-", ASCII },
-	/* 0x215F(&@$B!_(B) -> 0x2A(*) */
-	{ "!_", NULL, "*", ASCII },
-	/* 0x2160(&@$B!`(B) -> 0x2F(/) */
-	{ "!`", NULL, "/", ASCII },
-	/* 0x2161(&@$B!a(B) -> 0x3D(=) */
-	{ "!a", NULL, "=", ASCII },
-	/* 0x2163(&@$B!c(B) -> 0x3C(<) */
-	{ "!c", NULL, "<", ASCII },
-	/* 0x2164(&@$B!d(B) -> 0x3E(>) */
-	{ "!d", NULL, ">", ASCII },
-	/* 0x216C(&@$B!l(B) -> 0x27(') */
-	{ "!l", NULL, "'", ASCII },
-	/* 0x216D(&@$B!m(B) -> 0x22(") */
-	{ "!m", NULL, "\"", ASCII },
-	/* 0x2170(&@$B!p(B) -> 0x24($) */
-	{ "!p", NULL, "$", ASCII },
-	/* 0x2173(&@$B!s(B) -> 0x25(%) */
-	{ "!s", NULL, "%", ASCII },
-	/* 0x2174(&@$B!t(B) -> 0x23(#) */
-	{ "!t", NULL, "#", ASCII },
-	/* 0x2175(&@$B!u(B) -> 0x26(&) */
-	{ "!u", NULL, "&", ASCII },
-	/* 0x2176(&@$B!v(B) -> 0x2A(*) */
-	{ "!v", NULL, "*", ASCII },
-	/* 0x2177(&@$B!w(B) -> 0x40(@) */
-	{ "!w", NULL, "@", ASCII },
-	/* 0x2330(&@$B#0(B) -> 0x30(0) */
-	{ "#0", NULL, "0", ASCII },
-	/* 0x2331(&@$B#1(B) -> 0x31(1) */
-	{ "#1", NULL, "1", ASCII },
-	/* 0x2332(&@$B#2(B) -> 0x32(2) */
-	{ "#2", NULL, "2", ASCII },
-	/* 0x2333(&@$B#3(B) -> 0x33(3) */
-	{ "#3", NULL, "3", ASCII },
-	/* 0x2334(&@$B#4(B) -> 0x34(4) */
-	{ "#4", NULL, "4", ASCII },
-	/* 0x2335(&@$B#5(B) -> 0x35(5) */
-	{ "#5", NULL, "5", ASCII },
-	/* 0x2336(&@$B#6(B) -> 0x36(6) */
-	{ "#6", NULL, "6", ASCII },
-	/* 0x2337(&@$B#7(B) -> 0x37(7) */
-	{ "#7", NULL, "7", ASCII },
-	/* 0x2338(&@$B#8(B) -> 0x38(8) */
-	{ "#8", NULL, "8", ASCII },
-	/* 0x2339(&@$B#9(B) -> 0x39(9) */
-	{ "#9", NULL, "9", ASCII },
-	/* 0x2341(&@$B#A(B) -> 0x41(A) */
-	{ "#A", NULL, "A", ASCII },
-	/* 0x2342(&@$B#B(B) -> 0x42(B) */
-	{ "#B", NULL, "B", ASCII },
-	/* 0x2343(&@$B#C(B) -> 0x43(C) */
-	{ "#C", NULL, "C", ASCII },
-	/* 0x2344(&@$B#D(B) -> 0x44(D) */
-	{ "#D", NULL, "D", ASCII },
-	/* 0x2345(&@$B#E(B) -> 0x45(E) */
-	{ "#E", NULL, "E", ASCII },
-	/* 0x2346(&@$B#F(B) -> 0x46(F) */
-	{ "#F", NULL, "F", ASCII },
-	/* 0x2347(&@$B#G(B) -> 0x47(G) */
-	{ "#G", NULL, "G", ASCII },
-	/* 0x2348(&@$B#H(B) -> 0x48(H) */
-	{ "#H", NULL, "H", ASCII },
-	/* 0x2349(&@$B#I(B) -> 0x49(I) */
-	{ "#I", NULL, "I", ASCII },
-	/* 0x234A(&@$B#J(B) -> 0x4A(J) */
-	{ "#J", NULL, "J", ASCII },
-	/* 0x234B(&@$B#K(B) -> 0x4B(K) */
-	{ "#K", NULL, "K", ASCII },
-	/* 0x234C(&@$B#L(B) -> 0x4C(L) */
-	{ "#L", NULL, "L", ASCII },
-	/* 0x234D(&@$B#M(B) -> 0x4D(M) */
-	{ "#M", NULL, "M", ASCII },
-	/* 0x234E(&@$B#N(B) -> 0x4E(N) */
-	{ "#N", NULL, "N", ASCII },
-	/* 0x234F(&@$B#O(B) -> 0x4F(O) */
-	{ "#O", NULL, "O", ASCII },
-	/* 0x2350(&@$B#P(B) -> 0x50(P) */
-	{ "#P", NULL, "P", ASCII },
-	/* 0x2351(&@$B#Q(B) -> 0x51(Q) */
-	{ "#Q", NULL, "Q", ASCII },
-	/* 0x2352(&@$B#R(B) -> 0x52(R) */
-	{ "#R", NULL, "R", ASCII },
-	/* 0x2353(&@$B#S(B) -> 0x53(S) */
-	{ "#S", NULL, "S", ASCII },
-	/* 0x2354(&@$B#T(B) -> 0x54(T) */
-	{ "#T", NULL, "T", ASCII },
-	/* 0x2355(&@$B#U(B) -> 0x55(U) */
-	{ "#U", NULL, "U", ASCII },
-	/* 0x2356(&@$B#V(B) -> 0x56(V) */
-	{ "#V", NULL, "V", ASCII },
-	/* 0x2357(&@$B#W(B) -> 0x57(W) */
-	{ "#W", NULL, "W", ASCII },
-	/* 0x2358(&@$B#X(B) -> 0x58(X) */
-	{ "#X", NULL, "X", ASCII },
-	/* 0x2359(&@$B#Y(B) -> 0x59(Y) */
-	{ "#Y", NULL, "Y", ASCII },
-	/* 0x235A(&@$B#Z(B) -> 0x5A(Z) */
-	{ "#Z", NULL, "Z", ASCII },
-	/* 0x2361(&@$B#a(B) -> 0x61(a) */
-	{ "#a", NULL, "a", ASCII },
-	/* 0x2362(&@$B#b(B) -> 0x62(b) */
-	{ "#b", NULL, "b", ASCII },
-	/* 0x2363(&@$B#c(B) -> 0x63(c) */
-	{ "#c", NULL, "c", ASCII },
-	/* 0x2364(&@$B#d(B) -> 0x64(d) */
-	{ "#d", NULL, "d", ASCII },
-	/* 0x2365(&@$B#e(B) -> 0x65(e) */
-	{ "#e", NULL, "e", ASCII },
-	/* 0x2366(&@$B#f(B) -> 0x66(f) */
-	{ "#f", NULL, "f", ASCII },
-	/* 0x2367(&@$B#g(B) -> 0x67(g) */
-	{ "#g", NULL, "g", ASCII },
-	/* 0x2368(&@$B#h(B) -> 0x68(h) */
-	{ "#h", NULL, "h", ASCII },
-	/* 0x2369(&@$B#i(B) -> 0x69(i) */
-	{ "#i", NULL, "i", ASCII },
-	/* 0x236A(&@$B#j(B) -> 0x6A(j) */
-	{ "#j", NULL, "j", ASCII },
-	/* 0x236B(&@$B#k(B) -> 0x6B(k) */
-	{ "#k", NULL, "k", ASCII },
-	/* 0x236C(&@$B#l(B) -> 0x6C(l) */
-	{ "#l", NULL, "l", ASCII },
-	/* 0x236D(&@$B#m(B) -> 0x6D(m) */
-	{ "#m", NULL, "m", ASCII },
-	/* 0x236E(&@$B#n(B) -> 0x6E(n) */
-	{ "#n", NULL, "n", ASCII },
-	/* 0x236F(&@$B#o(B) -> 0x6F(o) */
-	{ "#o", NULL, "o", ASCII },
-	/* 0x2370(&@$B#p(B) -> 0x70(p) */
-	{ "#p", NULL, "p", ASCII },
-	/* 0x2371(&@$B#q(B) -> 0x71(q) */
-	{ "#q", NULL, "q", ASCII },
-	/* 0x2372(&@$B#r(B) -> 0x72(r) */
-	{ "#r", NULL, "r", ASCII },
-	/* 0x2373(&@$B#s(B) -> 0x73(s) */
-	{ "#s", NULL, "s", ASCII },
-	/* 0x2374(&@$B#t(B) -> 0x74(t) */
-	{ "#t", NULL, "t", ASCII },
-	/* 0x2375(&@$B#u(B) -> 0x75(u) */
-	{ "#u", NULL, "u", ASCII },
-	/* 0x2376(&@$B#v(B) -> 0x76(v) */
-	{ "#v", NULL, "v", ASCII },
-	/* 0x2377(&@$B#w(B) -> 0x77(w) */
-	{ "#w", NULL, "w", ASCII },
-	/* 0x2378(&@$B#x(B) -> 0x78(x) */
-	{ "#x", NULL, "x", ASCII },
-	/* 0x2379(&@$B#y(B) -> 0x79(y) */
-	{ "#y", NULL, "y", ASCII },
-	/* 0x237a(&@$B#z(B) -> 0x7A(z) */
-	{ "#z", NULL, "z", ASCII },
-	/* 0x2621(&@$B&!(B) -> 0x41(-FA) */
-	{ "&!", NULL, "A", GREEK },
-	/* 0x2622(&@$B&"(B) -> 0x42(-FB) */
-	{ "&\"", NULL, "B", GREEK },
-	/* 0x2623(&@$B&#(B) -> 0x43(-FC) */
-	{ "&#", NULL, "C", GREEK },
-	/* 0x2624(&@$B&$(B) -> 0x44(-FD) */
-	{ "&$", NULL, "D", GREEK },
-	/* 0x2625(&@$B&%(B) -> 0x45(-FE) */
-	{ "&%", NULL, "E", GREEK },
-	/* 0x2626(&@$B&&(B) -> 0x46(-FF) */
-	{ "&&", NULL, "F", GREEK },
-	/* 0x2627(&@$B&'(B) -> 0x47(-FG) */
-	{ "&'", NULL, "G", GREEK },
-	/* 0x2628(&@$B&((B) -> 0x48(-FH) */
-	{ "&(", NULL, "H", GREEK },
-	/* 0x2629(&@$B&)(B) -> 0x49(-FI) */
-	{ "&)", NULL, "I", GREEK },
-	/* 0x262A(&@$B&*(B) -> 0x4A(-FJ) */
-	{ "&*", NULL, "J", GREEK },
-	/* 0x262B(&@$B&+(B) -> 0x4B(-FK) */
-	{ "&+", NULL, "K", GREEK },
-	/* 0x262C(&@$B&,(B) -> 0x4C(-FL) */
-	{ "&,", NULL, "L", GREEK },
-	/* 0x262D(&@$B&-(B) -> 0x4D(-FM) */
-	{ "&-", NULL, "M", GREEK },
-	/* 0x262E(&@$B&.(B) -> 0x4E(-FN) */
-	{ "&.", NULL, "N", GREEK },
-	/* 0x262F(&@$B&/(B) -> 0x4F(-FO) */
-	{ "&/", NULL, "O", GREEK },
-	/* 0x2630(&@$B&0(B) -> 0x50(-FP) */
-	{ "&0", NULL, "P", GREEK },
-	/* 0x2631(&@$B&1(B) -> 0x51(-FQ) */
-	{ "&1", NULL, "Q", GREEK },
-	/* 0x2632(&@$B&2(B) -> 0x53(-FS) */
-	{ "&2", NULL, "S", GREEK },
-	/* 0x2633(&@$B&3(B) -> 0x54(-FT) */
-	{ "&3", NULL, "T", GREEK },
-	/* 0x2634(&@$B&4(B) -> 0x55(-FU) */
-	{ "&4", NULL, "U", GREEK },
-	/* 0x2635(&@$B&5(B) -> 0x56(-FV) */
-	{ "&5", NULL, "V", GREEK },
-	/* 0x2636(&@$B&6(B) -> 0x57(-FW) */
-	{ "&6", NULL, "W", GREEK },
-	/* 0x2637(&@$B&7(B) -> 0x58(-FX) */
-	{ "&7", NULL, "X", GREEK },
-	/* 0x2638(&@$B&8(B) -> 0x59(-FY) */
-	{ "&8", NULL, "Y", GREEK },
-	/* 0x2641(&@$B&A(B) -> 0x61(-Fa) */
-	{ "&A", NULL, "a", GREEK },
-	/* 0x2642(&@$B&B(B) -> 0x62(-Fb) */
-	{ "&B", NULL, "b", GREEK },
-	/* 0x2643(&@$B&C(B) -> 0x63(-Fc) */
-	{ "&C", NULL, "c", GREEK },
-	/* 0x2644(&@$B&D(B) -> 0x64(-Fd) */
-	{ "&D", NULL, "d", GREEK },
-	/* 0x2645(&@$B&E(B) -> 0x65(-Fe) */
-	{ "&E", NULL, "e", GREEK },
-	/* 0x2646(&@$B&F(B) -> 0x66(-Ff) */
-	{ "&F", NULL, "f", GREEK },
-	/* 0x2647(&@$B&G(B) -> 0x67(-Fg) */
-	{ "&G", NULL, "g", GREEK },
-	/* 0x2648(&@$B&H(B) -> 0x68(-Fh) */
-	{ "&H", NULL, "h", GREEK },
-	/* 0x2649(&@$B&I(B) -> 0x69(-Fi) */
-	{ "&I", NULL, "i", GREEK },
-	/* 0x264A(&@$B&J(B) -> 0x6A(-Fj) */
-	{ "&J", NULL, "j", GREEK },
-	/* 0x264B(&@$B&K(B) -> 0x6B(-Fk) */
-	{ "&K", NULL, "k", GREEK },
-	/* 0x264C(&@$B&L(B) -> 0x6C(-Fl) */
-	{ "&L", NULL, "l", GREEK },
-	/* 0x264D(&@$B&M(B) -> 0x6D(-Fm) */
-	{ "&M", NULL, "m", GREEK },
-	/* 0x264E(&@$B&N(B) -> 0x6E(-Fn) */
-	{ "&N", NULL, "n", GREEK },
-	/* 0x264F(&@$B&O(B) -> 0x6F(-Fo) */
-	{ "&O", NULL, "o", GREEK },
-	/* 0x2650(&@$B&P(B) -> 0x70(-Fp) */
-	{ "&P", NULL, "p", GREEK },
-	/* 0x2651(&@$B&Q(B) -> 0x71(-Fq) */
-	{ "&Q", NULL, "q", GREEK },
-	/* 0x2652(&@$B&R(B) -> 0x73(-Fs) */
-	{ "&R", NULL, "s", GREEK },
-	/* 0x2653(&@$B&S(B) -> 0x74(-Ft) */
-	{ "&S", NULL, "t", GREEK },
-	/* 0x2654(&@$B&T(B) -> 0x75(-Fu) */
-	{ "&T", NULL, "u", GREEK },
-	/* 0x2655(&@$B&U(B) -> 0x76(-Fv) */
-	{ "&U", NULL, "v", GREEK },
-	/* 0x2656(&@$B&V(B) -> 0x77(-Fw) */
-	{ "&V", NULL, "w", GREEK },
-	/* 0x2657(&@$B&W(B) -> 0x78(-Fx) */
-	{ "&W", NULL, "x", GREEK },
-	/* 0x2658(&@$B&X(B) -> 0x79(-Fy) */
-	{ "&X", NULL, "y", GREEK },
-	/* 0x2721(&@$B'!(B) -> 0x30(-L0) */
-	{ "'!", NULL, "0", CYRILLIC },
-	/* 0x2722(&@$B'"(B) -> 0x31(-L1) */
-	{ "'\"", NULL, "1", CYRILLIC },
-	/* 0x2723(&@$B'#(B) -> 0x32(-L2) */
-	{ "'#", NULL, "2", CYRILLIC },
-	/* 0x2724(&@$B'$(B) -> 0x33(-L3) */
-	{ "'$", NULL, "3", CYRILLIC },
-	/* 0x2725(&@$B'%(B) -> 0x34(-L4) */
-	{ "'%", NULL, "4", CYRILLIC },
-	/* 0x2726(&@$B'&(B) -> 0x35(-L5) */
-	{ "'&", NULL, "5", CYRILLIC },
-	/* 0x2727(&@$B''(B) -> 0x21(-L!) */
-	{ "''", NULL, "!", CYRILLIC },
-	/* 0x2728(&@$B'((B) -> 0x36(-L6) */
-	{ "'(", NULL, "6", CYRILLIC },
-	/* 0x2729(&@$B')(B) -> 0x37(-L7) */
-	{ "')", NULL, "7", CYRILLIC },
-	/* 0x272A(&@$B'*(B) -> 0x38(-L8) */
-	{ "'*", NULL, "8", CYRILLIC },
-	/* 0x272B(&@$B'+(B) -> 0x39(-L9) */
-	{ "'+", NULL, "9", CYRILLIC },
-	/* 0x272C(&@$B',(B) -> 0x3A(-L:) */
-	{ "',", NULL, ":", CYRILLIC },
-	/* 0x272D(&@$B'-(B) -> 0x3B(-L;) */
-	{ "'-", NULL, ";", CYRILLIC },
-	/* 0x272E(&@$B'.(B) -> 0x3C(-L<) */
-	{ "'.", NULL, "<", CYRILLIC },
-	/* 0x272F(&@$B'/(B) -> 0x3D(-L=) */
-	{ "'/", NULL, "=", CYRILLIC },
-	/* 0x2730(&@$B'0(B) -> 0x3E(-L>) */
-	{ "'0", NULL, ">", CYRILLIC },
-	/* 0x2731(&@$B'1(B) -> 0x3F(-L?) */
-	{ "'1", NULL, "?", CYRILLIC },
-	/* 0x2732(&@$B'2(B) -> 0x40(-L@) */
-	{ "'2", NULL, "@", CYRILLIC },
-	/* 0x2733(&@$B'3(B) -> 0x41(-LA) */
-	{ "'3", NULL, "A", CYRILLIC },
-	/* 0x2734(&@$B'4(B) -> 0x42(-LB) */
-	{ "'4", NULL, "B", CYRILLIC },
-	/* 0x2735(&@$B'5(B) -> 0x43(-LC) */
-	{ "'5", NULL, "C", CYRILLIC },
-	/* 0x2736(&@$B'6(B) -> 0x44(-LD) */
-	{ "'6", NULL, "D", CYRILLIC },
-	/* 0x2737(&@$B'7(B) -> 0x45(-LE) */
-	{ "'7", NULL, "E", CYRILLIC },
-	/* 0x2738(&@$B'8(B) -> 0x46(-LF) */
-	{ "'8", NULL, "F", CYRILLIC },
-	/* 0x2739(&@$B'9(B) -> 0x47(-LG) */
-	{ "'9", NULL, "G", CYRILLIC },
-	/* 0x273A(&@$B':(B) -> 0x48(-LH) */
-	{ "':", NULL, "H", CYRILLIC },
-	/* 0x273B(&@$B';(B) -> 0x49(-LI) */
-	{ "';", NULL, "I", CYRILLIC },
-	/* 0x273C(&@$B'<(B) -> 0x4A(-LJ) */
-	{ "'<", NULL, "J", CYRILLIC },
-	/* 0x273D(&@$B'=(B) -> 0x4B(-LK) */
-	{ "'=", NULL, "K", CYRILLIC },
-	/* 0x273E(&@$B'>(B) -> 0x4C(-LL) */
-	{ "'>", NULL, "L", CYRILLIC },
-	/* 0x273F(&@$B'?(B) -> 0x4D(-LM) */
-	{ "'?", NULL, "M", CYRILLIC },
-	/* 0x2740(&@$B'@(B) -> 0x4E(-LN) */
-	{ "'@", NULL, "N", CYRILLIC },
-	/* 0x2741(&@$B'A(B) -> 0x4F(-LO) */
-	{ "'A", NULL, "O", CYRILLIC },
-	/* 0x2751(&@$B'Q(B) -> 0x50(-LP) */
-	{ "'Q", NULL, "P", CYRILLIC },
-	/* 0x2752(&@$B'R(B) -> 0x51(-LQ) */
-	{ "'R", NULL, "Q", CYRILLIC },
-	/* 0x2753(&@$B'S(B) -> 0x52(-LR) */
-	{ "'S", NULL, "R", CYRILLIC },
-	/* 0x2754(&@$B'T(B) -> 0x53(-LS) */
-	{ "'T", NULL, "S", CYRILLIC },
-	/* 0x2755(&@$B'U(B) -> 0x54(-LT) */
-	{ "'U", NULL, "T", CYRILLIC },
-	/* 0x2756(&@$B'V(B) -> 0x55(-LU) */
-	{ "'V", NULL, "U", CYRILLIC },
-	/* 0x2757(&@$B'W(B) -> 0x71(-Lq) */
-	{ "'W", NULL, "q", CYRILLIC },
-	/* 0x2758(&@$B'X(B) -> 0x56(-LV) */
-	{ "'X", NULL, "V", CYRILLIC },
-	/* 0x2759(&@$B'Y(B) -> 0x57(-LW) */
-	{ "'Y", NULL, "W", CYRILLIC },
-	/* 0x275A(&@$B'Z(B) -> 0x58(-LX) */
-	{ "'Z", NULL, "X", CYRILLIC },
-	/* 0x275B(&@$B'[(B) -> 0x59(-LY) */
-	{ "'[", NULL, "Y", CYRILLIC },
-	/* 0x275C(&@$B'\(B) -> 0x5A(-LZ) */
-	{ "'\\", NULL, "Z", CYRILLIC },
-	/* 0x275D(&@$B'](B) -> 0x5B(-L[) */
-	{ "']", NULL, "[", CYRILLIC },
-	/* 0x275E(&@$B'^(B) -> 0x5C(-L\) */
-	{ "'^", NULL, "\\", CYRILLIC },
-	/* 0x275F(&@$B'_(B) -> 0x5D(-L]) */
-	{ "'_", NULL, "]", CYRILLIC },
-	/* 0x2760(&@$B'`(B) -> 0x5E(-L^) */
-	{ "'`", NULL, "^", CYRILLIC },
-	/* 0x2761(&@$B'a(B) -> 0x5F(-L_) */
-	{ "'a", NULL, "_", CYRILLIC },
-	/* 0x2762(&@$B'b(B) -> 0x60(-L`) */
-	{ "'b", NULL, "`", CYRILLIC },
-	/* 0x2763(&@$B'c(B) -> 0x61(-La) */
-	{ "'c", NULL, "a", CYRILLIC },
-	/* 0x2764(&@$B'd(B) -> 0x62(-Lb) */
-	{ "'d", NULL, "b", CYRILLIC },
-	/* 0x2765(&@$B'e(B) -> 0x63(-Lc) */
-	{ "'e", NULL, "c", CYRILLIC },
-	/* 0x2766(&@$B'f(B) -> 0x64(-Ld) */
-	{ "'f", NULL, "d", CYRILLIC },
-	/* 0x2767(&@$B'g(B) -> 0x65(-Le) */
-	{ "'g", NULL, "e", CYRILLIC },
-	/* 0x2768(&@$B'h(B) -> 0x66(-Lf) */
-	{ "'h", NULL, "f", CYRILLIC },
-	/* 0x2769(&@$B'i(B) -> 0x67(-Lg) */
-	{ "'i", NULL, "g", CYRILLIC },
-	/* 0x276A(&@$B'j(B) -> 0x68(-Lh) */
-	{ "'j", NULL, "h", CYRILLIC },
-	/* 0x276B(&@$B'k(B) -> 0x69(-Li) */
-	{ "'k", NULL, "i", CYRILLIC },
-	/* 0x276C(&@$B'l(B) -> 0x6A(-Lj) */
-	{ "'l", NULL, "j", CYRILLIC },
-	/* 0x276D(&@$B'm(B) -> 0x6B(-Lk) */
-	{ "'m", NULL, "k", CYRILLIC },
-	/* 0x276E(&@$B'n(B) -> 0x6C(-Ll) */
-	{ "'n", NULL, "l", CYRILLIC },
-	/* 0x276F(&@$B'o(B) -> 0x6D(-Lm) */
-	{ "'o", NULL, "m", CYRILLIC },
-	/* 0x2770(&@$B'p(B) -> 0x6E(-Ln) */
-	{ "'p", NULL, "n", CYRILLIC },
-	/* 0x2771(&@$B'q(B) -> 0x6F(-Lo) */
-	{ "'q", NULL, "o", CYRILLIC },
-	/* NULL */
+static convtab unify_jisx0212[] = {
+	{ "\x22\x2f", NULL, "\x22",     LATIN2 },
+	{ "\x22\x30", NULL, "\x37",     LATIN2 },
+	{ "\x22\x31", NULL, "\x38",     LATIN1 },
+	{ "\x22\x32", NULL, "\x7f",     LATIN2 },
+	{ "\x22\x33", NULL, "\x3d",     LATIN2 },
+	{ "\x22\x34", NULL, "\x2f",     LATIN1 },
+	{ "\x22\x35", NULL, "\x32",     LATIN2 },
+	{ "\x22\x37", NULL, "\x22\x32", JISX02132004KANJI1 },
+	{ "\x22\x38", NULL, "\x34",     GREEK },
+	{ "\x22\x39", NULL, "\x35",     GREEK },
+	{ "\x22\x42", NULL, "\x21",     LATIN1 },
+	{ "\x22\x43", NULL, "\x26",     LATIN1 },
+	{ "\x22\x44", NULL, "\x3f",     LATIN1 },
+	{ "\x22\x6b", NULL, "\x3a",     LATIN1 },
+	{ "\x22\x6c", NULL, "\x2a",     LATIN1 },
+	{ "\x22\x6d", NULL, "\x29",     LATIN1 },
+	{ "\x22\x6e", NULL, "\x2e",     LATIN1 },
+	{ "\x22\x70", NULL, "\x24",     LATIN1 },
+	{ "\x22\x71", NULL, "\x70",     CYRILLIC },
+	{ "\x26\x61", NULL, "\x36",     GREEK },
+	{ "\x26\x62", NULL, "\x38",     GREEK },
+	{ "\x26\x63", NULL, "\x39",     GREEK },
+	{ "\x26\x64", NULL, "\x3a",     GREEK },
+	{ "\x26\x65", NULL, "\x5a",     GREEK },
+	{ "\x26\x67", NULL, "\x3c",     GREEK },
+	{ "\x26\x69", NULL, "\x3e",     GREEK },
+	{ "\x26\x6a", NULL, "\x5b",     GREEK },
+	{ "\x26\x6c", NULL, "\x3f",     GREEK },
+	{ "\x26\x71", NULL, "\x5c",     GREEK },
+	{ "\x26\x72", NULL, "\x5d",     GREEK },
+	{ "\x26\x73", NULL, "\x5e",     GREEK },
+	{ "\x26\x74", NULL, "\x5f",     GREEK },
+	{ "\x26\x75", NULL, "\x7a",     GREEK },
+	{ "\x26\x76", NULL, "\x40",     GREEK },
+	{ "\x26\x77", NULL, "\x7c",     GREEK },
+	{ "\x26\x78", NULL, "\x72",     GREEK },
+	{ "\x26\x79", NULL, "\x7d",     GREEK },
+	{ "\x26\x7a", NULL, "\x7b",     GREEK },
+	{ "\x26\x7b", NULL, "\x60",     GREEK },
+	{ "\x26\x7c", NULL, "\x7e",     GREEK },
+	{ "\x27\x42", NULL, "\x22",     CYRILLIC },
+	{ "\x27\x43", NULL, "\x23",     CYRILLIC },
+	{ "\x27\x44", NULL, "\x24",     CYRILLIC },
+	{ "\x27\x45", NULL, "\x25",     CYRILLIC },
+	{ "\x27\x46", NULL, "\x26",     CYRILLIC },
+	{ "\x27\x47", NULL, "\x27",     CYRILLIC },
+	{ "\x27\x48", NULL, "\x28",     CYRILLIC },
+	{ "\x27\x49", NULL, "\x29",     CYRILLIC },
+	{ "\x27\x4a", NULL, "\x2a",     CYRILLIC },
+	{ "\x27\x4b", NULL, "\x2b",     CYRILLIC },
+	{ "\x27\x4c", NULL, "\x2c",     CYRILLIC },
+	{ "\x27\x4d", NULL, "\x2e",     CYRILLIC },
+	{ "\x27\x4e", NULL, "\x2f",     CYRILLIC },
+	{ "\x27\x72", NULL, "\x72",     CYRILLIC },
+	{ "\x27\x73", NULL, "\x73",     CYRILLIC },
+	{ "\x27\x74", NULL, "\x74",     CYRILLIC },
+	{ "\x27\x75", NULL, "\x75",     CYRILLIC },
+	{ "\x27\x76", NULL, "\x76",     CYRILLIC },
+	{ "\x27\x77", NULL, "\x77",     CYRILLIC },
+	{ "\x27\x78", NULL, "\x78",     CYRILLIC },
+	{ "\x27\x79", NULL, "\x79",     CYRILLIC },
+	{ "\x27\x7a", NULL, "\x7a",     CYRILLIC },
+	{ "\x27\x7b", NULL, "\x7b",     CYRILLIC },
+	{ "\x27\x7c", NULL, "\x7c",     CYRILLIC },
+	{ "\x27\x7d", NULL, "\x7e",     CYRILLIC },
+	{ "\x27\x7e", NULL, "\x7f",     CYRILLIC },
+	{ "\x29\x21", NULL, "\x46",     LATIN1 },
+	{ "\x29\x22", NULL, "\x50",     LATIN2 },
+	{ "\x29\x24", NULL, "\x21",     LATIN3 },
+	{ "\x29\x28", NULL, "\x23",     LATIN2 },
+	{ "\x29\x2b", NULL, "\x3d",     LATIN4 },
+	{ "\x29\x2c", NULL, "\x58",     LATIN1 },
+	{ "\x29\x2f", NULL, "\x2c",     LATIN4 },
+	{ "\x29\x30", NULL, "\x5e",     LATIN1 },
+	{ "\x29\x41", NULL, "\x66",     LATIN1 },
+	{ "\x29\x42", NULL, "\x70",     LATIN2 },
+	{ "\x29\x43", NULL, "\x70",     LATIN1 },
+	{ "\x29\x44", NULL, "\x31",     LATIN3 },
+	{ "\x29\x45", NULL, "\x39",     LATIN3 },
+	{ "\x29\x47", NULL, "\x22",     LATIN4 },
+	{ "\x29\x48", NULL, "\x33",     LATIN2 },
+	{ "\x29\x4b", NULL, "\x3f",     LATIN4 },
+	{ "\x29\x4c", NULL, "\x78",     LATIN1 },
+	{ "\x29\x4e", NULL, "\x5f",     LATIN1 },
+	{ "\x29\x4f", NULL, "\x3c",     LATIN4 },
+	{ "\x29\x50", NULL, "\x7e",     LATIN1 },
+	{ "\x2a\x21", NULL, "\x41",     LATIN1 },
+	{ "\x2a\x22", NULL, "\x40",     LATIN1 },
+	{ "\x2a\x23", NULL, "\x44",     LATIN1 },
+	{ "\x2a\x24", NULL, "\x42",     LATIN1 },
+	{ "\x2a\x25", NULL, "\x43",     LATIN2 },
+	{ "\x2a\x26", NULL, "\x28\x6f", JISX02132004KANJI1 },
+	{ "\x2a\x27", NULL, "\x40",     LATIN4 },
+	{ "\x2a\x28", NULL, "\x21",     LATIN2 },
+	{ "\x2a\x29", NULL, "\x45",     LATIN1 },
+	{ "\x2a\x2a", NULL, "\x43",     LATIN1 },
+	{ "\x2a\x2b", NULL, "\x46",     LATIN2 },
+	{ "\x2a\x2c", NULL, "\x46",     LATIN3 },
+	{ "\x2a\x2d", NULL, "\x48",     LATIN2 },
+	{ "\x2a\x2e", NULL, "\x47",     LATIN1 },
+	{ "\x2a\x2f", NULL, "\x45",     LATIN3 },
+	{ "\x2a\x30", NULL, "\x4f",     LATIN2 },
+	{ "\x2a\x31", NULL, "\x49",     LATIN1 },
+	{ "\x2a\x32", NULL, "\x48",     LATIN1 },
+	{ "\x2a\x33", NULL, "\x4b",     LATIN1 },
+	{ "\x2a\x34", NULL, "\x4a",     LATIN1 },
+	{ "\x2a\x35", NULL, "\x4c",     LATIN2 },
+	{ "\x2a\x36", NULL, "\x4c",     LATIN4 },
+	{ "\x2a\x37", NULL, "\x2a",     LATIN4 },
+	{ "\x2a\x38", NULL, "\x4a",     LATIN2 },
+	{ "\x2a\x3a", NULL, "\x58",     LATIN3 },
+	{ "\x2a\x3b", NULL, "\x2b",     LATIN3 },
+	{ "\x2a\x3c", NULL, "\x2b",     LATIN4 },
+	{ "\x2a\x3d", NULL, "\x55",     LATIN3 },
+	{ "\x2a\x3e", NULL, "\x26",     LATIN3 },
+	{ "\x2a\x3f", NULL, "\x4d",     LATIN1 },
+	{ "\x2a\x40", NULL, "\x4c",     LATIN1 },
+	{ "\x2a\x41", NULL, "\x4f",     LATIN1 },
+	{ "\x2a\x42", NULL, "\x4e",     LATIN1 },
+	{ "\x2a\x44", NULL, "\x29",     LATIN3 },
+	{ "\x2a\x45", NULL, "\x4f",     LATIN4 },
+	{ "\x2a\x46", NULL, "\x47",     LATIN4 },
+	{ "\x2a\x47", NULL, "\x25",     LATIN4 },
+	{ "\x2a\x48", NULL, "\x2c",     LATIN3 },
+	{ "\x2a\x49", NULL, "\x53",     LATIN4 },
+	{ "\x2a\x4a", NULL, "\x45",     LATIN2 },
+	{ "\x2a\x4b", NULL, "\x25",     LATIN2 },
+	{ "\x2a\x4c", NULL, "\x26",     LATIN4 },
+	{ "\x2a\x4d", NULL, "\x51",     LATIN2 },
+	{ "\x2a\x4e", NULL, "\x52",     LATIN2 },
+	{ "\x2a\x4f", NULL, "\x51",     LATIN4 },
+	{ "\x2a\x50", NULL, "\x51",     LATIN1 },
+	{ "\x2a\x51", NULL, "\x53",     LATIN1 },
+	{ "\x2a\x52", NULL, "\x52",     LATIN1 },
+	{ "\x2a\x53", NULL, "\x56",     LATIN1 },
+	{ "\x2a\x54", NULL, "\x54",     LATIN1 },
+	{ "\x2a\x55", NULL, "\x28\x76", JISX02132004KANJI1 },
+	{ "\x2a\x56", NULL, "\x55",     LATIN2 },
+	{ "\x2a\x57", NULL, "\x52",     LATIN4 },
+	{ "\x2a\x58", NULL, "\x55",     LATIN1 },
+	{ "\x2a\x59", NULL, "\x40",     LATIN2 },
+	{ "\x2a\x5a", NULL, "\x58",     LATIN2 },
+	{ "\x2a\x5b", NULL, "\x23",     LATIN4 },
+	{ "\x2a\x5c", NULL, "\x26",     LATIN2 },
+	{ "\x2a\x5d", NULL, "\x5e",     LATIN3 },
+	{ "\x2a\x5e", NULL, "\x29",     LATIN2 },
+	{ "\x2a\x5f", NULL, "\x2a",     LATIN2 },
+	{ "\x2a\x60", NULL, "\x2b",     LATIN2 },
+	{ "\x2a\x61", NULL, "\x5e",     LATIN2 },
+	{ "\x2a\x62", NULL, "\x5a",     LATIN1 },
+	{ "\x2a\x63", NULL, "\x59",     LATIN1 },
+	{ "\x2a\x64", NULL, "\x5c",     LATIN1 },
+	{ "\x2a\x65", NULL, "\x5b",     LATIN1 },
+	{ "\x2a\x66", NULL, "\x5d",     LATIN3 },
+	{ "\x2a\x68", NULL, "\x5b",     LATIN2 },
+	{ "\x2a\x69", NULL, "\x5e",     LATIN4 },
+	{ "\x2a\x6a", NULL, "\x59",     LATIN4 },
+	{ "\x2a\x6b", NULL, "\x59",     LATIN2 },
+	{ "\x2a\x6c", NULL, "\x5d",     LATIN4 },
+	{ "\x2a\x72", NULL, "\x5d",     LATIN1 },
+	{ "\x2a\x75", NULL, "\x2c",     LATIN2 },
+	{ "\x2a\x76", NULL, "\x2e",     LATIN2 },
+	{ "\x2a\x77", NULL, "\x2f",     LATIN2 },
+	{ "\x2b\x21", NULL, "\x61",     LATIN1 },
+	{ "\x2b\x22", NULL, "\x60",     LATIN1 },
+	{ "\x2b\x23", NULL, "\x64",     LATIN1 },
+	{ "\x2b\x24", NULL, "\x62",     LATIN1 },
+	{ "\x2b\x25", NULL, "\x63",     LATIN2 },
+	{ "\x2b\x26", NULL, "\x28\x70", JISX02132004KANJI1 },
+	{ "\x2b\x27", NULL, "\x60",     LATIN4 },
+	{ "\x2b\x28", NULL, "\x31",     LATIN2 },
+	{ "\x2b\x29", NULL, "\x65",     LATIN1 },
+	{ "\x2b\x2a", NULL, "\x63",     LATIN1 },
+	{ "\x2b\x2b", NULL, "\x66",     LATIN2 },
+	{ "\x2b\x2c", NULL, "\x66",     LATIN3 },
+	{ "\x2b\x2d", NULL, "\x68",     LATIN2 },
+	{ "\x2b\x2e", NULL, "\x67",     LATIN1 },
+	{ "\x2b\x2f", NULL, "\x65",     LATIN3 },
+	{ "\x2b\x30", NULL, "\x6f",     LATIN2 },
+	{ "\x2b\x31", NULL, "\x69",     LATIN1 },
+	{ "\x2b\x32", NULL, "\x68",     LATIN1 },
+	{ "\x2b\x33", NULL, "\x6b",     LATIN1 },
+	{ "\x2b\x34", NULL, "\x6a",     LATIN1 },
+	{ "\x2b\x35", NULL, "\x6c",     LATIN2 },
+	{ "\x2b\x36", NULL, "\x6c",     LATIN4 },
+	{ "\x2b\x37", NULL, "\x3a",     LATIN4 },
+	{ "\x2b\x38", NULL, "\x6a",     LATIN2 },
+	{ "\x2b\x3a", NULL, "\x78",     LATIN3 },
+	{ "\x2b\x3b", NULL, "\x3b",     LATIN3 },
+	{ "\x2b\x3d", NULL, "\x75",     LATIN3 },
+	{ "\x2b\x3e", NULL, "\x36",     LATIN3 },
+	{ "\x2b\x3f", NULL, "\x6d",     LATIN1 },
+	{ "\x2b\x40", NULL, "\x6c",     LATIN1 },
+	{ "\x2b\x41", NULL, "\x6f",     LATIN1 },
+	{ "\x2b\x42", NULL, "\x6e",     LATIN1 },
+	{ "\x2b\x43", NULL, "\x28\x71", JISX02132004KANJI1 },
+	{ "\x2b\x45", NULL, "\x6f",     LATIN4 },
+	{ "\x2b\x46", NULL, "\x67",     LATIN4 },
+	{ "\x2b\x47", NULL, "\x35",     LATIN4 },
+	{ "\x2b\x48", NULL, "\x3c",     LATIN3 },
+	{ "\x2b\x49", NULL, "\x73",     LATIN4 },
+	{ "\x2b\x4a", NULL, "\x65",     LATIN2 },
+	{ "\x2b\x4b", NULL, "\x35",     LATIN2 },
+	{ "\x2b\x4c", NULL, "\x36",     LATIN4 },
+	{ "\x2b\x4d", NULL, "\x71",     LATIN2 },
+	{ "\x2b\x4e", NULL, "\x72",     LATIN2 },
+	{ "\x2b\x4f", NULL, "\x71",     LATIN4 },
+	{ "\x2b\x50", NULL, "\x71",     LATIN1 },
+	{ "\x2b\x51", NULL, "\x73",     LATIN1 },
+	{ "\x2b\x52", NULL, "\x72",     LATIN1 },
+	{ "\x2b\x53", NULL, "\x76",     LATIN1 },
+	{ "\x2b\x54", NULL, "\x74",     LATIN1 },
+	{ "\x2b\x55", NULL, "\x28\x77", JISX02132004KANJI1 },
+	{ "\x2b\x56", NULL, "\x75",     LATIN2 },
+	{ "\x2b\x57", NULL, "\x72",     LATIN4 },
+	{ "\x2b\x58", NULL, "\x75",     LATIN1 },
+	{ "\x2b\x59", NULL, "\x60",     LATIN2 },
+	{ "\x2b\x5a", NULL, "\x78",     LATIN2 },
+	{ "\x2b\x5b", NULL, "\x33",     LATIN4 },
+	{ "\x2b\x5c", NULL, "\x36",     LATIN2 },
+	{ "\x2b\x5d", NULL, "\x7e",     LATIN3 },
+	{ "\x2b\x5e", NULL, "\x39",     LATIN2 },
+	{ "\x2b\x5f", NULL, "\x3a",     LATIN2 },
+	{ "\x2b\x60", NULL, "\x3b",     LATIN2 },
+	{ "\x2b\x61", NULL, "\x7e",     LATIN2 },
+	{ "\x2b\x62", NULL, "\x7a",     LATIN1 },
+	{ "\x2b\x63", NULL, "\x79",     LATIN1 },
+	{ "\x2b\x64", NULL, "\x7c",     LATIN1 },
+	{ "\x2b\x65", NULL, "\x7b",     LATIN1 },
+	{ "\x2b\x66", NULL, "\x7d",     LATIN3 },
+	{ "\x2b\x67", NULL, "\x28\x78", JISX02132004KANJI1 },
+	{ "\x2b\x68", NULL, "\x7b",     LATIN2 },
+	{ "\x2b\x69", NULL, "\x7e",     LATIN4 },
+	{ "\x2b\x6a", NULL, "\x79",     LATIN4 },
+	{ "\x2b\x6b", NULL, "\x79",     LATIN2 },
+	{ "\x2b\x6c", NULL, "\x7d",     LATIN4 },
+	{ "\x2b\x6d", NULL, "\x28\x7a", JISX02132004KANJI1 },
+	{ "\x2b\x6e", NULL, "\x28\x7c", JISX02132004KANJI1 },
+	{ "\x2b\x6f", NULL, "\x28\x7b", JISX02132004KANJI1 },
+	{ "\x2b\x70", NULL, "\x28\x79", JISX02132004KANJI1 },
+	{ "\x2b\x72", NULL, "\x7d",     LATIN1 },
+	{ "\x2b\x73", NULL, "\x7f",     LATIN1 },
+	{ "\x2b\x75", NULL, "\x3c",     LATIN2 },
+	{ "\x2b\x76", NULL, "\x3e",     LATIN2 },
+	{ "\x2b\x77", NULL, "\x3f",     LATIN2 },
+	{ "\x30\x21", NULL, "\x21\x22", JISX02132004KANJI2 },
+	{ "\x30\x25", NULL, "\x21\x24", JISX02132004KANJI2 },
+	{ "\x30\x29", NULL, "\x2e\x24", JISX02132004KANJI1 },
+	{ "\x30\x2a", NULL, "\x21\x26", JISX02132004KANJI2 },
+	{ "\x30\x2b", NULL, "\x21\x27", JISX02132004KANJI2 },
+	{ "\x30\x2c", NULL, "\x2e\x25", JISX02132004KANJI1 },
+	{ "\x30\x2d", NULL, "\x2e\x26", JISX02132004KANJI1 },
+	{ "\x30\x2f", NULL, "\x21\x28", JISX02132004KANJI2 },
+	{ "\x30\x32", NULL, "\x21\x29", JISX02132004KANJI2 },
+	{ "\x30\x33", NULL, "\x21\x2c", JISX02132004KANJI2 },
+	{ "\x30\x34", NULL, "\x21\x2f", JISX02132004KANJI2 },
+	{ "\x30\x38", NULL, "\x21\x30", JISX02132004KANJI2 },
+	{ "\x30\x3d", NULL, "\x2e\x27", JISX02132004KANJI1 },
+	{ "\x30\x40", NULL, "\x21\x31", JISX02132004KANJI2 },
+	{ "\x30\x42", NULL, "\x21\x34", JISX02132004KANJI2 },
+	{ "\x30\x43", NULL, "\x21\x38", JISX02132004KANJI2 },
+	{ "\x30\x44", NULL, "\x21\x3a", JISX02132004KANJI2 },
+	{ "\x30\x45", NULL, "\x21\x3c", JISX02132004KANJI2 },
+	{ "\x30\x48", NULL, "\x2e\x28", JISX02132004KANJI1 },
+	{ "\x30\x4c", NULL, "\x21\x3d", JISX02132004KANJI2 },
+	{ "\x30\x4e", NULL, "\x21\x3e", JISX02132004KANJI2 },
+	{ "\x30\x4f", NULL, "\x2e\x29", JISX02132004KANJI1 },
+	{ "\x30\x51", NULL, "\x2e\x2a", JISX02132004KANJI1 },
+	{ "\x30\x52", NULL, "\x21\x3f", JISX02132004KANJI2 },
+	{ "\x30\x54", NULL, "\x2e\x2b", JISX02132004KANJI1 },
+	{ "\x30\x56", NULL, "\x2e\x2c", JISX02132004KANJI1 },
+	{ "\x30\x5a", NULL, "\x21\x40", JISX02132004KANJI2 },
+	{ "\x30\x5f", NULL, "\x2e\x2d", JISX02132004KANJI1 },
+	{ "\x30\x62", NULL, "\x21\x42", JISX02132004KANJI2 },
+	{ "\x30\x65", NULL, "\x21\x43", JISX02132004KANJI2 },
+	{ "\x30\x68", NULL, "\x2e\x2e", JISX02132004KANJI1 },
+	{ "\x30\x69", NULL, "\x2e\x2f", JISX02132004KANJI1 },
+	{ "\x30\x6d", NULL, "\x21\x44", JISX02132004KANJI2 },
+	{ "\x30\x6e", NULL, "\x2e\x30", JISX02132004KANJI1 },
+	{ "\x30\x6f", NULL, "\x21\x45", JISX02132004KANJI2 },
+	{ "\x30\x70", NULL, "\x2e\x31", JISX02132004KANJI1 },
+	{ "\x30\x72", NULL, "\x2e\x32", JISX02132004KANJI1 },
+	{ "\x30\x73", NULL, "\x2e\x33", JISX02132004KANJI1 },
+	{ "\x30\x76", NULL, "\x21\x47", JISX02132004KANJI2 },
+	{ "\x30\x77", NULL, "\x21\x48", JISX02132004KANJI2 },
+	{ "\x30\x79", NULL, "\x21\x49", JISX02132004KANJI2 },
+	{ "\x30\x7a", NULL, "\x21\x4a", JISX02132004KANJI2 },
+	{ "\x30\x7b", NULL, "\x2e\x34", JISX02132004KANJI1 },
+	{ "\x30\x7d", NULL, "\x21\x4b", JISX02132004KANJI2 },
+	{ "\x31\x21", NULL, "\x21\x4c", JISX02132004KANJI2 },
+	{ "\x31\x23", NULL, "\x2e\x35", JISX02132004KANJI1 },
+	{ "\x31\x27", NULL, "\x21\x4d", JISX02132004KANJI2 },
+	{ "\x31\x29", NULL, "\x2e\x36", JISX02132004KANJI1 },
+	{ "\x31\x2a", NULL, "\x2e\x37", JISX02132004KANJI1 },
+	{ "\x31\x2c", NULL, "\x21\x4e", JISX02132004KANJI2 },
+	{ "\x31\x2f", NULL, "\x21\x50", JISX02132004KANJI2 },
+	{ "\x31\x35", NULL, "\x21\x51", JISX02132004KANJI2 },
+	{ "\x31\x38", NULL, "\x21\x52", JISX02132004KANJI2 },
+	{ "\x31\x3b", NULL, "\x2e\x39", JISX02132004KANJI1 },
+	{ "\x31\x3c", NULL, "\x21\x53", JISX02132004KANJI2 },
+	{ "\x31\x3f", NULL, "\x21\x54", JISX02132004KANJI2 },
+	{ "\x31\x40", NULL, "\x21\x55", JISX02132004KANJI2 },
+	{ "\x31\x42", NULL, "\x2e\x3a", JISX02132004KANJI1 },
+	{ "\x31\x45", NULL, "\x21\x57", JISX02132004KANJI2 },
+	{ "\x31\x49", NULL, "\x21\x58", JISX02132004KANJI2 },
+	{ "\x31\x4a", NULL, "\x2e\x3b", JISX02132004KANJI1 },
+	{ "\x31\x4f", NULL, "\x2e\x3d", JISX02132004KANJI1 },
+	{ "\x31\x50", NULL, "\x21\x59", JISX02132004KANJI2 },
+	{ "\x31\x51", NULL, "\x21\x5a", JISX02132004KANJI2 },
+	{ "\x31\x53", NULL, "\x2e\x3e", JISX02132004KANJI1 },
+	{ "\x31\x55", NULL, "\x21\x5b", JISX02132004KANJI2 },
+	{ "\x31\x57", NULL, "\x21\x5c", JISX02132004KANJI2 },
+	{ "\x31\x58", NULL, "\x21\x5d", JISX02132004KANJI2 },
+	{ "\x31\x59", NULL, "\x2e\x3f", JISX02132004KANJI1 },
+	{ "\x31\x5a", NULL, "\x2e\x40", JISX02132004KANJI1 },
+	{ "\x31\x5f", NULL, "\x2e\x41", JISX02132004KANJI1 },
+	{ "\x31\x60", NULL, "\x2e\x43", JISX02132004KANJI1 },
+	{ "\x31\x61", NULL, "\x21\x5f", JISX02132004KANJI2 },
+	{ "\x31\x63", NULL, "\x21\x60", JISX02132004KANJI2 },
+	{ "\x31\x66", NULL, "\x21\x61", JISX02132004KANJI2 },
+	{ "\x31\x69", NULL, "\x21\x62", JISX02132004KANJI2 },
+	{ "\x31\x6a", NULL, "\x21\x63", JISX02132004KANJI2 },
+	{ "\x31\x6f", NULL, "\x21\x64", JISX02132004KANJI2 },
+	{ "\x31\x70", NULL, "\x21\x65", JISX02132004KANJI2 },
+	{ "\x31\x72", NULL, "\x21\x66", JISX02132004KANJI2 },
+	{ "\x31\x74", NULL, "\x21\x67", JISX02132004KANJI2 },
+	{ "\x31\x76", NULL, "\x2e\x42", JISX02132004KANJI1 },
+	{ "\x32\x21", NULL, "\x21\x6a", JISX02132004KANJI2 },
+	{ "\x32\x22", NULL, "\x21\x6b", JISX02132004KANJI2 },
+	{ "\x32\x23", NULL, "\x2e\x44", JISX02132004KANJI1 },
+	{ "\x32\x24", NULL, "\x21\x6d", JISX02132004KANJI2 },
+	{ "\x32\x26", NULL, "\x21\x6e", JISX02132004KANJI2 },
+	{ "\x32\x2c", NULL, "\x21\x6f", JISX02132004KANJI2 },
+	{ "\x32\x30", NULL, "\x21\x72", JISX02132004KANJI2 },
+	{ "\x32\x34", NULL, "\x21\x74", JISX02132004KANJI2 },
+	{ "\x32\x35", NULL, "\x21\x75", JISX02132004KANJI2 },
+	{ "\x32\x36", NULL, "\x2e\x45", JISX02132004KANJI1 },
+	{ "\x32\x37", NULL, "\x21\x78", JISX02132004KANJI2 },
+	{ "\x32\x38", NULL, "\x2e\x47", JISX02132004KANJI1 },
+	{ "\x32\x3a", NULL, "\x21\x7a", JISX02132004KANJI2 },
+	{ "\x32\x41", NULL, "\x2e\x48", JISX02132004KANJI1 },
+	{ "\x32\x43", NULL, "\x21\x7d", JISX02132004KANJI2 },
+	{ "\x32\x49", NULL, "\x2e\x4b", JISX02132004KANJI1 },
+	{ "\x32\x4a", NULL, "\x2e\x4a", JISX02132004KANJI1 },
+	{ "\x32\x4c", NULL, "\x23\x21", JISX02132004KANJI2 },
+	{ "\x32\x4d", NULL, "\x2e\x4c", JISX02132004KANJI1 },
+	{ "\x32\x51", NULL, "\x2e\x46", JISX02132004KANJI1 },
+	{ "\x32\x53", NULL, "\x23\x23", JISX02132004KANJI2 },
+	{ "\x32\x55", NULL, "\x23\x24", JISX02132004KANJI2 },
+	{ "\x32\x58", NULL, "\x2e\x4d", JISX02132004KANJI1 },
+	{ "\x32\x62", NULL, "\x2e\x4e", JISX02132004KANJI1 },
+	{ "\x32\x66", NULL, "\x2e\x4f", JISX02132004KANJI1 },
+	{ "\x32\x69", NULL, "\x2e\x51", JISX02132004KANJI1 },
+	{ "\x32\x6a", NULL, "\x2e\x52", JISX02132004KANJI1 },
+	{ "\x32\x70", NULL, "\x23\x29", JISX02132004KANJI2 },
+	{ "\x32\x72", NULL, "\x23\x2a", JISX02132004KANJI2 },
+	{ "\x32\x74", NULL, "\x23\x2c", JISX02132004KANJI2 },
+	{ "\x32\x75", NULL, "\x2e\x54", JISX02132004KANJI1 },
+	{ "\x32\x77", NULL, "\x23\x2d", JISX02132004KANJI2 },
+	{ "\x32\x78", NULL, "\x23\x2e", JISX02132004KANJI2 },
+	{ "\x32\x7b", NULL, "\x23\x30", JISX02132004KANJI2 },
+	{ "\x33\x28", NULL, "\x2e\x57", JISX02132004KANJI1 },
+	{ "\x33\x29", NULL, "\x2e\x58", JISX02132004KANJI1 },
+	{ "\x33\x2b", NULL, "\x2e\x59", JISX02132004KANJI1 },
+	{ "\x33\x2d", NULL, "\x23\x33", JISX02132004KANJI2 },
+	{ "\x33\x2e", NULL, "\x23\x34", JISX02132004KANJI2 },
+	{ "\x33\x30", NULL, "\x2e\x5a", JISX02132004KANJI1 },
+	{ "\x33\x31", NULL, "\x23\x35", JISX02132004KANJI2 },
+	{ "\x33\x33", NULL, "\x23\x36", JISX02132004KANJI2 },
+	{ "\x33\x34", NULL, "\x2e\x5c", JISX02132004KANJI1 },
+	{ "\x33\x35", NULL, "\x2e\x5d", JISX02132004KANJI1 },
+	{ "\x33\x36", NULL, "\x23\x37", JISX02132004KANJI2 },
+	{ "\x33\x3f", NULL, "\x2e\x5e", JISX02132004KANJI1 },
+	{ "\x33\x40", NULL, "\x23\x39", JISX02132004KANJI2 },
+	{ "\x33\x41", NULL, "\x2e\x5f", JISX02132004KANJI1 },
+	{ "\x33\x44", NULL, "\x23\x3a", JISX02132004KANJI2 },
+	{ "\x33\x47", NULL, "\x2e\x60", JISX02132004KANJI1 },
+	{ "\x33\x4a", NULL, "\x23\x3c", JISX02132004KANJI2 },
+	{ "\x33\x4e", NULL, "\x23\x3e", JISX02132004KANJI2 },
+	{ "\x33\x52", NULL, "\x2e\x61", JISX02132004KANJI1 },
+	{ "\x33\x56", NULL, "\x23\x40", JISX02132004KANJI2 },
+	{ "\x33\x59", NULL, "\x23\x42", JISX02132004KANJI2 },
+	{ "\x33\x5b", NULL, "\x23\x43", JISX02132004KANJI2 },
+	{ "\x33\x5d", NULL, "\x23\x44", JISX02132004KANJI2 },
+	{ "\x33\x62", NULL, "\x23\x45", JISX02132004KANJI2 },
+	{ "\x33\x63", NULL, "\x23\x46", JISX02132004KANJI2 },
+	{ "\x33\x68", NULL, "\x2e\x62", JISX02132004KANJI1 },
+	{ "\x33\x69", NULL, "\x2e\x64", JISX02132004KANJI1 },
+	{ "\x33\x6b", NULL, "\x23\x49", JISX02132004KANJI2 },
+	{ "\x33\x6d", NULL, "\x2e\x66", JISX02132004KANJI1 },
+	{ "\x33\x6e", NULL, "\x2e\x67", JISX02132004KANJI1 },
+	{ "\x33\x76", NULL, "\x2e\x69", JISX02132004KANJI1 },
+	{ "\x33\x7a", NULL, "\x23\x4b", JISX02132004KANJI2 },
+	{ "\x33\x7b", NULL, "\x2e\x6b", JISX02132004KANJI1 },
+	{ "\x33\x7d", NULL, "\x23\x4c", JISX02132004KANJI2 },
+	{ "\x33\x7e", NULL, "\x23\x4d", JISX02132004KANJI2 },
+	{ "\x34\x26", NULL, "\x2e\x6d", JISX02132004KANJI1 },
+	{ "\x34\x32", NULL, "\x23\x4f", JISX02132004KANJI2 },
+	{ "\x34\x35", NULL, "\x23\x50", JISX02132004KANJI2 },
+	{ "\x34\x36", NULL, "\x23\x51", JISX02132004KANJI2 },
+	{ "\x34\x3b", NULL, "\x2e\x6f", JISX02132004KANJI1 },
+	{ "\x34\x3c", NULL, "\x2e\x70", JISX02132004KANJI1 },
+	{ "\x34\x3e", NULL, "\x23\x55", JISX02132004KANJI2 },
+	{ "\x34\x47", NULL, "\x2e\x72", JISX02132004KANJI1 },
+	{ "\x34\x4a", NULL, "\x2e\x73", JISX02132004KANJI1 },
+	{ "\x34\x4c", NULL, "\x23\x57", JISX02132004KANJI2 },
+	{ "\x34\x50", NULL, "\x2e\x74", JISX02132004KANJI1 },
+	{ "\x34\x51", NULL, "\x23\x58", JISX02132004KANJI2 },
+	{ "\x34\x53", NULL, "\x23\x5a", JISX02132004KANJI2 },
+	{ "\x34\x57", NULL, "\x23\x5b", JISX02132004KANJI2 },
+	{ "\x34\x5c", NULL, "\x23\x5f", JISX02132004KANJI2 },
+	{ "\x34\x5d", NULL, "\x23\x60", JISX02132004KANJI2 },
+	{ "\x34\x63", NULL, "\x23\x63", JISX02132004KANJI2 },
+	{ "\x34\x68", NULL, "\x2e\x76", JISX02132004KANJI1 },
+	{ "\x34\x69", NULL, "\x23\x66", JISX02132004KANJI2 },
+	{ "\x34\x6f", NULL, "\x23\x68", JISX02132004KANJI2 },
+	{ "\x34\x72", NULL, "\x2e\x77", JISX02132004KANJI1 },
+	{ "\x34\x75", NULL, "\x23\x69", JISX02132004KANJI2 },
+	{ "\x34\x77", NULL, "\x23\x6a", JISX02132004KANJI2 },
+	{ "\x34\x7a", NULL, "\x2e\x79", JISX02132004KANJI1 },
+	{ "\x34\x7d", NULL, "\x2e\x7a", JISX02132004KANJI1 },
+	{ "\x34\x7e", NULL, "\x2e\x7b", JISX02132004KANJI1 },
+	{ "\x35\x24", NULL, "\x2e\x7c", JISX02132004KANJI1 },
+	{ "\x35\x26", NULL, "\x23\x6d", JISX02132004KANJI2 },
+	{ "\x35\x28", NULL, "\x23\x6e", JISX02132004KANJI2 },
+	{ "\x35\x29", NULL, "\x2e\x7d", JISX02132004KANJI1 },
+	{ "\x35\x2a", NULL, "\x2e\x78", JISX02132004KANJI1 },
+	{ "\x35\x2c", NULL, "\x2e\x7e", JISX02132004KANJI1 },
+	{ "\x35\x2d", NULL, "\x23\x70", JISX02132004KANJI2 },
+	{ "\x35\x2f", NULL, "\x2f\x21", JISX02132004KANJI1 },
+	{ "\x35\x31", NULL, "\x23\x71", JISX02132004KANJI2 },
+	{ "\x35\x32", NULL, "\x23\x72", JISX02132004KANJI2 },
+	{ "\x35\x34", NULL, "\x23\x73", JISX02132004KANJI2 },
+	{ "\x35\x36", NULL, "\x23\x74", JISX02132004KANJI2 },
+	{ "\x35\x38", NULL, "\x23\x75", JISX02132004KANJI2 },
+	{ "\x35\x39", NULL, "\x2f\x22", JISX02132004KANJI1 },
+	{ "\x35\x3f", NULL, "\x23\x78", JISX02132004KANJI2 },
+	{ "\x35\x40", NULL, "\x23\x79", JISX02132004KANJI2 },
+	{ "\x35\x44", NULL, "\x2f\x23", JISX02132004KANJI1 },
+	{ "\x35\x45", NULL, "\x23\x7c", JISX02132004KANJI2 },
+	{ "\x35\x46", NULL, "\x23\x7d", JISX02132004KANJI2 },
+	{ "\x35\x49", NULL, "\x23\x7e", JISX02132004KANJI2 },
+	{ "\x35\x4c", NULL, "\x2f\x24", JISX02132004KANJI1 },
+	{ "\x35\x4f", NULL, "\x2f\x25", JISX02132004KANJI1 },
+	{ "\x35\x51", NULL, "\x2f\x26", JISX02132004KANJI1 },
+	{ "\x35\x54", NULL, "\x24\x21", JISX02132004KANJI2 },
+	{ "\x35\x56", NULL, "\x24\x22", JISX02132004KANJI2 },
+	{ "\x35\x57", NULL, "\x24\x24", JISX02132004KANJI2 },
+	{ "\x35\x59", NULL, "\x24\x25", JISX02132004KANJI2 },
+	{ "\x35\x5b", NULL, "\x2f\x27", JISX02132004KANJI1 },
+	{ "\x35\x60", NULL, "\x2f\x28", JISX02132004KANJI1 },
+	{ "\x35\x61", NULL, "\x24\x27", JISX02132004KANJI2 },
+	{ "\x35\x62", NULL, "\x24\x28", JISX02132004KANJI2 },
+	{ "\x35\x63", NULL, "\x24\x29", JISX02132004KANJI2 },
+	{ "\x35\x66", NULL, "\x2f\x29", JISX02132004KANJI1 },
+	{ "\x35\x67", NULL, "\x24\x2c", JISX02132004KANJI2 },
+	{ "\x35\x68", NULL, "\x2f\x2a", JISX02132004KANJI1 },
+	{ "\x35\x69", NULL, "\x24\x2d", JISX02132004KANJI2 },
+	{ "\x35\x6a", NULL, "\x2f\x2b", JISX02132004KANJI1 },
+	{ "\x35\x6c", NULL, "\x24\x2e", JISX02132004KANJI2 },
+	{ "\x35\x73", NULL, "\x2f\x2d", JISX02132004KANJI1 },
+	{ "\x35\x75", NULL, "\x24\x33", JISX02132004KANJI2 },
+	{ "\x35\x79", NULL, "\x24\x34", JISX02132004KANJI2 },
+	{ "\x35\x7b", NULL, "\x24\x35", JISX02132004KANJI2 },
+	{ "\x35\x7c", NULL, "\x2f\x2e", JISX02132004KANJI1 },
+	{ "\x35\x7d", NULL, "\x24\x36", JISX02132004KANJI2 },
+	{ "\x35\x7e", NULL, "\x24\x30", JISX02132004KANJI2 },
+	{ "\x36\x26", NULL, "\x24\x39", JISX02132004KANJI2 },
+	{ "\x36\x27", NULL, "\x24\x3b", JISX02132004KANJI2 },
+	{ "\x36\x2b", NULL, "\x2f\x30", JISX02132004KANJI1 },
+	{ "\x36\x2e", NULL, "\x2f\x31", JISX02132004KANJI1 },
+	{ "\x36\x30", NULL, "\x24\x3f", JISX02132004KANJI2 },
+	{ "\x36\x35", NULL, "\x24\x40", JISX02132004KANJI2 },
+	{ "\x36\x38", NULL, "\x24\x41", JISX02132004KANJI2 },
+	{ "\x36\x3a", NULL, "\x2f\x32", JISX02132004KANJI1 },
+	{ "\x36\x3c", NULL, "\x24\x43", JISX02132004KANJI2 },
+	{ "\x36\x3d", NULL, "\x24\x44", JISX02132004KANJI2 },
+	{ "\x36\x3e", NULL, "\x24\x45", JISX02132004KANJI2 },
+	{ "\x36\x43", NULL, "\x2f\x33", JISX02132004KANJI1 },
+	{ "\x36\x48", NULL, "\x24\x47", JISX02132004KANJI2 },
+	{ "\x36\x49", NULL, "\x24\x48", JISX02132004KANJI2 },
+	{ "\x36\x4d", NULL, "\x2f\x35", JISX02132004KANJI1 },
+	{ "\x36\x4f", NULL, "\x24\x49", JISX02132004KANJI2 },
+	{ "\x36\x50", NULL, "\x2f\x37", JISX02132004KANJI1 },
+	{ "\x36\x51", NULL, "\x2f\x38", JISX02132004KANJI1 },
+	{ "\x36\x52", NULL, "\x2f\x39", JISX02132004KANJI1 },
+	{ "\x36\x56", NULL, "\x24\x4b", JISX02132004KANJI2 },
+	{ "\x36\x58", NULL, "\x24\x4c", JISX02132004KANJI2 },
+	{ "\x36\x59", NULL, "\x24\x4d", JISX02132004KANJI2 },
+	{ "\x36\x5a", NULL, "\x2f\x3a", JISX02132004KANJI1 },
+	{ "\x36\x5b", NULL, "\x24\x4e", JISX02132004KANJI2 },
+	{ "\x36\x5c", NULL, "\x24\x4f", JISX02132004KANJI2 },
+	{ "\x36\x5d", NULL, "\x2f\x3b", JISX02132004KANJI1 },
+	{ "\x36\x61", NULL, "\x24\x50", JISX02132004KANJI2 },
+	{ "\x36\x62", NULL, "\x2f\x3c", JISX02132004KANJI1 },
+	{ "\x36\x64", NULL, "\x2f\x3d", JISX02132004KANJI1 },
+	{ "\x36\x65", NULL, "\x24\x51", JISX02132004KANJI2 },
+	{ "\x36\x67", NULL, "\x2f\x3e", JISX02132004KANJI1 },
+	{ "\x36\x6a", NULL, "\x24\x53", JISX02132004KANJI2 },
+	{ "\x36\x6b", NULL, "\x2f\x3f", JISX02132004KANJI1 },
+	{ "\x36\x6c", NULL, "\x2f\x40", JISX02132004KANJI1 },
+	{ "\x36\x71", NULL, "\x24\x54", JISX02132004KANJI2 },
+	{ "\x36\x75", NULL, "\x24\x55", JISX02132004KANJI2 },
+	{ "\x36\x7b", NULL, "\x24\x56", JISX02132004KANJI2 },
+	{ "\x37\x21", NULL, "\x24\x57", JISX02132004KANJI2 },
+	{ "\x37\x22", NULL, "\x24\x58", JISX02132004KANJI2 },
+	{ "\x37\x26", NULL, "\x2f\x41", JISX02132004KANJI1 },
+	{ "\x37\x29", NULL, "\x24\x5a", JISX02132004KANJI2 },
+	{ "\x37\x2f", NULL, "\x24\x5b", JISX02132004KANJI2 },
+	{ "\x37\x32", NULL, "\x24\x5d", JISX02132004KANJI2 },
+	{ "\x37\x36", NULL, "\x2f\x44", JISX02132004KANJI1 },
+	{ "\x37\x37", NULL, "\x2f\x45", JISX02132004KANJI1 },
+	{ "\x37\x38", NULL, "\x2f\x46", JISX02132004KANJI1 },
+	{ "\x37\x3c", NULL, "\x24\x5f", JISX02132004KANJI2 },
+	{ "\x37\x3d", NULL, "\x24\x60", JISX02132004KANJI2 },
+	{ "\x37\x3e", NULL, "\x24\x61", JISX02132004KANJI2 },
+	{ "\x37\x3f", NULL, "\x24\x62", JISX02132004KANJI2 },
+	{ "\x37\x44", NULL, "\x24\x64", JISX02132004KANJI2 },
+	{ "\x37\x48", NULL, "\x24\x65", JISX02132004KANJI2 },
+	{ "\x37\x49", NULL, "\x2f\x47", JISX02132004KANJI1 },
+	{ "\x37\x4b", NULL, "\x24\x66", JISX02132004KANJI2 },
+	{ "\x37\x4c", NULL, "\x24\x67", JISX02132004KANJI2 },
+	{ "\x37\x4d", NULL, "\x24\x68", JISX02132004KANJI2 },
+	{ "\x37\x4e", NULL, "\x2f\x48", JISX02132004KANJI1 },
+	{ "\x37\x51", NULL, "\x24\x69", JISX02132004KANJI2 },
+	{ "\x37\x52", NULL, "\x2f\x49", JISX02132004KANJI1 },
+	{ "\x37\x5a", NULL, "\x24\x6d", JISX02132004KANJI2 },
+	{ "\x37\x5b", NULL, "\x2f\x4a", JISX02132004KANJI1 },
+	{ "\x37\x5c", NULL, "\x24\x6e", JISX02132004KANJI2 },
+	{ "\x37\x5d", NULL, "\x24\x6f", JISX02132004KANJI2 },
+	{ "\x37\x62", NULL, "\x24\x70", JISX02132004KANJI2 },
+	{ "\x37\x64", NULL, "\x24\x6c", JISX02132004KANJI2 },
+	{ "\x37\x65", NULL, "\x2f\x4d", JISX02132004KANJI1 },
+	{ "\x37\x67", NULL, "\x2f\x4e", JISX02132004KANJI1 },
+	{ "\x37\x68", NULL, "\x2f\x4f", JISX02132004KANJI1 },
+	{ "\x37\x69", NULL, "\x24\x73", JISX02132004KANJI2 },
+	{ "\x37\x6a", NULL, "\x2f\x50", JISX02132004KANJI1 },
+	{ "\x37\x6d", NULL, "\x24\x76", JISX02132004KANJI2 },
+	{ "\x37\x6e", NULL, "\x2f\x51", JISX02132004KANJI1 },
+	{ "\x37\x6f", NULL, "\x24\x77", JISX02132004KANJI2 },
+	{ "\x37\x72", NULL, "\x2f\x52", JISX02132004KANJI1 },
+	{ "\x37\x73", NULL, "\x24\x78", JISX02132004KANJI2 },
+	{ "\x37\x74", NULL, "\x2f\x53", JISX02132004KANJI1 },
+	{ "\x37\x75", NULL, "\x2f\x54", JISX02132004KANJI1 },
+	{ "\x37\x76", NULL, "\x24\x7a", JISX02132004KANJI2 },
+	{ "\x37\x77", NULL, "\x24\x7c", JISX02132004KANJI2 },
+	{ "\x37\x79", NULL, "\x2f\x55", JISX02132004KANJI1 },
+	{ "\x37\x7b", NULL, "\x24\x7d", JISX02132004KANJI2 },
+	{ "\x37\x7d", NULL, "\x2f\x56", JISX02132004KANJI1 },
+	{ "\x38\x24", NULL, "\x24\x7e", JISX02132004KANJI2 },
+	{ "\x38\x26", NULL, "\x25\x21", JISX02132004KANJI2 },
+	{ "\x38\x28", NULL, "\x25\x22", JISX02132004KANJI2 },
+	{ "\x38\x2a", NULL, "\x25\x23", JISX02132004KANJI2 },
+	{ "\x38\x2b", NULL, "\x25\x24", JISX02132004KANJI2 },
+	{ "\x38\x2d", NULL, "\x25\x26", JISX02132004KANJI2 },
+	{ "\x38\x2e", NULL, "\x25\x27", JISX02132004KANJI2 },
+	{ "\x38\x34", NULL, "\x2f\x58", JISX02132004KANJI1 },
+	{ "\x38\x35", NULL, "\x2f\x59", JISX02132004KANJI1 },
+	{ "\x38\x36", NULL, "\x25\x28", JISX02132004KANJI2 },
+	{ "\x38\x39", NULL, "\x2f\x5b", JISX02132004KANJI1 },
+	{ "\x38\x3f", NULL, "\x2f\x5c", JISX02132004KANJI1 },
+	{ "\x38\x40", NULL, "\x25\x29", JISX02132004KANJI2 },
+	{ "\x38\x42", NULL, "\x25\x2b", JISX02132004KANJI2 },
+	{ "\x38\x43", NULL, "\x25\x2c", JISX02132004KANJI2 },
+	{ "\x38\x44", NULL, "\x25\x2d", JISX02132004KANJI2 },
+	{ "\x38\x45", NULL, "\x25\x2e", JISX02132004KANJI2 },
+	{ "\x38\x47", NULL, "\x25\x2f", JISX02132004KANJI2 },
+	{ "\x38\x4c", NULL, "\x2f\x5f", JISX02132004KANJI1 },
+	{ "\x38\x4d", NULL, "\x25\x31", JISX02132004KANJI2 },
+	{ "\x38\x53", NULL, "\x25\x34", JISX02132004KANJI2 },
+	{ "\x38\x54", NULL, "\x2f\x62", JISX02132004KANJI1 },
+	{ "\x38\x56", NULL, "\x2f\x61", JISX02132004KANJI1 },
+	{ "\x38\x57", NULL, "\x2f\x63", JISX02132004KANJI1 },
+	{ "\x38\x59", NULL, "\x2f\x64", JISX02132004KANJI1 },
+	{ "\x38\x5c", NULL, "\x25\x35", JISX02132004KANJI2 },
+	{ "\x38\x5d", NULL, "\x2f\x66", JISX02132004KANJI1 },
+	{ "\x38\x5e", NULL, "\x25\x36", JISX02132004KANJI2 },
+	{ "\x38\x5f", NULL, "\x25\x38", JISX02132004KANJI2 },
+	{ "\x38\x60", NULL, "\x25\x39", JISX02132004KANJI2 },
+	{ "\x38\x61", NULL, "\x25\x3a", JISX02132004KANJI2 },
+	{ "\x38\x62", NULL, "\x2f\x67", JISX02132004KANJI1 },
+	{ "\x38\x65", NULL, "\x25\x3c", JISX02132004KANJI2 },
+	{ "\x38\x66", NULL, "\x2f\x68", JISX02132004KANJI1 },
+	{ "\x38\x6a", NULL, "\x25\x3d", JISX02132004KANJI2 },
+	{ "\x38\x73", NULL, "\x25\x42", JISX02132004KANJI2 },
+	{ "\x38\x77", NULL, "\x25\x45", JISX02132004KANJI2 },
+	{ "\x38\x78", NULL, "\x2f\x69", JISX02132004KANJI1 },
+	{ "\x38\x7a", NULL, "\x25\x46", JISX02132004KANJI2 },
+	{ "\x38\x7e", NULL, "\x2f\x6a", JISX02132004KANJI1 },
+	{ "\x39\x23", NULL, "\x25\x48", JISX02132004KANJI2 },
+	{ "\x39\x24", NULL, "\x25\x49", JISX02132004KANJI2 },
+	{ "\x39\x27", NULL, "\x25\x4a", JISX02132004KANJI2 },
+	{ "\x39\x28", NULL, "\x2f\x6b", JISX02132004KANJI1 },
+	{ "\x39\x2b", NULL, "\x2f\x6c", JISX02132004KANJI1 },
+	{ "\x39\x2e", NULL, "\x25\x4b", JISX02132004KANJI2 },
+	{ "\x39\x2f", NULL, "\x2f\x6d", JISX02132004KANJI1 },
+	{ "\x39\x32", NULL, "\x25\x4c", JISX02132004KANJI2 },
+	{ "\x39\x38", NULL, "\x25\x4d", JISX02132004KANJI2 },
+	{ "\x39\x3a", NULL, "\x2f\x6e", JISX02132004KANJI1 },
+	{ "\x39\x3c", NULL, "\x25\x4e", JISX02132004KANJI2 },
+	{ "\x39\x3e", NULL, "\x25\x4f", JISX02132004KANJI2 },
+	{ "\x39\x3f", NULL, "\x2f\x6f", JISX02132004KANJI1 },
+	{ "\x39\x40", NULL, "\x2f\x70", JISX02132004KANJI1 },
+	{ "\x39\x41", NULL, "\x25\x50", JISX02132004KANJI2 },
+	{ "\x39\x43", NULL, "\x25\x51", JISX02132004KANJI2 },
+	{ "\x39\x44", NULL, "\x25\x52", JISX02132004KANJI2 },
+	{ "\x39\x45", NULL, "\x25\x53", JISX02132004KANJI2 },
+	{ "\x39\x46", NULL, "\x25\x54", JISX02132004KANJI2 },
+	{ "\x39\x4e", NULL, "\x25\x58", JISX02132004KANJI2 },
+	{ "\x39\x4f", NULL, "\x25\x59", JISX02132004KANJI2 },
+	{ "\x39\x52", NULL, "\x2f\x71", JISX02132004KANJI1 },
+	{ "\x39\x54", NULL, "\x2f\x72", JISX02132004KANJI1 },
+	{ "\x39\x56", NULL, "\x25\x5b", JISX02132004KANJI2 },
+	{ "\x39\x59", NULL, "\x25\x5c", JISX02132004KANJI2 },
+	{ "\x39\x61", NULL, "\x25\x5d", JISX02132004KANJI2 },
+	{ "\x39\x64", NULL, "\x25\x5e", JISX02132004KANJI2 },
+	{ "\x39\x65", NULL, "\x2f\x73", JISX02132004KANJI1 },
+	{ "\x39\x66", NULL, "\x2f\x74", JISX02132004KANJI1 },
+	{ "\x39\x67", NULL, "\x2f\x75", JISX02132004KANJI1 },
+	{ "\x39\x68", NULL, "\x25\x5f", JISX02132004KANJI2 },
+	{ "\x39\x6a", NULL, "\x2f\x76", JISX02132004KANJI1 },
+	{ "\x39\x6b", NULL, "\x25\x60", JISX02132004KANJI2 },
+	{ "\x39\x70", NULL, "\x25\x61", JISX02132004KANJI2 },
+	{ "\x39\x71", NULL, "\x2f\x78", JISX02132004KANJI1 },
+	{ "\x39\x72", NULL, "\x25\x62", JISX02132004KANJI2 },
+	{ "\x39\x73", NULL, "\x25\x63", JISX02132004KANJI2 },
+	{ "\x39\x74", NULL, "\x25\x64", JISX02132004KANJI2 },
+	{ "\x39\x75", NULL, "\x2f\x79", JISX02132004KANJI1 },
+	{ "\x39\x77", NULL, "\x25\x65", JISX02132004KANJI2 },
+	{ "\x39\x79", NULL, "\x25\x66", JISX02132004KANJI2 },
+	{ "\x39\x7a", NULL, "\x25\x67", JISX02132004KANJI2 },
+	{ "\x39\x7c", NULL, "\x25\x68", JISX02132004KANJI2 },
+	{ "\x39\x7e", NULL, "\x25\x69", JISX02132004KANJI2 },
+	{ "\x3a\x21", NULL, "\x2f\x7a", JISX02132004KANJI1 },
+	{ "\x3a\x25", NULL, "\x25\x6a", JISX02132004KANJI2 },
+	{ "\x3a\x26", NULL, "\x25\x6b", JISX02132004KANJI2 },
+	{ "\x3a\x27", NULL, "\x25\x6c", JISX02132004KANJI2 },
+	{ "\x3a\x28", NULL, "\x25\x6d", JISX02132004KANJI2 },
+	{ "\x3a\x2a", NULL, "\x25\x6f", JISX02132004KANJI2 },
+	{ "\x3a\x2b", NULL, "\x25\x70", JISX02132004KANJI2 },
+	{ "\x3a\x2e", NULL, "\x25\x71", JISX02132004KANJI2 },
+	{ "\x3a\x30", NULL, "\x25\x72", JISX02132004KANJI2 },
+	{ "\x3a\x31", NULL, "\x25\x73", JISX02132004KANJI2 },
+	{ "\x3a\x32", NULL, "\x25\x74", JISX02132004KANJI2 },
+	{ "\x3a\x33", NULL, "\x2f\x7c", JISX02132004KANJI1 },
+	{ "\x3a\x37", NULL, "\x2f\x7d", JISX02132004KANJI1 },
+	{ "\x3a\x38", NULL, "\x25\x75", JISX02132004KANJI2 },
+	{ "\x3a\x3a", NULL, "\x4f\x55", JISX02132004KANJI1 },
+	{ "\x3a\x3c", NULL, "\x25\x76", JISX02132004KANJI2 },
+	{ "\x3a\x3d", NULL, "\x25\x77", JISX02132004KANJI2 },
+	{ "\x3a\x3e", NULL, "\x4f\x56", JISX02132004KANJI1 },
+	{ "\x3a\x40", NULL, "\x25\x78", JISX02132004KANJI2 },
+	{ "\x3a\x42", NULL, "\x25\x79", JISX02132004KANJI2 },
+	{ "\x3a\x43", NULL, "\x25\x7a", JISX02132004KANJI2 },
+	{ "\x3a\x44", NULL, "\x4f\x57", JISX02132004KANJI1 },
+	{ "\x3a\x46", NULL, "\x25\x7b", JISX02132004KANJI2 },
+	{ "\x3a\x47", NULL, "\x25\x7c", JISX02132004KANJI2 },
+	{ "\x3a\x48", NULL, "\x25\x7d", JISX02132004KANJI2 },
+	{ "\x3a\x4e", NULL, "\x4f\x58", JISX02132004KANJI1 },
+	{ "\x3a\x50", NULL, "\x28\x21", JISX02132004KANJI2 },
+	{ "\x3a\x53", NULL, "\x28\x22", JISX02132004KANJI2 },
+	{ "\x3a\x5b", NULL, "\x28\x24", JISX02132004KANJI2 },
+	{ "\x3a\x5f", NULL, "\x28\x27", JISX02132004KANJI2 },
+	{ "\x3a\x61", NULL, "\x4f\x59", JISX02132004KANJI1 },
+	{ "\x3a\x66", NULL, "\x28\x2a", JISX02132004KANJI2 },
+	{ "\x3a\x68", NULL, "\x28\x2b", JISX02132004KANJI2 },
+	{ "\x3a\x6b", NULL, "\x4f\x5c", JISX02132004KANJI1 },
+	{ "\x3a\x6d", NULL, "\x4f\x5d", JISX02132004KANJI1 },
+	{ "\x3a\x6f", NULL, "\x28\x2e", JISX02132004KANJI2 },
+	{ "\x3a\x70", NULL, "\x4f\x5e", JISX02132004KANJI1 },
+	{ "\x3a\x73", NULL, "\x28\x2f", JISX02132004KANJI2 },
+	{ "\x3a\x7a", NULL, "\x4f\x60", JISX02132004KANJI1 },
+	{ "\x3a\x7b", NULL, "\x28\x32", JISX02132004KANJI2 },
+	{ "\x3a\x7c", NULL, "\x28\x33", JISX02132004KANJI2 },
+	{ "\x3a\x7d", NULL, "\x28\x34", JISX02132004KANJI2 },
+	{ "\x3a\x7e", NULL, "\x28\x35", JISX02132004KANJI2 },
+	{ "\x3b\x22", NULL, "\x28\x36", JISX02132004KANJI2 },
+	{ "\x3b\x25", NULL, "\x4f\x64", JISX02132004KANJI1 },
+	{ "\x3b\x27", NULL, "\x28\x39", JISX02132004KANJI2 },
+	{ "\x3b\x2a", NULL, "\x28\x3c", JISX02132004KANJI2 },
+	{ "\x3b\x2b", NULL, "\x28\x3d", JISX02132004KANJI2 },
+	{ "\x3b\x2c", NULL, "\x4f\x65", JISX02132004KANJI1 },
+	{ "\x3b\x2f", NULL, "\x4f\x66", JISX02132004KANJI1 },
+	{ "\x3b\x30", NULL, "\x28\x41", JISX02132004KANJI2 },
+	{ "\x3b\x31", NULL, "\x28\x42", JISX02132004KANJI2 },
+	{ "\x3b\x32", NULL, "\x4f\x67", JISX02132004KANJI1 },
+	{ "\x3b\x33", NULL, "\x28\x43", JISX02132004KANJI2 },
+	{ "\x3b\x34", NULL, "\x4f\x68", JISX02132004KANJI1 },
+	{ "\x3b\x37", NULL, "\x28\x47", JISX02132004KANJI2 },
+	{ "\x3b\x38", NULL, "\x4f\x69", JISX02132004KANJI1 },
+	{ "\x3b\x39", NULL, "\x28\x49", JISX02132004KANJI2 },
+	{ "\x3b\x3a", NULL, "\x4f\x6a", JISX02132004KANJI1 },
+	{ "\x3b\x3b", NULL, "\x4f\x6c", JISX02132004KANJI1 },
+	{ "\x3b\x41", NULL, "\x4f\x6d", JISX02132004KANJI1 },
+	{ "\x3b\x43", NULL, "\x28\x4c", JISX02132004KANJI2 },
+	{ "\x3b\x44", NULL, "\x4f\x70", JISX02132004KANJI1 },
+	{ "\x3b\x46", NULL, "\x28\x4e", JISX02132004KANJI2 },
+	{ "\x3b\x48", NULL, "\x28\x51", JISX02132004KANJI2 },
+	{ "\x3b\x49", NULL, "\x28\x52", JISX02132004KANJI2 },
+	{ "\x3b\x4a", NULL, "\x4f\x71", JISX02132004KANJI1 },
+	{ "\x3b\x4b", NULL, "\x28\x53", JISX02132004KANJI2 },
+	{ "\x3b\x4d", NULL, "\x28\x54", JISX02132004KANJI2 },
+	{ "\x3b\x50", NULL, "\x28\x55", JISX02132004KANJI2 },
+	{ "\x3b\x52", NULL, "\x4f\x73", JISX02132004KANJI1 },
+	{ "\x3b\x57", NULL, "\x4f\x76", JISX02132004KANJI1 },
+	{ "\x3b\x5a", NULL, "\x28\x57", JISX02132004KANJI2 },
+	{ "\x3b\x5d", NULL, "\x28\x58", JISX02132004KANJI2 },
+	{ "\x3b\x5e", NULL, "\x4f\x77", JISX02132004KANJI1 },
+	{ "\x3b\x5f", NULL, "\x28\x5a", JISX02132004KANJI2 },
+	{ "\x3b\x64", NULL, "\x4f\x78", JISX02132004KANJI1 },
+	{ "\x3b\x66", NULL, "\x28\x5d", JISX02132004KANJI2 },
+	{ "\x3b\x68", NULL, "\x28\x5f", JISX02132004KANJI2 },
+	{ "\x3b\x6a", NULL, "\x28\x60", JISX02132004KANJI2 },
+	{ "\x3b\x6c", NULL, "\x28\x62", JISX02132004KANJI2 },
+	{ "\x3b\x6f", NULL, "\x4f\x79", JISX02132004KANJI1 },
+	{ "\x3b\x70", NULL, "\x4f\x7b", JISX02132004KANJI1 },
+	{ "\x3b\x72", NULL, "\x28\x63", JISX02132004KANJI2 },
+	{ "\x3b\x73", NULL, "\x28\x65", JISX02132004KANJI2 },
+	{ "\x3b\x74", NULL, "\x4f\x7c", JISX02132004KANJI1 },
+	{ "\x3b\x75", NULL, "\x28\x67", JISX02132004KANJI2 },
+	{ "\x3b\x78", NULL, "\x4f\x7d", JISX02132004KANJI1 },
+	{ "\x3b\x7b", NULL, "\x28\x6a", JISX02132004KANJI2 },
+	{ "\x3b\x7d", NULL, "\x28\x6b", JISX02132004KANJI2 },
+	{ "\x3b\x7e", NULL, "\x28\x6d", JISX02132004KANJI2 },
+	{ "\x3c\x21", NULL, "\x28\x6e", JISX02132004KANJI2 },
+	{ "\x3c\x24", NULL, "\x28\x70", JISX02132004KANJI2 },
+	{ "\x3c\x27", NULL, "\x28\x72", JISX02132004KANJI2 },
+	{ "\x3c\x28", NULL, "\x74\x29", JISX02132004KANJI1 },
+	{ "\x3c\x29", NULL, "\x28\x73", JISX02132004KANJI2 },
+	{ "\x3c\x2a", NULL, "\x74\x2a", JISX02132004KANJI1 },
+	{ "\x3c\x2b", NULL, "\x28\x75", JISX02132004KANJI2 },
+	{ "\x3c\x2d", NULL, "\x28\x76", JISX02132004KANJI2 },
+	{ "\x3c\x31", NULL, "\x28\x77", JISX02132004KANJI2 },
+	{ "\x3c\x34", NULL, "\x28\x78", JISX02132004KANJI2 },
+	{ "\x3c\x36", NULL, "\x28\x7a", JISX02132004KANJI2 },
+	{ "\x3c\x37", NULL, "\x74\x2b", JISX02132004KANJI1 },
+	{ "\x3c\x3a", NULL, "\x74\x2c", JISX02132004KANJI1 },
+	{ "\x3c\x3d", NULL, "\x28\x7c", JISX02132004KANJI2 },
+	{ "\x3c\x3e", NULL, "\x28\x7d", JISX02132004KANJI2 },
+	{ "\x3c\x3f", NULL, "\x28\x7e", JISX02132004KANJI2 },
+	{ "\x3c\x40", NULL, "\x2c\x21", JISX02132004KANJI2 },
+	{ "\x3c\x47", NULL, "\x2c\x23", JISX02132004KANJI2 },
+	{ "\x3c\x49", NULL, "\x2c\x24", JISX02132004KANJI2 },
+	{ "\x3c\x4a", NULL, "\x2c\x25", JISX02132004KANJI2 },
+	{ "\x3c\x4e", NULL, "\x74\x2d", JISX02132004KANJI1 },
+	{ "\x3c\x4f", NULL, "\x2c\x27", JISX02132004KANJI2 },
+	{ "\x3c\x50", NULL, "\x2c\x28", JISX02132004KANJI2 },
+	{ "\x3c\x52", NULL, "\x74\x2f", JISX02132004KANJI1 },
+	{ "\x3c\x55", NULL, "\x2c\x29", JISX02132004KANJI2 },
+	{ "\x3c\x5c", NULL, "\x74\x32", JISX02132004KANJI1 },
+	{ "\x3c\x5e", NULL, "\x74\x33", JISX02132004KANJI1 },
+	{ "\x3c\x5f", NULL, "\x2c\x2d", JISX02132004KANJI2 },
+	{ "\x3c\x60", NULL, "\x2c\x2e", JISX02132004KANJI2 },
+	{ "\x3c\x62", NULL, "\x2c\x2f", JISX02132004KANJI2 },
+	{ "\x3c\x63", NULL, "\x74\x34", JISX02132004KANJI1 },
+	{ "\x3c\x66", NULL, "\x74\x35", JISX02132004KANJI1 },
+	{ "\x3c\x6d", NULL, "\x74\x36", JISX02132004KANJI1 },
+	{ "\x3c\x6e", NULL, "\x74\x37", JISX02132004KANJI1 },
+	{ "\x3c\x70", NULL, "\x74\x38", JISX02132004KANJI1 },
+	{ "\x3c\x72", NULL, "\x74\x39", JISX02132004KANJI1 },
+	{ "\x3c\x74", NULL, "\x74\x3a", JISX02132004KANJI1 },
+	{ "\x3c\x75", NULL, "\x2c\x32", JISX02132004KANJI2 },
+	{ "\x3c\x78", NULL, "\x74\x3b", JISX02132004KANJI1 },
+	{ "\x3c\x79", NULL, "\x74\x3c", JISX02132004KANJI1 },
+	{ "\x3c\x7c", NULL, "\x2c\x33", JISX02132004KANJI2 },
+	{ "\x3c\x7d", NULL, "\x74\x3d", JISX02132004KANJI1 },
+	{ "\x3c\x7e", NULL, "\x74\x3e", JISX02132004KANJI1 },
+	{ "\x3d\x22", NULL, "\x2c\x34", JISX02132004KANJI2 },
+	{ "\x3d\x27", NULL, "\x74\x3f", JISX02132004KANJI1 },
+	{ "\x3d\x28", NULL, "\x2c\x35", JISX02132004KANJI2 },
+	{ "\x3d\x29", NULL, "\x74\x40", JISX02132004KANJI1 },
+	{ "\x3d\x2b", NULL, "\x2c\x36", JISX02132004KANJI2 },
+	{ "\x3d\x2d", NULL, "\x74\x41", JISX02132004KANJI1 },
+	{ "\x3d\x2f", NULL, "\x2c\x37", JISX02132004KANJI2 },
+	{ "\x3d\x30", NULL, "\x74\x42", JISX02132004KANJI1 },
+	{ "\x3d\x32", NULL, "\x2c\x38", JISX02132004KANJI2 },
+	{ "\x3d\x34", NULL, "\x74\x43", JISX02132004KANJI1 },
+	{ "\x3d\x37", NULL, "\x2c\x39", JISX02132004KANJI2 },
+	{ "\x3d\x38", NULL, "\x2c\x3a", JISX02132004KANJI2 },
+	{ "\x3d\x39", NULL, "\x2c\x3c", JISX02132004KANJI2 },
+	{ "\x3d\x3b", NULL, "\x74\x46", JISX02132004KANJI1 },
+	{ "\x3d\x3c", NULL, "\x2c\x3d", JISX02132004KANJI2 },
+	{ "\x3d\x3f", NULL, "\x2c\x3e", JISX02132004KANJI2 },
+	{ "\x3d\x40", NULL, "\x2c\x3f", JISX02132004KANJI2 },
+	{ "\x3d\x41", NULL, "\x2c\x40", JISX02132004KANJI2 },
+	{ "\x3d\x42", NULL, "\x74\x47", JISX02132004KANJI1 },
+	{ "\x3d\x43", NULL, "\x74\x48", JISX02132004KANJI1 },
+	{ "\x3d\x44", NULL, "\x2c\x41", JISX02132004KANJI2 },
+	{ "\x3d\x46", NULL, "\x74\x49", JISX02132004KANJI1 },
+	{ "\x3d\x4a", NULL, "\x2c\x42", JISX02132004KANJI2 },
+	{ "\x3d\x4b", NULL, "\x2c\x43", JISX02132004KANJI2 },
+	{ "\x3d\x4d", NULL, "\x2c\x44", JISX02132004KANJI2 },
+	{ "\x3d\x50", NULL, "\x2c\x45", JISX02132004KANJI2 },
+	{ "\x3d\x53", NULL, "\x74\x4a", JISX02132004KANJI1 },
+	{ "\x3d\x55", NULL, "\x74\x4b", JISX02132004KANJI1 },
+	{ "\x3d\x56", NULL, "\x2c\x47", JISX02132004KANJI2 },
+	{ "\x3d\x57", NULL, "\x74\x4c", JISX02132004KANJI1 },
+	{ "\x3d\x5a", NULL, "\x2c\x49", JISX02132004KANJI2 },
+	{ "\x3d\x5c", NULL, "\x74\x4d", JISX02132004KANJI1 },
+	{ "\x3d\x5d", NULL, "\x74\x4e", JISX02132004KANJI1 },
+	{ "\x3d\x5f", NULL, "\x74\x4f", JISX02132004KANJI1 },
+	{ "\x3d\x62", NULL, "\x2c\x4b", JISX02132004KANJI2 },
+	{ "\x3d\x6c", NULL, "\x2c\x4c", JISX02132004KANJI2 },
+	{ "\x3d\x70", NULL, "\x2c\x4d", JISX02132004KANJI2 },
+	{ "\x3d\x74", NULL, "\x2c\x4e", JISX02132004KANJI2 },
+	{ "\x3d\x76", NULL, "\x74\x51", JISX02132004KANJI1 },
+	{ "\x3d\x77", NULL, "\x74\x52", JISX02132004KANJI1 },
+	{ "\x3d\x7b", NULL, "\x2c\x4f", JISX02132004KANJI2 },
+	{ "\x3d\x7c", NULL, "\x2c\x51", JISX02132004KANJI2 },
+	{ "\x3d\x7d", NULL, "\x2c\x52", JISX02132004KANJI2 },
+	{ "\x3e\x22", NULL, "\x2c\x53", JISX02132004KANJI2 },
+	{ "\x3e\x25", NULL, "\x2c\x54", JISX02132004KANJI2 },
+	{ "\x3e\x28", NULL, "\x74\x53", JISX02132004KANJI1 },
+	{ "\x3e\x2b", NULL, "\x74\x54", JISX02132004KANJI1 },
+	{ "\x3e\x2c", NULL, "\x74\x55", JISX02132004KANJI1 },
+	{ "\x3e\x2d", NULL, "\x2c\x55", JISX02132004KANJI2 },
+	{ "\x3e\x2e", NULL, "\x2c\x56", JISX02132004KANJI2 },
+	{ "\x3e\x2f", NULL, "\x74\x56", JISX02132004KANJI1 },
+	{ "\x3e\x33", NULL, "\x2c\x58", JISX02132004KANJI2 },
+	{ "\x3e\x34", NULL, "\x2c\x59", JISX02132004KANJI2 },
+	{ "\x3e\x35", NULL, "\x74\x57", JISX02132004KANJI1 },
+	{ "\x3e\x3c", NULL, "\x2c\x5a", JISX02132004KANJI2 },
+	{ "\x3e\x3e", NULL, "\x2c\x5b", JISX02132004KANJI2 },
+	{ "\x3e\x3f", NULL, "\x2c\x5c", JISX02132004KANJI2 },
+	{ "\x3e\x43", NULL, "\x2c\x5d", JISX02132004KANJI2 },
+	{ "\x3e\x44", NULL, "\x74\x58", JISX02132004KANJI1 },
+	{ "\x3e\x45", NULL, "\x2c\x5e", JISX02132004KANJI2 },
+	{ "\x3e\x48", NULL, "\x74\x59", JISX02132004KANJI1 },
+	{ "\x3e\x49", NULL, "\x74\x5a", JISX02132004KANJI1 },
+	{ "\x3e\x4d", NULL, "\x74\x5b", JISX02132004KANJI1 },
+	{ "\x3e\x4f", NULL, "\x2c\x61", JISX02132004KANJI2 },
+	{ "\x3e\x51", NULL, "\x2c\x62", JISX02132004KANJI2 },
+	{ "\x3e\x54", NULL, "\x2c\x63", JISX02132004KANJI2 },
+	{ "\x3e\x59", NULL, "\x2c\x64", JISX02132004KANJI2 },
+	{ "\x3e\x60", NULL, "\x74\x5d", JISX02132004KANJI1 },
+	{ "\x3e\x61", NULL, "\x2c\x66", JISX02132004KANJI2 },
+	{ "\x3e\x62", NULL, "\x2c\x67", JISX02132004KANJI2 },
+	{ "\x3e\x63", NULL, "\x2c\x68", JISX02132004KANJI2 },
+	{ "\x3e\x64", NULL, "\x2c\x69", JISX02132004KANJI2 },
+	{ "\x3e\x69", NULL, "\x2c\x6a", JISX02132004KANJI2 },
+	{ "\x3e\x6a", NULL, "\x2c\x6b", JISX02132004KANJI2 },
+	{ "\x3e\x6c", NULL, "\x2c\x6c", JISX02132004KANJI2 },
+	{ "\x3e\x6e", NULL, "\x74\x60", JISX02132004KANJI1 },
+	{ "\x3e\x6f", NULL, "\x74\x5f", JISX02132004KANJI1 },
+	{ "\x3e\x75", NULL, "\x2c\x6e", JISX02132004KANJI2 },
+	{ "\x3e\x77", NULL, "\x2c\x6f", JISX02132004KANJI2 },
+	{ "\x3e\x79", NULL, "\x2c\x70", JISX02132004KANJI2 },
+	{ "\x3f\x29", NULL, "\x2c\x73", JISX02132004KANJI2 },
+	{ "\x3f\x2c", NULL, "\x74\x62", JISX02132004KANJI1 },
+	{ "\x3f\x2d", NULL, "\x2c\x74", JISX02132004KANJI2 },
+	{ "\x3f\x2f", NULL, "\x2c\x75", JISX02132004KANJI2 },
+	{ "\x3f\x34", NULL, "\x74\x64", JISX02132004KANJI1 },
+	{ "\x3f\x36", NULL, "\x2c\x76", JISX02132004KANJI2 },
+	{ "\x3f\x37", NULL, "\x2c\x77", JISX02132004KANJI2 },
+	{ "\x3f\x39", NULL, "\x2c\x78", JISX02132004KANJI2 },
+	{ "\x3f\x3a", NULL, "\x2c\x79", JISX02132004KANJI2 },
+	{ "\x3f\x3c", NULL, "\x74\x65", JISX02132004KANJI1 },
+	{ "\x3f\x3d", NULL, "\x74\x66", JISX02132004KANJI1 },
+	{ "\x3f\x3f", NULL, "\x2c\x7b", JISX02132004KANJI2 },
+	{ "\x3f\x40", NULL, "\x2c\x7d", JISX02132004KANJI2 },
+	{ "\x3f\x41", NULL, "\x74\x67", JISX02132004KANJI1 },
+	{ "\x3f\x42", NULL, "\x2c\x7e", JISX02132004KANJI2 },
+	{ "\x3f\x49", NULL, "\x2d\x22", JISX02132004KANJI2 },
+	{ "\x3f\x51", NULL, "\x74\x69", JISX02132004KANJI1 },
+	{ "\x3f\x53", NULL, "\x2d\x23", JISX02132004KANJI2 },
+	{ "\x3f\x54", NULL, "\x74\x6a", JISX02132004KANJI1 },
+	{ "\x3f\x59", NULL, "\x74\x6b", JISX02132004KANJI1 },
+	{ "\x3f\x5a", NULL, "\x2d\x25", JISX02132004KANJI2 },
+	{ "\x3f\x5b", NULL, "\x2d\x26", JISX02132004KANJI2 },
+	{ "\x3f\x5d", NULL, "\x74\x6c", JISX02132004KANJI1 },
+	{ "\x3f\x5f", NULL, "\x2d\x27", JISX02132004KANJI2 },
+	{ "\x3f\x60", NULL, "\x2d\x28", JISX02132004KANJI2 },
+	{ "\x3f\x63", NULL, "\x74\x6d", JISX02132004KANJI1 },
+	{ "\x3f\x67", NULL, "\x2d\x2c", JISX02132004KANJI2 },
+	{ "\x3f\x69", NULL, "\x74\x6e", JISX02132004KANJI1 },
+	{ "\x3f\x6a", NULL, "\x2d\x2e", JISX02132004KANJI2 },
+	{ "\x3f\x6b", NULL, "\x2d\x2f", JISX02132004KANJI2 },
+	{ "\x3f\x6d", NULL, "\x74\x6f", JISX02132004KANJI1 },
+	{ "\x3f\x6e", NULL, "\x2d\x30", JISX02132004KANJI2 },
+	{ "\x3f\x72", NULL, "\x2d\x31", JISX02132004KANJI2 },
+	{ "\x3f\x78", NULL, "\x74\x70", JISX02132004KANJI1 },
+	{ "\x3f\x7a", NULL, "\x2d\x36", JISX02132004KANJI2 },
+	{ "\x40\x22", NULL, "\x74\x71", JISX02132004KANJI1 },
+	{ "\x40\x26", NULL, "\x2d\x37", JISX02132004KANJI2 },
+	{ "\x40\x2a", NULL, "\x2d\x3a", JISX02132004KANJI2 },
+	{ "\x40\x2c", NULL, "\x2d\x38", JISX02132004KANJI2 },
+	{ "\x40\x34", NULL, "\x2d\x3b", JISX02132004KANJI2 },
+	{ "\x40\x3b", NULL, "\x2d\x3d", JISX02132004KANJI2 },
+	{ "\x40\x3c", NULL, "\x2d\x3e", JISX02132004KANJI2 },
+	{ "\x40\x3d", NULL, "\x2d\x3f", JISX02132004KANJI2 },
+	{ "\x40\x3e", NULL, "\x2d\x40", JISX02132004KANJI2 },
+	{ "\x40\x3f", NULL, "\x74\x72", JISX02132004KANJI1 },
+	{ "\x40\x41", NULL, "\x2d\x42", JISX02132004KANJI2 },
+	{ "\x40\x42", NULL, "\x2d\x43", JISX02132004KANJI2 },
+	{ "\x40\x44", NULL, "\x74\x74", JISX02132004KANJI1 },
+	{ "\x40\x47", NULL, "\x2d\x44", JISX02132004KANJI2 },
+	{ "\x40\x49", NULL, "\x74\x75", JISX02132004KANJI1 },
+	{ "\x40\x4b", NULL, "\x74\x76", JISX02132004KANJI1 },
+	{ "\x40\x4d", NULL, "\x2d\x45", JISX02132004KANJI2 },
+	{ "\x40\x4f", NULL, "\x74\x77", JISX02132004KANJI1 },
+	{ "\x40\x51", NULL, "\x2d\x46", JISX02132004KANJI2 },
+	{ "\x40\x52", NULL, "\x2d\x47", JISX02132004KANJI2 },
+	{ "\x40\x54", NULL, "\x2d\x48", JISX02132004KANJI2 },
+	{ "\x40\x5b", NULL, "\x74\x79", JISX02132004KANJI1 },
+	{ "\x40\x5f", NULL, "\x2d\x49", JISX02132004KANJI2 },
+	{ "\x40\x60", NULL, "\x2d\x4a", JISX02132004KANJI2 },
+	{ "\x40\x62", NULL, "\x2d\x4b", JISX02132004KANJI2 },
+	{ "\x40\x64", NULL, "\x74\x7a", JISX02132004KANJI1 },
+	{ "\x40\x67", NULL, "\x74\x7b", JISX02132004KANJI1 },
+	{ "\x40\x68", NULL, "\x2d\x4c", JISX02132004KANJI2 },
+	{ "\x40\x6b", NULL, "\x2d\x4d", JISX02132004KANJI2 },
+	{ "\x40\x6d", NULL, "\x2d\x4e", JISX02132004KANJI2 },
+	{ "\x40\x70", NULL, "\x2d\x4f", JISX02132004KANJI2 },
+	{ "\x40\x74", NULL, "\x2d\x50", JISX02132004KANJI2 },
+	{ "\x40\x75", NULL, "\x2d\x51", JISX02132004KANJI2 },
+	{ "\x40\x7d", NULL, "\x74\x7d", JISX02132004KANJI1 },
+	{ "\x40\x7e", NULL, "\x74\x7e", JISX02132004KANJI1 },
+	{ "\x41\x21", NULL, "\x75\x21", JISX02132004KANJI1 },
+	{ "\x41\x23", NULL, "\x75\x22", JISX02132004KANJI1 },
+	{ "\x41\x24", NULL, "\x2d\x52", JISX02132004KANJI2 },
+	{ "\x41\x25", NULL, "\x2d\x53", JISX02132004KANJI2 },
+	{ "\x41\x26", NULL, "\x74\x7c", JISX02132004KANJI1 },
+	{ "\x41\x27", NULL, "\x75\x23", JISX02132004KANJI1 },
+	{ "\x41\x29", NULL, "\x2d\x54", JISX02132004KANJI2 },
+	{ "\x41\x2a", NULL, "\x2d\x55", JISX02132004KANJI2 },
+	{ "\x41\x2b", NULL, "\x2d\x57", JISX02132004KANJI2 },
+	{ "\x41\x2c", NULL, "\x2d\x58", JISX02132004KANJI2 },
+	{ "\x41\x32", NULL, "\x75\x24", JISX02132004KANJI1 },
+	{ "\x41\x33", NULL, "\x75\x25", JISX02132004KANJI1 },
+	{ "\x41\x34", NULL, "\x2d\x59", JISX02132004KANJI2 },
+	{ "\x41\x36", NULL, "\x2d\x5a", JISX02132004KANJI2 },
+	{ "\x41\x3a", NULL, "\x2d\x5c", JISX02132004KANJI2 },
+	{ "\x41\x3c", NULL, "\x2d\x5d", JISX02132004KANJI2 },
+	{ "\x41\x3d", NULL, "\x2d\x5e", JISX02132004KANJI2 },
+	{ "\x41\x40", NULL, "\x2d\x60", JISX02132004KANJI2 },
+	{ "\x41\x42", NULL, "\x75\x26", JISX02132004KANJI1 },
+	{ "\x41\x44", NULL, "\x75\x27", JISX02132004KANJI1 },
+	{ "\x41\x4f", NULL, "\x2d\x63", JISX02132004KANJI2 },
+	{ "\x41\x52", NULL, "\x75\x29", JISX02132004KANJI1 },
+	{ "\x41\x53", NULL, "\x2d\x64", JISX02132004KANJI2 },
+	{ "\x41\x54", NULL, "\x2d\x65", JISX02132004KANJI2 },
+	{ "\x41\x56", NULL, "\x2d\x66", JISX02132004KANJI2 },
+	{ "\x41\x57", NULL, "\x2d\x68", JISX02132004KANJI2 },
+	{ "\x41\x58", NULL, "\x2d\x69", JISX02132004KANJI2 },
+	{ "\x41\x5c", NULL, "\x75\x2a", JISX02132004KANJI1 },
+	{ "\x41\x61", NULL, "\x2d\x6a", JISX02132004KANJI2 },
+	{ "\x41\x64", NULL, "\x2d\x6d", JISX02132004KANJI2 },
+	{ "\x41\x65", NULL, "\x2d\x6e", JISX02132004KANJI2 },
+	{ "\x41\x67", NULL, "\x2d\x6f", JISX02132004KANJI2 },
+	{ "\x41\x6a", NULL, "\x2d\x70", JISX02132004KANJI2 },
+	{ "\x41\x6f", NULL, "\x2d\x72", JISX02132004KANJI2 },
+	{ "\x41\x72", NULL, "\x2d\x73", JISX02132004KANJI2 },
+	{ "\x41\x75", NULL, "\x75\x2c", JISX02132004KANJI1 },
+	{ "\x41\x76", NULL, "\x2d\x75", JISX02132004KANJI2 },
+	{ "\x41\x77", NULL, "\x2d\x76", JISX02132004KANJI2 },
+	{ "\x41\x78", NULL, "\x75\x2d", JISX02132004KANJI1 },
+	{ "\x41\x7c", NULL, "\x75\x2e", JISX02132004KANJI1 },
+	{ "\x42\x21", NULL, "\x75\x2f", JISX02132004KANJI1 },
+	{ "\x42\x22", NULL, "\x2d\x77", JISX02132004KANJI2 },
+	{ "\x42\x23", NULL, "\x75\x31", JISX02132004KANJI1 },
+	{ "\x42\x25", NULL, "\x75\x32", JISX02132004KANJI1 },
+	{ "\x42\x28", NULL, "\x2d\x78", JISX02132004KANJI2 },
+	{ "\x42\x29", NULL, "\x75\x33", JISX02132004KANJI1 },
+	{ "\x42\x2c", NULL, "\x75\x34", JISX02132004KANJI1 },
+	{ "\x42\x2d", NULL, "\x75\x35", JISX02132004KANJI1 },
+	{ "\x42\x2e", NULL, "\x75\x36", JISX02132004KANJI1 },
+	{ "\x42\x32", NULL, "\x2d\x79", JISX02132004KANJI2 },
+	{ "\x42\x35", NULL, "\x75\x39", JISX02132004KANJI1 },
+	{ "\x42\x36", NULL, "\x2d\x7a", JISX02132004KANJI2 },
+	{ "\x42\x37", NULL, "\x2d\x7b", JISX02132004KANJI2 },
+	{ "\x42\x38", NULL, "\x2d\x7e", JISX02132004KANJI2 },
+	{ "\x42\x3a", NULL, "\x75\x3b", JISX02132004KANJI1 },
+	{ "\x42\x3b", NULL, "\x2e\x21", JISX02132004KANJI2 },
+	{ "\x42\x3e", NULL, "\x75\x3d", JISX02132004KANJI1 },
+	{ "\x42\x3f", NULL, "\x75\x37", JISX02132004KANJI1 },
+	{ "\x42\x40", NULL, "\x2e\x25", JISX02132004KANJI2 },
+	{ "\x42\x41", NULL, "\x2e\x26", JISX02132004KANJI2 },
+	{ "\x42\x42", NULL, "\x2e\x27", JISX02132004KANJI2 },
+	{ "\x42\x44", NULL, "\x75\x3f", JISX02132004KANJI1 },
+	{ "\x42\x47", NULL, "\x75\x40", JISX02132004KANJI1 },
+	{ "\x42\x48", NULL, "\x75\x41", JISX02132004KANJI1 },
+	{ "\x42\x4a", NULL, "\x2e\x29", JISX02132004KANJI2 },
+	{ "\x42\x4b", NULL, "\x2e\x2a", JISX02132004KANJI2 },
+	{ "\x42\x4f", NULL, "\x75\x42", JISX02132004KANJI1 },
+	{ "\x42\x50", NULL, "\x2e\x2b", JISX02132004KANJI2 },
+	{ "\x42\x51", NULL, "\x2e\x2c", JISX02132004KANJI2 },
+	{ "\x42\x52", NULL, "\x2e\x2d", JISX02132004KANJI2 },
+	{ "\x42\x57", NULL, "\x75\x44", JISX02132004KANJI1 },
+	{ "\x42\x59", NULL, "\x2e\x2f", JISX02132004KANJI2 },
+	{ "\x42\x5a", NULL, "\x2e\x30", JISX02132004KANJI2 },
+	{ "\x42\x5b", NULL, "\x75\x45", JISX02132004KANJI1 },
+	{ "\x42\x5c", NULL, "\x2e\x31", JISX02132004KANJI2 },
+	{ "\x42\x5d", NULL, "\x75\x46", JISX02132004KANJI1 },
+	{ "\x42\x5e", NULL, "\x2e\x33", JISX02132004KANJI2 },
+	{ "\x42\x62", NULL, "\x75\x48", JISX02132004KANJI1 },
+	{ "\x42\x67", NULL, "\x75\x4a", JISX02132004KANJI1 },
+	{ "\x42\x69", NULL, "\x75\x4b", JISX02132004KANJI1 },
+	{ "\x42\x6b", NULL, "\x2e\x35", JISX02132004KANJI2 },
+	{ "\x42\x6d", NULL, "\x75\x4c", JISX02132004KANJI1 },
+	{ "\x42\x6e", NULL, "\x2e\x38", JISX02132004KANJI2 },
+	{ "\x42\x71", NULL, "\x75\x4d", JISX02132004KANJI1 },
+	{ "\x42\x72", NULL, "\x2e\x3b", JISX02132004KANJI2 },
+	{ "\x42\x76", NULL, "\x75\x4f", JISX02132004KANJI1 },
+	{ "\x42\x79", NULL, "\x75\x51", JISX02132004KANJI1 },
+	{ "\x42\x7a", NULL, "\x75\x52", JISX02132004KANJI1 },
+	{ "\x42\x7b", NULL, "\x2e\x3e", JISX02132004KANJI2 },
+	{ "\x42\x7c", NULL, "\x2e\x40", JISX02132004KANJI2 },
+	{ "\x42\x7e", NULL, "\x2e\x41", JISX02132004KANJI2 },
+	{ "\x43\x21", NULL, "\x75\x50", JISX02132004KANJI1 },
+	{ "\x43\x24", NULL, "\x2e\x45", JISX02132004KANJI2 },
+	{ "\x43\x25", NULL, "\x2e\x46", JISX02132004KANJI2 },
+	{ "\x43\x26", NULL, "\x75\x53", JISX02132004KANJI1 },
+	{ "\x43\x27", NULL, "\x75\x54", JISX02132004KANJI1 },
+	{ "\x43\x2c", NULL, "\x75\x55", JISX02132004KANJI1 },
+	{ "\x43\x2e", NULL, "\x75\x56", JISX02132004KANJI1 },
+	{ "\x43\x30", NULL, "\x75\x57", JISX02132004KANJI1 },
+	{ "\x43\x31", NULL, "\x2e\x4c", JISX02132004KANJI2 },
+	{ "\x43\x33", NULL, "\x2e\x4d", JISX02132004KANJI2 },
+	{ "\x43\x35", NULL, "\x75\x58", JISX02132004KANJI1 },
+	{ "\x43\x38", NULL, "\x75\x59", JISX02132004KANJI1 },
+	{ "\x43\x39", NULL, "\x75\x5a", JISX02132004KANJI1 },
+	{ "\x43\x3b", NULL, "\x2e\x4e", JISX02132004KANJI2 },
+	{ "\x43\x3d", NULL, "\x2e\x4f", JISX02132004KANJI2 },
+	{ "\x43\x3f", NULL, "\x2e\x50", JISX02132004KANJI2 },
+	{ "\x43\x40", NULL, "\x75\x5b", JISX02132004KANJI1 },
+	{ "\x43\x41", NULL, "\x2e\x51", JISX02132004KANJI2 },
+	{ "\x43\x45", NULL, "\x2e\x53", JISX02132004KANJI2 },
+	{ "\x43\x48", NULL, "\x2e\x54", JISX02132004KANJI2 },
+	{ "\x43\x49", NULL, "\x75\x5e", JISX02132004KANJI1 },
+	{ "\x43\x4c", NULL, "\x75\x5f", JISX02132004KANJI1 },
+	{ "\x43\x4d", NULL, "\x2e\x59", JISX02132004KANJI2 },
+	{ "\x43\x50", NULL, "\x75\x60", JISX02132004KANJI1 },
+	{ "\x43\x51", NULL, "\x2e\x5a", JISX02132004KANJI2 },
+	{ "\x43\x54", NULL, "\x75\x61", JISX02132004KANJI1 },
+	{ "\x43\x55", NULL, "\x2e\x5c", JISX02132004KANJI2 },
+	{ "\x43\x56", NULL, "\x2e\x5d", JISX02132004KANJI2 },
+	{ "\x43\x58", NULL, "\x2e\x5f", JISX02132004KANJI2 },
+	{ "\x43\x59", NULL, "\x2e\x60", JISX02132004KANJI2 },
+	{ "\x43\x5b", NULL, "\x2e\x62", JISX02132004KANJI2 },
+	{ "\x43\x5c", NULL, "\x2e\x63", JISX02132004KANJI2 },
+	{ "\x43\x5d", NULL, "\x2e\x64", JISX02132004KANJI2 },
+	{ "\x43\x5f", NULL, "\x75\x62", JISX02132004KANJI1 },
+	{ "\x43\x60", NULL, "\x2e\x66", JISX02132004KANJI2 },
+	{ "\x43\x61", NULL, "\x2e\x67", JISX02132004KANJI2 },
+	{ "\x43\x65", NULL, "\x75\x63", JISX02132004KANJI1 },
+	{ "\x43\x66", NULL, "\x75\x64", JISX02132004KANJI1 },
+	{ "\x43\x68", NULL, "\x2e\x68", JISX02132004KANJI2 },
+	{ "\x43\x6a", NULL, "\x2e\x69", JISX02132004KANJI2 },
+	{ "\x43\x6b", NULL, "\x2e\x6a", JISX02132004KANJI2 },
+	{ "\x43\x6f", NULL, "\x2e\x6c", JISX02132004KANJI2 },
+	{ "\x43\x70", NULL, "\x2e\x6e", JISX02132004KANJI2 },
+	{ "\x43\x71", NULL, "\x2e\x70", JISX02132004KANJI2 },
+	{ "\x43\x72", NULL, "\x2e\x71", JISX02132004KANJI2 },
+	{ "\x43\x74", NULL, "\x75\x66", JISX02132004KANJI1 },
+	{ "\x43\x75", NULL, "\x75\x67", JISX02132004KANJI1 },
+	{ "\x43\x77", NULL, "\x2e\x72", JISX02132004KANJI2 },
+	{ "\x43\x79", NULL, "\x75\x68", JISX02132004KANJI1 },
+	{ "\x43\x7a", NULL, "\x2e\x75", JISX02132004KANJI2 },
+	{ "\x43\x7b", NULL, "\x2e\x7b", JISX02132004KANJI2 },
+	{ "\x43\x7c", NULL, "\x75\x69", JISX02132004KANJI1 },
+	{ "\x43\x7d", NULL, "\x2e\x7c", JISX02132004KANJI2 },
+	{ "\x43\x7e", NULL, "\x2e\x7d", JISX02132004KANJI2 },
+	{ "\x44\x21", NULL, "\x75\x6a", JISX02132004KANJI1 },
+	{ "\x44\x24", NULL, "\x2e\x7e", JISX02132004KANJI2 },
+	{ "\x44\x25", NULL, "\x2f\x21", JISX02132004KANJI2 },
+	{ "\x44\x28", NULL, "\x2f\x23", JISX02132004KANJI2 },
+	{ "\x44\x29", NULL, "\x75\x6b", JISX02132004KANJI1 },
+	{ "\x44\x2c", NULL, "\x2f\x24", JISX02132004KANJI2 },
+	{ "\x44\x2d", NULL, "\x75\x6c", JISX02132004KANJI1 },
+	{ "\x44\x2e", NULL, "\x75\x6d", JISX02132004KANJI1 },
+	{ "\x44\x2f", NULL, "\x75\x6e", JISX02132004KANJI1 },
+	{ "\x44\x32", NULL, "\x2e\x76", JISX02132004KANJI2 },
+	{ "\x44\x33", NULL, "\x75\x6f", JISX02132004KANJI1 },
+	{ "\x44\x37", NULL, "\x75\x70", JISX02132004KANJI1 },
+	{ "\x44\x3f", NULL, "\x75\x73", JISX02132004KANJI1 },
+	{ "\x44\x41", NULL, "\x2f\x2b", JISX02132004KANJI2 },
+	{ "\x44\x42", NULL, "\x75\x74", JISX02132004KANJI1 },
+	{ "\x44\x44", NULL, "\x75\x71", JISX02132004KANJI1 },
+	{ "\x44\x46", NULL, "\x75\x75", JISX02132004KANJI1 },
+	{ "\x44\x48", NULL, "\x75\x76", JISX02132004KANJI1 },
+	{ "\x44\x49", NULL, "\x75\x77", JISX02132004KANJI1 },
+	{ "\x44\x4c", NULL, "\x75\x78", JISX02132004KANJI1 },
+	{ "\x44\x4d", NULL, "\x2f\x2e", JISX02132004KANJI2 },
+	{ "\x44\x4e", NULL, "\x2f\x2f", JISX02132004KANJI2 },
+	{ "\x44\x51", NULL, "\x2f\x30", JISX02132004KANJI2 },
+	{ "\x44\x52", NULL, "\x2f\x31", JISX02132004KANJI2 },
+	{ "\x44\x54", NULL, "\x2f\x32", JISX02132004KANJI2 },
+	{ "\x44\x55", NULL, "\x75\x79", JISX02132004KANJI1 },
+	{ "\x44\x57", NULL, "\x2f\x33", JISX02132004KANJI2 },
+	{ "\x44\x58", NULL, "\x2f\x35", JISX02132004KANJI2 },
+	{ "\x44\x59", NULL, "\x2f\x36", JISX02132004KANJI2 },
+	{ "\x44\x5b", NULL, "\x75\x7b", JISX02132004KANJI1 },
+	{ "\x44\x5c", NULL, "\x2f\x37", JISX02132004KANJI2 },
+	{ "\x44\x5f", NULL, "\x75\x7c", JISX02132004KANJI1 },
+	{ "\x44\x61", NULL, "\x2f\x39", JISX02132004KANJI2 },
+	{ "\x44\x63", NULL, "\x2f\x3a", JISX02132004KANJI2 },
+	{ "\x44\x64", NULL, "\x2f\x3b", JISX02132004KANJI2 },
+	{ "\x44\x67", NULL, "\x2f\x3d", JISX02132004KANJI2 },
+	{ "\x44\x68", NULL, "\x2f\x3e", JISX02132004KANJI2 },
+	{ "\x44\x6a", NULL, "\x76\x22", JISX02132004KANJI1 },
+	{ "\x44\x6c", NULL, "\x2f\x45", JISX02132004KANJI2 },
+	{ "\x44\x6d", NULL, "\x2f\x46", JISX02132004KANJI2 },
+	{ "\x44\x6f", NULL, "\x2f\x47", JISX02132004KANJI2 },
+	{ "\x44\x70", NULL, "\x76\x25", JISX02132004KANJI1 },
+	{ "\x44\x71", NULL, "\x2f\x4a", JISX02132004KANJI2 },
+	{ "\x44\x75", NULL, "\x76\x27", JISX02132004KANJI1 },
+	{ "\x44\x76", NULL, "\x2f\x4b", JISX02132004KANJI2 },
+	{ "\x44\x77", NULL, "\x76\x28", JISX02132004KANJI1 },
+	{ "\x44\x78", NULL, "\x2f\x4c", JISX02132004KANJI2 },
+	{ "\x44\x79", NULL, "\x2f\x4d", JISX02132004KANJI2 },
+	{ "\x44\x7d", NULL, "\x2f\x41", JISX02132004KANJI2 },
+	{ "\x44\x7e", NULL, "\x2f\x4f", JISX02132004KANJI2 },
+	{ "\x45\x21", NULL, "\x2f\x51", JISX02132004KANJI2 },
+	{ "\x45\x23", NULL, "\x76\x2a", JISX02132004KANJI1 },
+	{ "\x45\x24", NULL, "\x76\x2b", JISX02132004KANJI1 },
+	{ "\x45\x25", NULL, "\x2f\x52", JISX02132004KANJI2 },
+	{ "\x45\x26", NULL, "\x76\x2c", JISX02132004KANJI1 },
+	{ "\x45\x27", NULL, "\x2f\x53", JISX02132004KANJI2 },
+	{ "\x45\x28", NULL, "\x2f\x54", JISX02132004KANJI2 },
+	{ "\x45\x2a", NULL, "\x2f\x56", JISX02132004KANJI2 },
+	{ "\x45\x2b", NULL, "\x76\x2d", JISX02132004KANJI1 },
+	{ "\x45\x2d", NULL, "\x2f\x57", JISX02132004KANJI2 },
+	{ "\x45\x2f", NULL, "\x76\x2e", JISX02132004KANJI1 },
+	{ "\x45\x30", NULL, "\x76\x2f", JISX02132004KANJI1 },
+	{ "\x45\x31", NULL, "\x2f\x58", JISX02132004KANJI2 },
+	{ "\x45\x35", NULL, "\x76\x31", JISX02132004KANJI1 },
+	{ "\x45\x36", NULL, "\x2f\x5a", JISX02132004KANJI2 },
+	{ "\x45\x38", NULL, "\x2f\x5b", JISX02132004KANJI2 },
+	{ "\x45\x3b", NULL, "\x76\x33", JISX02132004KANJI1 },
+	{ "\x45\x3c", NULL, "\x2f\x5c", JISX02132004KANJI2 },
+	{ "\x45\x3d", NULL, "\x2f\x5e", JISX02132004KANJI2 },
+	{ "\x45\x3f", NULL, "\x76\x35", JISX02132004KANJI1 },
+	{ "\x45\x40", NULL, "\x76\x36", JISX02132004KANJI1 },
+	{ "\x45\x41", NULL, "\x2f\x5f", JISX02132004KANJI2 },
+	{ "\x45\x42", NULL, "\x76\x37", JISX02132004KANJI1 },
+	{ "\x45\x43", NULL, "\x2f\x62", JISX02132004KANJI2 },
+	{ "\x45\x48", NULL, "\x2f\x63", JISX02132004KANJI2 },
+	{ "\x45\x4b", NULL, "\x2f\x64", JISX02132004KANJI2 },
+	{ "\x45\x4f", NULL, "\x2f\x66", JISX02132004KANJI2 },
+	{ "\x45\x50", NULL, "\x2f\x65", JISX02132004KANJI2 },
+	{ "\x45\x53", NULL, "\x2f\x67", JISX02132004KANJI2 },
+	{ "\x45\x54", NULL, "\x2f\x68", JISX02132004KANJI2 },
+	{ "\x45\x55", NULL, "\x76\x38", JISX02132004KANJI1 },
+	{ "\x45\x56", NULL, "\x76\x39", JISX02132004KANJI1 },
+	{ "\x45\x57", NULL, "\x2f\x6b", JISX02132004KANJI2 },
+	{ "\x45\x59", NULL, "\x2f\x6c", JISX02132004KANJI2 },
+	{ "\x45\x5a", NULL, "\x2f\x6d", JISX02132004KANJI2 },
+	{ "\x45\x5c", NULL, "\x2f\x6f", JISX02132004KANJI2 },
+	{ "\x45\x62", NULL, "\x2f\x72", JISX02132004KANJI2 },
+	{ "\x45\x63", NULL, "\x2f\x73", JISX02132004KANJI2 },
+	{ "\x45\x64", NULL, "\x2f\x74", JISX02132004KANJI2 },
+	{ "\x45\x65", NULL, "\x2f\x76", JISX02132004KANJI2 },
+	{ "\x45\x66", NULL, "\x76\x3c", JISX02132004KANJI1 },
+	{ "\x45\x67", NULL, "\x76\x3d", JISX02132004KANJI1 },
+	{ "\x45\x6b", NULL, "\x76\x3e", JISX02132004KANJI1 },
+	{ "\x45\x6c", NULL, "\x2f\x78", JISX02132004KANJI2 },
+	{ "\x45\x6d", NULL, "\x76\x3f", JISX02132004KANJI1 },
+	{ "\x45\x71", NULL, "\x76\x40", JISX02132004KANJI1 },
+	{ "\x45\x72", NULL, "\x2f\x79", JISX02132004KANJI2 },
+	{ "\x45\x75", NULL, "\x76\x41", JISX02132004KANJI1 },
+	{ "\x45\x76", NULL, "\x2f\x7a", JISX02132004KANJI2 },
+	{ "\x45\x78", NULL, "\x76\x42", JISX02132004KANJI1 },
+	{ "\x45\x79", NULL, "\x76\x44", JISX02132004KANJI1 },
+	{ "\x45\x7d", NULL, "\x2f\x7c", JISX02132004KANJI2 },
+	{ "\x46\x22", NULL, "\x76\x46", JISX02132004KANJI1 },
+	{ "\x46\x25", NULL, "\x6e\x21", JISX02132004KANJI2 },
+	{ "\x46\x2b", NULL, "\x76\x47", JISX02132004KANJI1 },
+	{ "\x46\x2d", NULL, "\x76\x48", JISX02132004KANJI1 },
+	{ "\x46\x2e", NULL, "\x6e\x22", JISX02132004KANJI2 },
+	{ "\x46\x32", NULL, "\x6e\x24", JISX02132004KANJI2 },
+	{ "\x46\x33", NULL, "\x6e\x25", JISX02132004KANJI2 },
+	{ "\x46\x36", NULL, "\x6e\x28", JISX02132004KANJI2 },
+	{ "\x46\x38", NULL, "\x76\x4b", JISX02132004KANJI1 },
+	{ "\x46\x39", NULL, "\x6e\x29", JISX02132004KANJI2 },
+	{ "\x46\x3c", NULL, "\x6e\x2a", JISX02132004KANJI2 },
+	{ "\x46\x3d", NULL, "\x6e\x2b", JISX02132004KANJI2 },
+	{ "\x46\x3e", NULL, "\x6e\x2c", JISX02132004KANJI2 },
+	{ "\x46\x3f", NULL, "\x6e\x2d", JISX02132004KANJI2 },
+	{ "\x46\x42", NULL, "\x76\x4d", JISX02132004KANJI1 },
+	{ "\x46\x43", NULL, "\x6e\x2e", JISX02132004KANJI2 },
+	{ "\x46\x45", NULL, "\x76\x4e", JISX02132004KANJI1 },
+	{ "\x46\x48", NULL, "\x6e\x30", JISX02132004KANJI2 },
+	{ "\x46\x49", NULL, "\x76\x4f", JISX02132004KANJI1 },
+	{ "\x46\x52", NULL, "\x76\x50", JISX02132004KANJI1 },
+	{ "\x46\x53", NULL, "\x6e\x31", JISX02132004KANJI2 },
+	{ "\x46\x54", NULL, "\x6e\x32", JISX02132004KANJI2 },
+	{ "\x46\x55", NULL, "\x6e\x33", JISX02132004KANJI2 },
+	{ "\x46\x57", NULL, "\x6e\x35", JISX02132004KANJI2 },
+	{ "\x46\x5a", NULL, "\x6e\x36", JISX02132004KANJI2 },
+	{ "\x46\x5e", NULL, "\x76\x51", JISX02132004KANJI1 },
+	{ "\x46\x5f", NULL, "\x6e\x37", JISX02132004KANJI2 },
+	{ "\x46\x60", NULL, "\x76\x52", JISX02132004KANJI1 },
+	{ "\x46\x62", NULL, "\x6e\x38", JISX02132004KANJI2 },
+	{ "\x46\x64", NULL, "\x76\x54", JISX02132004KANJI1 },
+	{ "\x46\x65", NULL, "\x76\x55", JISX02132004KANJI1 },
+	{ "\x46\x69", NULL, "\x76\x56", JISX02132004KANJI1 },
+	{ "\x46\x6a", NULL, "\x76\x57", JISX02132004KANJI1 },
+	{ "\x46\x6c", NULL, "\x6e\x3a", JISX02132004KANJI2 },
+	{ "\x46\x6d", NULL, "\x6e\x3c", JISX02132004KANJI2 },
+	{ "\x46\x6e", NULL, "\x6e\x3d", JISX02132004KANJI2 },
+	{ "\x46\x6f", NULL, "\x6e\x3e", JISX02132004KANJI2 },
+	{ "\x46\x70", NULL, "\x76\x58", JISX02132004KANJI1 },
+	{ "\x46\x71", NULL, "\x76\x59", JISX02132004KANJI1 },
+	{ "\x46\x76", NULL, "\x6e\x40", JISX02132004KANJI2 },
+	{ "\x46\x77", NULL, "\x76\x5b", JISX02132004KANJI1 },
+	{ "\x46\x7a", NULL, "\x6e\x41", JISX02132004KANJI2 },
+	{ "\x46\x7d", NULL, "\x76\x5c", JISX02132004KANJI1 },
+	{ "\x46\x7e", NULL, "\x6e\x43", JISX02132004KANJI2 },
+	{ "\x47\x21", NULL, "\x6e\x44", JISX02132004KANJI2 },
+	{ "\x47\x22", NULL, "\x6e\x45", JISX02132004KANJI2 },
+	{ "\x47\x23", NULL, "\x76\x5d", JISX02132004KANJI1 },
+	{ "\x47\x25", NULL, "\x6e\x46", JISX02132004KANJI2 },
+	{ "\x47\x26", NULL, "\x76\x5e", JISX02132004KANJI1 },
+	{ "\x47\x27", NULL, "\x6e\x47", JISX02132004KANJI2 },
+	{ "\x47\x28", NULL, "\x76\x5f", JISX02132004KANJI1 },
+	{ "\x47\x2b", NULL, "\x76\x61", JISX02132004KANJI1 },
+	{ "\x47\x2d", NULL, "\x6e\x4b", JISX02132004KANJI2 },
+	{ "\x47\x2e", NULL, "\x76\x62", JISX02132004KANJI1 },
+	{ "\x47\x33", NULL, "\x6e\x4d", JISX02132004KANJI2 },
+	{ "\x47\x34", NULL, "\x6e\x4e", JISX02132004KANJI2 },
+	{ "\x47\x36", NULL, "\x6e\x4f", JISX02132004KANJI2 },
+	{ "\x47\x37", NULL, "\x76\x63", JISX02132004KANJI1 },
+	{ "\x47\x38", NULL, "\x6e\x50", JISX02132004KANJI2 },
+	{ "\x47\x39", NULL, "\x76\x64", JISX02132004KANJI1 },
+	{ "\x47\x3a", NULL, "\x76\x65", JISX02132004KANJI1 },
+	{ "\x47\x3b", NULL, "\x6e\x51", JISX02132004KANJI2 },
+	{ "\x47\x3c", NULL, "\x76\x66", JISX02132004KANJI1 },
+	{ "\x47\x3e", NULL, "\x6e\x53", JISX02132004KANJI2 },
+	{ "\x47\x41", NULL, "\x76\x68", JISX02132004KANJI1 },
+	{ "\x47\x44", NULL, "\x6e\x55", JISX02132004KANJI2 },
+	{ "\x47\x46", NULL, "\x76\x6a", JISX02132004KANJI1 },
+	{ "\x47\x47", NULL, "\x76\x6b", JISX02132004KANJI1 },
+	{ "\x47\x48", NULL, "\x6e\x5a", JISX02132004KANJI2 },
+	{ "\x47\x4a", NULL, "\x76\x6d", JISX02132004KANJI1 },
+	{ "\x47\x4d", NULL, "\x6e\x5b", JISX02132004KANJI2 },
+	{ "\x47\x4e", NULL, "\x76\x6e", JISX02132004KANJI1 },
+	{ "\x47\x4f", NULL, "\x76\x6f", JISX02132004KANJI1 },
+	{ "\x47\x50", NULL, "\x6e\x63", JISX02132004KANJI2 },
+	{ "\x47\x54", NULL, "\x76\x70", JISX02132004KANJI1 },
+	{ "\x47\x55", NULL, "\x76\x71", JISX02132004KANJI1 },
+	{ "\x47\x56", NULL, "\x6e\x66", JISX02132004KANJI2 },
+	{ "\x47\x58", NULL, "\x6e\x67", JISX02132004KANJI2 },
+	{ "\x47\x59", NULL, "\x6e\x68", JISX02132004KANJI2 },
+	{ "\x47\x5a", NULL, "\x76\x72", JISX02132004KANJI1 },
+	{ "\x47\x5b", NULL, "\x76\x74", JISX02132004KANJI1 },
+	{ "\x47\x5c", NULL, "\x76\x75", JISX02132004KANJI1 },
+	{ "\x47\x5d", NULL, "\x6e\x6a", JISX02132004KANJI2 },
+	{ "\x47\x61", NULL, "\x6e\x6b", JISX02132004KANJI2 },
+	{ "\x47\x65", NULL, "\x6e\x6c", JISX02132004KANJI2 },
+	{ "\x47\x66", NULL, "\x76\x76", JISX02132004KANJI1 },
+	{ "\x47\x69", NULL, "\x6e\x6e", JISX02132004KANJI2 },
+	{ "\x47\x6a", NULL, "\x6e\x6f", JISX02132004KANJI2 },
+	{ "\x47\x6b", NULL, "\x6e\x70", JISX02132004KANJI2 },
+	{ "\x47\x6c", NULL, "\x6e\x72", JISX02132004KANJI2 },
+	{ "\x47\x6d", NULL, "\x6e\x6d", JISX02132004KANJI2 },
+	{ "\x47\x70", NULL, "\x6e\x73", JISX02132004KANJI2 },
+	{ "\x47\x71", NULL, "\x76\x79", JISX02132004KANJI1 },
+	{ "\x47\x73", NULL, "\x6e\x74", JISX02132004KANJI2 },
+	{ "\x47\x74", NULL, "\x6e\x75", JISX02132004KANJI2 },
+	{ "\x47\x75", NULL, "\x6e\x76", JISX02132004KANJI2 },
+	{ "\x47\x76", NULL, "\x6e\x78", JISX02132004KANJI2 },
+	{ "\x47\x77", NULL, "\x6e\x79", JISX02132004KANJI2 },
+	{ "\x47\x79", NULL, "\x6e\x7a", JISX02132004KANJI2 },
+	{ "\x47\x7a", NULL, "\x6e\x7b", JISX02132004KANJI2 },
+	{ "\x47\x7b", NULL, "\x6e\x7c", JISX02132004KANJI2 },
+	{ "\x47\x7c", NULL, "\x76\x7a", JISX02132004KANJI1 },
+	{ "\x47\x7e", NULL, "\x76\x7b", JISX02132004KANJI1 },
+	{ "\x48\x22", NULL, "\x6e\x7d", JISX02132004KANJI2 },
+	{ "\x48\x28", NULL, "\x6f\x21", JISX02132004KANJI2 },
+	{ "\x48\x2b", NULL, "\x6f\x22", JISX02132004KANJI2 },
+	{ "\x48\x2e", NULL, "\x76\x7d", JISX02132004KANJI1 },
+	{ "\x48\x31", NULL, "\x6f\x24", JISX02132004KANJI2 },
+	{ "\x48\x33", NULL, "\x76\x7e", JISX02132004KANJI1 },
+	{ "\x48\x34", NULL, "\x6f\x25", JISX02132004KANJI2 },
+	{ "\x48\x35", NULL, "\x77\x21", JISX02132004KANJI1 },
+	{ "\x48\x37", NULL, "\x6f\x26", JISX02132004KANJI2 },
+	{ "\x48\x39", NULL, "\x77\x22", JISX02132004KANJI1 },
+	{ "\x48\x3b", NULL, "\x6f\x29", JISX02132004KANJI2 },
+	{ "\x48\x3e", NULL, "\x6f\x2a", JISX02132004KANJI2 },
+	{ "\x48\x3f", NULL, "\x6f\x2b", JISX02132004KANJI2 },
+	{ "\x48\x43", NULL, "\x6f\x2c", JISX02132004KANJI2 },
+	{ "\x48\x44", NULL, "\x6f\x2d", JISX02132004KANJI2 },
+	{ "\x48\x47", NULL, "\x6f\x2e", JISX02132004KANJI2 },
+	{ "\x48\x48", NULL, "\x77\x24", JISX02132004KANJI1 },
+	{ "\x48\x4c", NULL, "\x77\x26", JISX02132004KANJI1 },
+	{ "\x48\x4d", NULL, "\x77\x27", JISX02132004KANJI1 },
+	{ "\x48\x4f", NULL, "\x77\x28", JISX02132004KANJI1 },
+	{ "\x48\x50", NULL, "\x6f\x30", JISX02132004KANJI2 },
+	{ "\x48\x52", NULL, "\x6f\x31", JISX02132004KANJI2 },
+	{ "\x48\x55", NULL, "\x77\x29", JISX02132004KANJI1 },
+	{ "\x48\x56", NULL, "\x6f\x33", JISX02132004KANJI2 },
+	{ "\x48\x58", NULL, "\x6f\x34", JISX02132004KANJI2 },
+	{ "\x48\x59", NULL, "\x77\x2a", JISX02132004KANJI1 },
+	{ "\x48\x5a", NULL, "\x6f\x35", JISX02132004KANJI2 },
+	{ "\x48\x5c", NULL, "\x77\x2b", JISX02132004KANJI1 },
+	{ "\x48\x5d", NULL, "\x77\x2c", JISX02132004KANJI1 },
+	{ "\x48\x5e", NULL, "\x77\x2d", JISX02132004KANJI1 },
+	{ "\x48\x5f", NULL, "\x6f\x37", JISX02132004KANJI2 },
+	{ "\x48\x61", NULL, "\x6f\x39", JISX02132004KANJI2 },
+	{ "\x48\x62", NULL, "\x77\x2e", JISX02132004KANJI1 },
+	{ "\x48\x65", NULL, "\x77\x2f", JISX02132004KANJI1 },
+	{ "\x48\x67", NULL, "\x77\x30", JISX02132004KANJI1 },
+	{ "\x48\x68", NULL, "\x77\x31", JISX02132004KANJI1 },
+	{ "\x48\x69", NULL, "\x6f\x3a", JISX02132004KANJI2 },
+	{ "\x48\x6c", NULL, "\x77\x32", JISX02132004KANJI1 },
+	{ "\x48\x6d", NULL, "\x6f\x3b", JISX02132004KANJI2 },
+	{ "\x48\x6f", NULL, "\x6f\x3d", JISX02132004KANJI2 },
+	{ "\x48\x70", NULL, "\x77\x33", JISX02132004KANJI1 },
+	{ "\x48\x71", NULL, "\x6f\x3e", JISX02132004KANJI2 },
+	{ "\x48\x73", NULL, "\x77\x34", JISX02132004KANJI1 },
+	{ "\x48\x76", NULL, "\x6f\x3f", JISX02132004KANJI2 },
+	{ "\x48\x78", NULL, "\x6f\x41", JISX02132004KANJI2 },
+	{ "\x48\x79", NULL, "\x77\x35", JISX02132004KANJI1 },
+	{ "\x48\x7a", NULL, "\x77\x36", JISX02132004KANJI1 },
+	{ "\x48\x7c", NULL, "\x77\x37", JISX02132004KANJI1 },
+	{ "\x48\x7d", NULL, "\x6f\x42", JISX02132004KANJI2 },
+	{ "\x48\x7e", NULL, "\x77\x38", JISX02132004KANJI1 },
+	{ "\x49\x21", NULL, "\x6f\x44", JISX02132004KANJI2 },
+	{ "\x49\x22", NULL, "\x6f\x45", JISX02132004KANJI2 },
+	{ "\x49\x24", NULL, "\x6f\x46", JISX02132004KANJI2 },
+	{ "\x49\x25", NULL, "\x77\x3a", JISX02132004KANJI1 },
+	{ "\x49\x26", NULL, "\x77\x3b", JISX02132004KANJI1 },
+	{ "\x49\x27", NULL, "\x77\x39", JISX02132004KANJI1 },
+	{ "\x49\x28", NULL, "\x6f\x48", JISX02132004KANJI2 },
+	{ "\x49\x2a", NULL, "\x6f\x49", JISX02132004KANJI2 },
+	{ "\x49\x2b", NULL, "\x77\x3c", JISX02132004KANJI1 },
+	{ "\x49\x2c", NULL, "\x77\x3d", JISX02132004KANJI1 },
+	{ "\x49\x2d", NULL, "\x6f\x4a", JISX02132004KANJI2 },
+	{ "\x49\x31", NULL, "\x6f\x4c", JISX02132004KANJI2 },
+	{ "\x49\x35", NULL, "\x6f\x4e", JISX02132004KANJI2 },
+	{ "\x49\x36", NULL, "\x6f\x50", JISX02132004KANJI2 },
+	{ "\x49\x37", NULL, "\x6f\x51", JISX02132004KANJI2 },
+	{ "\x49\x3b", NULL, "\x77\x3f", JISX02132004KANJI1 },
+	{ "\x49\x3c", NULL, "\x6f\x53", JISX02132004KANJI2 },
+	{ "\x49\x3d", NULL, "\x6f\x55", JISX02132004KANJI2 },
+	{ "\x49\x3f", NULL, "\x77\x40", JISX02132004KANJI1 },
+	{ "\x49\x40", NULL, "\x77\x41", JISX02132004KANJI1 },
+	{ "\x49\x41", NULL, "\x77\x42", JISX02132004KANJI1 },
+	{ "\x49\x42", NULL, "\x77\x43", JISX02132004KANJI1 },
+	{ "\x49\x43", NULL, "\x6f\x56", JISX02132004KANJI2 },
+	{ "\x49\x44", NULL, "\x6f\x58", JISX02132004KANJI2 },
+	{ "\x49\x45", NULL, "\x6f\x59", JISX02132004KANJI2 },
+	{ "\x49\x46", NULL, "\x77\x44", JISX02132004KANJI1 },
+	{ "\x49\x47", NULL, "\x6f\x5a", JISX02132004KANJI2 },
+	{ "\x49\x48", NULL, "\x6f\x5b", JISX02132004KANJI2 },
+	{ "\x49\x49", NULL, "\x6f\x5c", JISX02132004KANJI2 },
+	{ "\x49\x4a", NULL, "\x77\x45", JISX02132004KANJI1 },
+	{ "\x49\x4b", NULL, "\x6f\x5d", JISX02132004KANJI2 },
+	{ "\x49\x4d", NULL, "\x6f\x5e", JISX02132004KANJI2 },
+	{ "\x49\x4f", NULL, "\x6f\x5f", JISX02132004KANJI2 },
+	{ "\x49\x52", NULL, "\x77\x46", JISX02132004KANJI1 },
+	{ "\x49\x53", NULL, "\x77\x47", JISX02132004KANJI1 },
+	{ "\x49\x55", NULL, "\x6f\x63", JISX02132004KANJI2 },
+	{ "\x49\x57", NULL, "\x77\x48", JISX02132004KANJI1 },
+	{ "\x49\x58", NULL, "\x6f\x66", JISX02132004KANJI2 },
+	{ "\x49\x59", NULL, "\x6f\x67", JISX02132004KANJI2 },
+	{ "\x49\x5a", NULL, "\x6f\x68", JISX02132004KANJI2 },
+	{ "\x49\x5b", NULL, "\x77\x49", JISX02132004KANJI1 },
+	{ "\x49\x5e", NULL, "\x77\x4a", JISX02132004KANJI1 },
+	{ "\x49\x5f", NULL, "\x6f\x69", JISX02132004KANJI2 },
+	{ "\x49\x60", NULL, "\x77\x4b", JISX02132004KANJI1 },
+	{ "\x49\x62", NULL, "\x6f\x6a", JISX02132004KANJI2 },
+	{ "\x49\x63", NULL, "\x6f\x6b", JISX02132004KANJI2 },
+	{ "\x49\x65", NULL, "\x6f\x6c", JISX02132004KANJI2 },
+	{ "\x49\x66", NULL, "\x6f\x6d", JISX02132004KANJI2 },
+	{ "\x49\x68", NULL, "\x6f\x6f", JISX02132004KANJI2 },
+	{ "\x49\x69", NULL, "\x77\x4c", JISX02132004KANJI1 },
+	{ "\x49\x6a", NULL, "\x77\x4e", JISX02132004KANJI1 },
+	{ "\x49\x6b", NULL, "\x77\x4f", JISX02132004KANJI1 },
+	{ "\x49\x6c", NULL, "\x77\x4d", JISX02132004KANJI1 },
+	{ "\x49\x6e", NULL, "\x6f\x71", JISX02132004KANJI2 },
+	{ "\x49\x6f", NULL, "\x77\x51", JISX02132004KANJI1 },
+	{ "\x49\x70", NULL, "\x6f\x72", JISX02132004KANJI2 },
+	{ "\x49\x74", NULL, "\x77\x52", JISX02132004KANJI1 },
+	{ "\x49\x75", NULL, "\x77\x53", JISX02132004KANJI1 },
+	{ "\x49\x76", NULL, "\x6f\x74", JISX02132004KANJI2 },
+	{ "\x49\x78", NULL, "\x6f\x73", JISX02132004KANJI2 },
+	{ "\x49\x79", NULL, "\x77\x56", JISX02132004KANJI1 },
+	{ "\x49\x7c", NULL, "\x77\x57", JISX02132004KANJI1 },
+	{ "\x49\x7d", NULL, "\x6f\x76", JISX02132004KANJI2 },
+	{ "\x49\x7e", NULL, "\x77\x58", JISX02132004KANJI1 },
+	{ "\x4a\x21", NULL, "\x77\x59", JISX02132004KANJI1 },
+	{ "\x4a\x23", NULL, "\x6f\x79", JISX02132004KANJI2 },
+	{ "\x4a\x24", NULL, "\x77\x5b", JISX02132004KANJI1 },
+	{ "\x4a\x25", NULL, "\x77\x5c", JISX02132004KANJI1 },
+	{ "\x4a\x27", NULL, "\x77\x5d", JISX02132004KANJI1 },
+	{ "\x4a\x29", NULL, "\x6f\x7a", JISX02132004KANJI2 },
+	{ "\x4a\x2a", NULL, "\x6f\x7b", JISX02132004KANJI2 },
+	{ "\x4a\x2b", NULL, "\x6f\x7c", JISX02132004KANJI2 },
+	{ "\x4a\x2c", NULL, "\x6f\x7e", JISX02132004KANJI2 },
+	{ "\x4a\x2f", NULL, "\x70\x21", JISX02132004KANJI2 },
+	{ "\x4a\x30", NULL, "\x77\x5f", JISX02132004KANJI1 },
+	{ "\x4a\x33", NULL, "\x77\x5e", JISX02132004KANJI1 },
+	{ "\x4a\x34", NULL, "\x77\x60", JISX02132004KANJI1 },
+	{ "\x4a\x35", NULL, "\x70\x23", JISX02132004KANJI2 },
+	{ "\x4a\x37", NULL, "\x70\x24", JISX02132004KANJI2 },
+	{ "\x4a\x39", NULL, "\x70\x25", JISX02132004KANJI2 },
+	{ "\x4a\x3b", NULL, "\x70\x26", JISX02132004KANJI2 },
+	{ "\x4a\x3d", NULL, "\x77\x61", JISX02132004KANJI1 },
+	{ "\x4a\x3e", NULL, "\x77\x62", JISX02132004KANJI1 },
+	{ "\x4a\x3f", NULL, "\x70\x27", JISX02132004KANJI2 },
+	{ "\x4a\x48", NULL, "\x70\x2a", JISX02132004KANJI2 },
+	{ "\x4a\x4a", NULL, "\x70\x2b", JISX02132004KANJI2 },
+	{ "\x4a\x4b", NULL, "\x70\x2c", JISX02132004KANJI2 },
+	{ "\x4a\x4c", NULL, "\x70\x2d", JISX02132004KANJI2 },
+	{ "\x4a\x4e", NULL, "\x70\x2f", JISX02132004KANJI2 },
+	{ "\x4a\x54", NULL, "\x70\x30", JISX02132004KANJI2 },
+	{ "\x4a\x55", NULL, "\x77\x64", JISX02132004KANJI1 },
+	{ "\x4a\x56", NULL, "\x77\x65", JISX02132004KANJI1 },
+	{ "\x4a\x5b", NULL, "\x70\x32", JISX02132004KANJI2 },
+	{ "\x4a\x5e", NULL, "\x70\x34", JISX02132004KANJI2 },
+	{ "\x4a\x5f", NULL, "\x70\x35", JISX02132004KANJI2 },
+	{ "\x4a\x62", NULL, "\x70\x36", JISX02132004KANJI2 },
+	{ "\x4a\x65", NULL, "\x70\x37", JISX02132004KANJI2 },
+	{ "\x4a\x68", NULL, "\x77\x67", JISX02132004KANJI1 },
+	{ "\x4a\x69", NULL, "\x70\x38", JISX02132004KANJI2 },
+	{ "\x4a\x6b", NULL, "\x77\x68", JISX02132004KANJI1 },
+	{ "\x4a\x6d", NULL, "\x70\x3a", JISX02132004KANJI2 },
+	{ "\x4a\x6e", NULL, "\x70\x3b", JISX02132004KANJI2 },
+	{ "\x4a\x6f", NULL, "\x70\x3d", JISX02132004KANJI2 },
+	{ "\x4a\x71", NULL, "\x77\x69", JISX02132004KANJI1 },
+	{ "\x4a\x72", NULL, "\x70\x3e", JISX02132004KANJI2 },
+	{ "\x4a\x75", NULL, "\x70\x40", JISX02132004KANJI2 },
+	{ "\x4a\x7b", NULL, "\x70\x43", JISX02132004KANJI2 },
+	{ "\x4a\x7d", NULL, "\x70\x44", JISX02132004KANJI2 },
+	{ "\x4a\x7e", NULL, "\x77\x6b", JISX02132004KANJI1 },
+	{ "\x4b\x25", NULL, "\x70\x45", JISX02132004KANJI2 },
+	{ "\x4b\x28", NULL, "\x70\x46", JISX02132004KANJI2 },
+	{ "\x4b\x2a", NULL, "\x70\x47", JISX02132004KANJI2 },
+	{ "\x4b\x2b", NULL, "\x70\x48", JISX02132004KANJI2 },
+	{ "\x4b\x2f", NULL, "\x77\x6d", JISX02132004KANJI1 },
+	{ "\x4b\x30", NULL, "\x77\x6e", JISX02132004KANJI1 },
+	{ "\x4b\x31", NULL, "\x70\x4b", JISX02132004KANJI2 },
+	{ "\x4b\x32", NULL, "\x70\x4c", JISX02132004KANJI2 },
+	{ "\x4b\x37", NULL, "\x70\x4e", JISX02132004KANJI2 },
+	{ "\x4b\x3a", NULL, "\x77\x70", JISX02132004KANJI1 },
+	{ "\x4b\x3b", NULL, "\x70\x4f", JISX02132004KANJI2 },
+	{ "\x4b\x42", NULL, "\x77\x71", JISX02132004KANJI1 },
+	{ "\x4b\x45", NULL, "\x70\x51", JISX02132004KANJI2 },
+	{ "\x4b\x46", NULL, "\x70\x52", JISX02132004KANJI2 },
+	{ "\x4b\x47", NULL, "\x70\x54", JISX02132004KANJI2 },
+	{ "\x4b\x48", NULL, "\x70\x55", JISX02132004KANJI2 },
+	{ "\x4b\x49", NULL, "\x70\x56", JISX02132004KANJI2 },
+	{ "\x4b\x4a", NULL, "\x70\x57", JISX02132004KANJI2 },
+	{ "\x4b\x4c", NULL, "\x77\x72", JISX02132004KANJI1 },
+	{ "\x4b\x4e", NULL, "\x70\x58", JISX02132004KANJI2 },
+	{ "\x4b\x50", NULL, "\x70\x59", JISX02132004KANJI2 },
+	{ "\x4b\x55", NULL, "\x77\x73", JISX02132004KANJI1 },
+	{ "\x4b\x57", NULL, "\x70\x5c", JISX02132004KANJI2 },
+	{ "\x4b\x58", NULL, "\x70\x5d", JISX02132004KANJI2 },
+	{ "\x4b\x59", NULL, "\x70\x5e", JISX02132004KANJI2 },
+	{ "\x4b\x5a", NULL, "\x77\x74", JISX02132004KANJI1 },
+	{ "\x4b\x5b", NULL, "\x77\x75", JISX02132004KANJI1 },
+	{ "\x4b\x5c", NULL, "\x77\x76", JISX02132004KANJI1 },
+	{ "\x4b\x5d", NULL, "\x70\x5f", JISX02132004KANJI2 },
+	{ "\x4b\x5e", NULL, "\x77\x77", JISX02132004KANJI1 },
+	{ "\x4b\x60", NULL, "\x77\x78", JISX02132004KANJI1 },
+	{ "\x4b\x62", NULL, "\x70\x61", JISX02132004KANJI2 },
+	{ "\x4b\x63", NULL, "\x70\x62", JISX02132004KANJI2 },
+	{ "\x4b\x64", NULL, "\x70\x63", JISX02132004KANJI2 },
+	{ "\x4b\x65", NULL, "\x70\x64", JISX02132004KANJI2 },
+	{ "\x4b\x67", NULL, "\x70\x65", JISX02132004KANJI2 },
+	{ "\x4b\x68", NULL, "\x70\x66", JISX02132004KANJI2 },
+	{ "\x4b\x6a", NULL, "\x77\x79", JISX02132004KANJI1 },
+	{ "\x4b\x6b", NULL, "\x70\x67", JISX02132004KANJI2 },
+	{ "\x4b\x6d", NULL, "\x77\x7a", JISX02132004KANJI1 },
+	{ "\x4b\x70", NULL, "\x77\x7b", JISX02132004KANJI1 },
+	{ "\x4b\x71", NULL, "\x77\x7c", JISX02132004KANJI1 },
+	{ "\x4b\x73", NULL, "\x70\x68", JISX02132004KANJI2 },
+	{ "\x4b\x74", NULL, "\x77\x7d", JISX02132004KANJI1 },
+	{ "\x4b\x76", NULL, "\x70\x69", JISX02132004KANJI2 },
+	{ "\x4b\x77", NULL, "\x77\x7e", JISX02132004KANJI1 },
+	{ "\x4b\x7b", NULL, "\x70\x6a", JISX02132004KANJI2 },
+	{ "\x4b\x7c", NULL, "\x70\x6c", JISX02132004KANJI2 },
+	{ "\x4c\x23", NULL, "\x70\x6d", JISX02132004KANJI2 },
+	{ "\x4c\x25", NULL, "\x78\x21", JISX02132004KANJI1 },
+	{ "\x4c\x26", NULL, "\x78\x22", JISX02132004KANJI1 },
+	{ "\x4c\x28", NULL, "\x78\x23", JISX02132004KANJI1 },
+	{ "\x4c\x29", NULL, "\x78\x24", JISX02132004KANJI1 },
+	{ "\x4c\x2a", NULL, "\x70\x6e", JISX02132004KANJI2 },
+	{ "\x4c\x2b", NULL, "\x78\x26", JISX02132004KANJI1 },
+	{ "\x4c\x2c", NULL, "\x78\x27", JISX02132004KANJI1 },
+	{ "\x4c\x2e", NULL, "\x78\x28", JISX02132004KANJI1 },
+	{ "\x4c\x2f", NULL, "\x78\x29", JISX02132004KANJI1 },
+	{ "\x4c\x30", NULL, "\x78\x2a", JISX02132004KANJI1 },
+	{ "\x4c\x32", NULL, "\x78\x2b", JISX02132004KANJI1 },
+	{ "\x4c\x33", NULL, "\x78\x2c", JISX02132004KANJI1 },
+	{ "\x4c\x34", NULL, "\x78\x2d", JISX02132004KANJI1 },
+	{ "\x4c\x35", NULL, "\x70\x6f", JISX02132004KANJI2 },
+	{ "\x4c\x36", NULL, "\x70\x70", JISX02132004KANJI2 },
+	{ "\x4c\x37", NULL, "\x70\x72", JISX02132004KANJI2 },
+	{ "\x4c\x38", NULL, "\x70\x73", JISX02132004KANJI2 },
+	{ "\x4c\x39", NULL, "\x78\x2e", JISX02132004KANJI1 },
+	{ "\x4c\x3a", NULL, "\x78\x2f", JISX02132004KANJI1 },
+	{ "\x4c\x3b", NULL, "\x78\x30", JISX02132004KANJI1 },
+	{ "\x4c\x3c", NULL, "\x78\x31", JISX02132004KANJI1 },
+	{ "\x4c\x3d", NULL, "\x70\x74", JISX02132004KANJI2 },
+	{ "\x4c\x3f", NULL, "\x70\x75", JISX02132004KANJI2 },
+	{ "\x4c\x40", NULL, "\x78\x32", JISX02132004KANJI1 },
+	{ "\x4c\x41", NULL, "\x70\x76", JISX02132004KANJI2 },
+	{ "\x4c\x42", NULL, "\x78\x33", JISX02132004KANJI1 },
+	{ "\x4c\x46", NULL, "\x78\x34", JISX02132004KANJI1 },
+	{ "\x4c\x47", NULL, "\x78\x35", JISX02132004KANJI1 },
+	{ "\x4c\x49", NULL, "\x70\x77", JISX02132004KANJI2 },
+	{ "\x4c\x4c", NULL, "\x70\x78", JISX02132004KANJI2 },
+	{ "\x4c\x4d", NULL, "\x70\x79", JISX02132004KANJI2 },
+	{ "\x4c\x4e", NULL, "\x78\x36", JISX02132004KANJI1 },
+	{ "\x4c\x4f", NULL, "\x78\x37", JISX02132004KANJI1 },
+	{ "\x4c\x50", NULL, "\x78\x38", JISX02132004KANJI1 },
+	{ "\x4c\x52", NULL, "\x78\x3d", JISX02132004KANJI1 },
+	{ "\x4c\x54", NULL, "\x70\x7c", JISX02132004KANJI2 },
+	{ "\x4c\x55", NULL, "\x78\x39", JISX02132004KANJI1 },
+	{ "\x4c\x56", NULL, "\x70\x7e", JISX02132004KANJI2 },
+	{ "\x4c\x58", NULL, "\x78\x3a", JISX02132004KANJI1 },
+	{ "\x4c\x59", NULL, "\x78\x3b", JISX02132004KANJI1 },
+	{ "\x4c\x5a", NULL, "\x71\x21", JISX02132004KANJI2 },
+	{ "\x4c\x5b", NULL, "\x71\x22", JISX02132004KANJI2 },
+	{ "\x4c\x5c", NULL, "\x78\x3c", JISX02132004KANJI1 },
+	{ "\x4c\x5d", NULL, "\x78\x3e", JISX02132004KANJI1 },
+	{ "\x4c\x5e", NULL, "\x78\x3f", JISX02132004KANJI1 },
+	{ "\x4c\x5f", NULL, "\x78\x40", JISX02132004KANJI1 },
+	{ "\x4c\x60", NULL, "\x71\x24", JISX02132004KANJI2 },
+	{ "\x4c\x61", NULL, "\x71\x25", JISX02132004KANJI2 },
+	{ "\x4c\x66", NULL, "\x78\x41", JISX02132004KANJI1 },
+	{ "\x4c\x67", NULL, "\x71\x26", JISX02132004KANJI2 },
+	{ "\x4c\x68", NULL, "\x71\x27", JISX02132004KANJI2 },
+	{ "\x4c\x69", NULL, "\x78\x42", JISX02132004KANJI1 },
+	{ "\x4c\x6a", NULL, "\x78\x43", JISX02132004KANJI1 },
+	{ "\x4c\x6b", NULL, "\x78\x44", JISX02132004KANJI1 },
+	{ "\x4c\x6f", NULL, "\x71\x2a", JISX02132004KANJI2 },
+	{ "\x4c\x70", NULL, "\x78\x45", JISX02132004KANJI1 },
+	{ "\x4c\x72", NULL, "\x71\x2b", JISX02132004KANJI2 },
+	{ "\x4c\x77", NULL, "\x71\x2d", JISX02132004KANJI2 },
+	{ "\x4c\x78", NULL, "\x71\x2c", JISX02132004KANJI2 },
+	{ "\x4c\x7a", NULL, "\x71\x2f", JISX02132004KANJI2 },
+	{ "\x4c\x7d", NULL, "\x78\x46", JISX02132004KANJI1 },
+	{ "\x4d\x23", NULL, "\x78\x48", JISX02132004KANJI1 },
+	{ "\x4d\x24", NULL, "\x71\x31", JISX02132004KANJI2 },
+	{ "\x4d\x26", NULL, "\x71\x32", JISX02132004KANJI2 },
+	{ "\x4d\x29", NULL, "\x71\x33", JISX02132004KANJI2 },
+	{ "\x4d\x2a", NULL, "\x78\x49", JISX02132004KANJI1 },
+	{ "\x4d\x2d", NULL, "\x71\x36", JISX02132004KANJI2 },
+	{ "\x4d\x2e", NULL, "\x71\x37", JISX02132004KANJI2 },
+	{ "\x4d\x30", NULL, "\x71\x38", JISX02132004KANJI2 },
+	{ "\x4d\x33", NULL, "\x71\x39", JISX02132004KANJI2 },
+	{ "\x4d\x34", NULL, "\x71\x3a", JISX02132004KANJI2 },
+	{ "\x4d\x35", NULL, "\x71\x3b", JISX02132004KANJI2 },
+	{ "\x4d\x36", NULL, "\x71\x3c", JISX02132004KANJI2 },
+	{ "\x4d\x3b", NULL, "\x78\x4a", JISX02132004KANJI1 },
+	{ "\x4d\x3c", NULL, "\x71\x3f", JISX02132004KANJI2 },
+	{ "\x4d\x3d", NULL, "\x78\x4b", JISX02132004KANJI1 },
+	{ "\x4d\x3e", NULL, "\x71\x40", JISX02132004KANJI2 },
+	{ "\x4d\x41", NULL, "\x71\x41", JISX02132004KANJI2 },
+	{ "\x4d\x42", NULL, "\x71\x42", JISX02132004KANJI2 },
+	{ "\x4d\x43", NULL, "\x71\x43", JISX02132004KANJI2 },
+	{ "\x4d\x46", NULL, "\x78\x4c", JISX02132004KANJI1 },
+	{ "\x4d\x4b", NULL, "\x71\x47", JISX02132004KANJI2 },
+	{ "\x4d\x4f", NULL, "\x71\x4b", JISX02132004KANJI2 },
+	{ "\x4d\x50", NULL, "\x71\x4c", JISX02132004KANJI2 },
+	{ "\x4d\x53", NULL, "\x71\x4d", JISX02132004KANJI2 },
+	{ "\x4d\x55", NULL, "\x78\x4e", JISX02132004KANJI1 },
+	{ "\x4d\x56", NULL, "\x71\x4e", JISX02132004KANJI2 },
+	{ "\x4d\x59", NULL, "\x71\x51", JISX02132004KANJI2 },
+	{ "\x4d\x5a", NULL, "\x71\x52", JISX02132004KANJI2 },
+	{ "\x4d\x5c", NULL, "\x78\x4f", JISX02132004KANJI1 },
+	{ "\x4d\x5d", NULL, "\x71\x53", JISX02132004KANJI2 },
+	{ "\x4d\x5e", NULL, "\x71\x54", JISX02132004KANJI2 },
+	{ "\x4d\x5f", NULL, "\x71\x55", JISX02132004KANJI2 },
+	{ "\x4d\x61", NULL, "\x71\x56", JISX02132004KANJI2 },
+	{ "\x4d\x62", NULL, "\x71\x57", JISX02132004KANJI2 },
+	{ "\x4d\x63", NULL, "\x78\x50", JISX02132004KANJI1 },
+	{ "\x4d\x64", NULL, "\x78\x51", JISX02132004KANJI1 },
+	{ "\x4d\x65", NULL, "\x71\x58", JISX02132004KANJI2 },
+	{ "\x4d\x67", NULL, "\x71\x5a", JISX02132004KANJI2 },
+	{ "\x4d\x68", NULL, "\x78\x52", JISX02132004KANJI1 },
+	{ "\x4d\x6b", NULL, "\x71\x5b", JISX02132004KANJI2 },
+	{ "\x4d\x6d", NULL, "\x71\x5e", JISX02132004KANJI2 },
+	{ "\x4d\x6e", NULL, "\x78\x53", JISX02132004KANJI1 },
+	{ "\x4d\x6f", NULL, "\x78\x54", JISX02132004KANJI1 },
+	{ "\x4d\x70", NULL, "\x78\x55", JISX02132004KANJI1 },
+	{ "\x4d\x71", NULL, "\x71\x5f", JISX02132004KANJI2 },
+	{ "\x4d\x72", NULL, "\x71\x60", JISX02132004KANJI2 },
+	{ "\x4d\x74", NULL, "\x78\x56", JISX02132004KANJI1 },
+	{ "\x4d\x76", NULL, "\x71\x62", JISX02132004KANJI2 },
+	{ "\x4d\x79", NULL, "\x78\x57", JISX02132004KANJI1 },
+	{ "\x4d\x7b", NULL, "\x71\x65", JISX02132004KANJI2 },
+	{ "\x4d\x7c", NULL, "\x78\x58", JISX02132004KANJI1 },
+	{ "\x4e\x22", NULL, "\x71\x64", JISX02132004KANJI2 },
+	{ "\x4e\x25", NULL, "\x71\x68", JISX02132004KANJI2 },
+	{ "\x4e\x26", NULL, "\x78\x59", JISX02132004KANJI1 },
+	{ "\x4e\x29", NULL, "\x71\x6a", JISX02132004KANJI2 },
+	{ "\x4e\x2a", NULL, "\x78\x5a", JISX02132004KANJI1 },
+	{ "\x4e\x2b", NULL, "\x71\x6b", JISX02132004KANJI2 },
+	{ "\x4e\x2e", NULL, "\x78\x5b", JISX02132004KANJI1 },
+	{ "\x4e\x2f", NULL, "\x78\x5c", JISX02132004KANJI1 },
+	{ "\x4e\x30", NULL, "\x78\x5d", JISX02132004KANJI1 },
+	{ "\x4e\x31", NULL, "\x71\x6d", JISX02132004KANJI2 },
+	{ "\x4e\x32", NULL, "\x78\x5e", JISX02132004KANJI1 },
+	{ "\x4e\x33", NULL, "\x78\x5f", JISX02132004KANJI1 },
+	{ "\x4e\x35", NULL, "\x78\x60", JISX02132004KANJI1 },
+	{ "\x4e\x39", NULL, "\x71\x6e", JISX02132004KANJI2 },
+	{ "\x4e\x3a", NULL, "\x78\x61", JISX02132004KANJI1 },
+	{ "\x4e\x3b", NULL, "\x71\x6f", JISX02132004KANJI2 },
+	{ "\x4e\x3c", NULL, "\x78\x62", JISX02132004KANJI1 },
+	{ "\x4e\x3e", NULL, "\x71\x71", JISX02132004KANJI2 },
+	{ "\x4e\x43", NULL, "\x78\x64", JISX02132004KANJI1 },
+	{ "\x4e\x44", NULL, "\x71\x72", JISX02132004KANJI2 },
+	{ "\x4e\x45", NULL, "\x71\x73", JISX02132004KANJI2 },
+	{ "\x4e\x46", NULL, "\x78\x65", JISX02132004KANJI1 },
+	{ "\x4e\x4a", NULL, "\x78\x67", JISX02132004KANJI1 },
+	{ "\x4e\x4b", NULL, "\x71\x76", JISX02132004KANJI2 },
+	{ "\x4e\x4d", NULL, "\x78\x68", JISX02132004KANJI1 },
+	{ "\x4e\x4e", NULL, "\x78\x69", JISX02132004KANJI1 },
+	{ "\x4e\x4f", NULL, "\x78\x6a", JISX02132004KANJI1 },
+	{ "\x4e\x52", NULL, "\x78\x6b", JISX02132004KANJI1 },
+	{ "\x4e\x53", NULL, "\x71\x78", JISX02132004KANJI2 },
+	{ "\x4e\x54", NULL, "\x71\x79", JISX02132004KANJI2 },
+	{ "\x4e\x56", NULL, "\x78\x6c", JISX02132004KANJI1 },
+	{ "\x4e\x59", NULL, "\x78\x6d", JISX02132004KANJI1 },
+	{ "\x4e\x5c", NULL, "\x78\x6e", JISX02132004KANJI1 },
+	{ "\x4e\x61", NULL, "\x71\x7b", JISX02132004KANJI2 },
+	{ "\x4e\x62", NULL, "\x78\x6f", JISX02132004KANJI1 },
+	{ "\x4e\x63", NULL, "\x71\x7c", JISX02132004KANJI2 },
+	{ "\x4e\x67", NULL, "\x71\x7d", JISX02132004KANJI2 },
+	{ "\x4e\x6a", NULL, "\x78\x70", JISX02132004KANJI1 },
+	{ "\x4e\x6b", NULL, "\x71\x7e", JISX02132004KANJI2 },
+	{ "\x4e\x6c", NULL, "\x78\x71", JISX02132004KANJI1 },
+	{ "\x4e\x72", NULL, "\x78\x72", JISX02132004KANJI1 },
+	{ "\x4e\x74", NULL, "\x78\x73", JISX02132004KANJI1 },
+	{ "\x4e\x75", NULL, "\x78\x74", JISX02132004KANJI1 },
+	{ "\x4e\x7a", NULL, "\x78\x75", JISX02132004KANJI1 },
+	{ "\x4e\x7c", NULL, "\x78\x76", JISX02132004KANJI1 },
+	{ "\x4e\x7d", NULL, "\x72\x26", JISX02132004KANJI2 },
+	{ "\x4e\x7e", NULL, "\x78\x77", JISX02132004KANJI1 },
+	{ "\x4f\x23", NULL, "\x72\x27", JISX02132004KANJI2 },
+	{ "\x4f\x26", NULL, "\x72\x29", JISX02132004KANJI2 },
+	{ "\x4f\x29", NULL, "\x78\x78", JISX02132004KANJI1 },
+	{ "\x4f\x2a", NULL, "\x72\x2b", JISX02132004KANJI2 },
+	{ "\x4f\x2b", NULL, "\x78\x79", JISX02132004KANJI1 },
+	{ "\x4f\x2f", NULL, "\x78\x7a", JISX02132004KANJI1 },
+	{ "\x4f\x32", NULL, "\x72\x2e", JISX02132004KANJI2 },
+	{ "\x4f\x33", NULL, "\x72\x2f", JISX02132004KANJI2 },
+	{ "\x4f\x34", NULL, "\x72\x30", JISX02132004KANJI2 },
+	{ "\x4f\x36", NULL, "\x78\x7b", JISX02132004KANJI1 },
+	{ "\x4f\x42", NULL, "\x72\x33", JISX02132004KANJI2 },
+	{ "\x4f\x43", NULL, "\x72\x34", JISX02132004KANJI2 },
+	{ "\x4f\x44", NULL, "\x78\x7c", JISX02132004KANJI1 },
+	{ "\x4f\x45", NULL, "\x72\x35", JISX02132004KANJI2 },
+	{ "\x4f\x46", NULL, "\x72\x36", JISX02132004KANJI2 },
+	{ "\x4f\x47", NULL, "\x72\x37", JISX02132004KANJI2 },
+	{ "\x4f\x48", NULL, "\x72\x38", JISX02132004KANJI2 },
+	{ "\x4f\x49", NULL, "\x72\x3a", JISX02132004KANJI2 },
+	{ "\x4f\x4b", NULL, "\x72\x3b", JISX02132004KANJI2 },
+	{ "\x4f\x4d", NULL, "\x72\x3c", JISX02132004KANJI2 },
+	{ "\x4f\x4e", NULL, "\x72\x3e", JISX02132004KANJI2 },
+	{ "\x4f\x4f", NULL, "\x72\x3f", JISX02132004KANJI2 },
+	{ "\x4f\x50", NULL, "\x72\x40", JISX02132004KANJI2 },
+	{ "\x4f\x51", NULL, "\x72\x41", JISX02132004KANJI2 },
+	{ "\x4f\x55", NULL, "\x72\x43", JISX02132004KANJI2 },
+	{ "\x4f\x58", NULL, "\x78\x7d", JISX02132004KANJI1 },
+	{ "\x4f\x5d", NULL, "\x79\x21", JISX02132004KANJI1 },
+	{ "\x4f\x5f", NULL, "\x72\x45", JISX02132004KANJI2 },
+	{ "\x4f\x62", NULL, "\x79\x22", JISX02132004KANJI1 },
+	{ "\x4f\x69", NULL, "\x72\x46", JISX02132004KANJI2 },
+	{ "\x4f\x6a", NULL, "\x79\x25", JISX02132004KANJI1 },
+	{ "\x4f\x6b", NULL, "\x72\x47", JISX02132004KANJI2 },
+	{ "\x4f\x6c", NULL, "\x79\x26", JISX02132004KANJI1 },
+	{ "\x4f\x6f", NULL, "\x72\x49", JISX02132004KANJI2 },
+	{ "\x4f\x71", NULL, "\x72\x4a", JISX02132004KANJI2 },
+	{ "\x4f\x74", NULL, "\x72\x4c", JISX02132004KANJI2 },
+	{ "\x4f\x75", NULL, "\x72\x4d", JISX02132004KANJI2 },
+	{ "\x4f\x76", NULL, "\x72\x4e", JISX02132004KANJI2 },
+	{ "\x4f\x77", NULL, "\x72\x4b", JISX02132004KANJI2 },
+	{ "\x4f\x7a", NULL, "\x79\x2a", JISX02132004KANJI1 },
+	{ "\x4f\x7b", NULL, "\x79\x28", JISX02132004KANJI1 },
+	{ "\x50\x21", NULL, "\x72\x4f", JISX02132004KANJI2 },
+	{ "\x50\x25", NULL, "\x72\x50", JISX02132004KANJI2 },
+	{ "\x50\x27", NULL, "\x72\x51", JISX02132004KANJI2 },
+	{ "\x50\x28", NULL, "\x72\x52", JISX02132004KANJI2 },
+	{ "\x50\x2b", NULL, "\x72\x53", JISX02132004KANJI2 },
+	{ "\x50\x2d", NULL, "\x79\x2b", JISX02132004KANJI1 },
+	{ "\x50\x30", NULL, "\x72\x54", JISX02132004KANJI2 },
+	{ "\x50\x31", NULL, "\x72\x55", JISX02132004KANJI2 },
+	{ "\x50\x32", NULL, "\x72\x56", JISX02132004KANJI2 },
+	{ "\x50\x34", NULL, "\x79\x2c", JISX02132004KANJI1 },
+	{ "\x50\x36", NULL, "\x79\x2d", JISX02132004KANJI1 },
+	{ "\x50\x38", NULL, "\x79\x2e", JISX02132004KANJI1 },
+	{ "\x50\x39", NULL, "\x72\x58", JISX02132004KANJI2 },
+	{ "\x50\x3a", NULL, "\x72\x59", JISX02132004KANJI2 },
+	{ "\x50\x3e", NULL, "\x72\x5c", JISX02132004KANJI2 },
+	{ "\x50\x40", NULL, "\x79\x2f", JISX02132004KANJI1 },
+	{ "\x50\x44", NULL, "\x72\x5f", JISX02132004KANJI2 },
+	{ "\x50\x48", NULL, "\x79\x31", JISX02132004KANJI1 },
+	{ "\x50\x49", NULL, "\x79\x32", JISX02132004KANJI1 },
+	{ "\x50\x4b", NULL, "\x72\x60", JISX02132004KANJI2 },
+	{ "\x50\x4f", NULL, "\x79\x35", JISX02132004KANJI1 },
+	{ "\x50\x50", NULL, "\x79\x36", JISX02132004KANJI1 },
+	{ "\x50\x51", NULL, "\x72\x61", JISX02132004KANJI2 },
+	{ "\x50\x56", NULL, "\x72\x62", JISX02132004KANJI2 },
+	{ "\x50\x57", NULL, "\x72\x63", JISX02132004KANJI2 },
+	{ "\x50\x58", NULL, "\x79\x3a", JISX02132004KANJI1 },
+	{ "\x50\x59", NULL, "\x72\x65", JISX02132004KANJI2 },
+	{ "\x50\x5c", NULL, "\x72\x66", JISX02132004KANJI2 },
+	{ "\x50\x5d", NULL, "\x79\x3e", JISX02132004KANJI1 },
+	{ "\x50\x65", NULL, "\x72\x67", JISX02132004KANJI2 },
+	{ "\x50\x66", NULL, "\x72\x68", JISX02132004KANJI2 },
+	{ "\x50\x67", NULL, "\x72\x69", JISX02132004KANJI2 },
+	{ "\x50\x68", NULL, "\x79\x42", JISX02132004KANJI1 },
+	{ "\x50\x69", NULL, "\x72\x6a", JISX02132004KANJI2 },
+	{ "\x50\x6b", NULL, "\x72\x6b", JISX02132004KANJI2 },
+	{ "\x50\x6d", NULL, "\x72\x6c", JISX02132004KANJI2 },
+	{ "\x50\x70", NULL, "\x79\x43", JISX02132004KANJI1 },
+	{ "\x50\x71", NULL, "\x72\x6d", JISX02132004KANJI2 },
+	{ "\x50\x72", NULL, "\x79\x44", JISX02132004KANJI1 },
+	{ "\x50\x73", NULL, "\x72\x6e", JISX02132004KANJI2 },
+	{ "\x50\x74", NULL, "\x72\x6f", JISX02132004KANJI2 },
+	{ "\x50\x76", NULL, "\x72\x70", JISX02132004KANJI2 },
+	{ "\x50\x77", NULL, "\x79\x45", JISX02132004KANJI1 },
+	{ "\x50\x78", NULL, "\x79\x46", JISX02132004KANJI1 },
+	{ "\x50\x7a", NULL, "\x79\x48", JISX02132004KANJI1 },
+	{ "\x50\x7b", NULL, "\x72\x73", JISX02132004KANJI2 },
+	{ "\x50\x7e", NULL, "\x79\x49", JISX02132004KANJI1 },
+	{ "\x51\x25", NULL, "\x79\x4a", JISX02132004KANJI1 },
+	{ "\x51\x26", NULL, "\x79\x4b", JISX02132004KANJI1 },
+	{ "\x51\x2b", NULL, "\x79\x4c", JISX02132004KANJI1 },
+	{ "\x51\x2e", NULL, "\x72\x78", JISX02132004KANJI2 },
+	{ "\x51\x30", NULL, "\x72\x79", JISX02132004KANJI2 },
+	{ "\x51\x31", NULL, "\x72\x7a", JISX02132004KANJI2 },
+	{ "\x51\x32", NULL, "\x72\x7b", JISX02132004KANJI2 },
+	{ "\x51\x33", NULL, "\x72\x7c", JISX02132004KANJI2 },
+	{ "\x51\x37", NULL, "\x72\x7e", JISX02132004KANJI2 },
+	{ "\x51\x3c", NULL, "\x73\x21", JISX02132004KANJI2 },
+	{ "\x51\x3d", NULL, "\x79\x4e", JISX02132004KANJI1 },
+	{ "\x51\x41", NULL, "\x73\x22", JISX02132004KANJI2 },
+	{ "\x51\x43", NULL, "\x73\x23", JISX02132004KANJI2 },
+	{ "\x51\x45", NULL, "\x73\x24", JISX02132004KANJI2 },
+	{ "\x51\x46", NULL, "\x73\x25", JISX02132004KANJI2 },
+	{ "\x51\x47", NULL, "\x73\x26", JISX02132004KANJI2 },
+	{ "\x51\x48", NULL, "\x79\x4f", JISX02132004KANJI1 },
+	{ "\x51\x49", NULL, "\x73\x27", JISX02132004KANJI2 },
+	{ "\x51\x4a", NULL, "\x73\x28", JISX02132004KANJI2 },
+	{ "\x51\x4c", NULL, "\x73\x29", JISX02132004KANJI2 },
+	{ "\x51\x4d", NULL, "\x73\x2a", JISX02132004KANJI2 },
+	{ "\x51\x4e", NULL, "\x79\x50", JISX02132004KANJI1 },
+	{ "\x51\x4f", NULL, "\x73\x2b", JISX02132004KANJI2 },
+	{ "\x51\x50", NULL, "\x73\x2c", JISX02132004KANJI2 },
+	{ "\x51\x53", NULL, "\x73\x2d", JISX02132004KANJI2 },
+	{ "\x51\x54", NULL, "\x79\x52", JISX02132004KANJI1 },
+	{ "\x51\x56", NULL, "\x73\x2e", JISX02132004KANJI2 },
+	{ "\x51\x58", NULL, "\x73\x2f", JISX02132004KANJI2 },
+	{ "\x51\x5c", NULL, "\x79\x53", JISX02132004KANJI1 },
+	{ "\x51\x5d", NULL, "\x73\x30", JISX02132004KANJI2 },
+	{ "\x51\x5e", NULL, "\x73\x31", JISX02132004KANJI2 },
+	{ "\x51\x5f", NULL, "\x79\x55", JISX02132004KANJI1 },
+	{ "\x51\x61", NULL, "\x73\x34", JISX02132004KANJI2 },
+	{ "\x51\x62", NULL, "\x79\x56", JISX02132004KANJI1 },
+	{ "\x51\x63", NULL, "\x73\x35", JISX02132004KANJI2 },
+	{ "\x51\x66", NULL, "\x73\x38", JISX02132004KANJI2 },
+	{ "\x51\x67", NULL, "\x79\x57", JISX02132004KANJI1 },
+	{ "\x51\x68", NULL, "\x73\x39", JISX02132004KANJI2 },
+	{ "\x51\x6a", NULL, "\x73\x3b", JISX02132004KANJI2 },
+	{ "\x51\x6c", NULL, "\x79\x58", JISX02132004KANJI1 },
+	{ "\x51\x6f", NULL, "\x73\x3c", JISX02132004KANJI2 },
+	{ "\x51\x71", NULL, "\x79\x59", JISX02132004KANJI1 },
+	{ "\x51\x73", NULL, "\x73\x3f", JISX02132004KANJI2 },
+	{ "\x51\x77", NULL, "\x73\x42", JISX02132004KANJI2 },
+	{ "\x51\x79", NULL, "\x73\x43", JISX02132004KANJI2 },
+	{ "\x51\x7b", NULL, "\x79\x5b", JISX02132004KANJI1 },
+	{ "\x51\x7c", NULL, "\x73\x44", JISX02132004KANJI2 },
+	{ "\x51\x7d", NULL, "\x73\x45", JISX02132004KANJI2 },
+	{ "\x52\x21", NULL, "\x73\x46", JISX02132004KANJI2 },
+	{ "\x52\x23", NULL, "\x73\x41", JISX02132004KANJI2 },
+	{ "\x52\x26", NULL, "\x73\x4a", JISX02132004KANJI2 },
+	{ "\x52\x27", NULL, "\x79\x5d", JISX02132004KANJI1 },
+	{ "\x52\x28", NULL, "\x79\x5e", JISX02132004KANJI1 },
+	{ "\x52\x29", NULL, "\x73\x4c", JISX02132004KANJI2 },
+	{ "\x52\x2a", NULL, "\x79\x5f", JISX02132004KANJI1 },
+	{ "\x52\x2b", NULL, "\x73\x4e", JISX02132004KANJI2 },
+	{ "\x52\x2c", NULL, "\x73\x4f", JISX02132004KANJI2 },
+	{ "\x52\x2d", NULL, "\x73\x50", JISX02132004KANJI2 },
+	{ "\x52\x2f", NULL, "\x79\x60", JISX02132004KANJI1 },
+	{ "\x52\x30", NULL, "\x79\x61", JISX02132004KANJI1 },
+	{ "\x52\x31", NULL, "\x79\x62", JISX02132004KANJI1 },
+	{ "\x52\x32", NULL, "\x73\x51", JISX02132004KANJI2 },
+	{ "\x52\x37", NULL, "\x73\x54", JISX02132004KANJI2 },
+	{ "\x52\x38", NULL, "\x73\x55", JISX02132004KANJI2 },
+	{ "\x52\x3a", NULL, "\x73\x56", JISX02132004KANJI2 },
+	{ "\x52\x3b", NULL, "\x79\x63", JISX02132004KANJI1 },
+	{ "\x52\x3f", NULL, "\x73\x58", JISX02132004KANJI2 },
+	{ "\x52\x42", NULL, "\x73\x59", JISX02132004KANJI2 },
+	{ "\x52\x46", NULL, "\x73\x5a", JISX02132004KANJI2 },
+	{ "\x52\x49", NULL, "\x73\x5b", JISX02132004KANJI2 },
+	{ "\x52\x4b", NULL, "\x73\x5c", JISX02132004KANJI2 },
+	{ "\x52\x4c", NULL, "\x73\x5f", JISX02132004KANJI2 },
+	{ "\x52\x4d", NULL, "\x73\x60", JISX02132004KANJI2 },
+	{ "\x52\x4e", NULL, "\x79\x65", JISX02132004KANJI1 },
+	{ "\x52\x4f", NULL, "\x79\x66", JISX02132004KANJI1 },
+	{ "\x52\x50", NULL, "\x73\x61", JISX02132004KANJI2 },
+	{ "\x52\x53", NULL, "\x73\x62", JISX02132004KANJI2 },
+	{ "\x52\x5c", NULL, "\x79\x67", JISX02132004KANJI1 },
+	{ "\x52\x5e", NULL, "\x73\x64", JISX02132004KANJI2 },
+	{ "\x52\x62", NULL, "\x73\x65", JISX02132004KANJI2 },
+	{ "\x52\x64", NULL, "\x73\x66", JISX02132004KANJI2 },
+	{ "\x52\x65", NULL, "\x73\x67", JISX02132004KANJI2 },
+	{ "\x52\x68", NULL, "\x79\x6a", JISX02132004KANJI1 },
+	{ "\x52\x6a", NULL, "\x73\x68", JISX02132004KANJI2 },
+	{ "\x52\x6d", NULL, "\x79\x68", JISX02132004KANJI1 },
+	{ "\x52\x6e", NULL, "\x79\x6b", JISX02132004KANJI1 },
+	{ "\x52\x70", NULL, "\x79\x6c", JISX02132004KANJI1 },
+	{ "\x52\x74", NULL, "\x73\x6a", JISX02132004KANJI2 },
+	{ "\x52\x76", NULL, "\x73\x6b", JISX02132004KANJI2 },
+	{ "\x52\x79", NULL, "\x79\x6f", JISX02132004KANJI1 },
+	{ "\x52\x7e", NULL, "\x73\x6d", JISX02132004KANJI2 },
+	{ "\x53\x21", NULL, "\x73\x6e", JISX02132004KANJI2 },
+	{ "\x53\x24", NULL, "\x73\x6f", JISX02132004KANJI2 },
+	{ "\x53\x25", NULL, "\x79\x70", JISX02132004KANJI1 },
+	{ "\x53\x26", NULL, "\x73\x70", JISX02132004KANJI2 },
+	{ "\x53\x27", NULL, "\x73\x72", JISX02132004KANJI2 },
+	{ "\x53\x29", NULL, "\x79\x71", JISX02132004KANJI1 },
+	{ "\x53\x2e", NULL, "\x79\x72", JISX02132004KANJI1 },
+	{ "\x53\x2f", NULL, "\x79\x73", JISX02132004KANJI1 },
+	{ "\x53\x31", NULL, "\x79\x74", JISX02132004KANJI1 },
+	{ "\x53\x32", NULL, "\x73\x76", JISX02132004KANJI2 },
+	{ "\x53\x34", NULL, "\x73\x78", JISX02132004KANJI2 },
+	{ "\x53\x35", NULL, "\x73\x79", JISX02132004KANJI2 },
+	{ "\x53\x38", NULL, "\x79\x75", JISX02132004KANJI1 },
+	{ "\x53\x39", NULL, "\x73\x7a", JISX02132004KANJI2 },
+	{ "\x53\x3a", NULL, "\x73\x7c", JISX02132004KANJI2 },
+	{ "\x53\x3c", NULL, "\x73\x7e", JISX02132004KANJI2 },
+	{ "\x53\x3e", NULL, "\x74\x21", JISX02132004KANJI2 },
+	{ "\x53\x42", NULL, "\x79\x76", JISX02132004KANJI1 },
+	{ "\x53\x43", NULL, "\x74\x23", JISX02132004KANJI2 },
+	{ "\x53\x44", NULL, "\x79\x77", JISX02132004KANJI1 },
+	{ "\x53\x46", NULL, "\x79\x78", JISX02132004KANJI1 },
+	{ "\x53\x47", NULL, "\x74\x25", JISX02132004KANJI2 },
+	{ "\x53\x49", NULL, "\x74\x26", JISX02132004KANJI2 },
+	{ "\x53\x4a", NULL, "\x74\x28", JISX02132004KANJI2 },
+	{ "\x53\x4b", NULL, "\x74\x29", JISX02132004KANJI2 },
+	{ "\x53\x4c", NULL, "\x79\x79", JISX02132004KANJI1 },
+	{ "\x53\x4d", NULL, "\x79\x7a", JISX02132004KANJI1 },
+	{ "\x53\x4e", NULL, "\x74\x2a", JISX02132004KANJI2 },
+	{ "\x53\x51", NULL, "\x74\x2c", JISX02132004KANJI2 },
+	{ "\x53\x52", NULL, "\x79\x7b", JISX02132004KANJI1 },
+	{ "\x53\x54", NULL, "\x79\x7c", JISX02132004KANJI1 },
+	{ "\x53\x55", NULL, "\x74\x2d", JISX02132004KANJI2 },
+	{ "\x53\x56", NULL, "\x79\x7d", JISX02132004KANJI1 },
+	{ "\x53\x5a", NULL, "\x79\x7e", JISX02132004KANJI1 },
+	{ "\x53\x5c", NULL, "\x74\x30", JISX02132004KANJI2 },
+	{ "\x53\x5d", NULL, "\x74\x31", JISX02132004KANJI2 },
+	{ "\x53\x5e", NULL, "\x74\x32", JISX02132004KANJI2 },
+	{ "\x53\x5f", NULL, "\x7a\x21", JISX02132004KANJI1 },
+	{ "\x53\x60", NULL, "\x74\x33", JISX02132004KANJI2 },
+	{ "\x53\x61", NULL, "\x7a\x22", JISX02132004KANJI1 },
+	{ "\x53\x64", NULL, "\x7a\x23", JISX02132004KANJI1 },
+	{ "\x53\x66", NULL, "\x74\x37", JISX02132004KANJI2 },
+	{ "\x53\x67", NULL, "\x74\x38", JISX02132004KANJI2 },
+	{ "\x53\x68", NULL, "\x7a\x24", JISX02132004KANJI1 },
+	{ "\x53\x6c", NULL, "\x74\x39", JISX02132004KANJI2 },
+	{ "\x53\x6d", NULL, "\x74\x3a", JISX02132004KANJI2 },
+	{ "\x53\x6f", NULL, "\x7a\x25", JISX02132004KANJI1 },
+	{ "\x53\x71", NULL, "\x74\x3c", JISX02132004KANJI2 },
+	{ "\x53\x74", NULL, "\x7a\x26", JISX02132004KANJI1 },
+	{ "\x53\x76", NULL, "\x74\x3e", JISX02132004KANJI2 },
+	{ "\x53\x77", NULL, "\x74\x3f", JISX02132004KANJI2 },
+	{ "\x53\x78", NULL, "\x7a\x27", JISX02132004KANJI1 },
+	{ "\x53\x79", NULL, "\x74\x40", JISX02132004KANJI2 },
+	{ "\x53\x7d", NULL, "\x74\x41", JISX02132004KANJI2 },
+	{ "\x53\x7e", NULL, "\x74\x43", JISX02132004KANJI2 },
+	{ "\x54\x22", NULL, "\x7a\x29", JISX02132004KANJI1 },
+	{ "\x54\x23", NULL, "\x74\x44", JISX02132004KANJI2 },
+	{ "\x54\x24", NULL, "\x74\x45", JISX02132004KANJI2 },
+	{ "\x54\x26", NULL, "\x74\x46", JISX02132004KANJI2 },
+	{ "\x54\x27", NULL, "\x74\x47", JISX02132004KANJI2 },
+	{ "\x54\x29", NULL, "\x7a\x2a", JISX02132004KANJI1 },
+	{ "\x54\x2e", NULL, "\x7a\x2b", JISX02132004KANJI1 },
+	{ "\x54\x31", NULL, "\x74\x49", JISX02132004KANJI2 },
+	{ "\x54\x32", NULL, "\x74\x4a", JISX02132004KANJI2 },
+	{ "\x54\x36", NULL, "\x74\x4b", JISX02132004KANJI2 },
+	{ "\x54\x3a", NULL, "\x74\x4c", JISX02132004KANJI2 },
+	{ "\x54\x3d", NULL, "\x74\x4d", JISX02132004KANJI2 },
+	{ "\x54\x3f", NULL, "\x7a\x30", JISX02132004KANJI1 },
+	{ "\x54\x40", NULL, "\x74\x51", JISX02132004KANJI2 },
+	{ "\x54\x41", NULL, "\x7a\x31", JISX02132004KANJI1 },
+	{ "\x54\x42", NULL, "\x7a\x32", JISX02132004KANJI1 },
+	{ "\x54\x43", NULL, "\x74\x52", JISX02132004KANJI2 },
+	{ "\x54\x45", NULL, "\x74\x53", JISX02132004KANJI2 },
+	{ "\x54\x46", NULL, "\x74\x54", JISX02132004KANJI2 },
+	{ "\x54\x47", NULL, "\x74\x55", JISX02132004KANJI2 },
+	{ "\x54\x48", NULL, "\x7a\x2f", JISX02132004KANJI1 },
+	{ "\x54\x49", NULL, "\x74\x56", JISX02132004KANJI2 },
+	{ "\x54\x50", NULL, "\x74\x57", JISX02132004KANJI2 },
+	{ "\x54\x51", NULL, "\x7a\x34", JISX02132004KANJI1 },
+	{ "\x54\x54", NULL, "\x7a\x35", JISX02132004KANJI1 },
+	{ "\x54\x57", NULL, "\x7a\x36", JISX02132004KANJI1 },
+	{ "\x54\x5d", NULL, "\x74\x58", JISX02132004KANJI2 },
+	{ "\x54\x5f", NULL, "\x74\x5a", JISX02132004KANJI2 },
+	{ "\x54\x61", NULL, "\x74\x5b", JISX02132004KANJI2 },
+	{ "\x54\x62", NULL, "\x74\x5c", JISX02132004KANJI2 },
+	{ "\x54\x63", NULL, "\x7a\x37", JISX02132004KANJI1 },
+	{ "\x54\x64", NULL, "\x7a\x38", JISX02132004KANJI1 },
+	{ "\x54\x65", NULL, "\x74\x5e", JISX02132004KANJI2 },
+	{ "\x54\x67", NULL, "\x74\x5f", JISX02132004KANJI2 },
+	{ "\x54\x68", NULL, "\x74\x60", JISX02132004KANJI2 },
+	{ "\x54\x6b", NULL, "\x74\x62", JISX02132004KANJI2 },
+	{ "\x54\x6c", NULL, "\x74\x63", JISX02132004KANJI2 },
+	{ "\x54\x6e", NULL, "\x74\x64", JISX02132004KANJI2 },
+	{ "\x54\x70", NULL, "\x74\x65", JISX02132004KANJI2 },
+	{ "\x54\x71", NULL, "\x74\x66", JISX02132004KANJI2 },
+	{ "\x54\x72", NULL, "\x7a\x39", JISX02132004KANJI1 },
+	{ "\x54\x73", NULL, "\x74\x67", JISX02132004KANJI2 },
+	{ "\x54\x74", NULL, "\x74\x6a", JISX02132004KANJI2 },
+	{ "\x54\x79", NULL, "\x74\x6c", JISX02132004KANJI2 },
+	{ "\x54\x7a", NULL, "\x74\x6d", JISX02132004KANJI2 },
+	{ "\x54\x7b", NULL, "\x74\x6e", JISX02132004KANJI2 },
+	{ "\x54\x7e", NULL, "\x74\x6f", JISX02132004KANJI2 },
+	{ "\x55\x22", NULL, "\x74\x70", JISX02132004KANJI2 },
+	{ "\x55\x23", NULL, "\x74\x71", JISX02132004KANJI2 },
+	{ "\x55\x29", NULL, "\x74\x73", JISX02132004KANJI2 },
+	{ "\x55\x2a", NULL, "\x7a\x3b", JISX02132004KANJI1 },
+	{ "\x55\x2b", NULL, "\x74\x76", JISX02132004KANJI2 },
+	{ "\x55\x2c", NULL, "\x7a\x3c", JISX02132004KANJI1 },
+	{ "\x55\x2d", NULL, "\x74\x77", JISX02132004KANJI2 },
+	{ "\x55\x32", NULL, "\x74\x78", JISX02132004KANJI2 },
+	{ "\x55\x35", NULL, "\x7a\x3d", JISX02132004KANJI1 },
+	{ "\x55\x37", NULL, "\x74\x7a", JISX02132004KANJI2 },
+	{ "\x55\x39", NULL, "\x7a\x3e", JISX02132004KANJI1 },
+	{ "\x55\x3a", NULL, "\x74\x7b", JISX02132004KANJI2 },
+	{ "\x55\x3b", NULL, "\x7a\x3f", JISX02132004KANJI1 },
+	{ "\x55\x3c", NULL, "\x7a\x40", JISX02132004KANJI1 },
+	{ "\x55\x3d", NULL, "\x74\x7c", JISX02132004KANJI2 },
+	{ "\x55\x3e", NULL, "\x74\x7d", JISX02132004KANJI2 },
+	{ "\x55\x40", NULL, "\x7a\x41", JISX02132004KANJI1 },
+	{ "\x55\x41", NULL, "\x7a\x42", JISX02132004KANJI1 },
+	{ "\x55\x42", NULL, "\x74\x7e", JISX02132004KANJI2 },
+	{ "\x55\x43", NULL, "\x75\x21", JISX02132004KANJI2 },
+	{ "\x55\x44", NULL, "\x7a\x43", JISX02132004KANJI1 },
+	{ "\x55\x49", NULL, "\x75\x24", JISX02132004KANJI2 },
+	{ "\x55\x4a", NULL, "\x75\x23", JISX02132004KANJI2 },
+	{ "\x55\x4c", NULL, "\x75\x25", JISX02132004KANJI2 },
+	{ "\x55\x4e", NULL, "\x75\x26", JISX02132004KANJI2 },
+	{ "\x55\x50", NULL, "\x7a\x45", JISX02132004KANJI1 },
+	{ "\x55\x51", NULL, "\x75\x27", JISX02132004KANJI2 },
+	{ "\x55\x56", NULL, "\x75\x28", JISX02132004KANJI2 },
+	{ "\x55\x57", NULL, "\x7a\x46", JISX02132004KANJI1 },
+	{ "\x55\x58", NULL, "\x75\x29", JISX02132004KANJI2 },
+	{ "\x55\x5a", NULL, "\x75\x2a", JISX02132004KANJI2 },
+	{ "\x55\x5c", NULL, "\x7a\x47", JISX02132004KANJI1 },
+	{ "\x55\x5d", NULL, "\x7a\x48", JISX02132004KANJI1 },
+	{ "\x55\x60", NULL, "\x7a\x49", JISX02132004KANJI1 },
+	{ "\x55\x66", NULL, "\x75\x2c", JISX02132004KANJI2 },
+	{ "\x55\x68", NULL, "\x75\x2d", JISX02132004KANJI2 },
+	{ "\x55\x69", NULL, "\x75\x2e", JISX02132004KANJI2 },
+	{ "\x55\x6d", NULL, "\x75\x31", JISX02132004KANJI2 },
+	{ "\x55\x70", NULL, "\x75\x33", JISX02132004KANJI2 },
+	{ "\x55\x72", NULL, "\x75\x34", JISX02132004KANJI2 },
+	{ "\x55\x79", NULL, "\x75\x37", JISX02132004KANJI2 },
+	{ "\x55\x7a", NULL, "\x7a\x4b", JISX02132004KANJI1 },
+	{ "\x55\x7b", NULL, "\x75\x38", JISX02132004KANJI2 },
+	{ "\x55\x7c", NULL, "\x7a\x4c", JISX02132004KANJI1 },
+	{ "\x56\x23", NULL, "\x7a\x4d", JISX02132004KANJI1 },
+	{ "\x56\x2a", NULL, "\x75\x40", JISX02132004KANJI2 },
+	{ "\x56\x2c", NULL, "\x7a\x4e", JISX02132004KANJI1 },
+	{ "\x56\x2e", NULL, "\x75\x41", JISX02132004KANJI2 },
+	{ "\x56\x30", NULL, "\x75\x43", JISX02132004KANJI2 },
+	{ "\x56\x31", NULL, "\x75\x44", JISX02132004KANJI2 },
+	{ "\x56\x32", NULL, "\x75\x45", JISX02132004KANJI2 },
+	{ "\x56\x34", NULL, "\x75\x3f", JISX02132004KANJI2 },
+	{ "\x56\x39", NULL, "\x7a\x4f", JISX02132004KANJI1 },
+	{ "\x56\x3d", NULL, "\x7a\x50", JISX02132004KANJI1 },
+	{ "\x56\x3f", NULL, "\x7a\x51", JISX02132004KANJI1 },
+	{ "\x56\x40", NULL, "\x7a\x52", JISX02132004KANJI1 },
+	{ "\x56\x41", NULL, "\x75\x49", JISX02132004KANJI2 },
+	{ "\x56\x42", NULL, "\x7a\x53", JISX02132004KANJI1 },
+	{ "\x56\x45", NULL, "\x75\x4b", JISX02132004KANJI2 },
+	{ "\x56\x47", NULL, "\x75\x4d", JISX02132004KANJI2 },
+	{ "\x56\x48", NULL, "\x75\x4e", JISX02132004KANJI2 },
+	{ "\x56\x4d", NULL, "\x75\x50", JISX02132004KANJI2 },
+	{ "\x56\x52", NULL, "\x75\x51", JISX02132004KANJI2 },
+	{ "\x56\x54", NULL, "\x7a\x54", JISX02132004KANJI1 },
+	{ "\x56\x56", NULL, "\x75\x53", JISX02132004KANJI2 },
+	{ "\x56\x58", NULL, "\x7a\x55", JISX02132004KANJI1 },
+	{ "\x56\x5a", NULL, "\x7a\x56", JISX02132004KANJI1 },
+	{ "\x56\x5c", NULL, "\x7a\x57", JISX02132004KANJI1 },
+	{ "\x56\x5d", NULL, "\x75\x55", JISX02132004KANJI2 },
+	{ "\x56\x61", NULL, "\x75\x57", JISX02132004KANJI2 },
+	{ "\x56\x63", NULL, "\x75\x59", JISX02132004KANJI2 },
+	{ "\x56\x6b", NULL, "\x75\x5b", JISX02132004KANJI2 },
+	{ "\x56\x6c", NULL, "\x75\x5c", JISX02132004KANJI2 },
+	{ "\x56\x72", NULL, "\x75\x60", JISX02132004KANJI2 },
+	{ "\x56\x75", NULL, "\x75\x61", JISX02132004KANJI2 },
+	{ "\x56\x76", NULL, "\x75\x62", JISX02132004KANJI2 },
+	{ "\x56\x78", NULL, "\x75\x64", JISX02132004KANJI2 },
+	{ "\x56\x79", NULL, "\x75\x65", JISX02132004KANJI2 },
+	{ "\x56\x7d", NULL, "\x75\x69", JISX02132004KANJI2 },
+	{ "\x56\x7e", NULL, "\x75\x67", JISX02132004KANJI2 },
+	{ "\x57\x21", NULL, "\x75\x6b", JISX02132004KANJI2 },
+	{ "\x57\x23", NULL, "\x75\x6d", JISX02132004KANJI2 },
+	{ "\x57\x26", NULL, "\x75\x71", JISX02132004KANJI2 },
+	{ "\x57\x27", NULL, "\x7a\x5b", JISX02132004KANJI1 },
+	{ "\x57\x28", NULL, "\x75\x72", JISX02132004KANJI2 },
+	{ "\x57\x2b", NULL, "\x7a\x5c", JISX02132004KANJI1 },
+	{ "\x57\x2d", NULL, "\x75\x78", JISX02132004KANJI2 },
+	{ "\x57\x2e", NULL, "\x75\x79", JISX02132004KANJI2 },
+	{ "\x57\x31", NULL, "\x75\x7a", JISX02132004KANJI2 },
+	{ "\x57\x35", NULL, "\x75\x7b", JISX02132004KANJI2 },
+	{ "\x57\x36", NULL, "\x7a\x5e", JISX02132004KANJI1 },
+	{ "\x57\x3e", NULL, "\x7a\x5f", JISX02132004KANJI1 },
+	{ "\x57\x3f", NULL, "\x7a\x60", JISX02132004KANJI1 },
+	{ "\x57\x40", NULL, "\x7a\x61", JISX02132004KANJI1 },
+	{ "\x57\x41", NULL, "\x75\x7d", JISX02132004KANJI2 },
+	{ "\x57\x42", NULL, "\x75\x7e", JISX02132004KANJI2 },
+	{ "\x57\x43", NULL, "\x7a\x62", JISX02132004KANJI1 },
+	{ "\x57\x45", NULL, "\x7a\x63", JISX02132004KANJI1 },
+	{ "\x57\x47", NULL, "\x76\x21", JISX02132004KANJI2 },
+	{ "\x57\x48", NULL, "\x76\x22", JISX02132004KANJI2 },
+	{ "\x57\x49", NULL, "\x7a\x64", JISX02132004KANJI1 },
+	{ "\x57\x4a", NULL, "\x76\x23", JISX02132004KANJI2 },
+	{ "\x57\x4b", NULL, "\x76\x24", JISX02132004KANJI2 },
+	{ "\x57\x4c", NULL, "\x7a\x65", JISX02132004KANJI1 },
+	{ "\x57\x4d", NULL, "\x7a\x66", JISX02132004KANJI1 },
+	{ "\x57\x4e", NULL, "\x7a\x67", JISX02132004KANJI1 },
+	{ "\x57\x50", NULL, "\x7a\x68", JISX02132004KANJI1 },
+	{ "\x57\x53", NULL, "\x76\x25", JISX02132004KANJI2 },
+	{ "\x57\x55", NULL, "\x76\x26", JISX02132004KANJI2 },
+	{ "\x57\x5a", NULL, "\x76\x27", JISX02132004KANJI2 },
+	{ "\x57\x5b", NULL, "\x7a\x69", JISX02132004KANJI1 },
+	{ "\x57\x5c", NULL, "\x7a\x6a", JISX02132004KANJI1 },
+	{ "\x57\x5d", NULL, "\x7a\x6b", JISX02132004KANJI1 },
+	{ "\x57\x5e", NULL, "\x7a\x6c", JISX02132004KANJI1 },
+	{ "\x57\x5f", NULL, "\x76\x28", JISX02132004KANJI2 },
+	{ "\x57\x60", NULL, "\x76\x29", JISX02132004KANJI2 },
+	{ "\x57\x63", NULL, "\x76\x2b", JISX02132004KANJI2 },
+	{ "\x57\x64", NULL, "\x76\x2c", JISX02132004KANJI2 },
+	{ "\x57\x65", NULL, "\x76\x2d", JISX02132004KANJI2 },
+	{ "\x57\x69", NULL, "\x7a\x6e", JISX02132004KANJI1 },
+	{ "\x57\x6b", NULL, "\x7a\x6f", JISX02132004KANJI1 },
+	{ "\x57\x6d", NULL, "\x76\x2e", JISX02132004KANJI2 },
+	{ "\x57\x70", NULL, "\x7a\x70", JISX02132004KANJI1 },
+	{ "\x57\x71", NULL, "\x76\x2f", JISX02132004KANJI2 },
+	{ "\x57\x74", NULL, "\x7a\x71", JISX02132004KANJI1 },
+	{ "\x57\x75", NULL, "\x76\x30", JISX02132004KANJI2 },
+	{ "\x57\x76", NULL, "\x7a\x72", JISX02132004KANJI1 },
+	{ "\x57\x79", NULL, "\x7a\x73", JISX02132004KANJI1 },
+	{ "\x57\x7a", NULL, "\x7a\x74", JISX02132004KANJI1 },
+	{ "\x57\x7c", NULL, "\x76\x31", JISX02132004KANJI2 },
+	{ "\x58\x21", NULL, "\x7a\x75", JISX02132004KANJI1 },
+	{ "\x58\x22", NULL, "\x76\x33", JISX02132004KANJI2 },
+	{ "\x58\x26", NULL, "\x7a\x76", JISX02132004KANJI1 },
+	{ "\x58\x27", NULL, "\x76\x36", JISX02132004KANJI2 },
+	{ "\x58\x28", NULL, "\x7a\x77", JISX02132004KANJI1 },
+	{ "\x58\x29", NULL, "\x76\x37", JISX02132004KANJI2 },
+	{ "\x58\x2a", NULL, "\x76\x38", JISX02132004KANJI2 },
+	{ "\x58\x2b", NULL, "\x7a\x78", JISX02132004KANJI1 },
+	{ "\x58\x2d", NULL, "\x76\x39", JISX02132004KANJI2 },
+	{ "\x58\x2f", NULL, "\x76\x3a", JISX02132004KANJI2 },
+	{ "\x58\x31", NULL, "\x7a\x79", JISX02132004KANJI1 },
+	{ "\x58\x32", NULL, "\x7a\x7a", JISX02132004KANJI1 },
+	{ "\x58\x35", NULL, "\x7a\x7b", JISX02132004KANJI1 },
+	{ "\x58\x36", NULL, "\x7a\x7c", JISX02132004KANJI1 },
+	{ "\x58\x37", NULL, "\x7a\x7d", JISX02132004KANJI1 },
+	{ "\x58\x38", NULL, "\x76\x3b", JISX02132004KANJI2 },
+	{ "\x58\x39", NULL, "\x7a\x7e", JISX02132004KANJI1 },
+	{ "\x58\x3a", NULL, "\x76\x3c", JISX02132004KANJI2 },
+	{ "\x58\x3b", NULL, "\x7b\x21", JISX02132004KANJI1 },
+	{ "\x58\x3c", NULL, "\x76\x3d", JISX02132004KANJI2 },
+	{ "\x58\x3d", NULL, "\x76\x3e", JISX02132004KANJI2 },
+	{ "\x58\x40", NULL, "\x7b\x23", JISX02132004KANJI1 },
+	{ "\x58\x43", NULL, "\x76\x40", JISX02132004KANJI2 },
+	{ "\x58\x45", NULL, "\x7b\x24", JISX02132004KANJI1 },
+	{ "\x58\x46", NULL, "\x7b\x25", JISX02132004KANJI1 },
+	{ "\x58\x47", NULL, "\x7b\x26", JISX02132004KANJI1 },
+	{ "\x58\x48", NULL, "\x76\x41", JISX02132004KANJI2 },
+	{ "\x58\x49", NULL, "\x76\x42", JISX02132004KANJI2 },
+	{ "\x58\x4a", NULL, "\x76\x43", JISX02132004KANJI2 },
+	{ "\x58\x4e", NULL, "\x76\x46", JISX02132004KANJI2 },
+	{ "\x58\x51", NULL, "\x7b\x28", JISX02132004KANJI1 },
+	{ "\x58\x52", NULL, "\x76\x47", JISX02132004KANJI2 },
+	{ "\x58\x54", NULL, "\x76\x48", JISX02132004KANJI2 },
+	{ "\x58\x55", NULL, "\x76\x49", JISX02132004KANJI2 },
+	{ "\x58\x56", NULL, "\x76\x4a", JISX02132004KANJI2 },
+	{ "\x58\x59", NULL, "\x76\x4b", JISX02132004KANJI2 },
+	{ "\x58\x5a", NULL, "\x76\x4c", JISX02132004KANJI2 },
+	{ "\x58\x5b", NULL, "\x76\x4d", JISX02132004KANJI2 },
+	{ "\x58\x5e", NULL, "\x76\x4f", JISX02132004KANJI2 },
+	{ "\x58\x61", NULL, "\x7b\x2a", JISX02132004KANJI1 },
+	{ "\x58\x62", NULL, "\x7b\x2b", JISX02132004KANJI1 },
+	{ "\x58\x64", NULL, "\x76\x50", JISX02132004KANJI2 },
+	{ "\x58\x65", NULL, "\x76\x51", JISX02132004KANJI2 },
+	{ "\x58\x66", NULL, "\x76\x52", JISX02132004KANJI2 },
+	{ "\x58\x68", NULL, "\x76\x53", JISX02132004KANJI2 },
+	{ "\x58\x69", NULL, "\x7b\x2c", JISX02132004KANJI1 },
+	{ "\x58\x6d", NULL, "\x7b\x2d", JISX02132004KANJI1 },
+	{ "\x58\x6e", NULL, "\x76\x57", JISX02132004KANJI2 },
+	{ "\x58\x72", NULL, "\x7b\x2e", JISX02132004KANJI1 },
+	{ "\x58\x74", NULL, "\x7b\x2f", JISX02132004KANJI1 },
+	{ "\x58\x75", NULL, "\x7b\x30", JISX02132004KANJI1 },
+	{ "\x58\x77", NULL, "\x76\x58", JISX02132004KANJI2 },
+	{ "\x58\x78", NULL, "\x7b\x31", JISX02132004KANJI1 },
+	{ "\x58\x79", NULL, "\x7b\x32", JISX02132004KANJI1 },
+	{ "\x58\x7d", NULL, "\x76\x5b", JISX02132004KANJI2 },
+	{ "\x58\x7e", NULL, "\x76\x5c", JISX02132004KANJI2 },
+	{ "\x59\x21", NULL, "\x76\x55", JISX02132004KANJI2 },
+	{ "\x59\x22", NULL, "\x76\x5e", JISX02132004KANJI2 },
+	{ "\x59\x23", NULL, "\x76\x5f", JISX02132004KANJI2 },
+	{ "\x59\x24", NULL, "\x76\x60", JISX02132004KANJI2 },
+	{ "\x59\x25", NULL, "\x76\x61", JISX02132004KANJI2 },
+	{ "\x59\x26", NULL, "\x76\x62", JISX02132004KANJI2 },
+	{ "\x59\x29", NULL, "\x7b\x34", JISX02132004KANJI1 },
+	{ "\x59\x2a", NULL, "\x76\x63", JISX02132004KANJI2 },
+	{ "\x59\x2c", NULL, "\x76\x64", JISX02132004KANJI2 },
+	{ "\x59\x30", NULL, "\x76\x65", JISX02132004KANJI2 },
+	{ "\x59\x34", NULL, "\x7b\x35", JISX02132004KANJI1 },
+	{ "\x59\x36", NULL, "\x7b\x36", JISX02132004KANJI1 },
+	{ "\x59\x37", NULL, "\x76\x67", JISX02132004KANJI2 },
+	{ "\x59\x38", NULL, "\x76\x68", JISX02132004KANJI2 },
+	{ "\x59\x3b", NULL, "\x76\x69", JISX02132004KANJI2 },
+	{ "\x59\x3c", NULL, "\x7b\x37", JISX02132004KANJI1 },
+	{ "\x59\x3e", NULL, "\x76\x6a", JISX02132004KANJI2 },
+	{ "\x59\x42", NULL, "\x76\x6b", JISX02132004KANJI2 },
+	{ "\x59\x44", NULL, "\x76\x70", JISX02132004KANJI2 },
+	{ "\x59\x46", NULL, "\x76\x71", JISX02132004KANJI2 },
+	{ "\x59\x48", NULL, "\x7b\x38", JISX02132004KANJI1 },
+	{ "\x59\x4b", NULL, "\x76\x72", JISX02132004KANJI2 },
+	{ "\x59\x4e", NULL, "\x76\x73", JISX02132004KANJI2 },
+	{ "\x59\x4f", NULL, "\x76\x74", JISX02132004KANJI2 },
+	{ "\x59\x50", NULL, "\x7b\x39", JISX02132004KANJI1 },
+	{ "\x59\x52", NULL, "\x76\x6c", JISX02132004KANJI2 },
+	{ "\x59\x54", NULL, "\x7b\x3c", JISX02132004KANJI1 },
+	{ "\x59\x55", NULL, "\x76\x76", JISX02132004KANJI2 },
+	{ "\x59\x56", NULL, "\x76\x77", JISX02132004KANJI2 },
+	{ "\x59\x57", NULL, "\x76\x78", JISX02132004KANJI2 },
+	{ "\x59\x58", NULL, "\x76\x79", JISX02132004KANJI2 },
+	{ "\x59\x5a", NULL, "\x76\x7a", JISX02132004KANJI2 },
+	{ "\x59\x5d", NULL, "\x7b\x3d", JISX02132004KANJI1 },
+	{ "\x59\x5e", NULL, "\x7b\x3e", JISX02132004KANJI1 },
+	{ "\x59\x5f", NULL, "\x76\x7b", JISX02132004KANJI2 },
+	{ "\x59\x61", NULL, "\x76\x7c", JISX02132004KANJI2 },
+	{ "\x59\x62", NULL, "\x76\x7d", JISX02132004KANJI2 },
+	{ "\x59\x64", NULL, "\x7b\x3f", JISX02132004KANJI1 },
+	{ "\x59\x69", NULL, "\x77\x23", JISX02132004KANJI2 },
+	{ "\x59\x6b", NULL, "\x77\x24", JISX02132004KANJI2 },
+	{ "\x59\x70", NULL, "\x77\x25", JISX02132004KANJI2 },
+	{ "\x59\x71", NULL, "\x77\x26", JISX02132004KANJI2 },
+	{ "\x59\x72", NULL, "\x7b\x41", JISX02132004KANJI1 },
+	{ "\x59\x73", NULL, "\x7b\x42", JISX02132004KANJI1 },
+	{ "\x59\x74", NULL, "\x7b\x3b", JISX02132004KANJI1 },
+	{ "\x59\x75", NULL, "\x77\x27", JISX02132004KANJI2 },
+	{ "\x59\x77", NULL, "\x77\x29", JISX02132004KANJI2 },
+	{ "\x59\x79", NULL, "\x77\x2b", JISX02132004KANJI2 },
+	{ "\x59\x7b", NULL, "\x7b\x43", JISX02132004KANJI1 },
+	{ "\x59\x7d", NULL, "\x77\x2c", JISX02132004KANJI2 },
+	{ "\x5a\x21", NULL, "\x7b\x45", JISX02132004KANJI1 },
+	{ "\x5a\x22", NULL, "\x77\x2d", JISX02132004KANJI2 },
+	{ "\x5a\x23", NULL, "\x7b\x46", JISX02132004KANJI1 },
+	{ "\x5a\x24", NULL, "\x7b\x47", JISX02132004KANJI1 },
+	{ "\x5a\x27", NULL, "\x7b\x48", JISX02132004KANJI1 },
+	{ "\x5a\x28", NULL, "\x77\x2e", JISX02132004KANJI2 },
+	{ "\x5a\x29", NULL, "\x7b\x44", JISX02132004KANJI1 },
+	{ "\x5a\x2a", NULL, "\x7b\x4a", JISX02132004KANJI1 },
+	{ "\x5a\x2d", NULL, "\x77\x2f", JISX02132004KANJI2 },
+	{ "\x5a\x2e", NULL, "\x77\x30", JISX02132004KANJI2 },
+	{ "\x5a\x2f", NULL, "\x77\x32", JISX02132004KANJI2 },
+	{ "\x5a\x30", NULL, "\x7b\x4b", JISX02132004KANJI1 },
+	{ "\x5a\x32", NULL, "\x7b\x4c", JISX02132004KANJI1 },
+	{ "\x5a\x34", NULL, "\x77\x35", JISX02132004KANJI2 },
+	{ "\x5a\x36", NULL, "\x77\x37", JISX02132004KANJI2 },
+	{ "\x5a\x3a", NULL, "\x77\x39", JISX02132004KANJI2 },
+	{ "\x5a\x3b", NULL, "\x77\x3a", JISX02132004KANJI2 },
+	{ "\x5a\x3c", NULL, "\x7b\x4d", JISX02132004KANJI1 },
+	{ "\x5a\x42", NULL, "\x7b\x50", JISX02132004KANJI1 },
+	{ "\x5a\x46", NULL, "\x7b\x52", JISX02132004KANJI1 },
+	{ "\x5a\x47", NULL, "\x77\x3b", JISX02132004KANJI2 },
+	{ "\x5a\x48", NULL, "\x7b\x53", JISX02132004KANJI1 },
+	{ "\x5a\x4a", NULL, "\x77\x3c", JISX02132004KANJI2 },
+	{ "\x5a\x4b", NULL, "\x77\x3d", JISX02132004KANJI2 },
+	{ "\x5a\x4c", NULL, "\x77\x40", JISX02132004KANJI2 },
+	{ "\x5a\x4d", NULL, "\x77\x41", JISX02132004KANJI2 },
+	{ "\x5a\x4f", NULL, "\x7b\x54", JISX02132004KANJI1 },
+	{ "\x5a\x51", NULL, "\x77\x42", JISX02132004KANJI2 },
+	{ "\x5a\x55", NULL, "\x77\x44", JISX02132004KANJI2 },
+	{ "\x5a\x57", NULL, "\x77\x46", JISX02132004KANJI2 },
+	{ "\x5a\x58", NULL, "\x77\x47", JISX02132004KANJI2 },
+	{ "\x5a\x5c", NULL, "\x7b\x55", JISX02132004KANJI1 },
+	{ "\x5a\x60", NULL, "\x77\x48", JISX02132004KANJI2 },
+	{ "\x5a\x61", NULL, "\x77\x49", JISX02132004KANJI2 },
+	{ "\x5a\x63", NULL, "\x77\x4a", JISX02132004KANJI2 },
+	{ "\x5a\x65", NULL, "\x77\x4b", JISX02132004KANJI2 },
+	{ "\x5a\x66", NULL, "\x77\x4c", JISX02132004KANJI2 },
+	{ "\x5a\x6a", NULL, "\x77\x4d", JISX02132004KANJI2 },
+	{ "\x5a\x6e", NULL, "\x7b\x56", JISX02132004KANJI1 },
+	{ "\x5a\x6f", NULL, "\x7b\x57", JISX02132004KANJI1 },
+	{ "\x5a\x70", NULL, "\x7b\x58", JISX02132004KANJI1 },
+	{ "\x5a\x72", NULL, "\x77\x50", JISX02132004KANJI2 },
+	{ "\x5a\x73", NULL, "\x77\x51", JISX02132004KANJI2 },
+	{ "\x5a\x74", NULL, "\x7b\x59", JISX02132004KANJI1 },
+	{ "\x5a\x75", NULL, "\x77\x52", JISX02132004KANJI2 },
+	{ "\x5a\x77", NULL, "\x77\x53", JISX02132004KANJI2 },
+	{ "\x5a\x78", NULL, "\x77\x54", JISX02132004KANJI2 },
+	{ "\x5a\x7a", NULL, "\x77\x55", JISX02132004KANJI2 },
+	{ "\x5a\x7c", NULL, "\x77\x56", JISX02132004KANJI2 },
+	{ "\x5a\x7d", NULL, "\x77\x57", JISX02132004KANJI2 },
+	{ "\x5a\x7e", NULL, "\x77\x58", JISX02132004KANJI2 },
+	{ "\x5b\x24", NULL, "\x77\x59", JISX02132004KANJI2 },
+	{ "\x5b\x27", NULL, "\x77\x5a", JISX02132004KANJI2 },
+	{ "\x5b\x2a", NULL, "\x77\x5b", JISX02132004KANJI2 },
+	{ "\x5b\x2b", NULL, "\x77\x5c", JISX02132004KANJI2 },
+	{ "\x5b\x2c", NULL, "\x77\x5d", JISX02132004KANJI2 },
+	{ "\x5b\x2f", NULL, "\x77\x5f", JISX02132004KANJI2 },
+	{ "\x5b\x32", NULL, "\x77\x60", JISX02132004KANJI2 },
+	{ "\x5b\x33", NULL, "\x77\x61", JISX02132004KANJI2 },
+	{ "\x5b\x35", NULL, "\x7b\x5a", JISX02132004KANJI1 },
+	{ "\x5b\x36", NULL, "\x77\x62", JISX02132004KANJI2 },
+	{ "\x5b\x3c", NULL, "\x7b\x5b", JISX02132004KANJI1 },
+	{ "\x5b\x3d", NULL, "\x7b\x5c", JISX02132004KANJI1 },
+	{ "\x5b\x3e", NULL, "\x77\x67", JISX02132004KANJI2 },
+	{ "\x5b\x3f", NULL, "\x77\x68", JISX02132004KANJI2 },
+	{ "\x5b\x42", NULL, "\x77\x69", JISX02132004KANJI2 },
+	{ "\x5b\x48", NULL, "\x77\x6a", JISX02132004KANJI2 },
+	{ "\x5b\x4a", NULL, "\x77\x66", JISX02132004KANJI2 },
+	{ "\x5b\x4b", NULL, "\x7b\x5d", JISX02132004KANJI1 },
+	{ "\x5b\x4c", NULL, "\x7b\x5e", JISX02132004KANJI1 },
+	{ "\x5b\x4f", NULL, "\x7b\x5f", JISX02132004KANJI1 },
+	{ "\x5b\x50", NULL, "\x77\x6d", JISX02132004KANJI2 },
+	{ "\x5b\x52", NULL, "\x77\x6f", JISX02132004KANJI2 },
+	{ "\x5b\x56", NULL, "\x77\x70", JISX02132004KANJI2 },
+	{ "\x5b\x58", NULL, "\x7b\x61", JISX02132004KANJI1 },
+	{ "\x5b\x5c", NULL, "\x77\x72", JISX02132004KANJI2 },
+	{ "\x5b\x5e", NULL, "\x77\x74", JISX02132004KANJI2 },
+	{ "\x5b\x60", NULL, "\x77\x77", JISX02132004KANJI2 },
+	{ "\x5b\x61", NULL, "\x77\x78", JISX02132004KANJI2 },
+	{ "\x5b\x62", NULL, "\x77\x79", JISX02132004KANJI2 },
+	{ "\x5b\x68", NULL, "\x77\x7a", JISX02132004KANJI2 },
+	{ "\x5b\x69", NULL, "\x77\x7b", JISX02132004KANJI2 },
+	{ "\x5b\x6a", NULL, "\x7b\x63", JISX02132004KANJI1 },
+	{ "\x5b\x6c", NULL, "\x7b\x64", JISX02132004KANJI1 },
+	{ "\x5b\x6d", NULL, "\x77\x7c", JISX02132004KANJI2 },
+	{ "\x5b\x6e", NULL, "\x7b\x65", JISX02132004KANJI1 },
+	{ "\x5b\x71", NULL, "\x77\x7d", JISX02132004KANJI2 },
+	{ "\x5b\x72", NULL, "\x7b\x66", JISX02132004KANJI1 },
+	{ "\x5b\x78", NULL, "\x7b\x67", JISX02132004KANJI1 },
+	{ "\x5b\x79", NULL, "\x77\x7e", JISX02132004KANJI2 },
+	{ "\x5b\x7b", NULL, "\x78\x21", JISX02132004KANJI2 },
+	{ "\x5b\x7d", NULL, "\x78\x22", JISX02132004KANJI2 },
+	{ "\x5c\x22", NULL, "\x78\x23", JISX02132004KANJI2 },
+	{ "\x5c\x28", NULL, "\x78\x25", JISX02132004KANJI2 },
+	{ "\x5c\x2e", NULL, "\x78\x26", JISX02132004KANJI2 },
+	{ "\x5c\x31", NULL, "\x78\x27", JISX02132004KANJI2 },
+	{ "\x5c\x33", NULL, "\x78\x28", JISX02132004KANJI2 },
+	{ "\x5c\x34", NULL, "\x78\x2b", JISX02132004KANJI2 },
+	{ "\x5c\x39", NULL, "\x7b\x68", JISX02132004KANJI1 },
+	{ "\x5c\x3e", NULL, "\x78\x2e", JISX02132004KANJI2 },
+	{ "\x5c\x40", NULL, "\x7b\x69", JISX02132004KANJI1 },
+	{ "\x5c\x42", NULL, "\x78\x30", JISX02132004KANJI2 },
+	{ "\x5c\x43", NULL, "\x78\x31", JISX02132004KANJI2 },
+	{ "\x5c\x44", NULL, "\x78\x32", JISX02132004KANJI2 },
+	{ "\x5c\x45", NULL, "\x7b\x6a", JISX02132004KANJI1 },
+	{ "\x5c\x49", NULL, "\x7b\x6b", JISX02132004KANJI1 },
+	{ "\x5c\x4a", NULL, "\x78\x35", JISX02132004KANJI2 },
+	{ "\x5c\x4b", NULL, "\x78\x33", JISX02132004KANJI2 },
+	{ "\x5c\x4c", NULL, "\x78\x36", JISX02132004KANJI2 },
+	{ "\x5c\x4d", NULL, "\x78\x37", JISX02132004KANJI2 },
+	{ "\x5c\x51", NULL, "\x78\x38", JISX02132004KANJI2 },
+	{ "\x5c\x52", NULL, "\x78\x39", JISX02132004KANJI2 },
+	{ "\x5c\x53", NULL, "\x7b\x6d", JISX02132004KANJI1 },
+	{ "\x5c\x55", NULL, "\x78\x3b", JISX02132004KANJI2 },
+	{ "\x5c\x5c", NULL, "\x7b\x70", JISX02132004KANJI1 },
+	{ "\x5c\x5d", NULL, "\x7b\x71", JISX02132004KANJI1 },
+	{ "\x5c\x5e", NULL, "\x7b\x72", JISX02132004KANJI1 },
+	{ "\x5c\x5f", NULL, "\x7b\x6e", JISX02132004KANJI1 },
+	{ "\x5c\x62", NULL, "\x7b\x73", JISX02132004KANJI1 },
+	{ "\x5c\x64", NULL, "\x7b\x74", JISX02132004KANJI1 },
+	{ "\x5c\x66", NULL, "\x7b\x75", JISX02132004KANJI1 },
+	{ "\x5c\x68", NULL, "\x7b\x76", JISX02132004KANJI1 },
+	{ "\x5c\x6b", NULL, "\x7b\x77", JISX02132004KANJI1 },
+	{ "\x5c\x6c", NULL, "\x78\x3f", JISX02132004KANJI2 },
+	{ "\x5c\x6d", NULL, "\x78\x40", JISX02132004KANJI2 },
+	{ "\x5c\x6f", NULL, "\x78\x41", JISX02132004KANJI2 },
+	{ "\x5c\x77", NULL, "\x78\x44", JISX02132004KANJI2 },
+	{ "\x5d\x24", NULL, "\x78\x46", JISX02132004KANJI2 },
+	{ "\x5d\x26", NULL, "\x78\x47", JISX02132004KANJI2 },
+	{ "\x5d\x27", NULL, "\x7b\x78", JISX02132004KANJI1 },
+	{ "\x5d\x2b", NULL, "\x78\x48", JISX02132004KANJI2 },
+	{ "\x5d\x2e", NULL, "\x78\x49", JISX02132004KANJI2 },
+	{ "\x5d\x32", NULL, "\x78\x4a", JISX02132004KANJI2 },
+	{ "\x5d\x34", NULL, "\x7b\x7a", JISX02132004KANJI1 },
+	{ "\x5d\x36", NULL, "\x78\x4b", JISX02132004KANJI2 },
+	{ "\x5d\x38", NULL, "\x78\x4c", JISX02132004KANJI2 },
+	{ "\x5d\x39", NULL, "\x7b\x7b", JISX02132004KANJI1 },
+	{ "\x5d\x3b", NULL, "\x78\x4d", JISX02132004KANJI2 },
+	{ "\x5d\x3d", NULL, "\x78\x4f", JISX02132004KANJI2 },
+	{ "\x5d\x3e", NULL, "\x78\x50", JISX02132004KANJI2 },
+	{ "\x5d\x3f", NULL, "\x7b\x7c", JISX02132004KANJI1 },
+	{ "\x5d\x41", NULL, "\x78\x51", JISX02132004KANJI2 },
+	{ "\x5d\x42", NULL, "\x78\x52", JISX02132004KANJI2 },
+	{ "\x5d\x47", NULL, "\x78\x54", JISX02132004KANJI2 },
+	{ "\x5d\x48", NULL, "\x7b\x7d", JISX02132004KANJI1 },
+	{ "\x5d\x49", NULL, "\x78\x55", JISX02132004KANJI2 },
+	{ "\x5d\x4a", NULL, "\x7b\x7e", JISX02132004KANJI1 },
+	{ "\x5d\x4d", NULL, "\x7c\x21", JISX02132004KANJI1 },
+	{ "\x5d\x53", NULL, "\x78\x58", JISX02132004KANJI2 },
+	{ "\x5d\x54", NULL, "\x7c\x22", JISX02132004KANJI1 },
+	{ "\x5d\x56", NULL, "\x78\x59", JISX02132004KANJI2 },
+	{ "\x5d\x59", NULL, "\x78\x5a", JISX02132004KANJI2 },
+	{ "\x5d\x5a", NULL, "\x7c\x23", JISX02132004KANJI1 },
+	{ "\x5d\x5c", NULL, "\x78\x5b", JISX02132004KANJI2 },
+	{ "\x5d\x5d", NULL, "\x7c\x24", JISX02132004KANJI1 },
+	{ "\x5d\x61", NULL, "\x78\x5c", JISX02132004KANJI2 },
+	{ "\x5d\x63", NULL, "\x7c\x25", JISX02132004KANJI1 },
+	{ "\x5d\x64", NULL, "\x7c\x26", JISX02132004KANJI1 },
+	{ "\x5d\x67", NULL, "\x7c\x27", JISX02132004KANJI1 },
+	{ "\x5d\x6a", NULL, "\x7c\x28", JISX02132004KANJI1 },
+	{ "\x5d\x74", NULL, "\x78\x5e", JISX02132004KANJI2 },
+	{ "\x5d\x7a", NULL, "\x7c\x29", JISX02132004KANJI1 },
+	{ "\x5d\x7c", NULL, "\x78\x5d", JISX02132004KANJI2 },
+	{ "\x5e\x22", NULL, "\x78\x5f", JISX02132004KANJI2 },
+	{ "\x5e\x24", NULL, "\x78\x60", JISX02132004KANJI2 },
+	{ "\x5e\x2e", NULL, "\x78\x61", JISX02132004KANJI2 },
+	{ "\x5e\x30", NULL, "\x7c\x2b", JISX02132004KANJI1 },
+	{ "\x5e\x33", NULL, "\x7c\x2c", JISX02132004KANJI1 },
+	{ "\x5e\x35", NULL, "\x7c\x2d", JISX02132004KANJI1 },
+	{ "\x5e\x36", NULL, "\x78\x62", JISX02132004KANJI2 },
+	{ "\x5e\x38", NULL, "\x78\x65", JISX02132004KANJI2 },
+	{ "\x5e\x3c", NULL, "\x78\x67", JISX02132004KANJI2 },
+	{ "\x5e\x3e", NULL, "\x78\x68", JISX02132004KANJI2 },
+	{ "\x5e\x3f", NULL, "\x78\x64", JISX02132004KANJI2 },
+	{ "\x5e\x40", NULL, "\x78\x69", JISX02132004KANJI2 },
+	{ "\x5e\x45", NULL, "\x78\x6a", JISX02132004KANJI2 },
+	{ "\x5e\x48", NULL, "\x7c\x31", JISX02132004KANJI1 },
+	{ "\x5e\x4c", NULL, "\x7c\x32", JISX02132004KANJI1 },
+	{ "\x5e\x4d", NULL, "\x7c\x33", JISX02132004KANJI1 },
+	{ "\x5e\x4f", NULL, "\x78\x6d", JISX02132004KANJI2 },
+	{ "\x5e\x52", NULL, "\x78\x6e", JISX02132004KANJI2 },
+	{ "\x5e\x57", NULL, "\x78\x70", JISX02132004KANJI2 },
+	{ "\x5e\x5a", NULL, "\x78\x71", JISX02132004KANJI2 },
+	{ "\x5e\x5d", NULL, "\x78\x72", JISX02132004KANJI2 },
+	{ "\x5e\x5e", NULL, "\x78\x73", JISX02132004KANJI2 },
+	{ "\x5e\x5f", NULL, "\x78\x74", JISX02132004KANJI2 },
+	{ "\x5e\x60", NULL, "\x78\x75", JISX02132004KANJI2 },
+	{ "\x5e\x63", NULL, "\x78\x76", JISX02132004KANJI2 },
+	{ "\x5e\x64", NULL, "\x78\x78", JISX02132004KANJI2 },
+	{ "\x5e\x66", NULL, "\x78\x7b", JISX02132004KANJI2 },
+	{ "\x5e\x67", NULL, "\x78\x7c", JISX02132004KANJI2 },
+	{ "\x5e\x68", NULL, "\x7c\x36", JISX02132004KANJI1 },
+	{ "\x5e\x6a", NULL, "\x78\x7d", JISX02132004KANJI2 },
+	{ "\x5e\x6d", NULL, "\x78\x7e", JISX02132004KANJI2 },
+	{ "\x5e\x6e", NULL, "\x79\x21", JISX02132004KANJI2 },
+	{ "\x5e\x76", NULL, "\x7c\x37", JISX02132004KANJI1 },
+	{ "\x5e\x77", NULL, "\x79\x22", JISX02132004KANJI2 },
+	{ "\x5e\x78", NULL, "\x79\x23", JISX02132004KANJI2 },
+	{ "\x5e\x79", NULL, "\x79\x24", JISX02132004KANJI2 },
+	{ "\x5f\x24", NULL, "\x79\x27", JISX02132004KANJI2 },
+	{ "\x5f\x25", NULL, "\x79\x26", JISX02132004KANJI2 },
+	{ "\x5f\x26", NULL, "\x79\x28", JISX02132004KANJI2 },
+	{ "\x5f\x27", NULL, "\x79\x2a", JISX02132004KANJI2 },
+	{ "\x5f\x29", NULL, "\x79\x2b", JISX02132004KANJI2 },
+	{ "\x5f\x31", NULL, "\x79\x2c", JISX02132004KANJI2 },
+	{ "\x5f\x32", NULL, "\x79\x2d", JISX02132004KANJI2 },
+	{ "\x5f\x33", NULL, "\x79\x2e", JISX02132004KANJI2 },
+	{ "\x5f\x35", NULL, "\x7c\x39", JISX02132004KANJI1 },
+	{ "\x5f\x39", NULL, "\x79\x30", JISX02132004KANJI2 },
+	{ "\x5f\x3d", NULL, "\x7c\x3b", JISX02132004KANJI1 },
+	{ "\x5f\x3e", NULL, "\x7c\x3c", JISX02132004KANJI1 },
+	{ "\x5f\x42", NULL, "\x79\x33", JISX02132004KANJI2 },
+	{ "\x5f\x43", NULL, "\x7c\x3e", JISX02132004KANJI1 },
+	{ "\x5f\x45", NULL, "\x7c\x3f", JISX02132004KANJI1 },
+	{ "\x5f\x48", NULL, "\x79\x35", JISX02132004KANJI2 },
+	{ "\x5f\x4c", NULL, "\x79\x36", JISX02132004KANJI2 },
+	{ "\x5f\x51", NULL, "\x79\x37", JISX02132004KANJI2 },
+	{ "\x5f\x55", NULL, "\x79\x38", JISX02132004KANJI2 },
+	{ "\x5f\x58", NULL, "\x7c\x40", JISX02132004KANJI1 },
+	{ "\x5f\x60", NULL, "\x79\x3a", JISX02132004KANJI2 },
+	{ "\x5f\x62", NULL, "\x79\x3b", JISX02132004KANJI2 },
+	{ "\x5f\x64", NULL, "\x7c\x41", JISX02132004KANJI1 },
+	{ "\x5f\x65", NULL, "\x7c\x42", JISX02132004KANJI1 },
+	{ "\x5f\x68", NULL, "\x7c\x43", JISX02132004KANJI1 },
+	{ "\x5f\x69", NULL, "\x79\x3c", JISX02132004KANJI2 },
+	{ "\x5f\x6d", NULL, "\x79\x3d", JISX02132004KANJI2 },
+	{ "\x5f\x73", NULL, "\x79\x40", JISX02132004KANJI2 },
+	{ "\x5f\x77", NULL, "\x79\x41", JISX02132004KANJI2 },
+	{ "\x5f\x7a", NULL, "\x79\x43", JISX02132004KANJI2 },
+	{ "\x5f\x7b", NULL, "\x79\x44", JISX02132004KANJI2 },
+	{ "\x5f\x7c", NULL, "\x7c\x44", JISX02132004KANJI1 },
+	{ "\x5f\x7d", NULL, "\x79\x45", JISX02132004KANJI2 },
+	{ "\x5f\x7e", NULL, "\x79\x46", JISX02132004KANJI2 },
+	{ "\x60\x21", NULL, "\x7c\x45", JISX02132004KANJI1 },
+	{ "\x60\x23", NULL, "\x79\x47", JISX02132004KANJI2 },
+	{ "\x60\x26", NULL, "\x79\x4a", JISX02132004KANJI2 },
+	{ "\x60\x29", NULL, "\x79\x4b", JISX02132004KANJI2 },
+	{ "\x60\x2a", NULL, "\x7c\x46", JISX02132004KANJI1 },
+	{ "\x60\x2d", NULL, "\x79\x4c", JISX02132004KANJI2 },
+	{ "\x60\x31", NULL, "\x79\x4d", JISX02132004KANJI2 },
+	{ "\x60\x37", NULL, "\x79\x4e", JISX02132004KANJI2 },
+	{ "\x60\x39", NULL, "\x79\x4f", JISX02132004KANJI2 },
+	{ "\x60\x3a", NULL, "\x79\x50", JISX02132004KANJI2 },
+	{ "\x60\x3b", NULL, "\x79\x51", JISX02132004KANJI2 },
+	{ "\x60\x3c", NULL, "\x7c\x47", JISX02132004KANJI1 },
+	{ "\x60\x40", NULL, "\x7c\x48", JISX02132004KANJI1 },
+	{ "\x60\x4a", NULL, "\x79\x53", JISX02132004KANJI2 },
+	{ "\x60\x4f", NULL, "\x79\x54", JISX02132004KANJI2 },
+	{ "\x60\x50", NULL, "\x79\x55", JISX02132004KANJI2 },
+	{ "\x60\x51", NULL, "\x79\x56", JISX02132004KANJI2 },
+	{ "\x60\x53", NULL, "\x79\x58", JISX02132004KANJI2 },
+	{ "\x60\x54", NULL, "\x7c\x4a", JISX02132004KANJI1 },
+	{ "\x60\x5a", NULL, "\x79\x5a", JISX02132004KANJI2 },
+	{ "\x60\x5b", NULL, "\x79\x5b", JISX02132004KANJI2 },
+	{ "\x60\x62", NULL, "\x79\x5d", JISX02132004KANJI2 },
+	{ "\x60\x63", NULL, "\x7c\x4c", JISX02132004KANJI1 },
+	{ "\x60\x65", NULL, "\x79\x5f", JISX02132004KANJI2 },
+	{ "\x60\x68", NULL, "\x79\x60", JISX02132004KANJI2 },
+	{ "\x60\x6c", NULL, "\x79\x61", JISX02132004KANJI2 },
+	{ "\x60\x6e", NULL, "\x7c\x4d", JISX02132004KANJI1 },
+	{ "\x60\x76", NULL, "\x7c\x4e", JISX02132004KANJI1 },
+	{ "\x60\x7a", NULL, "\x7c\x4f", JISX02132004KANJI1 },
+	{ "\x60\x7d", NULL, "\x79\x63", JISX02132004KANJI2 },
+	{ "\x61\x27", NULL, "\x7c\x50", JISX02132004KANJI1 },
+	{ "\x61\x29", NULL, "\x79\x65", JISX02132004KANJI2 },
+	{ "\x61\x30", NULL, "\x79\x67", JISX02132004KANJI2 },
+	{ "\x61\x32", NULL, "\x7c\x52", JISX02132004KANJI1 },
+	{ "\x61\x33", NULL, "\x7c\x53", JISX02132004KANJI1 },
+	{ "\x61\x34", NULL, "\x79\x6a", JISX02132004KANJI2 },
+	{ "\x61\x38", NULL, "\x79\x6c", JISX02132004KANJI2 },
+	{ "\x61\x39", NULL, "\x79\x6d", JISX02132004KANJI2 },
+	{ "\x61\x3a", NULL, "\x79\x6f", JISX02132004KANJI2 },
+	{ "\x61\x3c", NULL, "\x79\x70", JISX02132004KANJI2 },
+	{ "\x61\x3f", NULL, "\x79\x71", JISX02132004KANJI2 },
+	{ "\x61\x40", NULL, "\x79\x72", JISX02132004KANJI2 },
+	{ "\x61\x41", NULL, "\x79\x73", JISX02132004KANJI2 },
+	{ "\x61\x43", NULL, "\x7c\x54", JISX02132004KANJI1 },
+	{ "\x61\x44", NULL, "\x7c\x55", JISX02132004KANJI1 },
+	{ "\x61\x45", NULL, "\x7c\x56", JISX02132004KANJI1 },
+	{ "\x61\x46", NULL, "\x79\x74", JISX02132004KANJI2 },
+	{ "\x61\x47", NULL, "\x79\x75", JISX02132004KANJI2 },
+	{ "\x61\x49", NULL, "\x79\x76", JISX02132004KANJI2 },
+	{ "\x61\x4b", NULL, "\x79\x77", JISX02132004KANJI2 },
+	{ "\x61\x4d", NULL, "\x7c\x57", JISX02132004KANJI1 },
+	{ "\x61\x4e", NULL, "\x79\x78", JISX02132004KANJI2 },
+	{ "\x61\x56", NULL, "\x7c\x58", JISX02132004KANJI1 },
+	{ "\x61\x59", NULL, "\x79\x79", JISX02132004KANJI2 },
+	{ "\x61\x5b", NULL, "\x79\x7b", JISX02132004KANJI2 },
+	{ "\x61\x5c", NULL, "\x79\x7c", JISX02132004KANJI2 },
+	{ "\x61\x5f", NULL, "\x79\x7d", JISX02132004KANJI2 },
+	{ "\x61\x67", NULL, "\x7a\x22", JISX02132004KANJI2 },
+	{ "\x61\x68", NULL, "\x7c\x5a", JISX02132004KANJI1 },
+	{ "\x61\x6a", NULL, "\x7a\x23", JISX02132004KANJI2 },
+	{ "\x61\x6c", NULL, "\x7a\x24", JISX02132004KANJI2 },
+	{ "\x61\x6d", NULL, "\x7c\x5b", JISX02132004KANJI1 },
+	{ "\x61\x6e", NULL, "\x7c\x5c", JISX02132004KANJI1 },
+	{ "\x61\x70", NULL, "\x7c\x5d", JISX02132004KANJI1 },
+	{ "\x61\x71", NULL, "\x7c\x5e", JISX02132004KANJI1 },
+	{ "\x61\x73", NULL, "\x7a\x26", JISX02132004KANJI2 },
+	{ "\x61\x74", NULL, "\x7c\x5f", JISX02132004KANJI1 },
+	{ "\x61\x76", NULL, "\x7a\x28", JISX02132004KANJI2 },
+	{ "\x61\x78", NULL, "\x7c\x60", JISX02132004KANJI1 },
+	{ "\x61\x7a", NULL, "\x7a\x29", JISX02132004KANJI2 },
+	{ "\x61\x7d", NULL, "\x7c\x61", JISX02132004KANJI1 },
+	{ "\x61\x7e", NULL, "\x7a\x2a", JISX02132004KANJI2 },
+	{ "\x62\x21", NULL, "\x7c\x62", JISX02132004KANJI1 },
+	{ "\x62\x22", NULL, "\x7c\x63", JISX02132004KANJI1 },
+	{ "\x62\x23", NULL, "\x7c\x64", JISX02132004KANJI1 },
+	{ "\x62\x24", NULL, "\x7a\x2b", JISX02132004KANJI2 },
+	{ "\x62\x26", NULL, "\x7c\x65", JISX02132004KANJI1 },
+	{ "\x62\x29", NULL, "\x7a\x2d", JISX02132004KANJI2 },
+	{ "\x62\x2a", NULL, "\x7c\x66", JISX02132004KANJI1 },
+	{ "\x62\x2b", NULL, "\x7a\x2e", JISX02132004KANJI2 },
+	{ "\x62\x2e", NULL, "\x7a\x30", JISX02132004KANJI2 },
+	{ "\x62\x2f", NULL, "\x7a\x33", JISX02132004KANJI2 },
+	{ "\x62\x30", NULL, "\x7c\x68", JISX02132004KANJI1 },
+	{ "\x62\x32", NULL, "\x7c\x69", JISX02132004KANJI1 },
+	{ "\x62\x33", NULL, "\x7a\x34", JISX02132004KANJI2 },
+	{ "\x62\x34", NULL, "\x7a\x35", JISX02132004KANJI2 },
+	{ "\x62\x35", NULL, "\x7a\x32", JISX02132004KANJI2 },
+	{ "\x62\x36", NULL, "\x7a\x36", JISX02132004KANJI2 },
+	{ "\x62\x38", NULL, "\x7a\x37", JISX02132004KANJI2 },
+	{ "\x62\x3c", NULL, "\x7c\x6b", JISX02132004KANJI1 },
+	{ "\x62\x3d", NULL, "\x7c\x6d", JISX02132004KANJI1 },
+	{ "\x62\x3f", NULL, "\x7a\x38", JISX02132004KANJI2 },
+	{ "\x62\x41", NULL, "\x7a\x39", JISX02132004KANJI2 },
+	{ "\x62\x42", NULL, "\x7a\x3a", JISX02132004KANJI2 },
+	{ "\x62\x45", NULL, "\x7c\x6e", JISX02132004KANJI1 },
+	{ "\x62\x46", NULL, "\x7c\x6f", JISX02132004KANJI1 },
+	{ "\x62\x47", NULL, "\x7c\x70", JISX02132004KANJI1 },
+	{ "\x62\x4a", NULL, "\x7c\x71", JISX02132004KANJI1 },
+	{ "\x62\x4b", NULL, "\x7c\x72", JISX02132004KANJI1 },
+	{ "\x62\x4c", NULL, "\x7c\x73", JISX02132004KANJI1 },
+	{ "\x62\x4e", NULL, "\x7a\x3b", JISX02132004KANJI2 },
+	{ "\x62\x4f", NULL, "\x7a\x3c", JISX02132004KANJI2 },
+	{ "\x62\x50", NULL, "\x7a\x3d", JISX02132004KANJI2 },
+	{ "\x62\x52", NULL, "\x7c\x74", JISX02132004KANJI1 },
+	{ "\x62\x54", NULL, "\x7a\x3f", JISX02132004KANJI2 },
+	{ "\x62\x55", NULL, "\x7c\x75", JISX02132004KANJI1 },
+	{ "\x62\x58", NULL, "\x7a\x40", JISX02132004KANJI2 },
+	{ "\x62\x59", NULL, "\x7a\x41", JISX02132004KANJI2 },
+	{ "\x62\x5b", NULL, "\x7c\x76", JISX02132004KANJI1 },
+	{ "\x62\x5c", NULL, "\x7a\x42", JISX02132004KANJI2 },
+	{ "\x62\x5d", NULL, "\x7a\x43", JISX02132004KANJI2 },
+	{ "\x62\x60", NULL, "\x7a\x44", JISX02132004KANJI2 },
+	{ "\x62\x61", NULL, "\x7a\x45", JISX02132004KANJI2 },
+	{ "\x62\x65", NULL, "\x7c\x77", JISX02132004KANJI1 },
+	{ "\x62\x66", NULL, "\x7a\x46", JISX02132004KANJI2 },
+	{ "\x62\x69", NULL, "\x7a\x47", JISX02132004KANJI2 },
+	{ "\x62\x6f", NULL, "\x7c\x78", JISX02132004KANJI1 },
+	{ "\x62\x72", NULL, "\x7a\x48", JISX02132004KANJI2 },
+	{ "\x62\x73", NULL, "\x7c\x79", JISX02132004KANJI1 },
+	{ "\x62\x75", NULL, "\x7a\x49", JISX02132004KANJI2 },
+	{ "\x62\x77", NULL, "\x7c\x7a", JISX02132004KANJI1 },
+	{ "\x62\x79", NULL, "\x7a\x4a", JISX02132004KANJI2 },
+	{ "\x62\x7a", NULL, "\x7a\x4b", JISX02132004KANJI2 },
+	{ "\x62\x7c", NULL, "\x7c\x7b", JISX02132004KANJI1 },
+	{ "\x63\x22", NULL, "\x7a\x4c", JISX02132004KANJI2 },
+	{ "\x63\x26", NULL, "\x7c\x7c", JISX02132004KANJI1 },
+	{ "\x63\x28", NULL, "\x7a\x4e", JISX02132004KANJI2 },
+	{ "\x63\x2a", NULL, "\x7c\x7e", JISX02132004KANJI1 },
+	{ "\x63\x2b", NULL, "\x7d\x21", JISX02132004KANJI1 },
+	{ "\x63\x2e", NULL, "\x7a\x51", JISX02132004KANJI2 },
+	{ "\x63\x2f", NULL, "\x7d\x22", JISX02132004KANJI1 },
+	{ "\x63\x30", NULL, "\x7a\x52", JISX02132004KANJI2 },
+	{ "\x63\x33", NULL, "\x7d\x23", JISX02132004KANJI1 },
+	{ "\x63\x36", NULL, "\x7c\x7d", JISX02132004KANJI1 },
+	{ "\x63\x39", NULL, "\x7a\x53", JISX02132004KANJI2 },
+	{ "\x63\x3d", NULL, "\x7d\x24", JISX02132004KANJI1 },
+	{ "\x63\x3f", NULL, "\x7a\x54", JISX02132004KANJI2 },
+	{ "\x63\x41", NULL, "\x7d\x25", JISX02132004KANJI1 },
+	{ "\x63\x44", NULL, "\x7a\x55", JISX02132004KANJI2 },
+	{ "\x63\x50", NULL, "\x7a\x58", JISX02132004KANJI2 },
+	{ "\x63\x53", NULL, "\x7d\x26", JISX02132004KANJI1 },
+	{ "\x63\x54", NULL, "\x7d\x27", JISX02132004KANJI1 },
+	{ "\x63\x55", NULL, "\x7d\x28", JISX02132004KANJI1 },
+	{ "\x63\x56", NULL, "\x7d\x29", JISX02132004KANJI1 },
+	{ "\x63\x58", NULL, "\x7d\x2a", JISX02132004KANJI1 },
+	{ "\x63\x59", NULL, "\x7a\x59", JISX02132004KANJI2 },
+	{ "\x63\x5a", NULL, "\x7d\x2b", JISX02132004KANJI1 },
+	{ "\x63\x5c", NULL, "\x7a\x5a", JISX02132004KANJI2 },
+	{ "\x63\x5d", NULL, "\x7a\x5b", JISX02132004KANJI2 },
+	{ "\x63\x5f", NULL, "\x7a\x5c", JISX02132004KANJI2 },
+	{ "\x63\x60", NULL, "\x7d\x2c", JISX02132004KANJI1 },
+	{ "\x63\x61", NULL, "\x7a\x5d", JISX02132004KANJI2 },
+	{ "\x63\x63", NULL, "\x7a\x5f", JISX02132004KANJI2 },
+	{ "\x63\x66", NULL, "\x7a\x60", JISX02132004KANJI2 },
+	{ "\x63\x67", NULL, "\x7a\x61", JISX02132004KANJI2 },
+	{ "\x63\x68", NULL, "\x7a\x62", JISX02132004KANJI2 },
+	{ "\x63\x69", NULL, "\x7a\x63", JISX02132004KANJI2 },
+	{ "\x63\x6a", NULL, "\x7a\x64", JISX02132004KANJI2 },
+	{ "\x63\x72", NULL, "\x7d\x2d", JISX02132004KANJI1 },
+	{ "\x63\x75", NULL, "\x7a\x67", JISX02132004KANJI2 },
+	{ "\x63\x76", NULL, "\x7a\x68", JISX02132004KANJI2 },
+	{ "\x63\x77", NULL, "\x7a\x69", JISX02132004KANJI2 },
+	{ "\x63\x78", NULL, "\x7d\x2e", JISX02132004KANJI1 },
+	{ "\x63\x79", NULL, "\x7a\x6a", JISX02132004KANJI2 },
+	{ "\x63\x7b", NULL, "\x7a\x6b", JISX02132004KANJI2 },
+	{ "\x63\x7e", NULL, "\x7a\x6c", JISX02132004KANJI2 },
+	{ "\x64\x21", NULL, "\x7a\x6d", JISX02132004KANJI2 },
+	{ "\x64\x22", NULL, "\x7a\x6e", JISX02132004KANJI2 },
+	{ "\x64\x26", NULL, "\x7a\x6f", JISX02132004KANJI2 },
+	{ "\x64\x28", NULL, "\x7a\x70", JISX02132004KANJI2 },
+	{ "\x64\x2a", NULL, "\x7a\x73", JISX02132004KANJI2 },
+	{ "\x64\x31", NULL, "\x7a\x74", JISX02132004KANJI2 },
+	{ "\x64\x32", NULL, "\x7a\x75", JISX02132004KANJI2 },
+	{ "\x64\x34", NULL, "\x7d\x2f", JISX02132004KANJI1 },
+	{ "\x64\x37", NULL, "\x7a\x76", JISX02132004KANJI2 },
+	{ "\x64\x3a", NULL, "\x7d\x30", JISX02132004KANJI1 },
+	{ "\x64\x3b", NULL, "\x7d\x31", JISX02132004KANJI1 },
+	{ "\x64\x3d", NULL, "\x7a\x77", JISX02132004KANJI2 },
+	{ "\x64\x3e", NULL, "\x7a\x78", JISX02132004KANJI2 },
+	{ "\x64\x3f", NULL, "\x7d\x32", JISX02132004KANJI1 },
+	{ "\x64\x41", NULL, "\x7a\x79", JISX02132004KANJI2 },
+	{ "\x64\x43", NULL, "\x7a\x7a", JISX02132004KANJI2 },
+	{ "\x64\x47", NULL, "\x7d\x33", JISX02132004KANJI1 },
+	{ "\x64\x4a", NULL, "\x7a\x7b", JISX02132004KANJI2 },
+	{ "\x64\x4b", NULL, "\x7a\x7c", JISX02132004KANJI2 },
+	{ "\x64\x50", NULL, "\x7b\x23", JISX02132004KANJI2 },
+	{ "\x64\x51", NULL, "\x7b\x24", JISX02132004KANJI2 },
+	{ "\x64\x52", NULL, "\x7d\x34", JISX02132004KANJI1 },
+	{ "\x64\x54", NULL, "\x7b\x25", JISX02132004KANJI2 },
+	{ "\x64\x56", NULL, "\x7b\x26", JISX02132004KANJI2 },
+	{ "\x64\x57", NULL, "\x7a\x7d", JISX02132004KANJI2 },
+	{ "\x64\x59", NULL, "\x7b\x27", JISX02132004KANJI2 },
+	{ "\x64\x5b", NULL, "\x7b\x28", JISX02132004KANJI2 },
+	{ "\x64\x5c", NULL, "\x7b\x29", JISX02132004KANJI2 },
+	{ "\x64\x5d", NULL, "\x7d\x36", JISX02132004KANJI1 },
+	{ "\x64\x5e", NULL, "\x7d\x37", JISX02132004KANJI1 },
+	{ "\x64\x60", NULL, "\x7d\x38", JISX02132004KANJI1 },
+	{ "\x64\x61", NULL, "\x7b\x2a", JISX02132004KANJI2 },
+	{ "\x64\x62", NULL, "\x7b\x2b", JISX02132004KANJI2 },
+	{ "\x64\x68", NULL, "\x7b\x2e", JISX02132004KANJI2 },
+	{ "\x64\x69", NULL, "\x7d\x39", JISX02132004KANJI1 },
+	{ "\x64\x6a", NULL, "\x7d\x3a", JISX02132004KANJI1 },
+	{ "\x64\x6c", NULL, "\x7b\x2f", JISX02132004KANJI2 },
+	{ "\x64\x6f", NULL, "\x7b\x30", JISX02132004KANJI2 },
+	{ "\x64\x71", NULL, "\x7b\x31", JISX02132004KANJI2 },
+	{ "\x64\x73", NULL, "\x7d\x3c", JISX02132004KANJI1 },
+	{ "\x64\x74", NULL, "\x7d\x3d", JISX02132004KANJI1 },
+	{ "\x64\x77", NULL, "\x7d\x3e", JISX02132004KANJI1 },
+	{ "\x64\x7a", NULL, "\x7d\x3f", JISX02132004KANJI1 },
+	{ "\x64\x7b", NULL, "\x7b\x33", JISX02132004KANJI2 },
+	{ "\x64\x7c", NULL, "\x7b\x34", JISX02132004KANJI2 },
+	{ "\x65\x27", NULL, "\x7b\x38", JISX02132004KANJI2 },
+	{ "\x65\x29", NULL, "\x7b\x39", JISX02132004KANJI2 },
+	{ "\x65\x2b", NULL, "\x7b\x3a", JISX02132004KANJI2 },
+	{ "\x65\x2f", NULL, "\x7d\x40", JISX02132004KANJI1 },
+	{ "\x65\x30", NULL, "\x7b\x3b", JISX02132004KANJI2 },
+	{ "\x65\x31", NULL, "\x7b\x35", JISX02132004KANJI2 },
+	{ "\x65\x32", NULL, "\x7d\x41", JISX02132004KANJI1 },
+	{ "\x65\x3a", NULL, "\x7d\x42", JISX02132004KANJI1 },
+	{ "\x65\x3c", NULL, "\x7b\x40", JISX02132004KANJI2 },
+	{ "\x65\x3f", NULL, "\x7d\x43", JISX02132004KANJI1 },
+	{ "\x65\x40", NULL, "\x7b\x41", JISX02132004KANJI2 },
+	{ "\x65\x48", NULL, "\x7b\x42", JISX02132004KANJI2 },
+	{ "\x65\x49", NULL, "\x7d\x44", JISX02132004KANJI1 },
+	{ "\x65\x4a", NULL, "\x7d\x45", JISX02132004KANJI1 },
+	{ "\x65\x4b", NULL, "\x7b\x43", JISX02132004KANJI2 },
+	{ "\x65\x4d", NULL, "\x7b\x44", JISX02132004KANJI2 },
+	{ "\x65\x52", NULL, "\x7b\x49", JISX02132004KANJI2 },
+	{ "\x65\x53", NULL, "\x7d\x47", JISX02132004KANJI1 },
+	{ "\x65\x56", NULL, "\x7d\x46", JISX02132004KANJI1 },
+	{ "\x65\x58", NULL, "\x7b\x45", JISX02132004KANJI2 },
+	{ "\x65\x5b", NULL, "\x7b\x46", JISX02132004KANJI2 },
+	{ "\x65\x5d", NULL, "\x7b\x47", JISX02132004KANJI2 },
+	{ "\x65\x5e", NULL, "\x7b\x48", JISX02132004KANJI2 },
+	{ "\x65\x63", NULL, "\x7b\x4a", JISX02132004KANJI2 },
+	{ "\x65\x64", NULL, "\x7d\x48", JISX02132004KANJI1 },
+	{ "\x65\x65", NULL, "\x7b\x4b", JISX02132004KANJI2 },
+	{ "\x65\x66", NULL, "\x7b\x4c", JISX02132004KANJI2 },
+	{ "\x65\x6a", NULL, "\x7b\x4d", JISX02132004KANJI2 },
+	{ "\x65\x6c", NULL, "\x7d\x49", JISX02132004KANJI1 },
+	{ "\x65\x73", NULL, "\x7d\x4a", JISX02132004KANJI1 },
+	{ "\x65\x75", NULL, "\x7d\x4b", JISX02132004KANJI1 },
+	{ "\x65\x76", NULL, "\x7b\x50", JISX02132004KANJI2 },
+	{ "\x65\x78", NULL, "\x7b\x51", JISX02132004KANJI2 },
+	{ "\x65\x79", NULL, "\x7d\x4c", JISX02132004KANJI1 },
+	{ "\x65\x7a", NULL, "\x7d\x4d", JISX02132004KANJI1 },
+	{ "\x65\x7d", NULL, "\x7b\x52", JISX02132004KANJI2 },
+	{ "\x65\x7e", NULL, "\x7b\x53", JISX02132004KANJI2 },
+	{ "\x66\x24", NULL, "\x7b\x55", JISX02132004KANJI2 },
+	{ "\x66\x25", NULL, "\x7b\x56", JISX02132004KANJI2 },
+	{ "\x66\x26", NULL, "\x7d\x4e", JISX02132004KANJI1 },
+	{ "\x66\x29", NULL, "\x7d\x4f", JISX02132004KANJI1 },
+	{ "\x66\x2b", NULL, "\x7d\x50", JISX02132004KANJI1 },
+	{ "\x66\x2c", NULL, "\x7d\x51", JISX02132004KANJI1 },
+	{ "\x66\x2d", NULL, "\x7b\x58", JISX02132004KANJI2 },
+	{ "\x66\x2e", NULL, "\x7d\x52", JISX02132004KANJI1 },
+	{ "\x66\x2f", NULL, "\x7b\x59", JISX02132004KANJI2 },
+	{ "\x66\x30", NULL, "\x7d\x53", JISX02132004KANJI1 },
+	{ "\x66\x32", NULL, "\x7d\x54", JISX02132004KANJI1 },
+	{ "\x66\x35", NULL, "\x7b\x5b", JISX02132004KANJI2 },
+	{ "\x66\x37", NULL, "\x7d\x55", JISX02132004KANJI1 },
+	{ "\x66\x38", NULL, "\x7d\x56", JISX02132004KANJI1 },
+	{ "\x66\x3b", NULL, "\x7d\x57", JISX02132004KANJI1 },
+	{ "\x66\x3d", NULL, "\x7d\x59", JISX02132004KANJI1 },
+	{ "\x66\x3f", NULL, "\x7d\x5a", JISX02132004KANJI1 },
+	{ "\x66\x44", NULL, "\x7a\x25", JISX02132004KANJI2 },
+	{ "\x66\x4a", NULL, "\x7b\x5e", JISX02132004KANJI2 },
+	{ "\x66\x4c", NULL, "\x7b\x5f", JISX02132004KANJI2 },
+	{ "\x66\x51", NULL, "\x7b\x62", JISX02132004KANJI2 },
+	{ "\x66\x53", NULL, "\x7b\x63", JISX02132004KANJI2 },
+	{ "\x66\x58", NULL, "\x7d\x5b", JISX02132004KANJI1 },
+	{ "\x66\x59", NULL, "\x7b\x64", JISX02132004KANJI2 },
+	{ "\x66\x61", NULL, "\x7b\x66", JISX02132004KANJI2 },
+	{ "\x66\x63", NULL, "\x7d\x5c", JISX02132004KANJI1 },
+	{ "\x66\x67", NULL, "\x7b\x68", JISX02132004KANJI2 },
+	{ "\x66\x68", NULL, "\x7d\x5e", JISX02132004KANJI1 },
+	{ "\x66\x6a", NULL, "\x7d\x5f", JISX02132004KANJI1 },
+	{ "\x66\x6b", NULL, "\x7d\x60", JISX02132004KANJI1 },
+	{ "\x66\x6d", NULL, "\x7b\x6b", JISX02132004KANJI2 },
+	{ "\x66\x6f", NULL, "\x7b\x6c", JISX02132004KANJI2 },
+	{ "\x66\x70", NULL, "\x7b\x6d", JISX02132004KANJI2 },
+	{ "\x66\x71", NULL, "\x7b\x6e", JISX02132004KANJI2 },
+	{ "\x66\x73", NULL, "\x7d\x61", JISX02132004KANJI1 },
+	{ "\x66\x74", NULL, "\x28\x64", JISX02132004KANJI2 },
+	{ "\x66\x75", NULL, "\x7b\x72", JISX02132004KANJI2 },
+	{ "\x66\x76", NULL, "\x7b\x73", JISX02132004KANJI2 },
+	{ "\x66\x77", NULL, "\x7b\x74", JISX02132004KANJI2 },
+	{ "\x66\x78", NULL, "\x7d\x62", JISX02132004KANJI1 },
+	{ "\x66\x7a", NULL, "\x7d\x64", JISX02132004KANJI1 },
+	{ "\x66\x7b", NULL, "\x7d\x65", JISX02132004KANJI1 },
+	{ "\x67\x29", NULL, "\x7b\x77", JISX02132004KANJI2 },
+	{ "\x67\x2c", NULL, "\x7d\x66", JISX02132004KANJI1 },
+	{ "\x67\x2d", NULL, "\x7b\x7a", JISX02132004KANJI2 },
+	{ "\x67\x30", NULL, "\x7d\x69", JISX02132004KANJI1 },
+	{ "\x67\x31", NULL, "\x7d\x6a", JISX02132004KANJI1 },
+	{ "\x67\x32", NULL, "\x7b\x7c", JISX02132004KANJI2 },
+	{ "\x67\x33", NULL, "\x7b\x7d", JISX02132004KANJI2 },
+	{ "\x67\x35", NULL, "\x7d\x6b", JISX02132004KANJI1 },
+	{ "\x67\x36", NULL, "\x7b\x7e", JISX02132004KANJI2 },
+	{ "\x67\x39", NULL, "\x7c\x21", JISX02132004KANJI2 },
+	{ "\x67\x3a", NULL, "\x7d\x6c", JISX02132004KANJI1 },
+	{ "\x67\x3b", NULL, "\x7d\x6d", JISX02132004KANJI1 },
+	{ "\x67\x44", NULL, "\x7d\x6e", JISX02132004KANJI1 },
+	{ "\x67\x45", NULL, "\x7c\x24", JISX02132004KANJI2 },
+	{ "\x67\x48", NULL, "\x7c\x25", JISX02132004KANJI2 },
+	{ "\x67\x49", NULL, "\x7c\x26", JISX02132004KANJI2 },
+	{ "\x67\x4b", NULL, "\x7c\x27", JISX02132004KANJI2 },
+	{ "\x67\x4d", NULL, "\x7d\x6f", JISX02132004KANJI1 },
+	{ "\x67\x4e", NULL, "\x7c\x28", JISX02132004KANJI2 },
+	{ "\x67\x4f", NULL, "\x7c\x29", JISX02132004KANJI2 },
+	{ "\x67\x54", NULL, "\x7d\x70", JISX02132004KANJI1 },
+	{ "\x67\x56", NULL, "\x7c\x2a", JISX02132004KANJI2 },
+	{ "\x67\x58", NULL, "\x7d\x71", JISX02132004KANJI1 },
+	{ "\x67\x5c", NULL, "\x7d\x72", JISX02132004KANJI1 },
+	{ "\x67\x5e", NULL, "\x7c\x2b", JISX02132004KANJI2 },
+	{ "\x67\x62", NULL, "\x7c\x2c", JISX02132004KANJI2 },
+	{ "\x67\x63", NULL, "\x7c\x2d", JISX02132004KANJI2 },
+	{ "\x67\x65", NULL, "\x7c\x2e", JISX02132004KANJI2 },
+	{ "\x67\x66", NULL, "\x7c\x2f", JISX02132004KANJI2 },
+	{ "\x67\x68", NULL, "\x7d\x73", JISX02132004KANJI1 },
+	{ "\x67\x6a", NULL, "\x7d\x74", JISX02132004KANJI1 },
+	{ "\x67\x6b", NULL, "\x7c\x30", JISX02132004KANJI2 },
+	{ "\x67\x6e", NULL, "\x7c\x31", JISX02132004KANJI2 },
+	{ "\x67\x6f", NULL, "\x7d\x75", JISX02132004KANJI1 },
+	{ "\x67\x74", NULL, "\x7d\x77", JISX02132004KANJI1 },
+	{ "\x67\x76", NULL, "\x7c\x33", JISX02132004KANJI2 },
+	{ "\x67\x77", NULL, "\x7c\x34", JISX02132004KANJI2 },
+	{ "\x67\x78", NULL, "\x7c\x35", JISX02132004KANJI2 },
+	{ "\x67\x79", NULL, "\x7c\x36", JISX02132004KANJI2 },
+	{ "\x67\x7b", NULL, "\x7d\x78", JISX02132004KANJI1 },
+	{ "\x67\x7d", NULL, "\x7c\x39", JISX02132004KANJI2 },
+	{ "\x68\x21", NULL, "\x7d\x79", JISX02132004KANJI1 },
+	{ "\x68\x24", NULL, "\x7d\x7a", JISX02132004KANJI1 },
+	{ "\x68\x25", NULL, "\x7c\x3a", JISX02132004KANJI2 },
+	{ "\x68\x26", NULL, "\x7c\x3b", JISX02132004KANJI2 },
+	{ "\x68\x28", NULL, "\x7c\x3c", JISX02132004KANJI2 },
+	{ "\x68\x2b", NULL, "\x7c\x3d", JISX02132004KANJI2 },
+	{ "\x68\x2e", NULL, "\x7d\x7c", JISX02132004KANJI1 },
+	{ "\x68\x2f", NULL, "\x7d\x7d", JISX02132004KANJI1 },
+	{ "\x68\x30", NULL, "\x7d\x7e", JISX02132004KANJI1 },
+	{ "\x68\x31", NULL, "\x7e\x21", JISX02132004KANJI1 },
+	{ "\x68\x32", NULL, "\x7e\x22", JISX02132004KANJI1 },
+	{ "\x68\x33", NULL, "\x7e\x23", JISX02132004KANJI1 },
+	{ "\x68\x36", NULL, "\x7e\x25", JISX02132004KANJI1 },
+	{ "\x68\x37", NULL, "\x7c\x3e", JISX02132004KANJI2 },
+	{ "\x68\x39", NULL, "\x7e\x26", JISX02132004KANJI1 },
+	{ "\x68\x3a", NULL, "\x7c\x3f", JISX02132004KANJI2 },
+	{ "\x68\x3b", NULL, "\x7c\x40", JISX02132004KANJI2 },
+	{ "\x68\x3d", NULL, "\x7c\x41", JISX02132004KANJI2 },
+	{ "\x68\x3f", NULL, "\x7c\x43", JISX02132004KANJI2 },
+	{ "\x68\x40", NULL, "\x7c\x44", JISX02132004KANJI2 },
+	{ "\x68\x41", NULL, "\x7e\x27", JISX02132004KANJI1 },
+	{ "\x68\x42", NULL, "\x7c\x45", JISX02132004KANJI2 },
+	{ "\x68\x43", NULL, "\x7c\x47", JISX02132004KANJI2 },
+	{ "\x68\x44", NULL, "\x7c\x48", JISX02132004KANJI2 },
+	{ "\x68\x46", NULL, "\x7e\x28", JISX02132004KANJI1 },
+	{ "\x68\x48", NULL, "\x7c\x4d", JISX02132004KANJI2 },
+	{ "\x68\x49", NULL, "\x7c\x4e", JISX02132004KANJI2 },
+	{ "\x68\x4a", NULL, "\x7c\x4f", JISX02132004KANJI2 },
+	{ "\x68\x4c", NULL, "\x7e\x29", JISX02132004KANJI1 },
+	{ "\x68\x4d", NULL, "\x7c\x50", JISX02132004KANJI2 },
+	{ "\x68\x4e", NULL, "\x7c\x53", JISX02132004KANJI2 },
+	{ "\x68\x52", NULL, "\x7c\x54", JISX02132004KANJI2 },
+	{ "\x68\x55", NULL, "\x7c\x57", JISX02132004KANJI2 },
+	{ "\x68\x56", NULL, "\x7c\x58", JISX02132004KANJI2 },
+	{ "\x68\x57", NULL, "\x7c\x5a", JISX02132004KANJI2 },
+	{ "\x68\x58", NULL, "\x7c\x5b", JISX02132004KANJI2 },
+	{ "\x68\x59", NULL, "\x7c\x5c", JISX02132004KANJI2 },
+	{ "\x68\x5f", NULL, "\x7c\x5e", JISX02132004KANJI2 },
+	{ "\x68\x60", NULL, "\x7c\x5f", JISX02132004KANJI2 },
+	{ "\x68\x61", NULL, "\x7c\x60", JISX02132004KANJI2 },
+	{ "\x68\x65", NULL, "\x7c\x61", JISX02132004KANJI2 },
+	{ "\x68\x66", NULL, "\x7c\x62", JISX02132004KANJI2 },
+	{ "\x68\x67", NULL, "\x7c\x63", JISX02132004KANJI2 },
+	{ "\x68\x68", NULL, "\x7c\x64", JISX02132004KANJI2 },
+	{ "\x68\x69", NULL, "\x7c\x65", JISX02132004KANJI2 },
+	{ "\x68\x6a", NULL, "\x7c\x66", JISX02132004KANJI2 },
+	{ "\x68\x6d", NULL, "\x7c\x67", JISX02132004KANJI2 },
+	{ "\x68\x6e", NULL, "\x7c\x68", JISX02132004KANJI2 },
+	{ "\x68\x70", NULL, "\x7e\x2a", JISX02132004KANJI1 },
+	{ "\x68\x73", NULL, "\x7c\x69", JISX02132004KANJI2 },
+	{ "\x68\x75", NULL, "\x7c\x6a", JISX02132004KANJI2 },
+	{ "\x68\x76", NULL, "\x7c\x6b", JISX02132004KANJI2 },
+	{ "\x68\x7a", NULL, "\x7c\x6d", JISX02132004KANJI2 },
+	{ "\x69\x21", NULL, "\x7c\x6e", JISX02132004KANJI2 },
+	{ "\x69\x23", NULL, "\x7c\x6f", JISX02132004KANJI2 },
+	{ "\x69\x24", NULL, "\x7c\x70", JISX02132004KANJI2 },
+	{ "\x69\x25", NULL, "\x7c\x71", JISX02132004KANJI2 },
+	{ "\x69\x26", NULL, "\x7c\x72", JISX02132004KANJI2 },
+	{ "\x69\x28", NULL, "\x7c\x73", JISX02132004KANJI2 },
+	{ "\x69\x29", NULL, "\x7c\x74", JISX02132004KANJI2 },
+	{ "\x69\x2c", NULL, "\x7c\x75", JISX02132004KANJI2 },
+	{ "\x69\x31", NULL, "\x7c\x77", JISX02132004KANJI2 },
+	{ "\x69\x34", NULL, "\x7c\x78", JISX02132004KANJI2 },
+	{ "\x69\x37", NULL, "\x7e\x2c", JISX02132004KANJI1 },
+	{ "\x69\x38", NULL, "\x7e\x2d", JISX02132004KANJI1 },
+	{ "\x69\x3d", NULL, "\x7c\x7b", JISX02132004KANJI2 },
+	{ "\x69\x3e", NULL, "\x7c\x7c", JISX02132004KANJI2 },
+	{ "\x69\x40", NULL, "\x7c\x7e", JISX02132004KANJI2 },
+	{ "\x69\x43", NULL, "\x7e\x2e", JISX02132004KANJI1 },
+	{ "\x69\x45", NULL, "\x7e\x2f", JISX02132004KANJI1 },
+	{ "\x69\x46", NULL, "\x7e\x30", JISX02132004KANJI1 },
+	{ "\x69\x49", NULL, "\x7d\x22", JISX02132004KANJI2 },
+	{ "\x69\x4a", NULL, "\x7e\x31", JISX02132004KANJI1 },
+	{ "\x69\x4d", NULL, "\x7d\x23", JISX02132004KANJI2 },
+	{ "\x69\x4e", NULL, "\x7e\x32", JISX02132004KANJI1 },
+	{ "\x69\x50", NULL, "\x7d\x24", JISX02132004KANJI2 },
+	{ "\x69\x51", NULL, "\x7e\x33", JISX02132004KANJI1 },
+	{ "\x69\x59", NULL, "\x7d\x27", JISX02132004KANJI2 },
+	{ "\x69\x5d", NULL, "\x7e\x35", JISX02132004KANJI1 },
+	{ "\x69\x5e", NULL, "\x7d\x2b", JISX02132004KANJI2 },
+	{ "\x69\x62", NULL, "\x7e\x36", JISX02132004KANJI1 },
+	{ "\x69\x63", NULL, "\x7e\x37", JISX02132004KANJI1 },
+	{ "\x69\x64", NULL, "\x7d\x2d", JISX02132004KANJI2 },
+	{ "\x69\x66", NULL, "\x7e\x38", JISX02132004KANJI1 },
+	{ "\x69\x67", NULL, "\x7d\x2e", JISX02132004KANJI2 },
+	{ "\x69\x68", NULL, "\x7d\x2f", JISX02132004KANJI2 },
+	{ "\x69\x69", NULL, "\x7d\x30", JISX02132004KANJI2 },
+	{ "\x69\x6a", NULL, "\x7e\x39", JISX02132004KANJI1 },
+	{ "\x69\x6d", NULL, "\x7d\x32", JISX02132004KANJI2 },
+	{ "\x69\x6e", NULL, "\x7d\x33", JISX02132004KANJI2 },
+	{ "\x69\x70", NULL, "\x7d\x34", JISX02132004KANJI2 },
+	{ "\x69\x72", NULL, "\x7d\x35", JISX02132004KANJI2 },
+	{ "\x69\x77", NULL, "\x7e\x3a", JISX02132004KANJI1 },
+	{ "\x69\x7d", NULL, "\x7e\x3b", JISX02132004KANJI1 },
+	{ "\x69\x7e", NULL, "\x7d\x36", JISX02132004KANJI2 },
+	{ "\x6a\x23", NULL, "\x7e\x3c", JISX02132004KANJI1 },
+	{ "\x6a\x26", NULL, "\x7d\x37", JISX02132004KANJI2 },
+	{ "\x6a\x29", NULL, "\x7d\x38", JISX02132004KANJI2 },
+	{ "\x6a\x2a", NULL, "\x7d\x39", JISX02132004KANJI2 },
+	{ "\x6a\x2b", NULL, "\x7d\x3a", JISX02132004KANJI2 },
+	{ "\x6a\x2e", NULL, "\x7d\x3b", JISX02132004KANJI2 },
+	{ "\x6a\x2f", NULL, "\x7e\x3d", JISX02132004KANJI1 },
+	{ "\x6a\x31", NULL, "\x7d\x3c", JISX02132004KANJI2 },
+	{ "\x6a\x32", NULL, "\x7e\x3f", JISX02132004KANJI1 },
+	{ "\x6a\x33", NULL, "\x7d\x3d", JISX02132004KANJI2 },
+	{ "\x6a\x39", NULL, "\x7d\x3e", JISX02132004KANJI2 },
+	{ "\x6a\x3b", NULL, "\x7d\x40", JISX02132004KANJI2 },
+	{ "\x6a\x41", NULL, "\x7e\x40", JISX02132004KANJI1 },
+	{ "\x6a\x43", NULL, "\x7d\x41", JISX02132004KANJI2 },
+	{ "\x6a\x44", NULL, "\x7d\x42", JISX02132004KANJI2 },
+	{ "\x6a\x45", NULL, "\x7e\x42", JISX02132004KANJI1 },
+	{ "\x6a\x48", NULL, "\x7d\x43", JISX02132004KANJI2 },
+	{ "\x6a\x49", NULL, "\x7d\x44", JISX02132004KANJI2 },
+	{ "\x6a\x4c", NULL, "\x7d\x45", JISX02132004KANJI2 },
+	{ "\x6a\x4d", NULL, "\x7e\x44", JISX02132004KANJI1 },
+	{ "\x6a\x4e", NULL, "\x7d\x47", JISX02132004KANJI2 },
+	{ "\x6a\x50", NULL, "\x7e\x41", JISX02132004KANJI1 },
+	{ "\x6a\x53", NULL, "\x7e\x45", JISX02132004KANJI1 },
+	{ "\x6a\x58", NULL, "\x7e\x46", JISX02132004KANJI1 },
+	{ "\x6a\x5b", NULL, "\x7e\x47", JISX02132004KANJI1 },
+	{ "\x6a\x60", NULL, "\x7e\x48", JISX02132004KANJI1 },
+	{ "\x6a\x61", NULL, "\x7d\x48", JISX02132004KANJI2 },
+	{ "\x6a\x62", NULL, "\x7e\x49", JISX02132004KANJI1 },
+	{ "\x6a\x64", NULL, "\x7d\x49", JISX02132004KANJI2 },
+	{ "\x6a\x66", NULL, "\x7d\x4a", JISX02132004KANJI2 },
+	{ "\x6a\x67", NULL, "\x7d\x4d", JISX02132004KANJI2 },
+	{ "\x6a\x69", NULL, "\x7d\x4e", JISX02132004KANJI2 },
+	{ "\x6a\x6c", NULL, "\x7d\x4f", JISX02132004KANJI2 },
+	{ "\x6a\x6e", NULL, "\x7e\x4a", JISX02132004KANJI1 },
+	{ "\x6a\x6f", NULL, "\x7d\x50", JISX02132004KANJI2 },
+	{ "\x6a\x71", NULL, "\x7e\x4b", JISX02132004KANJI1 },
+	{ "\x6a\x74", NULL, "\x7d\x52", JISX02132004KANJI2 },
+	{ "\x6a\x75", NULL, "\x7d\x53", JISX02132004KANJI2 },
+	{ "\x6a\x77", NULL, "\x7e\x4c", JISX02132004KANJI1 },
+	{ "\x6a\x78", NULL, "\x7d\x54", JISX02132004KANJI2 },
+	{ "\x6a\x79", NULL, "\x7d\x55", JISX02132004KANJI2 },
+	{ "\x6a\x7a", NULL, "\x7d\x56", JISX02132004KANJI2 },
+	{ "\x6a\x7b", NULL, "\x7d\x57", JISX02132004KANJI2 },
+	{ "\x6a\x7c", NULL, "\x7d\x51", JISX02132004KANJI2 },
+	{ "\x6a\x7d", NULL, "\x7d\x5c", JISX02132004KANJI2 },
+	{ "\x6a\x7e", NULL, "\x7e\x4d", JISX02132004KANJI1 },
+	{ "\x6b\x22", NULL, "\x7d\x5a", JISX02132004KANJI2 },
+	{ "\x6b\x23", NULL, "\x7e\x4e", JISX02132004KANJI1 },
+	{ "\x6b\x25", NULL, "\x7e\x4f", JISX02132004KANJI1 },
+	{ "\x6b\x2a", NULL, "\x7d\x5e", JISX02132004KANJI2 },
+	{ "\x6b\x2b", NULL, "\x7d\x5f", JISX02132004KANJI2 },
+	{ "\x6b\x2c", NULL, "\x7d\x60", JISX02132004KANJI2 },
+	{ "\x6b\x2d", NULL, "\x7d\x61", JISX02132004KANJI2 },
+	{ "\x6b\x30", NULL, "\x7d\x63", JISX02132004KANJI2 },
+	{ "\x6b\x31", NULL, "\x7e\x50", JISX02132004KANJI1 },
+	{ "\x6b\x33", NULL, "\x7d\x64", JISX02132004KANJI2 },
+	{ "\x6b\x35", NULL, "\x7d\x65", JISX02132004KANJI2 },
+	{ "\x6b\x36", NULL, "\x7d\x66", JISX02132004KANJI2 },
+	{ "\x6b\x37", NULL, "\x7d\x68", JISX02132004KANJI2 },
+	{ "\x6b\x39", NULL, "\x7d\x69", JISX02132004KANJI2 },
+	{ "\x6b\x3a", NULL, "\x7d\x6a", JISX02132004KANJI2 },
+	{ "\x6b\x3c", NULL, "\x7e\x51", JISX02132004KANJI1 },
+	{ "\x6b\x3f", NULL, "\x7d\x6b", JISX02132004KANJI2 },
+	{ "\x6b\x40", NULL, "\x7d\x6e", JISX02132004KANJI2 },
+	{ "\x6b\x41", NULL, "\x7d\x6f", JISX02132004KANJI2 },
+	{ "\x6b\x43", NULL, "\x7e\x52", JISX02132004KANJI1 },
+	{ "\x6b\x44", NULL, "\x7e\x53", JISX02132004KANJI1 },
+	{ "\x6b\x45", NULL, "\x7e\x54", JISX02132004KANJI1 },
+	{ "\x6b\x46", NULL, "\x7d\x71", JISX02132004KANJI2 },
+	{ "\x6b\x48", NULL, "\x7d\x72", JISX02132004KANJI2 },
+	{ "\x6b\x49", NULL, "\x7d\x73", JISX02132004KANJI2 },
+	{ "\x6b\x4a", NULL, "\x7d\x74", JISX02132004KANJI2 },
+	{ "\x6b\x4c", NULL, "\x7d\x75", JISX02132004KANJI2 },
+	{ "\x6b\x4d", NULL, "\x7e\x55", JISX02132004KANJI1 },
+	{ "\x6b\x4e", NULL, "\x7d\x76", JISX02132004KANJI2 },
+	{ "\x6b\x4f", NULL, "\x7d\x77", JISX02132004KANJI2 },
+	{ "\x6b\x50", NULL, "\x7d\x6c", JISX02132004KANJI2 },
+	{ "\x6b\x51", NULL, "\x7d\x78", JISX02132004KANJI2 },
+	{ "\x6b\x53", NULL, "\x7d\x7a", JISX02132004KANJI2 },
+	{ "\x6b\x54", NULL, "\x7d\x7b", JISX02132004KANJI2 },
+	{ "\x6b\x55", NULL, "\x7d\x7c", JISX02132004KANJI2 },
+	{ "\x6b\x56", NULL, "\x7d\x7d", JISX02132004KANJI2 },
+	{ "\x6b\x57", NULL, "\x7e\x57", JISX02132004KANJI1 },
+	{ "\x6b\x59", NULL, "\x7e\x21", JISX02132004KANJI2 },
+	{ "\x6b\x5a", NULL, "\x7e\x22", JISX02132004KANJI2 },
+	{ "\x6b\x5d", NULL, "\x7e\x23", JISX02132004KANJI2 },
+	{ "\x6b\x5e", NULL, "\x7e\x24", JISX02132004KANJI2 },
+	{ "\x6b\x5f", NULL, "\x7e\x26", JISX02132004KANJI2 },
+	{ "\x6b\x60", NULL, "\x7e\x27", JISX02132004KANJI2 },
+	{ "\x6b\x61", NULL, "\x7e\x28", JISX02132004KANJI2 },
+	{ "\x6b\x63", NULL, "\x7e\x58", JISX02132004KANJI1 },
+	{ "\x6b\x64", NULL, "\x7e\x59", JISX02132004KANJI1 },
+	{ "\x6b\x67", NULL, "\x7e\x2c", JISX02132004KANJI2 },
+	{ "\x6b\x6e", NULL, "\x7e\x2e", JISX02132004KANJI2 },
+	{ "\x6b\x6f", NULL, "\x7e\x5a", JISX02132004KANJI1 },
+	{ "\x6b\x70", NULL, "\x7e\x5b", JISX02132004KANJI1 },
+	{ "\x6b\x71", NULL, "\x7e\x2f", JISX02132004KANJI2 },
+	{ "\x6b\x74", NULL, "\x7e\x30", JISX02132004KANJI2 },
+	{ "\x6b\x75", NULL, "\x7e\x5d", JISX02132004KANJI1 },
+	{ "\x6b\x76", NULL, "\x7e\x31", JISX02132004KANJI2 },
+	{ "\x6b\x78", NULL, "\x7e\x33", JISX02132004KANJI2 },
+	{ "\x6b\x7a", NULL, "\x7e\x34", JISX02132004KANJI2 },
+	{ "\x6b\x7b", NULL, "\x7e\x5e", JISX02132004KANJI1 },
+	{ "\x6b\x7c", NULL, "\x7e\x37", JISX02132004KANJI2 },
+	{ "\x6b\x7d", NULL, "\x7e\x38", JISX02132004KANJI2 },
+	{ "\x6c\x21", NULL, "\x7e\x5f", JISX02132004KANJI1 },
+	{ "\x6c\x22", NULL, "\x7e\x39", JISX02132004KANJI2 },
+	{ "\x6c\x24", NULL, "\x7e\x3a", JISX02132004KANJI2 },
+	{ "\x6c\x26", NULL, "\x7e\x60", JISX02132004KANJI1 },
+	{ "\x6c\x27", NULL, "\x7e\x3b", JISX02132004KANJI2 },
+	{ "\x6c\x2c", NULL, "\x7e\x61", JISX02132004KANJI1 },
+	{ "\x6c\x2f", NULL, "\x7e\x3d", JISX02132004KANJI2 },
+	{ "\x6c\x31", NULL, "\x7e\x63", JISX02132004KANJI1 },
+	{ "\x6c\x34", NULL, "\x7e\x3f", JISX02132004KANJI2 },
+	{ "\x6c\x35", NULL, "\x7e\x40", JISX02132004KANJI2 },
+	{ "\x6c\x36", NULL, "\x7e\x64", JISX02132004KANJI1 },
+	{ "\x6c\x37", NULL, "\x7e\x3e", JISX02132004KANJI2 },
+	{ "\x6c\x38", NULL, "\x7e\x42", JISX02132004KANJI2 },
+	{ "\x6c\x39", NULL, "\x7e\x43", JISX02132004KANJI2 },
+	{ "\x6c\x3a", NULL, "\x7e\x44", JISX02132004KANJI2 },
+	{ "\x6c\x3e", NULL, "\x7e\x45", JISX02132004KANJI2 },
+	{ "\x6c\x3f", NULL, "\x7e\x65", JISX02132004KANJI1 },
+	{ "\x6c\x40", NULL, "\x7e\x46", JISX02132004KANJI2 },
+	{ "\x6c\x42", NULL, "\x7e\x47", JISX02132004KANJI2 },
+	{ "\x6c\x43", NULL, "\x7e\x48", JISX02132004KANJI2 },
+	{ "\x6c\x45", NULL, "\x7e\x67", JISX02132004KANJI1 },
+	{ "\x6c\x4b", NULL, "\x7e\x4a", JISX02132004KANJI2 },
+	{ "\x6c\x4d", NULL, "\x7e\x4c", JISX02132004KANJI2 },
+	{ "\x6c\x4e", NULL, "\x7e\x4d", JISX02132004KANJI2 },
+	{ "\x6c\x4f", NULL, "\x7e\x68", JISX02132004KANJI1 },
+	{ "\x6c\x54", NULL, "\x7e\x69", JISX02132004KANJI1 },
+	{ "\x6c\x56", NULL, "\x7e\x4f", JISX02132004KANJI2 },
+	{ "\x6c\x57", NULL, "\x7e\x50", JISX02132004KANJI2 },
+	{ "\x6c\x58", NULL, "\x7e\x51", JISX02132004KANJI2 },
+	{ "\x6c\x5a", NULL, "\x7e\x52", JISX02132004KANJI2 },
+	{ "\x6c\x5b", NULL, "\x7e\x6a", JISX02132004KANJI1 },
+	{ "\x6c\x5c", NULL, "\x7e\x54", JISX02132004KANJI2 },
+	{ "\x6c\x60", NULL, "\x7e\x55", JISX02132004KANJI2 },
+	{ "\x6c\x66", NULL, "\x7e\x56", JISX02132004KANJI2 },
+	{ "\x6c\x67", NULL, "\x7e\x6b", JISX02132004KANJI1 },
+	{ "\x6c\x68", NULL, "\x7e\x6c", JISX02132004KANJI1 },
+	{ "\x6c\x69", NULL, "\x7e\x57", JISX02132004KANJI2 },
+	{ "\x6c\x6a", NULL, "\x7e\x6d", JISX02132004KANJI1 },
+	{ "\x6c\x6c", NULL, "\x7e\x6e", JISX02132004KANJI1 },
+	{ "\x6c\x6f", NULL, "\x7e\x6f", JISX02132004KANJI1 },
+	{ "\x6c\x70", NULL, "\x7e\x70", JISX02132004KANJI1 },
+	{ "\x6c\x75", NULL, "\x7e\x5b", JISX02132004KANJI2 },
+	{ "\x6c\x77", NULL, "\x7e\x5c", JISX02132004KANJI2 },
+	{ "\x6c\x7a", NULL, "\x7e\x5d", JISX02132004KANJI2 },
+	{ "\x6d\x22", NULL, "\x7e\x5e", JISX02132004KANJI2 },
+	{ "\x6d\x23", NULL, "\x7e\x5f", JISX02132004KANJI2 },
+	{ "\x6d\x24", NULL, "\x7e\x61", JISX02132004KANJI2 },
+	{ "\x6d\x27", NULL, "\x7e\x73", JISX02132004KANJI1 },
+	{ "\x6d\x2c", NULL, "\x7e\x62", JISX02132004KANJI2 },
+	{ "\x6d\x2d", NULL, "\x7e\x63", JISX02132004KANJI2 },
+	{ "\x6d\x35", NULL, "\x7e\x64", JISX02132004KANJI2 },
+	{ "\x6d\x39", NULL, "\x7e\x65", JISX02132004KANJI2 },
+	{ "\x6d\x3a", NULL, "\x7e\x74", JISX02132004KANJI1 },
+	{ "\x6d\x3b", NULL, "\x7e\x66", JISX02132004KANJI2 },
+	{ "\x6d\x3d", NULL, "\x7e\x67", JISX02132004KANJI2 },
+	{ "\x6d\x3f", NULL, "\x7e\x68", JISX02132004KANJI2 },
+	{ "\x6d\x42", NULL, "\x7e\x69", JISX02132004KANJI2 },
+	{ "\x6d\x43", NULL, "\x7e\x6a", JISX02132004KANJI2 },
+	{ "\x6d\x45", NULL, "\x7e\x6b", JISX02132004KANJI2 },
+	{ "\x6d\x46", NULL, "\x7e\x6c", JISX02132004KANJI2 },
+	{ "\x6d\x48", NULL, "\x7e\x75", JISX02132004KANJI1 },
+	{ "\x6d\x49", NULL, "\x7e\x6d", JISX02132004KANJI2 },
+	{ "\x6d\x4b", NULL, "\x7e\x6f", JISX02132004KANJI2 },
+	{ "\x6d\x4e", NULL, "\x7e\x71", JISX02132004KANJI2 },
+	{ "\x6d\x4f", NULL, "\x7e\x73", JISX02132004KANJI2 },
+	{ "\x6d\x52", NULL, "\x7e\x74", JISX02132004KANJI2 },
+	{ "\x6d\x55", NULL, "\x7e\x75", JISX02132004KANJI2 },
+	{ "\x6d\x59", NULL, "\x7e\x76", JISX02132004KANJI1 },
+	{ "\x6d\x5c", NULL, "\x7e\x77", JISX02132004KANJI1 },
+	{ "\x6d\x5e", NULL, "\x7e\x78", JISX02132004KANJI1 },
+	{ "\x6d\x61", NULL, "\x7e\x79", JISX02132004KANJI1 },
 	{ 0, 0, 0, 0 }
 };
-static convtable utable_jisx0208 = { unify_jisx0208, NULL };
+static convtable utable_jisx0212 = { unify_jisx0212, NULL };
+
+static convtab unify_cp932[] = {
+	{ "\x2d\x21", NULL, "\x2d\x21", JISX02132004KANJI1 },
+	{ "\x2d\x22", NULL, "\x2d\x22", JISX02132004KANJI1 },
+	{ "\x2d\x23", NULL, "\x2d\x23", JISX02132004KANJI1 },
+	{ "\x2d\x24", NULL, "\x2d\x24", JISX02132004KANJI1 },
+	{ "\x2d\x25", NULL, "\x2d\x25", JISX02132004KANJI1 },
+	{ "\x2d\x26", NULL, "\x2d\x26", JISX02132004KANJI1 },
+	{ "\x2d\x27", NULL, "\x2d\x27", JISX02132004KANJI1 },
+	{ "\x2d\x28", NULL, "\x2d\x28", JISX02132004KANJI1 },
+	{ "\x2d\x29", NULL, "\x2d\x29", JISX02132004KANJI1 },
+	{ "\x2d\x2a", NULL, "\x2d\x2a", JISX02132004KANJI1 },
+	{ "\x2d\x2b", NULL, "\x2d\x2b", JISX02132004KANJI1 },
+	{ "\x2d\x2c", NULL, "\x2d\x2c", JISX02132004KANJI1 },
+	{ "\x2d\x2d", NULL, "\x2d\x2d", JISX02132004KANJI1 },
+	{ "\x2d\x2e", NULL, "\x2d\x2e", JISX02132004KANJI1 },
+	{ "\x2d\x2f", NULL, "\x2d\x2f", JISX02132004KANJI1 },
+	{ "\x2d\x30", NULL, "\x2d\x30", JISX02132004KANJI1 },
+	{ "\x2d\x31", NULL, "\x2d\x31", JISX02132004KANJI1 },
+	{ "\x2d\x32", NULL, "\x2d\x32", JISX02132004KANJI1 },
+	{ "\x2d\x33", NULL, "\x2d\x33", JISX02132004KANJI1 },
+	{ "\x2d\x34", NULL, "\x2d\x34", JISX02132004KANJI1 },
+	{ "\x2d\x35", NULL, "\x2d\x35", JISX02132004KANJI1 },
+	{ "\x2d\x36", NULL, "\x2d\x36", JISX02132004KANJI1 },
+	{ "\x2d\x37", NULL, "\x2d\x37", JISX02132004KANJI1 },
+	{ "\x2d\x38", NULL, "\x2d\x38", JISX02132004KANJI1 },
+	{ "\x2d\x39", NULL, "\x2d\x39", JISX02132004KANJI1 },
+	{ "\x2d\x3a", NULL, "\x2d\x3a", JISX02132004KANJI1 },
+	{ "\x2d\x3b", NULL, "\x2d\x3b", JISX02132004KANJI1 },
+	{ "\x2d\x3c", NULL, "\x2d\x3c", JISX02132004KANJI1 },
+	{ "\x2d\x3d", NULL, "\x2d\x3d", JISX02132004KANJI1 },
+	{ "\x2d\x3e", NULL, "\x2d\x3e", JISX02132004KANJI1 },
+	{ "\x2d\x40", NULL, "\x2d\x40", JISX02132004KANJI1 },
+	{ "\x2d\x41", NULL, "\x2d\x41", JISX02132004KANJI1 },
+	{ "\x2d\x42", NULL, "\x2d\x42", JISX02132004KANJI1 },
+	{ "\x2d\x43", NULL, "\x2d\x43", JISX02132004KANJI1 },
+	{ "\x2d\x44", NULL, "\x2d\x44", JISX02132004KANJI1 },
+	{ "\x2d\x45", NULL, "\x2d\x45", JISX02132004KANJI1 },
+	{ "\x2d\x46", NULL, "\x2d\x46", JISX02132004KANJI1 },
+	{ "\x2d\x47", NULL, "\x2d\x47", JISX02132004KANJI1 },
+	{ "\x2d\x48", NULL, "\x2d\x48", JISX02132004KANJI1 },
+	{ "\x2d\x49", NULL, "\x2d\x49", JISX02132004KANJI1 },
+	{ "\x2d\x4a", NULL, "\x2d\x4a", JISX02132004KANJI1 },
+	{ "\x2d\x4b", NULL, "\x2d\x4b", JISX02132004KANJI1 },
+	{ "\x2d\x4c", NULL, "\x2d\x4c", JISX02132004KANJI1 },
+	{ "\x2d\x4d", NULL, "\x2d\x4d", JISX02132004KANJI1 },
+	{ "\x2d\x4e", NULL, "\x2d\x4e", JISX02132004KANJI1 },
+	{ "\x2d\x4f", NULL, "\x2d\x4f", JISX02132004KANJI1 },
+	{ "\x2d\x50", NULL, "\x2d\x50", JISX02132004KANJI1 },
+	{ "\x2d\x51", NULL, "\x2d\x51", JISX02132004KANJI1 },
+	{ "\x2d\x52", NULL, "\x2d\x52", JISX02132004KANJI1 },
+	{ "\x2d\x53", NULL, "\x2d\x53", JISX02132004KANJI1 },
+	{ "\x2d\x54", NULL, "\x2d\x54", JISX02132004KANJI1 },
+	{ "\x2d\x55", NULL, "\x2d\x55", JISX02132004KANJI1 },
+	{ "\x2d\x56", NULL, "\x2d\x56", JISX02132004KANJI1 },
+	{ "\x2d\x5f", NULL, "\x2d\x5f", JISX02132004KANJI1 },
+	{ "\x2d\x60", NULL, "\x2d\x60", JISX02132004KANJI1 },
+	{ "\x2d\x61", NULL, "\x2d\x61", JISX02132004KANJI1 },
+	{ "\x2d\x62", NULL, "\x2d\x62", JISX02132004KANJI1 },
+	{ "\x2d\x63", NULL, "\x2d\x63", JISX02132004KANJI1 },
+	{ "\x2d\x64", NULL, "\x2d\x64", JISX02132004KANJI1 },
+	{ "\x2d\x65", NULL, "\x2d\x65", JISX02132004KANJI1 },
+	{ "\x2d\x66", NULL, "\x2d\x66", JISX02132004KANJI1 },
+	{ "\x2d\x67", NULL, "\x2d\x67", JISX02132004KANJI1 },
+	{ "\x2d\x68", NULL, "\x2d\x68", JISX02132004KANJI1 },
+	{ "\x2d\x69", NULL, "\x2d\x69", JISX02132004KANJI1 },
+	{ "\x2d\x6a", NULL, "\x2d\x6a", JISX02132004KANJI1 },
+	{ "\x2d\x6b", NULL, "\x2d\x6b", JISX02132004KANJI1 },
+	{ "\x2d\x6c", NULL, "\x2d\x6c", JISX02132004KANJI1 },
+	{ "\x2d\x6d", NULL, "\x2d\x6d", JISX02132004KANJI1 },
+	{ "\x2d\x6e", NULL, "\x2d\x6e", JISX02132004KANJI1 },
+	{ "\x2d\x6f", NULL, "\x2d\x6f", JISX02132004KANJI1 },
+	{ "\x2d\x70", NULL, "\x22\x62", JISX02132004KANJI1 },
+	{ "\x2d\x71", NULL, "\x22\x61", JISX02132004KANJI1 },
+	{ "\x2d\x72", NULL, "\x22\x69", JISX02132004KANJI1 },
+	{ "\x2d\x73", NULL, "\x2d\x73", JISX02132004KANJI1 },
+	{ "\x2d\x74", NULL, "\x26\x32", JISX02132004KANJI1 },
+	{ "\x2d\x75", NULL, "\x22\x65", JISX02132004KANJI1 },
+	{ "\x2d\x76", NULL, "\x22\x5d", JISX02132004KANJI1 },
+	{ "\x2d\x77", NULL, "\x22\x5c", JISX02132004KANJI1 },
+	{ "\x2d\x78", NULL, "\x2d\x78", JISX02132004KANJI1 },
+	{ "\x2d\x79", NULL, "\x2d\x79", JISX02132004KANJI1 },
+	{ "\x2d\x7a", NULL, "\x22\x68", JISX02132004KANJI1 },
+	{ "\x2d\x7b", NULL, "\x22\x41", JISX02132004KANJI1 },
+	{ "\x2d\x7c", NULL, "\x22\x40", JISX02132004KANJI1 },
+	{ "\x44\x21", NULL, "\x2c\x35", JISX02132004KANJI1 },
+	{ "\x44\x22", NULL, "\x2c\x36", JISX02132004KANJI1 },
+	{ "\x44\x23", NULL, "\x2c\x37", JISX02132004KANJI1 },
+	{ "\x44\x24", NULL, "\x2c\x38", JISX02132004KANJI1 },
+	{ "\x44\x25", NULL, "\x2c\x39", JISX02132004KANJI1 },
+	{ "\x44\x26", NULL, "\x2c\x3a", JISX02132004KANJI1 },
+	{ "\x44\x27", NULL, "\x2c\x3b", JISX02132004KANJI1 },
+	{ "\x44\x28", NULL, "\x2c\x3c", JISX02132004KANJI1 },
+	{ "\x44\x29", NULL, "\x2c\x3d", JISX02132004KANJI1 },
+	{ "\x44\x2a", NULL, "\x2c\x3e", JISX02132004KANJI1 },
+	{ "\x44\x2b", NULL, "\x2d\x35", JISX02132004KANJI1 },
+	{ "\x44\x2c", NULL, "\x2d\x36", JISX02132004KANJI1 },
+	{ "\x44\x2d", NULL, "\x2d\x37", JISX02132004KANJI1 },
+	{ "\x44\x2e", NULL, "\x2d\x38", JISX02132004KANJI1 },
+	{ "\x44\x2f", NULL, "\x2d\x39", JISX02132004KANJI1 },
+	{ "\x44\x30", NULL, "\x2d\x3a", JISX02132004KANJI1 },
+	{ "\x44\x31", NULL, "\x2d\x3b", JISX02132004KANJI1 },
+	{ "\x44\x32", NULL, "\x2d\x3c", JISX02132004KANJI1 },
+	{ "\x44\x33", NULL, "\x2d\x3d", JISX02132004KANJI1 },
+	{ "\x44\x34", NULL, "\x2d\x3e", JISX02132004KANJI1 },
+	{ "\x44\x37", NULL, "\x22\x2f", JISX02132004KANJI1 },
+	{ "\x44\x38", NULL, "\x22\x30", JISX02132004KANJI1 },
+	{ "\x44\x39", NULL, "\x2d\x6a", JISX02132004KANJI1 },
+	{ "\x44\x3a", NULL, "\x2d\x62", JISX02132004KANJI1 },
+	{ "\x44\x3b", NULL, "\x2d\x64", JISX02132004KANJI1 },
+	{ "\x44\x3c", NULL, "\x22\x68", JISX02132004KANJI1 },
+	{ "\x44\x3d", NULL, "\x7a\x37", JISX02132004KANJI1 },
+	{ "\x44\x3e", NULL, "\x7b\x6e", JISX02132004KANJI1 },
+	{ "\x44\x3f", NULL, "\x7d\x39", JISX02132004KANJI1 },
+	{ "\x44\x40", NULL, "\x7d\x2e", JISX02132004KANJI1 },
+	{ "\x44\x41", NULL, "\x76\x55", JISX02132004KANJI2 },
+	{ "\x44\x42", NULL, "\x2e\x39", JISX02132004KANJI1 },
+	{ "\x44\x43", NULL, "\x6f\x60", JISX02132004KANJI2 },
+	{ "\x44\x44", NULL, "\x75\x35", JISX02132004KANJI1 },
+	{ "\x44\x45", NULL, "\x75\x69", JISX02132004KANJI1 },
+	{ "\x44\x46", NULL, "\x7b\x23", JISX02132004KANJI2 },
+	{ "\x44\x47", NULL, "\x75\x37", JISX02132004KANJI1 },
+	{ "\x44\x48", NULL, "\x74\x3a", JISX02132004KANJI1 },
+	{ "\x44\x49", NULL, "\x2e\x24", JISX02132004KANJI1 },
+	{ "\x44\x4a", NULL, "\x2e\x28", JISX02132004KANJI1 },
+	{ "\x44\x4c", NULL, "\x21\x3f", JISX02132004KANJI2 },
+	{ "\x44\x4d", NULL, "\x2e\x2b", JISX02132004KANJI1 },
+	{ "\x44\x4e", NULL, "\x30\x63", JISX0212KANJISUP   },
+	{ "\x44\x4f", NULL, "\x2e\x30", JISX02132004KANJI1 },
+	{ "\x44\x50", NULL, "\x21\x4d", JISX02132004KANJI2 },
+	{ "\x44\x51", NULL, "\x2e\x35", JISX02132004KANJI1 },
+	{ "\x44\x52", NULL, "\x21\x4e", JISX02132004KANJI2 },
+	{ "\x44\x53", NULL, "\x2e\x36", JISX02132004KANJI1 },
+	{ "\x44\x54", NULL, "\x31\x3e", JISX0212KANJISUP   },
+	{ "\x44\x55", NULL, "\x2e\x41", JISX02132004KANJI1 },
+	{ "\x44\x56", NULL, "\x21\x5d", JISX02132004KANJI2 },
+	{ "\x44\x57", NULL, "\x31\x48", JISX0212KANJISUP   },
+	{ "\x44\x58", NULL, "\x21\x5c", JISX02132004KANJI2 },
+	{ "\x44\x59", NULL, "\x21\x60", JISX02132004KANJI2 },
+	{ "\x44\x5a", NULL, "\x21\x67", JISX02132004KANJI2 },
+	{ "\x44\x5b", NULL, "\x21\x5f", JISX02132004KANJI2 },
+	{ "\x44\x5c", NULL, "\x2e\x44", JISX02132004KANJI1 },
+	{ "\x44\x5d", NULL, "\x21\x7d", JISX02132004KANJI2 },
+	{ "\x44\x5e", NULL, "\x32\x3b", JISX0212KANJISUP   },
+	{ "\x44\x5f", NULL, "\x2e\x4f", JISX02132004KANJI1 },
+	{ "\x44\x60", NULL, "\x32\x6d", JISX0212KANJISUP   },
+	{ "\x44\x61", NULL, "\x2e\x54", JISX02132004KANJI1 },
+	{ "\x44\x62", NULL, "\x32\x7c", JISX0212KANJISUP   },
+	{ "\x44\x64", NULL, "\x2e\x5d", JISX02132004KANJI1 },
+	{ "\x44\x65", NULL, "\x33\x58", JISX0212KANJISUP   },
+	{ "\x44\x66", NULL, "\x23\x43", JISX02132004KANJI2 },
+	{ "\x44\x67", NULL, "\x33\x65", JISX0212KANJISUP   },
+	{ "\x44\x68", NULL, "\x2e\x67", JISX02132004KANJI1 },
+	{ "\x44\x69", NULL, "\x2e\x6b", JISX02132004KANJI1 },
+	{ "\x44\x6a", NULL, "\x2e\x6c", JISX02132004KANJI1 },
+	{ "\x44\x6b", NULL, "\x23\x4e", JISX02132004KANJI2 },
+	{ "\x44\x6c", NULL, "\x34\x40", JISX0212KANJISUP   },
+	{ "\x44\x6d", NULL, "\x2e\x72", JISX02132004KANJI1 },
+	{ "\x44\x6e", NULL, "\x2e\x74", JISX02132004KANJI1 },
+	{ "\x44\x6f", NULL, "\x34\x5e", JISX0212KANJISUP   },
+	{ "\x44\x71", NULL, "\x2e\x78", JISX02132004KANJI1 },
+	{ "\x44\x72", NULL, "\x23\x6c", JISX02132004KANJI2 },
+	{ "\x44\x73", NULL, "\x2f\x21", JISX02132004KANJI1 },
+	{ "\x44\x74", NULL, "\x2f\x23", JISX02132004KANJI1 },
+	{ "\x44\x75", NULL, "\x2f\x2a", JISX02132004KANJI1 },
+	{ "\x44\x76", NULL, "\x28\x6b", JISX02132004KANJI2 },
+	{ "\x44\x77", NULL, "\x37\x42", JISX0212KANJISUP   },
+	{ "\x44\x78", NULL, "\x24\x6c", JISX02132004KANJI2 },
+	{ "\x44\x79", NULL, "\x2f\x4f", JISX02132004KANJI1 },
+	{ "\x44\x7a", NULL, "\x2f\x4e", JISX02132004KANJI1 },
+	{ "\x44\x7b", NULL, "\x2f\x4b", JISX02132004KANJI1 },
+	{ "\x44\x7c", NULL, "\x2f\x57", JISX02132004KANJI1 },
+	{ "\x44\x7d", NULL, "\x2f\x5d", JISX02132004KANJI1 },
+	{ "\x44\x7e", NULL, "\x38\x4e", JISX0212KANJISUP   },
+	{ "\x45\x21", NULL, "\x25\x3a", JISX02132004KANJI2 },
+	{ "\x45\x22", NULL, "\x38\x75", JISX0212KANJISUP   },
+	{ "\x45\x23", NULL, "\x25\x45", JISX02132004KANJI2 },
+	{ "\x45\x24", NULL, "\x2f\x69", JISX02132004KANJI1 },
+	{ "\x45\x25", NULL, "\x38\x7c", JISX0212KANJISUP   },
+	{ "\x45\x26", NULL, "\x2f\x6d", JISX02132004KANJI1 },
+	{ "\x45\x27", NULL, "\x39\x37", JISX0212KANJISUP   },
+	{ "\x45\x28", NULL, "\x4f\x56", JISX02132004KANJI1 },
+	{ "\x45\x29", NULL, "\x28\x24", JISX02132004KANJI2 },
+	{ "\x45\x2a", NULL, "\x78\x49", JISX02132004KANJI1 },
+	{ "\x45\x2b", NULL, "\x4f\x59", JISX02132004KANJI1 },
+	{ "\x45\x2c", NULL, "\x4f\x5a", JISX02132004KANJI1 },
+	{ "\x45\x2d", NULL, "\x4f\x5c", JISX02132004KANJI1 },
+	{ "\x45\x2e", NULL, "\x28\x43", JISX02132004KANJI2 },
+	{ "\x45\x2f", NULL, "\x4f\x69", JISX02132004KANJI1 },
+	{ "\x45\x31", NULL, "\x4f\x71", JISX02132004KANJI1 },
+	{ "\x45\x32", NULL, "\x4f\x75", JISX02132004KANJI1 },
+	{ "\x45\x33", NULL, "\x4f\x72", JISX02132004KANJI1 },
+	{ "\x45\x34", NULL, "\x28\x55", JISX02132004KANJI2 },
+	{ "\x45\x35", NULL, "\x4f\x77", JISX02132004KANJI1 },
+	{ "\x45\x36", NULL, "\x4f\x7c", JISX02132004KANJI1 },
+	{ "\x45\x37", NULL, "\x28\x67", JISX02132004KANJI2 },
+	{ "\x45\x38", NULL, "\x3b\x79", JISX0212KANJISUP   },
+	{ "\x45\x39", NULL, "\x3c\x64", JISX0212KANJISUP   },
+	{ "\x45\x3a", NULL, "\x74\x36", JISX02132004KANJI1 },
+	{ "\x45\x3b", NULL, "\x74\x3e", JISX02132004KANJI1 },
+	{ "\x45\x3c", NULL, "\x74\x45", JISX02132004KANJI1 },
+	{ "\x45\x3d", NULL, "\x74\x47", JISX02132004KANJI1 },
+	{ "\x45\x3e", NULL, "\x3d\x67", JISX0212KANJISUP   },
+	{ "\x45\x3f", NULL, "\x31\x59", JISX02132004KANJI1 },
+	{ "\x45\x40", NULL, "\x2c\x4d", JISX02132004KANJI2 },
+	{ "\x45\x41", NULL, "\x3e\x30", JISX0212KANJISUP   },
+	{ "\x45\x42", NULL, "\x74\x55", JISX02132004KANJI1 },
+	{ "\x45\x43", NULL, "\x58\x32", JISX02132004KANJI1 },
+	{ "\x45\x44", NULL, "\x2c\x58", JISX02132004KANJI2 },
+	{ "\x45\x45", NULL, "\x3e\x3d", JISX0212KANJISUP   },
+	{ "\x45\x46", NULL, "\x74\x5b", JISX02132004KANJI1 },
+	{ "\x45\x47", NULL, "\x74\x5a", JISX02132004KANJI1 },
+	{ "\x45\x48", NULL, "\x2c\x69", JISX02132004KANJI2 },
+	{ "\x45\x49", NULL, "\x3f\x28", JISX0212KANJISUP   },
+	{ "\x45\x4a", NULL, "\x2d\x22", JISX02132004KANJI2 },
+	{ "\x45\x4b", NULL, "\x74\x74", JISX02132004KANJI1 },
+	{ "\x45\x4c", NULL, "\x74\x7a", JISX02132004KANJI1 },
+	{ "\x45\x4d", NULL, "\x2d\x50", JISX02132004KANJI2 },
+	{ "\x45\x4e", NULL, "\x74\x7c", JISX02132004KANJI1 },
+	{ "\x45\x4f", NULL, "\x36\x35", JISX02132004KANJI1 },
+	{ "\x45\x50", NULL, "\x75\x2c", JISX02132004KANJI1 },
+	{ "\x45\x51", NULL, "\x75\x2e", JISX02132004KANJI1 },
+	{ "\x45\x52", NULL, "\x39\x37", JISX02132004KANJI1 },
+	{ "\x45\x53", NULL, "\x75\x2d", JISX02132004KANJI1 },
+	{ "\x45\x54", NULL, "\x42\x2b", JISX0212KANJISUP   },
+	{ "\x45\x55", NULL, "\x75\x2f", JISX02132004KANJI1 },
+	{ "\x45\x56", NULL, "\x75\x32", JISX02132004KANJI1 },
+	{ "\x45\x57", NULL, "\x75\x3e", JISX02132004KANJI1 },
+	{ "\x45\x58", NULL, "\x2d\x7e", JISX02132004KANJI2 },
+	{ "\x45\x59", NULL, "\x75\x3b", JISX02132004KANJI1 },
+	{ "\x45\x5a", NULL, "\x40\x32", JISX02132004KANJI1 },
+	{ "\x45\x5b", NULL, "\x75\x3f", JISX02132004KANJI1 },
+	{ "\x45\x5c", NULL, "\x2e\x2d", JISX02132004KANJI2 },
+	{ "\x45\x5d", NULL, "\x75\x44", JISX02132004KANJI1 },
+	{ "\x45\x5e", NULL, "\x75\x45", JISX02132004KANJI1 },
+	{ "\x45\x5f", NULL, "\x2e\x33", JISX02132004KANJI2 },
+	{ "\x45\x60", NULL, "\x75\x4c", JISX02132004KANJI1 },
+	{ "\x45\x61", NULL, "\x42\x70", JISX0212KANJISUP   },
+	{ "\x45\x62", NULL, "\x75\x4e", JISX02132004KANJI1 },
+	{ "\x45\x63", NULL, "\x75\x50", JISX02132004KANJI1 },
+	{ "\x45\x64", NULL, "\x75\x58", JISX02132004KANJI1 },
+	{ "\x45\x65", NULL, "\x75\x5e", JISX02132004KANJI1 },
+	{ "\x45\x66", NULL, "\x75\x5a", JISX02132004KANJI1 },
+	{ "\x45\x67", NULL, "\x75\x5d", JISX02132004KANJI1 },
+	{ "\x45\x68", NULL, "\x2e\x5f", JISX02132004KANJI2 },
+	{ "\x45\x69", NULL, "\x2e\x7d", JISX02132004KANJI2 },
+	{ "\x45\x6a", NULL, "\x2e\x79", JISX02132004KANJI2 },
+	{ "\x45\x6b", NULL, "\x75\x78", JISX02132004KANJI1 },
+	{ "\x45\x6c", NULL, "\x75\x7a", JISX02132004KANJI1 },
+	{ "\x45\x6d", NULL, "\x2f\x36", JISX02132004KANJI2 },
+	{ "\x45\x6e", NULL, "\x76\x22", JISX02132004KANJI1 },
+	{ "\x45\x6f", NULL, "\x2f\x41", JISX02132004KANJI2 },
+	{ "\x45\x70", NULL, "\x76\x30", JISX02132004KANJI1 },
+	{ "\x45\x71", NULL, "\x2f\x53", JISX02132004KANJI2 },
+	{ "\x45\x72", NULL, "\x76\x31", JISX02132004KANJI1 },
+	{ "\x45\x73", NULL, "\x2f\x5a", JISX02132004KANJI2 },
+	{ "\x45\x75", NULL, "\x76\x38", JISX02132004KANJI1 },
+	{ "\x45\x76", NULL, "\x76\x4b", JISX02132004KANJI1 },
+	{ "\x45\x77", NULL, "\x6e\x35", JISX02132004KANJI2 },
+	{ "\x45\x78", NULL, "\x76\x52", JISX02132004KANJI1 },
+	{ "\x45\x79", NULL, "\x76\x57", JISX02132004KANJI1 },
+	{ "\x45\x7a", NULL, "\x46\x63", JISX0212KANJISUP   },
+	{ "\x45\x7b", NULL, "\x6e\x44", JISX02132004KANJI2 },
+	{ "\x45\x7c", NULL, "\x76\x61", JISX02132004KANJI1 },
+	{ "\x45\x7d", NULL, "\x76\x6b", JISX02132004KANJI1 },
+	{ "\x45\x7e", NULL, "\x47\x43", JISX0212KANJISUP   },
+	{ "\x46\x21", NULL, "\x47\x4b", JISX0212KANJISUP   },
+	{ "\x46\x22", NULL, "\x76\x6f", JISX02132004KANJI1 },
+	{ "\x46\x23", NULL, "\x6e\x68", JISX02132004KANJI2 },
+	{ "\x46\x24", NULL, "\x40\x36", JISX02132004KANJI1 },
+	{ "\x46\x26", NULL, "\x76\x76", JISX02132004KANJI1 },
+	{ "\x46\x27", NULL, "\x47\x6e", JISX0212KANJISUP   },
+	{ "\x46\x28", NULL, "\x76\x7a", JISX02132004KANJI1 },
+	{ "\x46\x29", NULL, "\x6e\x70", JISX02132004KANJI2 },
+	{ "\x46\x2a", NULL, "\x6e\x73", JISX02132004KANJI2 },
+	{ "\x46\x2b", NULL, "\x6f\x24", JISX02132004KANJI2 },
+	{ "\x46\x2c", NULL, "\x77\x2f", JISX02132004KANJI1 },
+	{ "\x46\x2d", NULL, "\x6f\x41", JISX02132004KANJI2 },
+	{ "\x46\x2e", NULL, "\x77\x3b", JISX02132004KANJI1 },
+	{ "\x46\x2f", NULL, "\x77\x3c", JISX02132004KANJI1 },
+	{ "\x46\x30", NULL, "\x6f\x4a", JISX02132004KANJI2 },
+	{ "\x46\x31", NULL, "\x77\x3e", JISX02132004KANJI1 },
+	{ "\x46\x32", NULL, "\x77\x45", JISX02132004KANJI1 },
+	{ "\x46\x33", NULL, "\x77\x47", JISX02132004KANJI1 },
+	{ "\x46\x34", NULL, "\x77\x4c", JISX02132004KANJI1 },
+	{ "\x46\x35", NULL, "\x6f\x6b", JISX02132004KANJI2 },
+	{ "\x46\x36", NULL, "\x77\x57", JISX02132004KANJI1 },
+	{ "\x46\x37", NULL, "\x77\x52", JISX02132004KANJI1 },
+	{ "\x46\x38", NULL, "\x77\x53", JISX02132004KANJI1 },
+	{ "\x46\x39", NULL, "\x77\x5a", JISX02132004KANJI1 },
+	{ "\x46\x3a", NULL, "\x77\x5e", JISX02132004KANJI1 },
+	{ "\x46\x3b", NULL, "\x77\x61", JISX02132004KANJI1 },
+	{ "\x46\x3c", NULL, "\x70\x3d", JISX02132004KANJI2 },
+	{ "\x46\x3d", NULL, "\x77\x69", JISX02132004KANJI1 },
+	{ "\x46\x3e", NULL, "\x4b\x2e", JISX0212KANJISUP   },
+	{ "\x46\x3f", NULL, "\x77\x6f", JISX02132004KANJI1 },
+	{ "\x46\x40", NULL, "\x70\x57", JISX02132004KANJI2 },
+	{ "\x46\x41", NULL, "\x4b\x66", JISX0212KANJISUP   },
+	{ "\x46\x42", NULL, "\x77\x79", JISX02132004KANJI1 },
+	{ "\x46\x43", NULL, "\x77\x7b", JISX02132004KANJI1 },
+	{ "\x46\x44", NULL, "\x77\x7d", JISX02132004KANJI1 },
+	{ "\x46\x45", NULL, "\x4b\x6e", JISX0212KANJISUP   },
+	{ "\x46\x46", NULL, "\x78\x21", JISX02132004KANJI1 },
+	{ "\x46\x47", NULL, "\x4b\x79", JISX0212KANJISUP   },
+	{ "\x46\x48", NULL, "\x78\x26", JISX02132004KANJI1 },
+	{ "\x46\x49", NULL, "\x78\x28", JISX02132004KANJI1 },
+	{ "\x46\x4a", NULL, "\x4c\x2d", JISX0212KANJISUP   },
+	{ "\x46\x4b", NULL, "\x78\x2b", JISX02132004KANJI1 },
+	{ "\x46\x4c", NULL, "\x78\x33", JISX02132004KANJI1 },
+	{ "\x46\x4d", NULL, "\x78\x38", JISX02132004KANJI1 },
+	{ "\x46\x4e", NULL, "\x78\x3b", JISX02132004KANJI1 },
+	{ "\x46\x4f", NULL, "\x78\x47", JISX02132004KANJI1 },
+	{ "\x46\x50", NULL, "\x78\x4a", JISX02132004KANJI1 },
+	{ "\x46\x51", NULL, "\x62\x25", JISX02132004KANJI1 },
+	{ "\x46\x52", NULL, "\x71\x6f", JISX02132004KANJI2 },
+	{ "\x46\x53", NULL, "\x78\x63", JISX02132004KANJI1 },
+	{ "\x46\x54", NULL, "\x78\x61", JISX02132004KANJI1 },
+	{ "\x46\x55", NULL, "\x78\x64", JISX02132004KANJI1 },
+	{ "\x46\x56", NULL, "\x31\x57", JISX02132004KANJI1 },
+	{ "\x46\x57", NULL, "\x78\x72", JISX02132004KANJI1 },
+	{ "\x46\x58", NULL, "\x23\x44", JISX02132004KANJI2 },
+	{ "\x46\x59", NULL, "\x72\x43", JISX02132004KANJI2 },
+	{ "\x46\x5a", NULL, "\x79\x22", JISX02132004KANJI1 },
+	{ "\x46\x5b", NULL, "\x72\x46", JISX02132004KANJI2 },
+	{ "\x46\x5c", NULL, "\x4f\x6d", JISX0212KANJISUP   },
+	{ "\x46\x5d", NULL, "\x72\x5e", JISX02132004KANJI2 },
+	{ "\x46\x5e", NULL, "\x4e\x69", JISX02132004KANJI1 },
+	{ "\x46\x5f", NULL, "\x79\x3c", JISX02132004KANJI1 },
+	{ "\x46\x60", NULL, "\x79\x3d", JISX02132004KANJI1 },
+	{ "\x46\x61", NULL, "\x72\x67", JISX02132004KANJI2 },
+	{ "\x46\x62", NULL, "\x79\x41", JISX02132004KANJI1 },
+	{ "\x46\x63", NULL, "\x72\x6a", JISX02132004KANJI2 },
+	{ "\x46\x64", NULL, "\x73\x39", JISX02132004KANJI2 },
+	{ "\x46\x65", NULL, "\x73\x3a", JISX02132004KANJI2 },
+	{ "\x46\x66", NULL, "\x4c\x77", JISX02132004KANJI1 },
+	{ "\x46\x67", NULL, "\x79\x58", JISX02132004KANJI1 },
+	{ "\x46\x68", NULL, "\x79\x63", JISX02132004KANJI1 },
+	{ "\x46\x69", NULL, "\x40\x3a", JISX02132004KANJI1 },
+	{ "\x46\x6a", NULL, "\x7a\x22", JISX02132004KANJI1 },
+	{ "\x46\x6b", NULL, "\x7a\x24", JISX02132004KANJI1 },
+	{ "\x46\x6c", NULL, "\x74\x47", JISX02132004KANJI2 },
+	{ "\x46\x6d", NULL, "\x7a\x28", JISX02132004KANJI1 },
+	{ "\x46\x6e", NULL, "\x7a\x2c", JISX02132004KANJI1 },
+	{ "\x46\x6f", NULL, "\x7a\x35", JISX02132004KANJI1 },
+	{ "\x46\x70", NULL, "\x7a\x39", JISX02132004KANJI1 },
+	{ "\x46\x71", NULL, "\x55\x2e", JISX0212KANJISUP   },
+	{ "\x46\x72", NULL, "\x31\x29", JISX02132004KANJI1 },
+	{ "\x46\x73", NULL, "\x7a\x6c", JISX02132004KANJI1 },
+	{ "\x46\x74", NULL, "\x7a\x6d", JISX02132004KANJI1 },
+	{ "\x46\x75", NULL, "\x76\x33", JISX02132004KANJI2 },
+	{ "\x46\x76", NULL, "\x7a\x7d", JISX02132004KANJI1 },
+	{ "\x46\x77", NULL, "\x58\x41", JISX0212KANJISUP   },
+	{ "\x46\x78", NULL, "\x7b\x28", JISX02132004KANJI1 },
+	{ "\x46\x79", NULL, "\x7b\x2f", JISX02132004KANJI1 },
+	{ "\x46\x7a", NULL, "\x76\x71", JISX02132004KANJI2 },
+	{ "\x46\x7b", NULL, "\x7b\x38", JISX02132004KANJI1 },
+	{ "\x46\x7c", NULL, "\x59\x51", JISX0212KANJISUP   },
+	{ "\x46\x7d", NULL, "\x7b\x3a", JISX02132004KANJI1 },
+	{ "\x46\x7e", NULL, "\x7b\x40", JISX02132004KANJI1 },
+	{ "\x47\x21", NULL, "\x77\x38", JISX02132004KANJI2 },
+	{ "\x47\x22", NULL, "\x77\x45", JISX02132004KANJI2 },
+	{ "\x47\x24", NULL, "\x7b\x6d", JISX02132004KANJI1 },
+	{ "\x47\x25", NULL, "\x7b\x7d", JISX02132004KANJI1 },
+	{ "\x47\x26", NULL, "\x7c\x22", JISX02132004KANJI1 },
+	{ "\x47\x27", NULL, "\x7c\x28", JISX02132004KANJI1 },
+	{ "\x47\x28", NULL, "\x7c\x29", JISX02132004KANJI1 },
+	{ "\x47\x29", NULL, "\x78\x60", JISX02132004KANJI2 },
+	{ "\x47\x2a", NULL, "\x7c\x2b", JISX02132004KANJI1 },
+	{ "\x47\x2b", NULL, "\x7c\x2e", JISX02132004KANJI1 },
+	{ "\x47\x2c", NULL, "\x7c\x2d", JISX02132004KANJI1 },
+	{ "\x47\x2d", NULL, "\x5e\x4b", JISX0212KANJISUP   },
+	{ "\x47\x2e", NULL, "\x78\x6f", JISX02132004KANJI2 },
+	{ "\x47\x2f", NULL, "\x79\x30", JISX02132004KANJI2 },
+	{ "\x47\x30", NULL, "\x7c\x3a", JISX02132004KANJI1 },
+	{ "\x47\x31", NULL, "\x7c\x3e", JISX02132004KANJI1 },
+	{ "\x47\x34", NULL, "\x60\x59", JISX0212KANJISUP   },
+	{ "\x47\x35", NULL, "\x79\x6e", JISX02132004KANJI2 },
+	{ "\x47\x36", NULL, "\x30\x6f", JISX02132004KANJI1 },
+	{ "\x47\x37", NULL, "\x61\x62", JISX0212KANJISUP   },
+	{ "\x47\x38", NULL, "\x7c\x67", JISX02132004KANJI1 },
+	{ "\x47\x39", NULL, "\x7c\x6a", JISX02132004KANJI1 },
+	{ "\x47\x3a", NULL, "\x7c\x6c", JISX02132004KANJI1 },
+	{ "\x47\x3b", NULL, "\x7c\x70", JISX02132004KANJI1 },
+	{ "\x47\x3c", NULL, "\x7a\x4e", JISX02132004KANJI2 },
+	{ "\x47\x3d", NULL, "\x7c\x7c", JISX02132004KANJI1 },
+	{ "\x47\x3e", NULL, "\x63\x29", JISX0212KANJISUP   },
+	{ "\x47\x3f", NULL, "\x7d\x22", JISX02132004KANJI1 },
+	{ "\x47\x40", NULL, "\x7a\x52", JISX02132004KANJI2 },
+	{ "\x47\x41", NULL, "\x7c\x7e", JISX02132004KANJI1 },
+	{ "\x47\x42", NULL, "\x7d\x21", JISX02132004KANJI1 },
+	{ "\x47\x43", NULL, "\x63\x3c", JISX0212KANJISUP   },
+	{ "\x47\x44", NULL, "\x7d\x25", JISX02132004KANJI1 },
+	{ "\x47\x45", NULL, "\x7a\x54", JISX02132004KANJI2 },
+	{ "\x47\x46", NULL, "\x7d\x28", JISX02132004KANJI1 },
+	{ "\x47\x47", NULL, "\x7d\x2a", JISX02132004KANJI1 },
+	{ "\x47\x48", NULL, "\x7d\x29", JISX02132004KANJI1 },
+	{ "\x47\x49", NULL, "\x7a\x5c", JISX02132004KANJI2 },
+	{ "\x47\x4a", NULL, "\x7a\x5f", JISX02132004KANJI2 },
+	{ "\x47\x4b", NULL, "\x7a\x5d", JISX02132004KANJI2 },
+	{ "\x47\x4c", NULL, "\x7d\x27", JISX02132004KANJI1 },
+	{ "\x47\x4d", NULL, "\x7a\x63", JISX02132004KANJI2 },
+	{ "\x47\x4e", NULL, "\x7a\x6f", JISX02132004KANJI2 },
+	{ "\x47\x4f", NULL, "\x63\x71", JISX0212KANJISUP   },
+	{ "\x47\x50", NULL, "\x7d\x2d", JISX02132004KANJI1 },
+	{ "\x47\x51", NULL, "\x7a\x7c", JISX02132004KANJI2 },
+	{ "\x47\x52", NULL, "\x7a\x79", JISX02132004KANJI2 },
+	{ "\x47\x53", NULL, "\x7a\x7a", JISX02132004KANJI2 },
+	{ "\x47\x54", NULL, "\x7a\x78", JISX02132004KANJI2 },
+	{ "\x47\x56", NULL, "\x64\x40", JISX0212KANJISUP   },
+	{ "\x47\x57", NULL, "\x7d\x33", JISX02132004KANJI1 },
+	{ "\x47\x58", NULL, "\x7d\x32", JISX02132004KANJI1 },
+	{ "\x47\x59", NULL, "\x7d\x38", JISX02132004KANJI1 },
+	{ "\x47\x5a", NULL, "\x7d\x37", JISX02132004KANJI1 },
+	{ "\x47\x5b", NULL, "\x7b\x24", JISX02132004KANJI2 },
+	{ "\x47\x5d", NULL, "\x7b\x29", JISX02132004KANJI2 },
+	{ "\x47\x5e", NULL, "\x7d\x34", JISX02132004KANJI1 },
+	{ "\x47\x5f", NULL, "\x7b\x28", JISX02132004KANJI2 },
+	{ "\x47\x60", NULL, "\x7b\x25", JISX02132004KANJI2 },
+	{ "\x47\x61", NULL, "\x7d\x3f", JISX02132004KANJI1 },
+	{ "\x47\x62", NULL, "\x7b\x30", JISX02132004KANJI2 },
+	{ "\x47\x63", NULL, "\x65\x33", JISX0212KANJISUP   },
+	{ "\x47\x64", NULL, "\x7d\x43", JISX02132004KANJI1 },
+	{ "\x47\x65", NULL, "\x7d\x44", JISX02132004KANJI1 },
+	{ "\x47\x66", NULL, "\x65\x50", JISX0212KANJISUP   },
+	{ "\x47\x67", NULL, "\x65\x62", JISX0212KANJISUP   },
+	{ "\x47\x68", NULL, "\x7b\x4d", JISX02132004KANJI2 },
+	{ "\x47\x69", NULL, "\x65\x6b", JISX0212KANJISUP   },
+	{ "\x47\x6a", NULL, "\x34\x56", JISX02132004KANJI1 },
+	{ "\x47\x6b", NULL, "\x7d\x5d", JISX02132004KANJI1 },
+	{ "\x47\x6d", NULL, "\x7d\x5e", JISX02132004KANJI1 },
+	{ "\x47\x6e", NULL, "\x7b\x6c", JISX02132004KANJI2 },
+	{ "\x47\x6f", NULL, "\x7d\x66", JISX02132004KANJI1 },
+	{ "\x47\x70", NULL, "\x7d\x67", JISX02132004KANJI1 },
+	{ "\x47\x71", NULL, "\x67\x2e", JISX0212KANJISUP   },
+	{ "\x47\x72", NULL, "\x7d\x68", JISX02132004KANJI1 },
+	{ "\x47\x73", NULL, "\x7d\x6a", JISX02132004KANJI1 },
+	{ "\x47\x74", NULL, "\x40\x44", JISX02132004KANJI1 },
+	{ "\x47\x75", NULL, "\x7b\x7c", JISX02132004KANJI2 },
+	{ "\x47\x76", NULL, "\x7e\x21", JISX02132004KANJI1 },
+	{ "\x47\x77", NULL, "\x7e\x25", JISX02132004KANJI1 },
+	{ "\x47\x78", NULL, "\x48\x53", JISX02132004KANJI1 },
+	{ "\x47\x79", NULL, "\x3b\x74", JISX02132004KANJI1 },
+	{ "\x47\x7a", NULL, "\x68\x5d", JISX0212KANJISUP   },
+	{ "\x47\x7b", NULL, "\x34\x5b", JISX02132004KANJI1 },
+	{ "\x47\x7c", NULL, "\x7e\x2b", JISX02132004KANJI1 },
+	{ "\x47\x7d", NULL, "\x7e\x33", JISX02132004KANJI1 },
+	{ "\x47\x7e", NULL, "\x39\x62", JISX02132004KANJI1 },
+	{ "\x48\x21", NULL, "\x7d\x32", JISX02132004KANJI2 },
+	{ "\x48\x22", NULL, "\x7e\x44", JISX02132004KANJI1 },
+	{ "\x48\x23", NULL, "\x7e\x43", JISX02132004KANJI1 },
+	{ "\x48\x24", NULL, "\x7e\x47", JISX02132004KANJI1 },
+	{ "\x48\x25", NULL, "\x7d\x4a", JISX02132004KANJI2 },
+	{ "\x48\x26", NULL, "\x6a\x6a", JISX0212KANJISUP   },
+	{ "\x48\x27", NULL, "\x7e\x4f", JISX02132004KANJI1 },
+	{ "\x48\x28", NULL, "\x7e\x5e", JISX02132004KANJI1 },
+	{ "\x48\x29", NULL, "\x7e\x34", JISX02132004KANJI2 },
+	{ "\x48\x2a", NULL, "\x44\x61", JISX02132004KANJI1 },
+	{ "\x48\x2b", NULL, "\x7e\x4f", JISX02132004KANJI2 },
+	{ "\x48\x2c", NULL, "\x7e\x72", JISX02132004KANJI1 },
+	{ "\x79\x21", NULL, "\x7a\x37", JISX02132004KANJI1 },
+	{ "\x79\x22", NULL, "\x7b\x6e", JISX02132004KANJI1 },
+	{ "\x79\x23", NULL, "\x7d\x39", JISX02132004KANJI1 },
+	{ "\x79\x24", NULL, "\x7d\x2e", JISX02132004KANJI1 },
+	{ "\x79\x25", NULL, "\x76\x55", JISX02132004KANJI2 },
+	{ "\x79\x26", NULL, "\x2e\x39", JISX02132004KANJI1 },
+	{ "\x79\x27", NULL, "\x6f\x60", JISX02132004KANJI2 },
+	{ "\x79\x28", NULL, "\x75\x35", JISX02132004KANJI1 },
+	{ "\x79\x29", NULL, "\x75\x69", JISX02132004KANJI1 },
+	{ "\x79\x2a", NULL, "\x7b\x23", JISX02132004KANJI2 },
+	{ "\x79\x2b", NULL, "\x75\x37", JISX02132004KANJI1 },
+	{ "\x79\x2c", NULL, "\x74\x3a", JISX02132004KANJI1 },
+	{ "\x79\x2d", NULL, "\x2e\x24", JISX02132004KANJI1 },
+	{ "\x79\x2e", NULL, "\x2e\x28", JISX02132004KANJI1 },
+	{ "\x79\x2f", NULL, "\x44\x4b", CP932              },
+	{ "\x79\x30", NULL, "\x21\x3f", JISX02132004KANJI2 },
+	{ "\x79\x31", NULL, "\x2e\x2b", JISX02132004KANJI1 },
+	{ "\x79\x32", NULL, "\x30\x63", JISX0212KANJISUP   },
+	{ "\x79\x33", NULL, "\x2e\x30", JISX02132004KANJI1 },
+	{ "\x79\x34", NULL, "\x21\x4d", JISX02132004KANJI2 },
+	{ "\x79\x35", NULL, "\x2e\x35", JISX02132004KANJI1 },
+	{ "\x79\x36", NULL, "\x21\x4e", JISX02132004KANJI2 },
+	{ "\x79\x37", NULL, "\x2e\x36", JISX02132004KANJI1 },
+	{ "\x79\x38", NULL, "\x31\x3e", JISX0212KANJISUP   },
+	{ "\x79\x39", NULL, "\x2e\x41", JISX02132004KANJI1 },
+	{ "\x79\x3a", NULL, "\x21\x5d", JISX02132004KANJI2 },
+	{ "\x79\x3b", NULL, "\x31\x48", JISX0212KANJISUP   },
+	{ "\x79\x3c", NULL, "\x21\x5c", JISX02132004KANJI2 },
+	{ "\x79\x3d", NULL, "\x21\x60", JISX02132004KANJI2 },
+	{ "\x79\x3e", NULL, "\x21\x67", JISX02132004KANJI2 },
+	{ "\x79\x3f", NULL, "\x21\x5f", JISX02132004KANJI2 },
+	{ "\x79\x40", NULL, "\x2e\x44", JISX02132004KANJI1 },
+	{ "\x79\x41", NULL, "\x21\x7d", JISX02132004KANJI2 },
+	{ "\x79\x42", NULL, "\x32\x3b", JISX0212KANJISUP   },
+	{ "\x79\x43", NULL, "\x2e\x4f", JISX02132004KANJI1 },
+	{ "\x79\x44", NULL, "\x32\x6d", JISX0212KANJISUP   },
+	{ "\x79\x45", NULL, "\x2e\x54", JISX02132004KANJI1 },
+	{ "\x79\x46", NULL, "\x32\x7c", JISX0212KANJISUP   },
+	{ "\x79\x47", NULL, "\x44\x63", CP932              },
+	{ "\x79\x48", NULL, "\x2e\x5d", JISX02132004KANJI1 },
+	{ "\x79\x49", NULL, "\x33\x58", JISX0212KANJISUP   },
+	{ "\x79\x4a", NULL, "\x23\x43", JISX02132004KANJI2 },
+	{ "\x79\x4b", NULL, "\x33\x65", JISX0212KANJISUP   },
+	{ "\x79\x4c", NULL, "\x2e\x67", JISX02132004KANJI1 },
+	{ "\x79\x4d", NULL, "\x2e\x6b", JISX02132004KANJI1 },
+	{ "\x79\x4e", NULL, "\x2e\x6c", JISX02132004KANJI1 },
+	{ "\x79\x4f", NULL, "\x23\x4e", JISX02132004KANJI2 },
+	{ "\x79\x50", NULL, "\x34\x40", JISX0212KANJISUP   },
+	{ "\x79\x51", NULL, "\x2e\x72", JISX02132004KANJI1 },
+	{ "\x79\x52", NULL, "\x2e\x74", JISX02132004KANJI1 },
+	{ "\x79\x53", NULL, "\x34\x5e", JISX0212KANJISUP   },
+	{ "\x79\x54", NULL, "\x44\x70", CP932              },
+	{ "\x79\x55", NULL, "\x2e\x78", JISX02132004KANJI1 },
+	{ "\x79\x56", NULL, "\x23\x6c", JISX02132004KANJI2 },
+	{ "\x79\x57", NULL, "\x2f\x21", JISX02132004KANJI1 },
+	{ "\x79\x58", NULL, "\x2f\x23", JISX02132004KANJI1 },
+	{ "\x79\x59", NULL, "\x2f\x2a", JISX02132004KANJI1 },
+	{ "\x79\x5a", NULL, "\x28\x6b", JISX02132004KANJI2 },
+	{ "\x79\x5b", NULL, "\x37\x42", JISX0212KANJISUP   },
+	{ "\x79\x5c", NULL, "\x24\x6c", JISX02132004KANJI2 },
+	{ "\x79\x5d", NULL, "\x2f\x4f", JISX02132004KANJI1 },
+	{ "\x79\x5e", NULL, "\x2f\x4e", JISX02132004KANJI1 },
+	{ "\x79\x5f", NULL, "\x2f\x4b", JISX02132004KANJI1 },
+	{ "\x79\x60", NULL, "\x2f\x57", JISX02132004KANJI1 },
+	{ "\x79\x61", NULL, "\x2f\x5d", JISX02132004KANJI1 },
+	{ "\x79\x62", NULL, "\x38\x4e", JISX0212KANJISUP   },
+	{ "\x79\x63", NULL, "\x25\x3a", JISX02132004KANJI2 },
+	{ "\x79\x64", NULL, "\x38\x75", JISX0212KANJISUP   },
+	{ "\x79\x65", NULL, "\x25\x45", JISX02132004KANJI2 },
+	{ "\x79\x66", NULL, "\x2f\x69", JISX02132004KANJI1 },
+	{ "\x79\x67", NULL, "\x38\x7c", JISX0212KANJISUP   },
+	{ "\x79\x68", NULL, "\x2f\x6d", JISX02132004KANJI1 },
+	{ "\x79\x69", NULL, "\x39\x37", JISX0212KANJISUP   },
+	{ "\x79\x6a", NULL, "\x4f\x56", JISX02132004KANJI1 },
+	{ "\x79\x6b", NULL, "\x28\x24", JISX02132004KANJI2 },
+	{ "\x79\x6c", NULL, "\x78\x49", JISX02132004KANJI1 },
+	{ "\x79\x6d", NULL, "\x4f\x59", JISX02132004KANJI1 },
+	{ "\x79\x6e", NULL, "\x4f\x5a", JISX02132004KANJI1 },
+	{ "\x79\x6f", NULL, "\x4f\x5c", JISX02132004KANJI1 },
+	{ "\x79\x70", NULL, "\x28\x43", JISX02132004KANJI2 },
+	{ "\x79\x71", NULL, "\x4f\x69", JISX02132004KANJI1 },
+	{ "\x79\x72", NULL, "\x45\x30", CP932              },
+	{ "\x79\x73", NULL, "\x4f\x71", JISX02132004KANJI1 },
+	{ "\x79\x74", NULL, "\x4f\x75", JISX02132004KANJI1 },
+	{ "\x79\x75", NULL, "\x4f\x72", JISX02132004KANJI1 },
+	{ "\x79\x76", NULL, "\x28\x55", JISX02132004KANJI2 },
+	{ "\x79\x77", NULL, "\x4f\x77", JISX02132004KANJI1 },
+	{ "\x79\x78", NULL, "\x4f\x7c", JISX02132004KANJI1 },
+	{ "\x79\x79", NULL, "\x28\x67", JISX02132004KANJI2 },
+	{ "\x79\x7a", NULL, "\x3b\x79", JISX0212KANJISUP   },
+	{ "\x79\x7b", NULL, "\x3c\x64", JISX0212KANJISUP   },
+	{ "\x79\x7c", NULL, "\x74\x36", JISX02132004KANJI1 },
+	{ "\x79\x7d", NULL, "\x74\x3e", JISX02132004KANJI1 },
+	{ "\x79\x7e", NULL, "\x74\x45", JISX02132004KANJI1 },
+	{ "\x7a\x21", NULL, "\x74\x47", JISX02132004KANJI1 },
+	{ "\x7a\x22", NULL, "\x3d\x67", JISX0212KANJISUP   },
+	{ "\x7a\x23", NULL, "\x31\x59", JISX02132004KANJI1 },
+	{ "\x7a\x24", NULL, "\x2c\x4d", JISX02132004KANJI2 },
+	{ "\x7a\x25", NULL, "\x3e\x30", JISX0212KANJISUP   },
+	{ "\x7a\x26", NULL, "\x74\x55", JISX02132004KANJI1 },
+	{ "\x7a\x27", NULL, "\x58\x32", JISX02132004KANJI1 },
+	{ "\x7a\x28", NULL, "\x2c\x58", JISX02132004KANJI2 },
+	{ "\x7a\x29", NULL, "\x3e\x3d", JISX0212KANJISUP   },
+	{ "\x7a\x2a", NULL, "\x74\x5b", JISX02132004KANJI1 },
+	{ "\x7a\x2b", NULL, "\x74\x5a", JISX02132004KANJI1 },
+	{ "\x7a\x2c", NULL, "\x2c\x69", JISX02132004KANJI2 },
+	{ "\x7a\x2d", NULL, "\x3f\x28", JISX0212KANJISUP   },
+	{ "\x7a\x2e", NULL, "\x2d\x22", JISX02132004KANJI2 },
+	{ "\x7a\x2f", NULL, "\x74\x74", JISX02132004KANJI1 },
+	{ "\x7a\x30", NULL, "\x74\x7a", JISX02132004KANJI1 },
+	{ "\x7a\x31", NULL, "\x2d\x50", JISX02132004KANJI2 },
+	{ "\x7a\x32", NULL, "\x74\x7c", JISX02132004KANJI1 },
+	{ "\x7a\x33", NULL, "\x36\x35", JISX02132004KANJI1 },
+	{ "\x7a\x34", NULL, "\x75\x2c", JISX02132004KANJI1 },
+	{ "\x7a\x35", NULL, "\x75\x2e", JISX02132004KANJI1 },
+	{ "\x7a\x36", NULL, "\x39\x37", JISX02132004KANJI1 },
+	{ "\x7a\x37", NULL, "\x75\x2d", JISX02132004KANJI1 },
+	{ "\x7a\x38", NULL, "\x42\x2b", JISX0212KANJISUP   },
+	{ "\x7a\x39", NULL, "\x75\x2f", JISX02132004KANJI1 },
+	{ "\x7a\x3a", NULL, "\x75\x32", JISX02132004KANJI1 },
+	{ "\x7a\x3b", NULL, "\x75\x3e", JISX02132004KANJI1 },
+	{ "\x7a\x3c", NULL, "\x2d\x7e", JISX02132004KANJI2 },
+	{ "\x7a\x3d", NULL, "\x75\x3b", JISX02132004KANJI1 },
+	{ "\x7a\x3e", NULL, "\x40\x32", JISX02132004KANJI1 },
+	{ "\x7a\x3f", NULL, "\x75\x3f", JISX02132004KANJI1 },
+	{ "\x7a\x40", NULL, "\x2e\x2d", JISX02132004KANJI2 },
+	{ "\x7a\x41", NULL, "\x75\x44", JISX02132004KANJI1 },
+	{ "\x7a\x42", NULL, "\x75\x45", JISX02132004KANJI1 },
+	{ "\x7a\x43", NULL, "\x2e\x33", JISX02132004KANJI2 },
+	{ "\x7a\x44", NULL, "\x75\x4c", JISX02132004KANJI1 },
+	{ "\x7a\x45", NULL, "\x42\x70", JISX0212KANJISUP   },
+	{ "\x7a\x46", NULL, "\x75\x4e", JISX02132004KANJI1 },
+	{ "\x7a\x47", NULL, "\x75\x50", JISX02132004KANJI1 },
+	{ "\x7a\x48", NULL, "\x75\x58", JISX02132004KANJI1 },
+	{ "\x7a\x49", NULL, "\x75\x5e", JISX02132004KANJI1 },
+	{ "\x7a\x4a", NULL, "\x75\x5a", JISX02132004KANJI1 },
+	{ "\x7a\x4b", NULL, "\x75\x5d", JISX02132004KANJI1 },
+	{ "\x7a\x4c", NULL, "\x2e\x5f", JISX02132004KANJI2 },
+	{ "\x7a\x4d", NULL, "\x2e\x7d", JISX02132004KANJI2 },
+	{ "\x7a\x4e", NULL, "\x2e\x79", JISX02132004KANJI2 },
+	{ "\x7a\x4f", NULL, "\x75\x78", JISX02132004KANJI1 },
+	{ "\x7a\x50", NULL, "\x75\x7a", JISX02132004KANJI1 },
+	{ "\x7a\x51", NULL, "\x2f\x36", JISX02132004KANJI2 },
+	{ "\x7a\x52", NULL, "\x76\x22", JISX02132004KANJI1 },
+	{ "\x7a\x53", NULL, "\x2f\x41", JISX02132004KANJI2 },
+	{ "\x7a\x54", NULL, "\x76\x30", JISX02132004KANJI1 },
+	{ "\x7a\x55", NULL, "\x2f\x53", JISX02132004KANJI2 },
+	{ "\x7a\x56", NULL, "\x76\x31", JISX02132004KANJI1 },
+	{ "\x7a\x57", NULL, "\x2f\x5a", JISX02132004KANJI2 },
+	{ "\x7a\x58", NULL, "\x45\x74", CP932              },
+	{ "\x7a\x59", NULL, "\x76\x38", JISX02132004KANJI1 },
+	{ "\x7a\x5a", NULL, "\x76\x4b", JISX02132004KANJI1 },
+	{ "\x7a\x5b", NULL, "\x6e\x35", JISX02132004KANJI2 },
+	{ "\x7a\x5c", NULL, "\x76\x52", JISX02132004KANJI1 },
+	{ "\x7a\x5d", NULL, "\x76\x57", JISX02132004KANJI1 },
+	{ "\x7a\x5e", NULL, "\x46\x63", JISX0212KANJISUP   },
+	{ "\x7a\x5f", NULL, "\x6e\x44", JISX02132004KANJI2 },
+	{ "\x7a\x60", NULL, "\x76\x61", JISX02132004KANJI1 },
+	{ "\x7a\x61", NULL, "\x76\x6b", JISX02132004KANJI1 },
+	{ "\x7a\x62", NULL, "\x47\x43", JISX0212KANJISUP   },
+	{ "\x7a\x63", NULL, "\x47\x4b", JISX0212KANJISUP   },
+	{ "\x7a\x64", NULL, "\x76\x6f", JISX02132004KANJI1 },
+	{ "\x7a\x65", NULL, "\x6e\x68", JISX02132004KANJI2 },
+	{ "\x7a\x66", NULL, "\x40\x36", JISX02132004KANJI1 },
+	{ "\x7a\x67", NULL, "\x46\x25", CP932              },
+	{ "\x7a\x68", NULL, "\x76\x76", JISX02132004KANJI1 },
+	{ "\x7a\x69", NULL, "\x47\x6e", JISX0212KANJISUP   },
+	{ "\x7a\x6a", NULL, "\x76\x7a", JISX02132004KANJI1 },
+	{ "\x7a\x6b", NULL, "\x6e\x70", JISX02132004KANJI2 },
+	{ "\x7a\x6c", NULL, "\x6e\x73", JISX02132004KANJI2 },
+	{ "\x7a\x6d", NULL, "\x6f\x24", JISX02132004KANJI2 },
+	{ "\x7a\x6e", NULL, "\x77\x2f", JISX02132004KANJI1 },
+	{ "\x7a\x6f", NULL, "\x6f\x41", JISX02132004KANJI2 },
+	{ "\x7a\x70", NULL, "\x77\x3b", JISX02132004KANJI1 },
+	{ "\x7a\x71", NULL, "\x77\x3c", JISX02132004KANJI1 },
+	{ "\x7a\x72", NULL, "\x6f\x4a", JISX02132004KANJI2 },
+	{ "\x7a\x73", NULL, "\x77\x3e", JISX02132004KANJI1 },
+	{ "\x7a\x74", NULL, "\x77\x45", JISX02132004KANJI1 },
+	{ "\x7a\x75", NULL, "\x77\x47", JISX02132004KANJI1 },
+	{ "\x7a\x76", NULL, "\x77\x4c", JISX02132004KANJI1 },
+	{ "\x7a\x77", NULL, "\x6f\x6b", JISX02132004KANJI2 },
+	{ "\x7a\x78", NULL, "\x77\x57", JISX02132004KANJI1 },
+	{ "\x7a\x79", NULL, "\x77\x52", JISX02132004KANJI1 },
+	{ "\x7a\x7a", NULL, "\x77\x53", JISX02132004KANJI1 },
+	{ "\x7a\x7b", NULL, "\x77\x5a", JISX02132004KANJI1 },
+	{ "\x7a\x7c", NULL, "\x77\x5e", JISX02132004KANJI1 },
+	{ "\x7a\x7d", NULL, "\x77\x61", JISX02132004KANJI1 },
+	{ "\x7a\x7e", NULL, "\x70\x3d", JISX02132004KANJI2 },
+	{ "\x7b\x21", NULL, "\x77\x69", JISX02132004KANJI1 },
+	{ "\x7b\x22", NULL, "\x4b\x2e", JISX0212KANJISUP   },
+	{ "\x7b\x23", NULL, "\x77\x6f", JISX02132004KANJI1 },
+	{ "\x7b\x24", NULL, "\x70\x57", JISX02132004KANJI2 },
+	{ "\x7b\x25", NULL, "\x4b\x66", JISX0212KANJISUP   },
+	{ "\x7b\x26", NULL, "\x77\x79", JISX02132004KANJI1 },
+	{ "\x7b\x27", NULL, "\x77\x7b", JISX02132004KANJI1 },
+	{ "\x7b\x28", NULL, "\x77\x7d", JISX02132004KANJI1 },
+	{ "\x7b\x29", NULL, "\x4b\x6e", JISX0212KANJISUP   },
+	{ "\x7b\x2a", NULL, "\x78\x21", JISX02132004KANJI1 },
+	{ "\x7b\x2b", NULL, "\x4b\x79", JISX0212KANJISUP   },
+	{ "\x7b\x2c", NULL, "\x78\x26", JISX02132004KANJI1 },
+	{ "\x7b\x2d", NULL, "\x78\x28", JISX02132004KANJI1 },
+	{ "\x7b\x2e", NULL, "\x4c\x2d", JISX0212KANJISUP   },
+	{ "\x7b\x2f", NULL, "\x78\x2b", JISX02132004KANJI1 },
+	{ "\x7b\x30", NULL, "\x78\x33", JISX02132004KANJI1 },
+	{ "\x7b\x31", NULL, "\x78\x38", JISX02132004KANJI1 },
+	{ "\x7b\x32", NULL, "\x78\x3b", JISX02132004KANJI1 },
+	{ "\x7b\x33", NULL, "\x78\x47", JISX02132004KANJI1 },
+	{ "\x7b\x34", NULL, "\x78\x4a", JISX02132004KANJI1 },
+	{ "\x7b\x35", NULL, "\x62\x25", JISX02132004KANJI1 },
+	{ "\x7b\x36", NULL, "\x71\x6f", JISX02132004KANJI2 },
+	{ "\x7b\x37", NULL, "\x78\x63", JISX02132004KANJI1 },
+	{ "\x7b\x38", NULL, "\x78\x61", JISX02132004KANJI1 },
+	{ "\x7b\x39", NULL, "\x78\x64", JISX02132004KANJI1 },
+	{ "\x7b\x3a", NULL, "\x31\x57", JISX02132004KANJI1 },
+	{ "\x7b\x3b", NULL, "\x78\x72", JISX02132004KANJI1 },
+	{ "\x7b\x3c", NULL, "\x23\x44", JISX02132004KANJI2 },
+	{ "\x7b\x3d", NULL, "\x72\x43", JISX02132004KANJI2 },
+	{ "\x7b\x3e", NULL, "\x79\x22", JISX02132004KANJI1 },
+	{ "\x7b\x3f", NULL, "\x72\x46", JISX02132004KANJI2 },
+	{ "\x7b\x40", NULL, "\x4f\x6d", JISX0212KANJISUP   },
+	{ "\x7b\x41", NULL, "\x72\x5e", JISX02132004KANJI2 },
+	{ "\x7b\x42", NULL, "\x4e\x69", JISX02132004KANJI1 },
+	{ "\x7b\x43", NULL, "\x79\x3c", JISX02132004KANJI1 },
+	{ "\x7b\x44", NULL, "\x79\x3d", JISX02132004KANJI1 },
+	{ "\x7b\x45", NULL, "\x72\x67", JISX02132004KANJI2 },
+	{ "\x7b\x46", NULL, "\x79\x41", JISX02132004KANJI1 },
+	{ "\x7b\x47", NULL, "\x72\x6a", JISX02132004KANJI2 },
+	{ "\x7b\x48", NULL, "\x73\x39", JISX02132004KANJI2 },
+	{ "\x7b\x49", NULL, "\x73\x3a", JISX02132004KANJI2 },
+	{ "\x7b\x4a", NULL, "\x4c\x77", JISX02132004KANJI1 },
+	{ "\x7b\x4b", NULL, "\x79\x58", JISX02132004KANJI1 },
+	{ "\x7b\x4c", NULL, "\x79\x63", JISX02132004KANJI1 },
+	{ "\x7b\x4d", NULL, "\x40\x3a", JISX02132004KANJI1 },
+	{ "\x7b\x4e", NULL, "\x7a\x22", JISX02132004KANJI1 },
+	{ "\x7b\x4f", NULL, "\x7a\x24", JISX02132004KANJI1 },
+	{ "\x7b\x50", NULL, "\x74\x47", JISX02132004KANJI2 },
+	{ "\x7b\x51", NULL, "\x7a\x28", JISX02132004KANJI1 },
+	{ "\x7b\x52", NULL, "\x7a\x2c", JISX02132004KANJI1 },
+	{ "\x7b\x53", NULL, "\x7a\x35", JISX02132004KANJI1 },
+	{ "\x7b\x54", NULL, "\x7a\x39", JISX02132004KANJI1 },
+	{ "\x7b\x55", NULL, "\x55\x2e", JISX0212KANJISUP   },
+	{ "\x7b\x56", NULL, "\x31\x29", JISX02132004KANJI1 },
+	{ "\x7b\x57", NULL, "\x7a\x6c", JISX02132004KANJI1 },
+	{ "\x7b\x58", NULL, "\x7a\x6d", JISX02132004KANJI1 },
+	{ "\x7b\x59", NULL, "\x76\x33", JISX02132004KANJI2 },
+	{ "\x7b\x5a", NULL, "\x7a\x7d", JISX02132004KANJI1 },
+	{ "\x7b\x5b", NULL, "\x58\x41", JISX0212KANJISUP   },
+	{ "\x7b\x5c", NULL, "\x7b\x28", JISX02132004KANJI1 },
+	{ "\x7b\x5d", NULL, "\x7b\x2f", JISX02132004KANJI1 },
+	{ "\x7b\x5e", NULL, "\x76\x71", JISX02132004KANJI2 },
+	{ "\x7b\x5f", NULL, "\x7b\x38", JISX02132004KANJI1 },
+	{ "\x7b\x60", NULL, "\x59\x51", JISX0212KANJISUP   },
+	{ "\x7b\x61", NULL, "\x7b\x3a", JISX02132004KANJI1 },
+	{ "\x7b\x62", NULL, "\x7b\x40", JISX02132004KANJI1 },
+	{ "\x7b\x63", NULL, "\x77\x38", JISX02132004KANJI2 },
+	{ "\x7b\x64", NULL, "\x77\x45", JISX02132004KANJI2 },
+	{ "\x7b\x65", NULL, "\x47\x23", CP932              },
+	{ "\x7b\x66", NULL, "\x7b\x6d", JISX02132004KANJI1 },
+	{ "\x7b\x67", NULL, "\x7b\x7d", JISX02132004KANJI1 },
+	{ "\x7b\x68", NULL, "\x7c\x22", JISX02132004KANJI1 },
+	{ "\x7b\x69", NULL, "\x7c\x28", JISX02132004KANJI1 },
+	{ "\x7b\x6a", NULL, "\x7c\x29", JISX02132004KANJI1 },
+	{ "\x7b\x6b", NULL, "\x78\x60", JISX02132004KANJI2 },
+	{ "\x7b\x6c", NULL, "\x7c\x2b", JISX02132004KANJI1 },
+	{ "\x7b\x6d", NULL, "\x7c\x2e", JISX02132004KANJI1 },
+	{ "\x7b\x6e", NULL, "\x7c\x2d", JISX02132004KANJI1 },
+	{ "\x7b\x6f", NULL, "\x5e\x4b", JISX0212KANJISUP   },
+	{ "\x7b\x70", NULL, "\x78\x6f", JISX02132004KANJI2 },
+	{ "\x7b\x71", NULL, "\x79\x30", JISX02132004KANJI2 },
+	{ "\x7b\x72", NULL, "\x7c\x3a", JISX02132004KANJI1 },
+	{ "\x7b\x73", NULL, "\x7c\x3e", JISX02132004KANJI1 },
+	{ "\x7b\x74", NULL, "\x47\x32", CP932              },
+	{ "\x7b\x75", NULL, "\x47\x33", CP932              },
+	{ "\x7b\x76", NULL, "\x60\x59", JISX0212KANJISUP   },
+	{ "\x7b\x77", NULL, "\x79\x6e", JISX02132004KANJI2 },
+	{ "\x7b\x78", NULL, "\x30\x6f", JISX02132004KANJI1 },
+	{ "\x7b\x79", NULL, "\x61\x62", JISX0212KANJISUP   },
+	{ "\x7b\x7a", NULL, "\x7c\x67", JISX02132004KANJI1 },
+	{ "\x7b\x7b", NULL, "\x7c\x6a", JISX02132004KANJI1 },
+	{ "\x7b\x7c", NULL, "\x7c\x6c", JISX02132004KANJI1 },
+	{ "\x7b\x7d", NULL, "\x7c\x70", JISX02132004KANJI1 },
+	{ "\x7b\x7e", NULL, "\x7a\x4e", JISX02132004KANJI2 },
+	{ "\x7c\x21", NULL, "\x7c\x7c", JISX02132004KANJI1 },
+	{ "\x7c\x22", NULL, "\x63\x29", JISX0212KANJISUP   },
+	{ "\x7c\x23", NULL, "\x7d\x22", JISX02132004KANJI1 },
+	{ "\x7c\x24", NULL, "\x7a\x52", JISX02132004KANJI2 },
+	{ "\x7c\x25", NULL, "\x7c\x7e", JISX02132004KANJI1 },
+	{ "\x7c\x26", NULL, "\x7d\x21", JISX02132004KANJI1 },
+	{ "\x7c\x27", NULL, "\x63\x3c", JISX0212KANJISUP   },
+	{ "\x7c\x28", NULL, "\x7d\x25", JISX02132004KANJI1 },
+	{ "\x7c\x29", NULL, "\x7a\x54", JISX02132004KANJI2 },
+	{ "\x7c\x2a", NULL, "\x7d\x28", JISX02132004KANJI1 },
+	{ "\x7c\x2b", NULL, "\x7d\x2a", JISX02132004KANJI1 },
+	{ "\x7c\x2c", NULL, "\x7d\x29", JISX02132004KANJI1 },
+	{ "\x7c\x2d", NULL, "\x7a\x5c", JISX02132004KANJI2 },
+	{ "\x7c\x2e", NULL, "\x7a\x5f", JISX02132004KANJI2 },
+	{ "\x7c\x2f", NULL, "\x7a\x5d", JISX02132004KANJI2 },
+	{ "\x7c\x30", NULL, "\x7d\x27", JISX02132004KANJI1 },
+	{ "\x7c\x31", NULL, "\x7a\x63", JISX02132004KANJI2 },
+	{ "\x7c\x32", NULL, "\x7a\x6f", JISX02132004KANJI2 },
+	{ "\x7c\x33", NULL, "\x63\x71", JISX0212KANJISUP   },
+	{ "\x7c\x34", NULL, "\x7d\x2d", JISX02132004KANJI1 },
+	{ "\x7c\x35", NULL, "\x7a\x7c", JISX02132004KANJI2 },
+	{ "\x7c\x36", NULL, "\x7a\x79", JISX02132004KANJI2 },
+	{ "\x7c\x37", NULL, "\x7a\x7a", JISX02132004KANJI2 },
+	{ "\x7c\x38", NULL, "\x7a\x78", JISX02132004KANJI2 },
+	{ "\x7c\x39", NULL, "\x47\x55", CP932              },
+	{ "\x7c\x3a", NULL, "\x64\x40", JISX0212KANJISUP   },
+	{ "\x7c\x3b", NULL, "\x7d\x33", JISX02132004KANJI1 },
+	{ "\x7c\x3c", NULL, "\x7d\x32", JISX02132004KANJI1 },
+	{ "\x7c\x3d", NULL, "\x7d\x38", JISX02132004KANJI1 },
+	{ "\x7c\x3e", NULL, "\x7d\x37", JISX02132004KANJI1 },
+	{ "\x7c\x3f", NULL, "\x7b\x24", JISX02132004KANJI2 },
+	{ "\x7c\x40", NULL, "\x47\x5c", CP932              },
+	{ "\x7c\x41", NULL, "\x7b\x29", JISX02132004KANJI2 },
+	{ "\x7c\x42", NULL, "\x7d\x34", JISX02132004KANJI1 },
+	{ "\x7c\x43", NULL, "\x7b\x28", JISX02132004KANJI2 },
+	{ "\x7c\x44", NULL, "\x7b\x25", JISX02132004KANJI2 },
+	{ "\x7c\x45", NULL, "\x7d\x3f", JISX02132004KANJI1 },
+	{ "\x7c\x46", NULL, "\x7b\x30", JISX02132004KANJI2 },
+	{ "\x7c\x47", NULL, "\x65\x33", JISX0212KANJISUP   },
+	{ "\x7c\x48", NULL, "\x7d\x43", JISX02132004KANJI1 },
+	{ "\x7c\x49", NULL, "\x7d\x44", JISX02132004KANJI1 },
+	{ "\x7c\x4a", NULL, "\x65\x50", JISX0212KANJISUP   },
+	{ "\x7c\x4b", NULL, "\x65\x62", JISX0212KANJISUP   },
+	{ "\x7c\x4c", NULL, "\x7b\x4d", JISX02132004KANJI2 },
+	{ "\x7c\x4d", NULL, "\x65\x6b", JISX0212KANJISUP   },
+	{ "\x7c\x4e", NULL, "\x34\x56", JISX02132004KANJI1 },
+	{ "\x7c\x4f", NULL, "\x7d\x5d", JISX02132004KANJI1 },
+	{ "\x7c\x50", NULL, "\x47\x6c", CP932              },
+	{ "\x7c\x51", NULL, "\x7d\x5e", JISX02132004KANJI1 },
+	{ "\x7c\x52", NULL, "\x7b\x6c", JISX02132004KANJI2 },
+	{ "\x7c\x53", NULL, "\x7d\x66", JISX02132004KANJI1 },
+	{ "\x7c\x54", NULL, "\x7d\x67", JISX02132004KANJI1 },
+	{ "\x7c\x55", NULL, "\x67\x2e", JISX0212KANJISUP   },
+	{ "\x7c\x56", NULL, "\x7d\x68", JISX02132004KANJI1 },
+	{ "\x7c\x57", NULL, "\x7d\x6a", JISX02132004KANJI1 },
+	{ "\x7c\x58", NULL, "\x40\x44", JISX02132004KANJI1 },
+	{ "\x7c\x59", NULL, "\x7b\x7c", JISX02132004KANJI2 },
+	{ "\x7c\x5a", NULL, "\x7e\x21", JISX02132004KANJI1 },
+	{ "\x7c\x5b", NULL, "\x7e\x25", JISX02132004KANJI1 },
+	{ "\x7c\x5c", NULL, "\x48\x53", JISX02132004KANJI1 },
+	{ "\x7c\x5d", NULL, "\x3b\x74", JISX02132004KANJI1 },
+	{ "\x7c\x5e", NULL, "\x68\x5d", JISX0212KANJISUP   },
+	{ "\x7c\x5f", NULL, "\x34\x5b", JISX02132004KANJI1 },
+	{ "\x7c\x60", NULL, "\x7e\x2b", JISX02132004KANJI1 },
+	{ "\x7c\x61", NULL, "\x7e\x33", JISX02132004KANJI1 },
+	{ "\x7c\x62", NULL, "\x39\x62", JISX02132004KANJI1 },
+	{ "\x7c\x63", NULL, "\x7d\x32", JISX02132004KANJI2 },
+	{ "\x7c\x64", NULL, "\x7e\x44", JISX02132004KANJI1 },
+	{ "\x7c\x65", NULL, "\x7e\x43", JISX02132004KANJI1 },
+	{ "\x7c\x66", NULL, "\x7e\x47", JISX02132004KANJI1 },
+	{ "\x7c\x67", NULL, "\x7d\x4a", JISX02132004KANJI2 },
+	{ "\x7c\x68", NULL, "\x6a\x6a", JISX0212KANJISUP   },
+	{ "\x7c\x69", NULL, "\x7e\x4f", JISX02132004KANJI1 },
+	{ "\x7c\x6a", NULL, "\x7e\x5e", JISX02132004KANJI1 },
+	{ "\x7c\x6b", NULL, "\x7e\x34", JISX02132004KANJI2 },
+	{ "\x7c\x6c", NULL, "\x44\x61", JISX02132004KANJI1 },
+	{ "\x7c\x6d", NULL, "\x7e\x4f", JISX02132004KANJI2 },
+	{ "\x7c\x6e", NULL, "\x7e\x72", JISX02132004KANJI1 },
+	{ "\x7c\x71", NULL, "\x2c\x35", JISX02132004KANJI1 },
+	{ "\x7c\x72", NULL, "\x2c\x36", JISX02132004KANJI1 },
+	{ "\x7c\x73", NULL, "\x2c\x37", JISX02132004KANJI1 },
+	{ "\x7c\x74", NULL, "\x2c\x38", JISX02132004KANJI1 },
+	{ "\x7c\x75", NULL, "\x2c\x39", JISX02132004KANJI1 },
+	{ "\x7c\x76", NULL, "\x2c\x3a", JISX02132004KANJI1 },
+	{ "\x7c\x77", NULL, "\x2c\x3b", JISX02132004KANJI1 },
+	{ "\x7c\x78", NULL, "\x2c\x3c", JISX02132004KANJI1 },
+	{ "\x7c\x79", NULL, "\x2c\x3d", JISX02132004KANJI1 },
+	{ "\x7c\x7a", NULL, "\x2c\x3e", JISX02132004KANJI1 },
+	{ "\x7c\x7d", NULL, "\x22\x2f", JISX02132004KANJI1 },
+	{ "\x7c\x7e", NULL, "\x22\x30", JISX02132004KANJI1 },
+};
+static convtable utable_cp932 = { unify_cp932, NULL };
+
+static convtab unify_jisx0213[] = {
+	{ "!!", NULL, " ", ASCII },
+	{ "!#", NULL, ".", ASCII },
+	{ "!$", NULL, ",", ASCII },
+	{ "!%", NULL, ".", ASCII },
+	{ "!'", NULL, ":", ASCII },
+	{ "!(", NULL, ";", ASCII },
+	{ "!)", NULL, "?", ASCII },
+	{ "!*", NULL, "!", ASCII },
+	{ "!0", NULL, "^", ASCII },
+	{ "!2", NULL, "_", ASCII },
+	{ "!=", NULL, "-", ASCII },
+	{ "!>", NULL, "-", ASCII },
+	{ "!?", NULL, "/", ASCII },
+	{ "!@", NULL, "\\", ASCII },
+	{ "!A", NULL, "~", ASCII },
+	{ "!C", NULL, "|", ASCII },
+	{ "!F", NULL, "'", ASCII },
+	{ "!G", NULL, "'", ASCII },
+	{ "!H", NULL, "\"", ASCII },
+	{ "!I", NULL, "\"", ASCII },
+	{ "!J", NULL, "(", ASCII },
+	{ "!K", NULL, ")", ASCII },
+	{ "!N", NULL, "[", ASCII },
+	{ "!O", NULL, "]", ASCII },
+	{ "!R", NULL, "<", ASCII },
+	{ "!S", NULL, ">", ASCII },
+	{ "!\\", NULL, "+", ASCII },
+	{ "!]", NULL, "-", ASCII },
+	{ "!a", NULL, "=", ASCII },
+	{ "!c", NULL, "<", ASCII },
+	{ "!d", NULL, ">", ASCII },
+	{ "!p", NULL, "$", ASCII },
+	{ "!s", NULL, "%", ASCII },
+	{ "!t", NULL, "#", ASCII },
+	{ "!u", NULL, "&", ASCII },
+	{ "!v", NULL, "*", ASCII },
+	{ "!w", NULL, "@", ASCII },
+	{ "#0", NULL, "0", ASCII },
+	{ "#1", NULL, "1", ASCII },
+	{ "#2", NULL, "2", ASCII },
+	{ "#3", NULL, "3", ASCII },
+	{ "#4", NULL, "4", ASCII },
+	{ "#5", NULL, "5", ASCII },
+	{ "#6", NULL, "6", ASCII },
+	{ "#7", NULL, "7", ASCII },
+	{ "#8", NULL, "8", ASCII },
+	{ "#9", NULL, "9", ASCII },
+	{ "#A", NULL, "A", ASCII },
+	{ "#B", NULL, "B", ASCII },
+	{ "#C", NULL, "C", ASCII },
+	{ "#D", NULL, "D", ASCII },
+	{ "#E", NULL, "E", ASCII },
+	{ "#F", NULL, "F", ASCII },
+	{ "#G", NULL, "G", ASCII },
+	{ "#H", NULL, "H", ASCII },
+	{ "#I", NULL, "I", ASCII },
+	{ "#J", NULL, "J", ASCII },
+	{ "#K", NULL, "K", ASCII },
+	{ "#L", NULL, "L", ASCII },
+	{ "#M", NULL, "M", ASCII },
+	{ "#N", NULL, "N", ASCII },
+	{ "#O", NULL, "O", ASCII },
+	{ "#P", NULL, "P", ASCII },
+	{ "#Q", NULL, "Q", ASCII },
+	{ "#R", NULL, "R", ASCII },
+	{ "#S", NULL, "S", ASCII },
+	{ "#T", NULL, "T", ASCII },
+	{ "#U", NULL, "U", ASCII },
+	{ "#V", NULL, "V", ASCII },
+	{ "#W", NULL, "W", ASCII },
+	{ "#X", NULL, "X", ASCII },
+	{ "#Y", NULL, "Y", ASCII },
+	{ "#Z", NULL, "Z", ASCII },
+	{ "#a", NULL, "a", ASCII },
+	{ "#b", NULL, "b", ASCII },
+	{ "#c", NULL, "c", ASCII },
+	{ "#d", NULL, "d", ASCII },
+	{ "#e", NULL, "e", ASCII },
+	{ "#f", NULL, "f", ASCII },
+	{ "#g", NULL, "g", ASCII },
+	{ "#h", NULL, "h", ASCII },
+	{ "#i", NULL, "i", ASCII },
+	{ "#j", NULL, "j", ASCII },
+	{ "#k", NULL, "k", ASCII },
+	{ "#l", NULL, "l", ASCII },
+	{ "#m", NULL, "m", ASCII },
+	{ "#n", NULL, "n", ASCII },
+	{ "#o", NULL, "o", ASCII },
+	{ "#p", NULL, "p", ASCII },
+	{ "#q", NULL, "q", ASCII },
+	{ "#r", NULL, "r", ASCII },
+	{ "#s", NULL, "s", ASCII },
+	{ "#t", NULL, "t", ASCII },
+	{ "#u", NULL, "u", ASCII },
+	{ "#v", NULL, "v", ASCII },
+	{ "#w", NULL, "w", ASCII },
+	{ "#x", NULL, "x", ASCII },
+	{ "#y", NULL, "y", ASCII },
+	{ "#z", NULL, "z", ASCII },
+	{ "\x21\x2d", NULL, "\x34",     LATIN1 },
+	{ "\x21\x2f", NULL, "\x28",     LATIN1 },
+	{ "\x21\x46", NULL, "\x21",     GREEK },
+	{ "\x21\x47", NULL, "\x22",     GREEK },
+	{ "\x21\x5e", NULL, "\x31",     LATIN1 },
+	{ "\x21\x5f", NULL, "\x57",     LATIN1 },
+	{ "\x21\x60", NULL, "\x77",     LATIN1 },
+	{ "\x21\x6b", NULL, "\x30",     LATIN1 },
+	{ "\x21\x71", NULL, "\x22",     LATIN1 },
+	{ "\x21\x72", NULL, "\x23",     LATIN1 },
+	{ "\x21\x78", NULL, "\x27",     LATIN1 },
+	{ "\x22\x4c", NULL, "\x2c",     LATIN1 },
+	{ "\x22\x79", NULL, "\x36",     LATIN1 },
+	{ "\x26\x21", NULL, "\x41",     GREEK },
+	{ "\x26\x22", NULL, "\x42",     GREEK },
+	{ "\x26\x23", NULL, "\x43",     GREEK },
+	{ "\x26\x24", NULL, "\x44",     GREEK },
+	{ "\x26\x25", NULL, "\x45",     GREEK },
+	{ "\x26\x26", NULL, "\x46",     GREEK },
+	{ "\x26\x27", NULL, "\x47",     GREEK },
+	{ "\x26\x28", NULL, "\x48",     GREEK },
+	{ "\x26\x29", NULL, "\x49",     GREEK },
+	{ "\x26\x2a", NULL, "\x4a",     GREEK },
+	{ "\x26\x2b", NULL, "\x4b",     GREEK },
+	{ "\x26\x2c", NULL, "\x4c",     GREEK },
+	{ "\x26\x2d", NULL, "\x4d",     GREEK },
+	{ "\x26\x2e", NULL, "\x4e",     GREEK },
+	{ "\x26\x2f", NULL, "\x4f",     GREEK },
+	{ "\x26\x30", NULL, "\x50",     GREEK },
+	{ "\x26\x31", NULL, "\x51",     GREEK },
+	{ "\x26\x32", NULL, "\x53",     GREEK },
+	{ "\x26\x33", NULL, "\x54",     GREEK },
+	{ "\x26\x34", NULL, "\x55",     GREEK },
+	{ "\x26\x35", NULL, "\x56",     GREEK },
+	{ "\x26\x36", NULL, "\x57",     GREEK },
+	{ "\x26\x37", NULL, "\x58",     GREEK },
+	{ "\x26\x38", NULL, "\x59",     GREEK },
+	{ "\x26\x41", NULL, "\x61",     GREEK },
+	{ "\x26\x42", NULL, "\x62",     GREEK },
+	{ "\x26\x43", NULL, "\x63",     GREEK },
+	{ "\x26\x44", NULL, "\x64",     GREEK },
+	{ "\x26\x45", NULL, "\x65",     GREEK },
+	{ "\x26\x46", NULL, "\x66",     GREEK },
+	{ "\x26\x47", NULL, "\x67",     GREEK },
+	{ "\x26\x48", NULL, "\x68",     GREEK },
+	{ "\x26\x49", NULL, "\x69",     GREEK },
+	{ "\x26\x4a", NULL, "\x6a",     GREEK },
+	{ "\x26\x4b", NULL, "\x6b",     GREEK },
+	{ "\x26\x4c", NULL, "\x6c",     GREEK },
+	{ "\x26\x4d", NULL, "\x6d",     GREEK },
+	{ "\x26\x4e", NULL, "\x6e",     GREEK },
+	{ "\x26\x4f", NULL, "\x6f",     GREEK },
+	{ "\x26\x50", NULL, "\x70",     GREEK },
+	{ "\x26\x51", NULL, "\x71",     GREEK },
+	{ "\x26\x52", NULL, "\x73",     GREEK },
+	{ "\x26\x53", NULL, "\x74",     GREEK },
+	{ "\x26\x54", NULL, "\x75",     GREEK },
+	{ "\x26\x55", NULL, "\x76",     GREEK },
+	{ "\x26\x56", NULL, "\x77",     GREEK },
+	{ "\x26\x57", NULL, "\x78",     GREEK },
+	{ "\x26\x58", NULL, "\x79",     GREEK },
+	{ "\x26\x59", NULL, "\x72",     GREEK },
+	{ "\x27\x21", NULL, "\x30",     CYRILLIC },
+	{ "\x27\x22", NULL, "\x31",     CYRILLIC },
+	{ "\x27\x23", NULL, "\x32",     CYRILLIC },
+	{ "\x27\x24", NULL, "\x33",     CYRILLIC },
+	{ "\x27\x25", NULL, "\x34",     CYRILLIC },
+	{ "\x27\x26", NULL, "\x35",     CYRILLIC },
+	{ "\x27\x27", NULL, "\x21",     CYRILLIC },
+	{ "\x27\x28", NULL, "\x36",     CYRILLIC },
+	{ "\x27\x29", NULL, "\x37",     CYRILLIC },
+	{ "\x27\x2a", NULL, "\x38",     CYRILLIC },
+	{ "\x27\x2b", NULL, "\x39",     CYRILLIC },
+	{ "\x27\x2c", NULL, "\x3a",     CYRILLIC },
+	{ "\x27\x2d", NULL, "\x3b",     CYRILLIC },
+	{ "\x27\x2e", NULL, "\x3c",     CYRILLIC },
+	{ "\x27\x2f", NULL, "\x3d",     CYRILLIC },
+	{ "\x27\x30", NULL, "\x3e",     CYRILLIC },
+	{ "\x27\x31", NULL, "\x3f",     CYRILLIC },
+	{ "\x27\x32", NULL, "\x40",     CYRILLIC },
+	{ "\x27\x33", NULL, "\x41",     CYRILLIC },
+	{ "\x27\x34", NULL, "\x42",     CYRILLIC },
+	{ "\x27\x35", NULL, "\x43",     CYRILLIC },
+	{ "\x27\x36", NULL, "\x44",     CYRILLIC },
+	{ "\x27\x37", NULL, "\x45",     CYRILLIC },
+	{ "\x27\x38", NULL, "\x46",     CYRILLIC },
+	{ "\x27\x39", NULL, "\x47",     CYRILLIC },
+	{ "\x27\x3a", NULL, "\x48",     CYRILLIC },
+	{ "\x27\x3b", NULL, "\x49",     CYRILLIC },
+	{ "\x27\x3c", NULL, "\x4a",     CYRILLIC },
+	{ "\x27\x3d", NULL, "\x4b",     CYRILLIC },
+	{ "\x27\x3e", NULL, "\x4c",     CYRILLIC },
+	{ "\x27\x3f", NULL, "\x4d",     CYRILLIC },
+	{ "\x27\x40", NULL, "\x4e",     CYRILLIC },
+	{ "\x27\x41", NULL, "\x4f",     CYRILLIC },
+	{ "\x27\x51", NULL, "\x50",     CYRILLIC },
+	{ "\x27\x52", NULL, "\x51",     CYRILLIC },
+	{ "\x27\x53", NULL, "\x52",     CYRILLIC },
+	{ "\x27\x54", NULL, "\x53",     CYRILLIC },
+	{ "\x27\x55", NULL, "\x54",     CYRILLIC },
+	{ "\x27\x56", NULL, "\x55",     CYRILLIC },
+	{ "\x27\x57", NULL, "\x71",     CYRILLIC },
+	{ "\x27\x58", NULL, "\x56",     CYRILLIC },
+	{ "\x27\x59", NULL, "\x57",     CYRILLIC },
+	{ "\x27\x5a", NULL, "\x58",     CYRILLIC },
+	{ "\x27\x5b", NULL, "\x59",     CYRILLIC },
+	{ "\x27\x5c", NULL, "\x5a",     CYRILLIC },
+	{ "\x27\x5d", NULL, "\x5b",     CYRILLIC },
+	{ "\x27\x5e", NULL, "\x5c",     CYRILLIC },
+	{ "\x27\x5f", NULL, "\x5d",     CYRILLIC },
+	{ "\x27\x60", NULL, "\x5e",     CYRILLIC },
+	{ "\x27\x61", NULL, "\x5f",     CYRILLIC },
+	{ "\x27\x62", NULL, "\x60",     CYRILLIC },
+	{ "\x27\x63", NULL, "\x61",     CYRILLIC },
+	{ "\x27\x64", NULL, "\x62",     CYRILLIC },
+	{ "\x27\x65", NULL, "\x63",     CYRILLIC },
+	{ "\x27\x66", NULL, "\x64",     CYRILLIC },
+	{ "\x27\x67", NULL, "\x65",     CYRILLIC },
+	{ "\x27\x68", NULL, "\x66",     CYRILLIC },
+	{ "\x27\x69", NULL, "\x67",     CYRILLIC },
+	{ "\x27\x6a", NULL, "\x68",     CYRILLIC },
+	{ "\x27\x6b", NULL, "\x69",     CYRILLIC },
+	{ "\x27\x6c", NULL, "\x6a",     CYRILLIC },
+	{ "\x27\x6d", NULL, "\x6b",     CYRILLIC },
+	{ "\x27\x6e", NULL, "\x6c",     CYRILLIC },
+	{ "\x27\x6f", NULL, "\x6d",     CYRILLIC },
+	{ "\x27\x70", NULL, "\x6e",     CYRILLIC },
+	{ "\x27\x71", NULL, "\x6f",     CYRILLIC },
+	{ "\x29\x21", NULL, "\x24",     GREEK },
+	{ "\x29\x22", NULL, "\x20",     LATIN1 },
+	{ "\x29\x23", NULL, "\x21",     LATIN1 },
+	{ "\x29\x24", NULL, "\x24",     LATIN1 },
+	{ "\x29\x25", NULL, "\x26",     LATIN1 },
+	{ "\x29\x26", NULL, "\x29",     LATIN1 },
+	{ "\x29\x27", NULL, "\x2a",     LATIN1 },
+	{ "\x29\x28", NULL, "\x2b",     LATIN1 },
+	{ "\x29\x29", NULL, "\x2d",     LATIN1 },
+	{ "\x29\x2a", NULL, "\x2e",     LATIN1 },
+	{ "\x29\x2b", NULL, "\x2f",     LATIN1 },
+	{ "\x29\x2c", NULL, "\x32",     LATIN1 },
+	{ "\x29\x2d", NULL, "\x33",     LATIN1 },
+	{ "\x29\x2e", NULL, "\x37",     LATIN1 },
+	{ "\x29\x2f", NULL, "\x38",     LATIN1 },
+	{ "\x29\x30", NULL, "\x39",     LATIN1 },
+	{ "\x29\x31", NULL, "\x3a",     LATIN1 },
+	{ "\x29\x32", NULL, "\x3b",     LATIN1 },
+	{ "\x29\x33", NULL, "\x3c",     LATIN1 },
+	{ "\x29\x34", NULL, "\x3d",     LATIN1 },
+	{ "\x29\x35", NULL, "\x3e",     LATIN1 },
+	{ "\x29\x36", NULL, "\x3f",     LATIN1 },
+	{ "\x29\x37", NULL, "\x40",     LATIN1 },
+	{ "\x29\x38", NULL, "\x41",     LATIN1 },
+	{ "\x29\x39", NULL, "\x42",     LATIN1 },
+	{ "\x29\x3a", NULL, "\x43",     LATIN1 },
+	{ "\x29\x3b", NULL, "\x44",     LATIN1 },
+	{ "\x29\x3c", NULL, "\x45",     LATIN1 },
+	{ "\x29\x3d", NULL, "\x46",     LATIN1 },
+	{ "\x29\x3e", NULL, "\x47",     LATIN1 },
+	{ "\x29\x3f", NULL, "\x48",     LATIN1 },
+	{ "\x29\x40", NULL, "\x49",     LATIN1 },
+	{ "\x29\x41", NULL, "\x4a",     LATIN1 },
+	{ "\x29\x42", NULL, "\x4b",     LATIN1 },
+	{ "\x29\x43", NULL, "\x4c",     LATIN1 },
+	{ "\x29\x44", NULL, "\x4d",     LATIN1 },
+	{ "\x29\x45", NULL, "\x4e",     LATIN1 },
+	{ "\x29\x46", NULL, "\x4f",     LATIN1 },
+	{ "\x29\x47", NULL, "\x50",     LATIN1 },
+	{ "\x29\x48", NULL, "\x51",     LATIN1 },
+	{ "\x29\x49", NULL, "\x52",     LATIN1 },
+	{ "\x29\x4a", NULL, "\x53",     LATIN1 },
+	{ "\x29\x4b", NULL, "\x54",     LATIN1 },
+	{ "\x29\x4c", NULL, "\x55",     LATIN1 },
+	{ "\x29\x4d", NULL, "\x56",     LATIN1 },
+	{ "\x29\x4e", NULL, "\x58",     LATIN1 },
+	{ "\x29\x4f", NULL, "\x59",     LATIN1 },
+	{ "\x29\x50", NULL, "\x5a",     LATIN1 },
+	{ "\x29\x51", NULL, "\x5b",     LATIN1 },
+	{ "\x29\x52", NULL, "\x5c",     LATIN1 },
+	{ "\x29\x53", NULL, "\x5d",     LATIN1 },
+	{ "\x29\x54", NULL, "\x5e",     LATIN1 },
+	{ "\x29\x55", NULL, "\x5f",     LATIN1 },
+	{ "\x29\x56", NULL, "\x60",     LATIN1 },
+	{ "\x29\x57", NULL, "\x61",     LATIN1 },
+	{ "\x29\x58", NULL, "\x62",     LATIN1 },
+	{ "\x29\x59", NULL, "\x63",     LATIN1 },
+	{ "\x29\x5a", NULL, "\x64",     LATIN1 },
+	{ "\x29\x5b", NULL, "\x65",     LATIN1 },
+	{ "\x29\x5c", NULL, "\x66",     LATIN1 },
+	{ "\x29\x5d", NULL, "\x67",     LATIN1 },
+	{ "\x29\x5e", NULL, "\x68",     LATIN1 },
+	{ "\x29\x5f", NULL, "\x69",     LATIN1 },
+	{ "\x29\x60", NULL, "\x6a",     LATIN1 },
+	{ "\x29\x61", NULL, "\x6b",     LATIN1 },
+	{ "\x29\x62", NULL, "\x6c",     LATIN1 },
+	{ "\x29\x63", NULL, "\x6d",     LATIN1 },
+	{ "\x29\x64", NULL, "\x6e",     LATIN1 },
+	{ "\x29\x65", NULL, "\x6f",     LATIN1 },
+	{ "\x29\x66", NULL, "\x70",     LATIN1 },
+	{ "\x29\x67", NULL, "\x71",     LATIN1 },
+	{ "\x29\x68", NULL, "\x72",     LATIN1 },
+	{ "\x29\x69", NULL, "\x73",     LATIN1 },
+	{ "\x29\x6a", NULL, "\x74",     LATIN1 },
+	{ "\x29\x6b", NULL, "\x75",     LATIN1 },
+	{ "\x29\x6c", NULL, "\x76",     LATIN1 },
+	{ "\x29\x6d", NULL, "\x78",     LATIN1 },
+	{ "\x29\x6e", NULL, "\x79",     LATIN1 },
+	{ "\x29\x6f", NULL, "\x7a",     LATIN1 },
+	{ "\x29\x70", NULL, "\x7b",     LATIN1 },
+	{ "\x29\x71", NULL, "\x7c",     LATIN1 },
+	{ "\x29\x72", NULL, "\x7d",     LATIN1 },
+	{ "\x29\x73", NULL, "\x7e",     LATIN1 },
+	{ "\x29\x74", NULL, "\x7f",     LATIN1 },
+	{ "\x29\x75", NULL, "\x40",     LATIN4 },
+	{ "\x29\x76", NULL, "\x4f",     LATIN4 },
+	{ "\x29\x77", NULL, "\x5e",     LATIN4 },
+	{ "\x29\x78", NULL, "\x2a",     LATIN4 },
+	{ "\x29\x79", NULL, "\x52",     LATIN4 },
+	{ "\x29\x7a", NULL, "\x60",     LATIN4 },
+	{ "\x29\x7b", NULL, "\x6f",     LATIN4 },
+	{ "\x29\x7c", NULL, "\x7e",     LATIN4 },
+	{ "\x29\x7d", NULL, "\x3a",     LATIN4 },
+	{ "\x29\x7e", NULL, "\x72",     LATIN4 },
+	{ "\x2a\x21", NULL, "\x21",     LATIN2 },
+	{ "\x2a\x22", NULL, "\x22",     LATIN2 },
+	{ "\x2a\x23", NULL, "\x23",     LATIN2 },
+	{ "\x2a\x24", NULL, "\x25",     LATIN2 },
+	{ "\x2a\x25", NULL, "\x26",     LATIN2 },
+	{ "\x2a\x26", NULL, "\x29",     LATIN2 },
+	{ "\x2a\x27", NULL, "\x2a",     LATIN2 },
+	{ "\x2a\x28", NULL, "\x2b",     LATIN2 },
+	{ "\x2a\x29", NULL, "\x2c",     LATIN2 },
+	{ "\x2a\x2a", NULL, "\x2e",     LATIN2 },
+	{ "\x2a\x2b", NULL, "\x2f",     LATIN2 },
+	{ "\x2a\x2c", NULL, "\x31",     LATIN2 },
+	{ "\x2a\x2d", NULL, "\x32",     LATIN2 },
+	{ "\x2a\x2e", NULL, "\x33",     LATIN2 },
+	{ "\x2a\x2f", NULL, "\x35",     LATIN2 },
+	{ "\x2a\x30", NULL, "\x36",     LATIN2 },
+	{ "\x2a\x31", NULL, "\x37",     LATIN2 },
+	{ "\x2a\x32", NULL, "\x39",     LATIN2 },
+	{ "\x2a\x33", NULL, "\x3a",     LATIN2 },
+	{ "\x2a\x34", NULL, "\x3b",     LATIN2 },
+	{ "\x2a\x35", NULL, "\x3c",     LATIN2 },
+	{ "\x2a\x36", NULL, "\x3d",     LATIN2 },
+	{ "\x2a\x37", NULL, "\x3e",     LATIN2 },
+	{ "\x2a\x38", NULL, "\x3f",     LATIN2 },
+	{ "\x2a\x39", NULL, "\x40",     LATIN2 },
+	{ "\x2a\x3a", NULL, "\x43",     LATIN2 },
+	{ "\x2a\x3b", NULL, "\x45",     LATIN2 },
+	{ "\x2a\x3c", NULL, "\x46",     LATIN2 },
+	{ "\x2a\x3d", NULL, "\x48",     LATIN2 },
+	{ "\x2a\x3e", NULL, "\x4a",     LATIN2 },
+	{ "\x2a\x3f", NULL, "\x4c",     LATIN2 },
+	{ "\x2a\x40", NULL, "\x4f",     LATIN2 },
+	{ "\x2a\x41", NULL, "\x51",     LATIN2 },
+	{ "\x2a\x42", NULL, "\x52",     LATIN2 },
+	{ "\x2a\x43", NULL, "\x55",     LATIN2 },
+	{ "\x2a\x44", NULL, "\x58",     LATIN2 },
+	{ "\x2a\x45", NULL, "\x59",     LATIN2 },
+	{ "\x2a\x46", NULL, "\x5b",     LATIN2 },
+	{ "\x2a\x47", NULL, "\x5e",     LATIN2 },
+	{ "\x2a\x48", NULL, "\x60",     LATIN2 },
+	{ "\x2a\x49", NULL, "\x63",     LATIN2 },
+	{ "\x2a\x4a", NULL, "\x65",     LATIN2 },
+	{ "\x2a\x4b", NULL, "\x66",     LATIN2 },
+	{ "\x2a\x4c", NULL, "\x68",     LATIN2 },
+	{ "\x2a\x4d", NULL, "\x6a",     LATIN2 },
+	{ "\x2a\x4e", NULL, "\x6c",     LATIN2 },
+	{ "\x2a\x4f", NULL, "\x6f",     LATIN2 },
+	{ "\x2a\x50", NULL, "\x70",     LATIN2 },
+	{ "\x2a\x51", NULL, "\x71",     LATIN2 },
+	{ "\x2a\x52", NULL, "\x72",     LATIN2 },
+	{ "\x2a\x53", NULL, "\x75",     LATIN2 },
+	{ "\x2a\x54", NULL, "\x78",     LATIN2 },
+	{ "\x2a\x55", NULL, "\x79",     LATIN2 },
+	{ "\x2a\x56", NULL, "\x7b",     LATIN2 },
+	{ "\x2a\x57", NULL, "\x7e",     LATIN2 },
+	{ "\x2a\x58", NULL, "\x7f",     LATIN2 },
+	{ "\x2a\x59", NULL, "\x46",     LATIN3 },
+	{ "\x2a\x5a", NULL, "\x58",     LATIN3 },
+	{ "\x2a\x5b", NULL, "\x26",     LATIN3 },
+	{ "\x2a\x5c", NULL, "\x2c",     LATIN3 },
+	{ "\x2a\x5d", NULL, "\x5e",     LATIN3 },
+	{ "\x2a\x5e", NULL, "\x5d",     LATIN3 },
+	{ "\x2a\x5f", NULL, "\x66",     LATIN3 },
+	{ "\x2a\x60", NULL, "\x78",     LATIN3 },
+	{ "\x2a\x61", NULL, "\x36",     LATIN3 },
+	{ "\x2a\x62", NULL, "\x3c",     LATIN3 },
+	{ "\x2a\x63", NULL, "\x7e",     LATIN3 },
+	{ "\x2a\x64", NULL, "\x7d",     LATIN3 },
+	{ "\x2a\x7a", NULL, "\x3f",     LATIN4 },
+	{ "\x2a\x7d", NULL, "\x31",     LATIN3 },
+	{ "\x2d\x62", NULL, "\x70",     CYRILLIC },
+	{ 0, 0, 0, 0 }
+};
+static convtable utable_jisx0213 = { unify_jisx0213, NULL };
 
 static convtab unify_n_jisx0201roman[] = {
-	/* 0x5C((J\(B) -X 0x5C(\) */
 	{ "\\", NULL, "\\", ASCII },
-	/* 0x7E((J~(B) -X 0x7E(~) */
 	{ "~", NULL, "~", ASCII },
-	/* NULL */
 	{ 0, 0, 0, 0 }
 };
 static convtable utable_n_jisx0201roman = { unify_n_jisx0201roman, NULL };
 
 static convtab unify_n_iso646[] = {
-	/* 0x23((@#(B) -X 0x23(#) */
 	{ "#", NULL, "#", ASCII },
-	/* 0x24((@$(B) -X 0x24($) */
 	{ "$", NULL, "$", ASCII },
-	/* 0x40((@@(B) -X 0x40(@) */
 	{ "@", NULL, "@", ASCII },
-	/* 0x5B((@[(B) -X 0x5B([) */
 	{ "[", NULL, "[", ASCII },
-	/* 0x5C((@\(B) -X 0x5C(\) */
 	{ "\\", NULL, "\\", ASCII },
-	/* 0x5D((@](B) -X 0x5D(]) */
 	{ "]", NULL, "]", ASCII },
-	/* 0x5E((@^(B) -X 0x5E(^) */
 	{ "^", NULL, "^", ASCII },
-	/* 0x60((@`(B) -X 0x60(`) */
 	{ "`", NULL, "`", ASCII },
-	/* 0x7B((@{(B) -X 0x7B({) */
 	{ "{", NULL, "{", ASCII },
-	/* 0x7C((@|(B) -X 0x7C(|) */
 	{ "|", NULL, "|", ASCII },
-	/* 0x7D((@}(B) -X 0x7D(}) */
 	{ "}", NULL, "}", ASCII },
-	/* 0x7E((@~(B) -X 0x7E(~) */
 	{ "~", NULL, "~", ASCII },
-	/* NULL */
 	{ 0, 0, 0, 0 }
 };
 static convtable utable_n_iso646 = { unify_n_iso646, NULL };
-
-static convtab eliminate_wrong_jisx0208_78[] = {
-	/* empty rows */
-	/* 8-15 KU 0x2821($@(!(B)-0x2F7E($@/~(B) -> 0x222E($B".(B) */
-	{ "(!", "/~", "\".", JISX0208KANJI },
-	/* 84-94 KU 0x7421($@t!(B)-0x7E7E($@~~(B) -> 0x222E($B".(B) */
-	{ "t!", "~~", "\".", JISX0208KANJI },
-
-	/* sequences of empty columns */
-	/* 2 KU 0x222F($@"/(B)-0x227E($@"~(B) -> 0x222E($B".(B) */
-	{ "\"/", "\"~", "\".", JISX0208KANJI },
-	/* 3 KU 0x2321($@#!(B)-0x232F($@#/(B) -> 0x222E($B".(B) */
-	{ "#!", "#/", "\".", JISX0208KANJI },
-	/* 3 KU 0x233A($@#:(B)-0x2340($@#@(B) -> 0x222E($B".(B) */
-	{ "#:", "#@", "\".", JISX0208KANJI },
-	/* 3 KU 0x235B($@#[(B)-0x2360($@#`(B) -> 0x222E($B".(B) */
-	{ "#[", "#`", "\".", JISX0208KANJI },
-	/* 3 KU 0x237B($@#{(B)-0x237E($@#~(B) -> 0x222E($B".(B) */
-	{ "#{", "#~", "\".", JISX0208KANJI },
-	/* 4 KU 0x2474($@$t(B)-0x247E($@$~(B) -> 0x222E($B".(B) */
-	{ "$t", "$~", "\".", JISX0208KANJI },
-	/* 5 KU 0x2577($@%w(B)-0x257E($@%~(B) -> 0x222E($B".(B) */
-	{ "%w", "%~", "\".", JISX0208KANJI },
-	/* 6 KU 0x2639($@&9(B)-0x2640($@&@(B) -> 0x222E($B".(B) */
-	{ "&9", "&@", "\".", JISX0208KANJI },
-	/* 6 KU 0x2659($@&Y(B)-0x267E($@&~(B) -> 0x222E($B".(B) */
-	{ "&Y", "&~", "\".", JISX0208KANJI },
-	/* 7 KU 0x2742($@'B(B)-0x2750($@'P(B) -> 0x222E($B".(B) */
-	{ "'B", "'P", "\".", JISX0208KANJI },
-	/* 7 KU 0x2772($@'r(B)-0x277E($@'~(B) -> 0x222E($B".(B) */
-	{ "'r", "'~", "\".", JISX0208KANJI },
-	/* 47 KU 0x4F54($@OT(B)-0x4F7E($@O~(B) -> 0x222E($B".(B) */
-	{ "OT", "O~", "\".", JISX0208KANJI },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_jisx0208_78 = { eliminate_wrong_jisx0208_78, NULL };
-
-static convtab eliminate_wrong_jisx0208_83[] = {
-	/* empty rows */
-	/* 9-15 KU 0x2921($B)!(B)-0x2F7E($B/~(B) -> 0x222E($B".(B) */
-	{ ")!", "/~", "\".", JISX0208KANJI },
-	/* 85-94 KU 0x7521($Bu!(B)-0x7E7E($B~~(B) -> 0x222E($B".(B) */
-	{ "u!", "~~", "\".", JISX0208KANJI },
-
-	/* sequences of empty columns */
-	/* 2 KU 0x222F($B"/(B)-0x2239($B"9(B) -> 0x222E($B".(B) */
-	{ "\"/", "\"9", "\".", JISX0208KANJI },
-	/* 2 KU 0x2242($B"B(B)-0x2249($B"I(B) -> 0x222E($B".(B) */
-	{ "\"B", "\"I", "\".", JISX0208KANJI },
-	/* 2 KU 0x2251($B"Q(B)-0x225B($B"[(B) -> 0x222E($B".(B) */
-	{ "\"Q", "\"[", "\".", JISX0208KANJI },
-	/* 2 KU 0x226B($B"k(B)-0x2271($B"q(B) -> 0x222E($B".(B) */
-	{ "\"k", "\"q", "\".", JISX0208KANJI },
-	/* 2 KU 0x227A($B"z(B)-0x227D($B"}(B) -> 0x222E($B".(B) */
-	{ "\"z", "\"}", "\".", JISX0208KANJI },
-	/* 3 KU 0x2321($B#!(B)-0x232F($B#/(B) -> 0x222E($B".(B) */
-	{ "#!", "#/", "\".", JISX0208KANJI },
-	/* 3 KU 0x233A($B#:(B)-0x2340($B#@(B) -> 0x222E($B".(B) */
-	{ "#:", "#@", "\".", JISX0208KANJI },
-	/* 3 KU 0x235B($B#[(B)-0x2360($B#`(B) -> 0x222E($B".(B) */
-	{ "#[", "#`", "\".", JISX0208KANJI },
-	/* 3 KU 0x237B($B#{(B)-0x237E($B#~(B) -> 0x222E($B".(B) */
-	{ "#{", "#~", "\".", JISX0208KANJI },
-	/* 4 KU 0x2474($B$t(B)-0x247E($B$~(B) -> 0x222E($B".(B) */
-	{ "$t", "$~", "\".", JISX0208KANJI },
-	/* 5 KU 0x2577($B%w(B)-0x257E($B%~(B) -> 0x222E($B".(B) */
-	{ "%w", "%~", "\".", JISX0208KANJI },
-	/* 6 KU 0x2639($B&9(B)-0x2640($B&@(B) -> 0x222E($B".(B) */
-	{ "&9", "&@", "\".", JISX0208KANJI },
-	/* 6 KU 0x2659($B&Y(B)-0x267E($B&~(B) -> 0x222E($B".(B) */
-	{ "&Y", "&~", "\".", JISX0208KANJI },
-	/* 7 KU 0x2742($B'B(B)-0x2750($B'P(B) -> 0x222E($B".(B) */
-	{ "'B", "'P", "\".", JISX0208KANJI },
-	/* 7 KU 0x2772($B'r(B)-0x277E($B'~(B) -> 0x222E($B".(B) */
-	{ "'r", "'~", "\".", JISX0208KANJI },
-	/* 8 KU 0x2841($B(A(B)-0x287E($B(~(B) -> 0x222E($B".(B) */
-	{ "(A", "(~", "\".", JISX0208KANJI },
-	/* 47 KU 0x4F54($BOT(B)-0x4F7E($BO~(B) -> 0x222E($B".(B) */
-	{ "OT", "O~", "\".", JISX0208KANJI },
-	/* 84 KU 0x7425($Bt%(B)-0x747E($Bt~(B) -> 0x222E($B".(B) */
-	{ "t%", "t~", "\".", JISX0208KANJI },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_jisx0208_83 = { eliminate_wrong_jisx0208_83, NULL };
-
-static convtab eliminate_wrong_jisx0208_90[] = {
-	/* empty rows */
-	/* 9-15 KU 0x2921(&@$B)!(B)-0x2F7E(&@$B/~(B) -> 0x222E($B".(B) */
-	{ ")!", "/~", "\".", JISX0208KANJI },
-	/* 85-94 KU 0x7521(&@$Bu!(B)-0x7E7E(&@$B~~(B) -> 0x222E($B".(B) */
-	{ "u!", "~~", "\".", JISX0208KANJI },
-
-	/* sequences of empty columns */
-	/* 2 KU 0x222F(&@$B"/(B)-0x2239(&@$B"9(B) -> 0x222E($B".(B) */
-	{ "\"/", "\"9", "\".", JISX0208KANJI },
-	/* 2 KU 0x2242(&@$B"B(B)-0x2249(&@$B"I(B) -> 0x222E($B".(B) */
-	{ "\"B", "\"I", "\".", JISX0208KANJI },
-	/* 2 KU 0x2251(&@$B"Q(B)-0x225B(&@$B"[(B) -> 0x222E($B".(B) */
-	{ "\"Q", "\"[", "\".", JISX0208KANJI },
-	/* 2 KU 0x226B(&@$B"k(B)-0x2271(&@$B"q(B) -> 0x222E($B".(B) */
-	{ "\"k", "\"q", "\".", JISX0208KANJI },
-	/* 2 KU 0x227A(&@$B"z(B)-0x227D(&@$B"}(B) -> 0x222E($B".(B) */
-	{ "\"z", "\"}", "\".", JISX0208KANJI },
-	/* 3 KU 0x2321(&@$B#!(B)-0x232F(&@$B#/(B) -> 0x222E($B".(B) */
-	{ "#!", "#/", "\".", JISX0208KANJI },
-	/* 3 KU 0x233A(&@$B#:(B)-0x2340(&@$B#@(B) -> 0x222E($B".(B) */
-	{ "#:", "#@", "\".", JISX0208KANJI },
-	/* 3 KU 0x235B(&@$B#[(B)-0x2360(&@$B#`(B) -> 0x222E($B".(B) */
-	{ "#[", "#`", "\".", JISX0208KANJI },
-	/* 3 KU 0x237B(&@$B#{(B)-0x237E(&@$B#~(B) -> 0x222E($B".(B) */
-	{ "#{", "#~", "\".", JISX0208KANJI },
-	/* 4 KU 0x2474(&@$B$t(B)-0x247E(&@$B$~(B) -> 0x222E($B".(B) */
-	{ "$t", "$~", "\".", JISX0208KANJI },
-	/* 5 KU 0x2577(&@$B%w(B)-0x257E(&@$B%~(B) -> 0x222E($B".(B) */
-	{ "%w", "%~", "\".", JISX0208KANJI },
-	/* 6 KU 0x2639(&@$B&9(B)-0x2640(&@$B&@(B) -> 0x222E($B".(B) */
-	{ "&9", "&@", "\".", JISX0208KANJI },
-	/* 6 KU 0x2659(&@$B&Y(B)-0x267E(&@$B&~(B) -> 0x222E($B".(B) */
-	{ "&Y", "&~", "\".", JISX0208KANJI },
-	/* 7 KU 0x2742(&@$B'B(B)-0x2750(&@$B'P(B) -> 0x222E($B".(B) */
-	{ "'B", "'P", "\".", JISX0208KANJI },
-	/* 7 KU 0x2772(&@$B'r(B)-0x277E(&@$B'~(B) -> 0x222E($B".(B) */
-	{ "'r", "'~", "\".", JISX0208KANJI },
-	/* 8 KU 0x2841(&@$B(A(B)-0x287E(&@$B(~(B) -> 0x222E($B".(B) */
-	{ "(A", "(~", "\".", JISX0208KANJI },
-	/* 47 KU 0x4F54(&@$BOT(B)-0x4F7E(&@$BO~(B) -> 0x222E($B".(B) */
-	{ "OT", "O~", "\".", JISX0208KANJI },
-	/* 84 KU 0x7427(&@$Bt'(B)-0x747E(&@$Bt~(B) -> 0x222E($B".(B) */
-	{ "t'", "t~", "\".", JISX0208KANJI },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_jisx0208_90 = { eliminate_wrong_jisx0208_90, NULL };
-
-static convtab eliminate_wrong_jisx0212[] = {
-	/* empty rows */
-	/* 1 KU 0x2121($(D!!(B)-0x217E($(D!~(B) -> 0x222E($B".(B) */
-	{ "!!", "!~", "\".", JISX0208KANJI },
-	/* 3-5 KU 0x2321($(D#!(B)-0x257E($(D%~(B) -> 0x222E($B".(B) */
-	{ "#!", "%~", "\".", JISX0208KANJI },
-	/* 8 KU 0x2821($(D(!(B)-0x287E($(D(~(B) -> 0x222E($B".(B) */
-	{ "(!", "(~", "\".", JISX0208KANJI },
-	/* 12-15 KU 0x2C21($(D,!(B)-0x2F7E($(D/~(B) -> 0x222E($B".(B) */
-	{ ",!", "/~", "\".", JISX0208KANJI },
-	/* 78-94 KU 0x6E21($(Dn!(B)-0x7E7E($(D~~(B) -> 0x222E($B".(B) */
-	{ "n!", "~~", "\".", JISX0208KANJI },
-
-	/* sequences of empty columns */
-	/* 2 KU 0x2221($(D"!(B)-0x222E($(D".(B) -> 0x222E($B".(B) */
-	{ "\"!", "\".", "\".", JISX0208KANJI },
-	/* 2 KU 0x223A($(D":(B)-0x2241($(D"A(B) -> 0x222E($B".(B) */
-	{ "\":", "\"A", "\".", JISX0208KANJI },
-	/* 2 KU 0x2245($(D"E(B)-0x226A($(D"j(B) -> 0x222E($B".(B) */
-	{ "\"E", "\"j", "\".", JISX0208KANJI },
-	/* 2 KU 0x2272($(D"r(B)-0x227E($(D"~(B) -> 0x222E($B".(B) */
-	{ "\"r", "\"~", "\".", JISX0208KANJI },
-	/* 6 KU 0x2621($(D&!(B)-0x2660($(D&`(B) -> 0x222E($B".(B) */
-	{ "&!", "&`", "\".", JISX0208KANJI },
-	/* 6 KU 0x2666($(D&f(B) -> 0x222E($B".(B) */
-	{ "&f", NULL, "\".", JISX0208KANJI },
-	/* 6 KU 0x2668($(D&h(B) -> 0x222E($B".(B) */
-	{ "&h", NULL, "\".", JISX0208KANJI },
-	/* 6 KU 0x266B($(D&k(B) -> 0x222E($B".(B) */
-	{ "&k", NULL, "\".", JISX0208KANJI },
-	/* 6 KU 0x266D($(D&m(B)-0x2670($(D&p(B) -> 0x222E($B".(B) */
-	{ "&m", "&p", "\".", JISX0208KANJI },
-	/* 6 KU 0x267D($(D&}(B)-0x267E($(D&~(B) -> 0x222E($B".(B) */
-	{ "&}", "&~", "\".", JISX0208KANJI },
-	/* 7 KU 0x2721($(D'!(B)-0x2741($(D'A(B) -> 0x222E($B".(B) */
-	{ "'!", "'A", "\".", JISX0208KANJI },
-	/* 7 KU 0x274F($(D'O(B)-0x2771($(D'q(B) -> 0x222E($B".(B) */
-	{ "'O", "'q", "\".", JISX0208KANJI },
-	/* 9 KU 0x2923($(D)#(B) -> 0x222E($B".(B) */
-	{ ")#", NULL, "\".", JISX0208KANJI },
-	/* 9 KU 0x2925($(D)%(B) -> 0x222E($B".(B) */
-	{ ")%", NULL, "\".", JISX0208KANJI },
-	/* 9 KU 0x2927($(D)'(B) -> 0x222E($B".(B) */
-	{ ")'", NULL, "\".", JISX0208KANJI },
-	/* 9 KU 0x292A($(D)*(B) -> 0x222E($B".(B) */
-	{ ")*", NULL, "\".", JISX0208KANJI },
-	/* 9 KU 0x292E($(D).(B) -> 0x222E($B".(B) */
-	{ ").", NULL, "\".", JISX0208KANJI },
-	/* 9 KU 0x2931($(D)1(B)-0x2940($(D)@(B) -> 0x222E($B".(B) */
-	{ ")1", ")@", "\".", JISX0208KANJI },
-	/* 9 KU 0x2951($(D)Q(B)-0x297E($(D)~(B) -> 0x222E($B".(B) */
-	{ ")Q", ")~", "\".", JISX0208KANJI },
-	/* 10 KU 0x2A39($(D*9(B) -> 0x222E($B".(B) */
-	{ "*9", NULL, "\".", JISX0208KANJI },
-	/* 10 KU 0x2A78($(D*x(B)-0x2A7E($(D*~(B) -> 0x222E($B".(B) */
-	{ "*x", "*~", "\".", JISX0208KANJI },
-	/* 11 KU 0x2B3C($(D+<(B) -> 0x222E($B".(B) */
-	{ "+<", NULL, "\".", JISX0208KANJI },
-	/* 11 KU 0x2B44($(D+D(B) -> 0x222E($B".(B) */
-	{ "+D", NULL, "\".", JISX0208KANJI },
-	/* 11 KU 0x2B78($(D+x(B)-0x2B7E($(D+~(B) -> 0x222E($B".(B) */
-	{ "+x", "+~", "\".", JISX0208KANJI },
-	/* 77 KU 0x6D64($(Dmd(B)-0x6D7E($(Dm~(B) -> 0x222E($B".(B) */
-	{ "md", "m~", "\".", JISX0208KANJI },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_jisx0212 = { eliminate_wrong_jisx0212, NULL };
-
-static convtab eliminate_wrong_jisx0213_1[] = {
-	/* no empty row */
-
-	/* sequences of empty columns */
-	/* 4 KU 0x247C($(O$|(B)-0x247E($(O$~(B) -> 0x222E($B".(B) */
-	{ "$|", "$~", "\".", JISX0208KANJI },
-	/* 8 KU 0x285F($(O(_(B)-0x2866($(O(f(B) -> 0x222E($B".(B) */
-	{ "(_", "(f", "\".", JISX0208KANJI },
-	/* 8 KU 0x287D($(O(}(B)-0x287E($(O(~(B) -> 0x222E($B".(B) */
-	{ "(}", "(~", "\".", JISX0208KANJI },
-	/* 12 KU 0x2C74($(O,t(B)-0x2C7C($(O,|(B) -> 0x222E($B".(B) */
-	{ ",t", ",|", "\".", JISX0208KANJI },
-	/* 13 KU 0x2D58($(O-X(B)-0x2D5E($(O-^(B) -> 0x222E($B".(B) */
-	{ "-X", "-^", "\".", JISX0208KANJI },
-	/* 13 KU 0x2D70($(O-p(B)-0x2D72($(O-r(B) -> 0x222E($B".(B) */
-	{ "-p", "-r", "\".", JISX0208KANJI },
-	/* 13 KU 0x2D74($(O-t(B)-0x2D77($(O-w(B) -> 0x222E($B".(B) */
-	{ "-t", "-w", "\".", JISX0208KANJI },
-	/* 13 KU 0x2D7A($(O-z(B)-0x2D7C($(O-|(B) -> 0x222E($B".(B) */
-	{ "-z", "-|", "\".", JISX0208KANJI },
-	/* 14 KU 0x2E21($(O.!(B) -> 0x222E($B".(B) */
-	{ ".!", NULL, "\".", JISX0208KANJI },
-	/* 15 KU 0x2F7E($(O/~(B) -> 0x222E($B".(B) */
-	{ "/~", NULL, "\".", JISX0208KANJI },
-	/* 47 KU 0x4F54($(OOT(B) -> 0x222E($B".(B) */
-	{ "OT", NULL, "\".", JISX0208KANJI },
-	/* 47 KU 0x4F7E($(OO~(B) -> 0x222E($B".(B) */
-	{ "O~", NULL, "\".", JISX0208KANJI },
-	/* 84 KU 0x7427($(Ot'(B) -> 0x222E($B".(B) */
-	{ "t'", NULL, "\".", JISX0208KANJI },
-	/* 94 KU 0x7E7A($(O~z(B)-0x7E7E($(O~~(B) -> 0x222E($B".(B) */
-	{ "~z", "~~", "\".", JISX0208KANJI },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_jisx0213_1 = { eliminate_wrong_jisx0213_1, NULL };
-
-static convtab eliminate_wrong_jisx0213_2[] = {
-	/* empty rows */
-	/* 2 KU 0x2221($(P"!(B)-0x227E($(P"~(B) -> 0x222E($B".(B) */
-	{ "\"!", "\"~", "\".", JISX0208KANJI },
-	/* 6-7 KU 0x2621($(P&!(B)-0x277E($(P'~(B) -> 0x222E($B".(B) */
-	{ "&!", "'~", "\".", JISX0208KANJI },
-	/* 9-11 KU 0x2921($(P)!(B)-0x2B7E($(P+~(B) -> 0x222E($B".(B) */
-	{ ")!", "+~", "\".", JISX0208KANJI },
-	/* 16-77 KU 0x3021($(P0!(B)-0x6D7E($(Pm~(B) -> 0x222E($B".(B) */
-	{ "0!", "m~", "\".", JISX0208KANJI },
-
-	/* sequences of empty columns */
-	/* 94 KU 0x7E77($(P~w(B)-0x7E7E($(P~~(B) -> 0x222E($B".(B) */
-	{ "~w", "~~", "\".", JISX0208KANJI },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_jisx0213_2 = { eliminate_wrong_jisx0213_2, NULL };
-
-static convtab eliminate_wrong_jisx02132004_1[] = {
-	/* no empty row */
-
-	/* sequences of empty columns */
-	/* 4 KU 0x247C($(Q$|(B)-0x247E($(Q$~(B) -> 0x222E($B".(B) */
-	{ "$|", "$~", "\".", JISX0208KANJI },
-	/* 8 KU 0x285F($(Q(_(B)-0x2866($(Q(f(B) -> 0x222E($B".(B) */
-	{ "(_", "(f", "\".", JISX0208KANJI },
-	/* 8 KU 0x287D($(Q(}(B)-0x287E($(Q(~(B) -> 0x222E($B".(B) */
-	{ "(}", "(~", "\".", JISX0208KANJI },
-	/* 12 KU 0x2C74($(Q,t(B)-0x2C7C($(Q,|(B) -> 0x222E($B".(B) */
-	{ ",t", ",|", "\".", JISX0208KANJI },
-	/* 13 KU 0x2D58($(Q-X(B)-0x2D5E($(Q-^(B) -> 0x222E($B".(B) */
-	{ "-X", "-^", "\".", JISX0208KANJI },
-	/* 13 KU 0x2D70($(Q-p(B)-0x2D72($(Q-r(B) -> 0x222E($B".(B) */
-	{ "-p", "-r", "\".", JISX0208KANJI },
-	/* 13 KU 0x2D74($(Q-t(B)-0x2D77($(Q-w(B) -> 0x222E($B".(B) */
-	{ "-t", "-w", "\".", JISX0208KANJI },
-	/* 13 KU 0x2D7A($(Q-z(B)-0x2D7C($(Q-|(B) -> 0x222E($B".(B) */
-	{ "-z", "-|", "\".", JISX0208KANJI },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_jisx02132004_1 = { eliminate_wrong_jisx02132004_1, NULL };
-static convtable etable_jisx02132004_2 = { eliminate_wrong_jisx0213_2, NULL };
-
-static convtab eliminate_wrong_sjis[] = {
-	/* JIS X 0208:1990 for SJIS */
-	/* 2 KU 0x81AD(&@$B"/(B)-0x81B7(&@$B"9(B) -> 0x81AC($B".(B) */
-	{ "\201\255", "\201\267", "\201\254", SJIS },
-	/* 2 KU 0x81C0(&@$B"B(B)-0x81C7(&@$B"I(B) -> 0x81AC($B".(B) */
-	{ "\201\300", "\201\307", "\201\254", SJIS },
-	/* 2 KU 0x81CF(&@$B"Q(B)-0x81D9(&@$B"[(B) -> 0x81AC($B".(B) */
-	{ "\201\317", "\201\331", "\201\254", SJIS },
-	/* 2 KU 0x81E9(&@$B"k(B)-0x81EF(&@$B"q(B) -> 0x81AC($B".(B) */
-	{ "\201\351", "\201\357", "\201\254", SJIS },
-	/* 2 KU 0x81F8(&@$B"z(B)-0x81FB(&@$B"}(B) -> 0x81AC($B".(B) */
-	{ "\201\370", "\201\373", "\201\254", SJIS },
-	/* 3 KU 0x8240(&@$B#!(B)-0x824E(&@$B#/(B) -> 0x81AC($B".(B) */
-	{ "\202\100", "\202\116", "\201\254", SJIS },
-	/* 3 KU 0x8259(&@$B#:(B)-0x825F(&@$B#@(B) -> 0x81AC($B".(B) */
-	{ "\202\131", "\202\137", "\201\254", SJIS },
-	/* 3 KU 0x827A(&@$B#[(B)-0x8280(&@$B#`(B) -> 0x81AC($B".(B) */
-	{ "\202\172", "\202\200", "\201\254", SJIS },
-	/* 3 KU 0x829B(&@$B#{(B)-0x829E(&@$B#~(B) -> 0x81AC($B".(B) */
-	{ "\202\233", "\202\236", "\201\254", SJIS },
-	/* 4 KU 0x82F2(&@$B$t(B)-0x82FC(&@$B$~(B) -> 0x81AC($B".(B) */
-	{ "\202\362", "\202\374", "\201\254", SJIS },
-	/* 5 KU 0x8397(&@$B%w(B)-0x839E(&@$B%~(B) -> 0x81AC($B".(B) */
-	{ "\203\227", "\203\236", "\201\254", SJIS },
-	/* 6 KU 0x83B7(&@$B&9(B)-0x83BE(&@$B&@(B) -> 0x81AC($B".(B) */
-	{ "\203\267", "\203\276", "\201\254", SJIS },
-	/* 6 KU 0x83D7(&@$B&Y(B)-0x83FC(&@$B&~(B) -> 0x81AC($B".(B) */
-	{ "\203\327", "\203\374", "\201\254", SJIS },
-	/* 7 KU 0x8461(&@$B'B(B)-0x846F(&@$B'P(B) -> 0x81AC($B".(B) */
-	{ "\204\141", "\204\157", "\201\254", SJIS },
-	/* 7 KU 0x8492(&@$B'r(B)-0x849E(&@$B'~(B) -> 0x81AC($B".(B) */
-	{ "\204\222", "\204\236", "\201\254", SJIS },
-	/* 8 KU 0x84BF(&@$B(A(B)-0x84FC(&@$B(~(B) -> 0x81AC($B".(B) */
-	{ "\204\277", "\204\374", "\201\254", SJIS },
-	/* 9-14 KU 0x8540(&@$B)!(B)-0x87FC(&@$B.~(B) -> 0x81AC($B".(B) */
-	{ "\205\100", "\207\374", "\201\254", SJIS },
-	/* 15 KU 0x8840(&@$B/!(B)-0x889E(&@$B/~(B) -> 0x81AC($B".(B) */
-	{ "\210\100", "\210\236", "\201\254", SJIS },
-	/* 47 KU 0x9873(&@$BOT(B)-0x989E(&@$BO~(B) -> 0x81AC($B".(B) */
-	{ "\230\163", "\230\236", "\201\254", SJIS },
-	/* 84 KU 0xEAA5(&@$Bt'(B)-0xEAFC(&@$Bt~(B) -> 0x81AC($B".(B) */
-	{ "\352\245", "\352\374", "\201\254", SJIS },
-
-	/*
-	 * SJIS uses area from 85 KU to 120 KU for GAIJI, but current less
-	 * doesn't allow GAIJI.
-	 */
-	/* 85-94 KU 0xEB40(&@$Bu!(B)-0xEFFC(&@$B~~(B) -> 0x81AC($B".(B) */
-	{ "\353\100", "\357\374", "\201\254", SJIS },
-	/* 95-120 KU 0xF040(none)-0xFC9E(none) -> 0x81AC($B".(B) */
-	{ "\360\100", "\374\374", "\201\254", SJIS },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_sjis = { eliminate_wrong_sjis, NULL };
-
-static convtab eliminate_wrong_sjis2000[] = {
-	/* JIS X 0213:2000 plane 1 for SJIS2000 */
-
-	/* no empty row */
-
-	/* sequences of empty columns */
-	/* 4 KU 0x82FA($(O$|(B)-0x82FC($(O$~(B) -> 0x222E($B".(B) */
-	{ "\202\372", "\202\374", "\201\254", SJIS },
-	/* 8 KU 0x84DD($(O(_(B)-0x84E4($(O(f(B) -> 0x222E($B".(B) */
-	{ "\204\335", "\204\344", "\201\254", SJIS },
-	/* 8 KU 0x84FB($(O(}(B)-0x84FC($(O(~(B) -> 0x222E($B".(B) */
-	{ "\204\373", "\204\374", "\201\254", SJIS },
-	/* 12 KU 0x86F2($(O,t(B)-0x86FA($(O,|(B) -> 0x222E($B".(B) */
-	{ "\206\362", "\206\372", "\201\254", SJIS },
-	/* 13 KU 0x8777($(O-X(B)-0x877D($(O-^(B) -> 0x222E($B".(B) */
-	{ "\207\167", "\207\175", "\201\254", SJIS },
-	/* 13 KU 0x8790($(O-p(B)-0x8792($(O-r(B) -> 0x222E($B".(B) */
-	{ "\207\220", "\207\222", "\201\254", SJIS },
-	/* 13 KU 0x8794($(O-t(B)-0x8797($(O-w(B) -> 0x222E($B".(B) */
-	{ "\207\224", "\207\227", "\201\254", SJIS },
-	/* 13 KU 0x879A($(O-z(B)-0x879C($(O-|(B) -> 0x222E($B".(B) */
-	{ "\207\232", "\207\234", "\201\254", SJIS },
-	/* 14 KU 0x879F($(O.!(B) -> 0x222E($B".(B) */
-	{ "\207\237", NULL, "\201\254", SJIS },
-	/* 15 KU 0x889E($(O/~(B) -> 0x222E($B".(B) */
-	{ "\210\236", NULL, "\201\254", SJIS },
-	/* 47 KU 0x9873($(OOT(B) -> 0x222E($B".(B) */
-	{ "\230\163", NULL, "\201\254", SJIS },
-	/* 47 KU 0x989E($(OO~(B) -> 0x222E($B".(B) */
-	{ "\230\236", NULL, "\201\254", SJIS },
-	/* 84 KU 0xEAA5($(Ot'(B) -> 0x222E($B".(B) */
-	{ "\352\245", NULL, "\201\254", SJIS },
-	/* 94 KU 0xEFF8($(O~z(B)-0xEFFC($(O~~(B) -> 0x222E($B".(B) */
-	{ "\357\370", "\357\374", "\201\254", SJIS },
-
-	/* JIS X 0213:2000 plane 2 for SJIS2000 */
-	/* In SJIS2000, JIS X 0213:2000 occupies from 96 to 120 KU */
-
-	/* no empty row */
-
-	/* sequences of empty columns */
-	/* 94 KU 0xFCF5($(P~w(B)-0xFCFC($(P~~(B) -> 0x222E($B".(B) */
-	{ "\374\365", "\374\374", "\201\254", SJIS },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_sjis2000 = { eliminate_wrong_sjis2000, NULL };
-
-static convtab eliminate_wrong_sjis2004[] = {
-	/* JIS X 0213:2004 plane 1 for SJIS2004 */
-
-	/* no empty row */
-
-	/* sequences of empty columns */
-	/* 4 KU 0x82FA($(Q$|(B)-0x82FC($(Q$~(B) -> 0x222E($B".(B) */
-	{ "\202\372", "\202\374", "\201\254", SJIS },
-	/* 8 KU 0x84DD($(Q(_(B)-0x84E4($(Q(f(B) -> 0x222E($B".(B) */
-	{ "\204\335", "\204\344", "\201\254", SJIS },
-	/* 8 KU 0x84FB($(Q(}(B)-0x84FC($(Q(~(B) -> 0x222E($B".(B) */
-	{ "\204\373", "\204\374", "\201\254", SJIS },
-	/* 12 KU 0x86F2($(Q,t(B)-0x86FA($(Q,|(B) -> 0x222E($B".(B) */
-	{ "\206\362", "\206\372", "\201\254", SJIS },
-	/* 13 KU 0x8777($(Q-X(B)-0x877D($(Q-^(B) -> 0x222E($B".(B) */
-	{ "\207\167", "\207\175", "\201\254", SJIS },
-	/* 13 KU 0x8790($(Q-p(B)-0x8792($(Q-r(B) -> 0x222E($B".(B) */
-	{ "\207\220", "\207\222", "\201\254", SJIS },
-	/* 13 KU 0x8794($(Q-t(B)-0x8797($(Q-w(B) -> 0x222E($B".(B) */
-	{ "\207\224", "\207\227", "\201\254", SJIS },
-	/* 13 KU 0x879A($(Q-z(B)-0x879C($(Q-|(B) -> 0x222E($B".(B) */
-	{ "\207\232", "\207\234", "\201\254", SJIS },
-
-	/* JIS X 0213:2004 plane 2 for SJIS2004 */
-	/* In SJIS2004, JIS X 0213:2004 occupies from 96 to 120 KU */
-
-	/* no empty row */
-
-	/* sequences of empty columns */
-	/* 94 KU 0xFCF5($(P~w(B)-0xFCFC($(P~~(B) -> 0x222E($B".(B) */
-	{ "\374\365", "\374\374", "\201\254", SJIS },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_sjis2004 = { eliminate_wrong_sjis2004, NULL };
-
-static convtab eliminate_wrong_ujis[] = {
-	/* UJIS uses JIS X 0208 1983 */
-
-	/* empty rows */
-	/* 9-15 KU 0xA9A1($B)!(B)-0xAFFE($B/~(B) -> 0xA2AE($B".(B) */
-	{ "\251\241", "\257\376", "\242\256", UJIS },
-	/*
-	 * UJIS uses area from 85 KU to 94 KU for GAIJI, but current less
-	 * doesn't allow GAIJI.
-	 */
-	/* 85-94 KU 0xF5A1($Bu!(B)-0xFEFE($B~~(B) -> 0xA2AE($B".(B) */
-	{ "\365\241", "\376\376", "\242\256", UJIS },
-
-	/* sequences of empty columns */
-	/* 2 KU 0xA2AF($B"/(B)-0xA2B9($B"9(B) -> 0xA2AE($B".(B) */
-	{ "\242\257", "\242\271", "\242\256", UJIS },
-	/* 2 KU 0xA2C2($B"B(B)-0xA2C9($B"I(B) -> 0xA2AE($B".(B) */
-	{ "\242\302", "\242\311", "\242\256", UJIS },
-	/* 2 KU 0xA2D1($B"Q(B)-0xA2DB($B"[(B) -> 0xA2AE($B".(B) */
-	{ "\242\321", "\242\333", "\242\256", UJIS },
-	/* 2 KU 0xA2EB($B"k(B)-0xA2F1($B"q(B) -> 0xA2AE($B".(B) */
-	{ "\242\353", "\242\361", "\242\256", UJIS },
-	/* 2 KU 0xA2FA($B"z(B)-0xA2FD($B"}(B) -> 0xA2AE($B".(B) */
-	{ "\242\372", "\242\375", "\242\256", UJIS },
-	/* 3 KU 0xA3A1($B#!(B)-0xA3AF($B#/(B) -> 0xA2AE($B".(B) */
-	{ "\243\241", "\243\257", "\242\256", UJIS },
-	/* 3 KU 0xA3BA($B#:(B)-0xA3C0($B#@(B) -> 0xA2AE($B".(B) */
-	{ "\243\272", "\243\300", "\242\256", UJIS },
-	/* 3 KU 0xA3DB($B#[(B)-0xA3E0($B#`(B) -> 0xA2AE($B".(B) */
-	{ "\243\333", "\243\340", "\242\256", UJIS },
-	/* 3 KU 0xA3FB($B#{(B)-0xA3FE($B#~(B) -> 0xA2AE($B".(B) */
-	{ "\243\373", "\243\376", "\242\256", UJIS },
-	/* 4 KU 0xA4F4($B$t(B)-0xA4FE($B$~(B) -> 0xA2AE($B".(B) */
-	{ "\244\364", "\244\376", "\242\256", UJIS },
-	/* 5 KU 0xA5F7($B%w(B)-0xA5FE($B%~(B) -> 0xA2AE($B".(B) */
-	{ "\245\367", "\245\376", "\242\256", UJIS },
-	/* 6 KU 0xA6B9($B&9(B)-0xA6C0($B&@(B) -> 0xA2AE($B".(B) */
-	{ "\246\271", "\246\300", "\242\256", UJIS },
-	/* 6 KU 0xA6D9($B&Y(B)-0xA6FE($B&~(B) -> 0xA2AE($B".(B) */
-	{ "\246\331", "\246\376", "\242\256", UJIS },
-	/* 7 KU 0xA7C2($B'B(B)-0xA7D0($B'P(B) -> 0xA2AE($B".(B) */
-	{ "\247\302", "\247\320", "\242\256", UJIS },
-	/* 7 KU 0xA7F2($B'r(B)-0xA7FE($B'~(B) -> 0xA2AE($B".(B) */
-	{ "\247\362", "\247\376", "\242\256", UJIS },
-	/* 8 KU 0xA8C1($B(A(B)-0xA8FE($B(~(B) -> 0xA2AE($B".(B) */
-	{ "\250\301", "\250\376", "\242\256", UJIS },
-	/* 47 KU 0xCFD4($BOT(B)-0xCFFE($BO~(B) -> 0xA2AE($B".(B) */
-	{ "\317\324", "\317\376", "\242\256", UJIS },
-	/* 84 KU 0xF4A5($Bt%(B)-0xF4FE($Bt~(B) -> 0xA2AE($B".(B) */
-	{ "\364\245", "\364\376", "\242\256", UJIS },
-
-	/* JIS X 0212:1990 for UJIS */
-	/*
-	 * Here, we defines only empty rows.  Empty columns in
-	 * particular rows are defined after below #endif
-	 */
-	/* empty rows */
-	/* 1 KU 0xA1A1($(D!!(B)-0xA1FE($(D!~(B) -> 0xA2AE($B".(B) */
-	{ "\217\241\241", "\217\241\376", "\242\256", UJIS },
-	/* 3-5 KU 0xA3A1($(D#!(B)-0xA5FE($(D%~(B) -> 0xA2AE($B".(B) */
-	{ "\217\243\241", "\217\245\376", "\242\256", UJIS },
-	/* 8 KU 0xA8A1($(D(!(B)-0xA8FE($(D(~(B) -> 0xA2AE($B".(B) */
-	{ "\217\250\241", "\217\250\376", "\242\256", UJIS },
-	/* 12-15 KU 0xACA1($(D,!(B)-0xACFE($(D/~(B) -> 0xA2AE($B".(B) */
-	{ "\217\254\241", "\217\257\376", "\242\256", UJIS },
-	/* 78-94 KU 0xEEA1($(Dn!(B)-0xFEFE($(D~~(B) -> 0xA2AE($B".(B) */
-	{ "\217\356\241", "\217\376\376", "\242\256", UJIS },
-
-	/* JIS X 0212:1990 */
-	/*
-	 * Here, we defines only empty columns in particular rows
-	 * Empty rows are defined before above #endif
-	 */
-	/* sequences of empty columns */
-	/* 2 KU 0xA2A1($(D"!(B)-0xA2AE($(D".(B) -> 0xA2AE($B".(B) */
-	{ "\217\242\241", "\217\242\256", "\242\256", UJIS },
-	/* 2 KU 0xA2BA($(D":(B)-0xA2C1($(D"A(B) -> 0xA2AE($B".(B) */
-	{ "\217\242\272", "\217\242\301", "\242\256", UJIS },
-	/* 2 KU 0xA2C5($(D"E(B)-0xA2EA($(D"j(B) -> 0xA2AE($B".(B) */
-	{ "\217\242\305", "\217\242\352", "\242\256", UJIS },
-	/* 2 KU 0xA2F2($(D"r(B)-0xA2FE($(D"~(B) -> 0xA2AE($B".(B) */
-	{ "\217\242\362", "\217\242\376", "\242\256", UJIS },
-	/* 6 KU 0xA6A1($(D&!(B)-0xA6E0($(D&`(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\241", "\217\246\340", "\242\256", UJIS },
-	/* 6 KU 0xA6E6($(D&f(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\346", NULL, "\242\256", UJIS },
-	/* 6 KU 0xA6E8($(D&h(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\350", NULL, "\242\256", UJIS },
-	/* 6 KU 0xA6EB($(D&k(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\353", NULL, "\242\256", UJIS },
-	/* 6 KU 0xA6ED($(D&m(B)-0xA6F0($(D&p(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\355", "\217\246\360", "\242\256", UJIS },
-	/* 6 KU 0xA6FD($(D&}(B)-0xA6FE($(D&~(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\375", "\217\246\376", "\242\256", UJIS },
-	/* 7 KU 0xA7A1($(D'!(B)-0xA7C1($(D'A(B) -> 0xA2AE($B".(B) */
-	{ "\217\247\241", "\217\247\301", "\242\256", UJIS },
-	/* 7 KU 0xA7CF($(D'O(B)-0xA7F1($(D'q(B) -> 0xA2AE($B".(B) */
-	{ "\217\247\317", "\217\247\361", "\242\256", UJIS },
-	/* 9 KU 0xA9A3($(D)#(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\243", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9A5($(D)%(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\245", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9A7($(D)'(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\247", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9AA($(D)*(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\252", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9AE($(D).(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\256", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9B1($(D)1(B)-0xA9C0($(D)@(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\261", "\217\251\300", "\242\256", UJIS },
-	/* 9 KU 0xA9D1($(D)Q(B)-0xA9FE($(D)~(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\321", "\217\251\376", "\242\256", UJIS },
-	/* 10 KU 0xAAB9($(D*9(B) -> 0xA2AE($B".(B) */
-	{ "\217\252\271", NULL, "\242\256", UJIS },
-	/* 10 KU 0xAAF8($(D*x(B)-0xAAFE($(D*~(B) -> 0xA2AE($B".(B) */
-	{ "\217\252\370", "\217\252\376", "\242\256", UJIS },
-	/* 11 KU 0xABBC($(D+<(B) -> 0xA2AE($B".(B) */
-	{ "\217\253\274", NULL, "\242\256", UJIS },
-	/* 11 KU 0xABC4($(D+D(B) -> 0xA2AE($B".(B) */
-	{ "\217\253\304", NULL, "\242\256", UJIS },
-	/* 11 KU 0xABF8($(D+x(B)-0xABFE($(D+~(B) -> 0xA2AE($B".(B) */
-	{ "\217\253\370", "\217\253\376", "\242\256", UJIS },
-	/* 77 KU 0xEDE4($(Dmd(B)-0xEDFE($(Dm~(B) -> 0xA2AE($B".(B) */
-	{ "\217\355\344", "\217\355\376", "\242\256", UJIS },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_ujis = { eliminate_wrong_ujis, NULL };
-
-static convtab eliminate_wrong_ujis2000[] = {
-	/* JIS X 0213:2000 plane 1 for UJIS2000 */
-
-	/* no empty row */
-
-	/* sequences of empty columns */
-	/* 4 KU 0xA4FC($(O$|(B)-0xA4FE($(O$~(B) -> 0xA2AE($B".(B) */
-	{ "\244\374", "\244\376", "\242\256", UJIS },
-	/* 8 KU 0xA8DF($(O(_(B)-0xA8E6($(O(f(B) -> 0xA2AE($B".(B) */
-	{ "\250\337", "\250\346", "\242\256", UJIS },
-	/* 8 KU 0xA8FD($(O(}(B)-0xA8FE($(O(~(B) -> 0xA2AE($B".(B) */
-	{ "\250\375", "\250\376", "\242\256", UJIS },
-	/* 12 KU 0xACF4($(O,t(B)-0xACFC($(O,|(B) -> 0xA2AE($B".(B) */
-	{ "\254\364", "\254\374", "\242\256", UJIS },
-	/* 13 KU 0xADD8($(O-X(B)-0xADDE($(O-^(B) -> 0xA2AE($B".(B) */
-	{ "\255\330", "\255\336", "\242\256", UJIS },
-	/* 13 KU 0xADF0($(O-p(B)-0xADF2($(O-r(B) -> 0xA2AE($B".(B) */
-	{ "\255\360", "\255\362", "\242\256", UJIS },
-	/* 13 KU 0xADF4($(O-t(B)-0xADF7($(O-w(B) -> 0xA2AE($B".(B) */
-	{ "\255\364", "\255\367", "\242\256", UJIS },
-	/* 13 KU 0xADFA($(O-z(B)-0xADFC($(O-|(B) -> 0xA2AE($B".(B) */
-	{ "\255\372", "\255\374", "\242\256", UJIS },
-	/* 14 KU 0xAEA1($(O.!(B) -> 0xA2AE($B".(B) */
-	{ "\256\241", NULL, "\242\256", UJIS },
-	/* 15 KU 0xAFFE($(O/~(B) -> 0xA2AE($B".(B) */
-	{ "\257\376", NULL, "\242\256", UJIS },
-	/* 47 KU 0xCFD4($(OOT(B) -> 0xA2AE($B".(B) */
-	{ "\317\324", NULL, "\242\256", UJIS },
-	/* 47 KU 0xCFFE($(OO~(B) -> 0xA2AE($B".(B) */
-	{ "\317\376", NULL, "\242\256", UJIS },
-	/* 84 KU 0xF4A7($(Ot'(B) -> 0xA2AE($B".(B) */
-	{ "\364\247", NULL, "\242\256", UJIS },
-	/* 94 KU 0xFEFA($(O~z(B)-0xFEFE($(O~~(B) -> 0xA2AE($B".(B) */
-	{ "\376\372", "\376\376", "\242\256", UJIS },
-
-	/*
-	 * UJIS2000 shares G2 space by JIS X 0213:2000 plane 2 and
-	 * JIS X 0212:1990.  later has some empty rows and some empty
-	 * columns in particular rows.  JIS X 0213:2000 plane 2 shares
-	 * those empty rows.  So, totally UJIS2000 has no empty row.
-	 */
-
-	/* JIS X 0213:2000 plane 2 for UJIS2000 */
-	/* sequences of empty columns */
-	/* 94 KU 0xFEF7($(P~w(B)-0xFEFE($(P~~(B) -> 0xA2AE($B".(B) */
-	{ "\217\376\367", "\217\376\376", "\242\256", UJIS },
-
-	/* JIS X 0212:1990 for UJIS2000 */
-	/* sequences of empty columns */
-	/* 2 KU 0xA2A1($(D"!(B)-0xA2AE($(D".(B) -> 0xA2AE($B".(B) */
-	{ "\217\242\241", "\217\242\256", "\242\256", UJIS },
-	/* 2 KU 0xA2BA($(D":(B)-0xA2C1($(D"A(B) -> 0xA2AE($B".(B) */
-	{ "\217\242\272", "\217\242\301", "\242\256", UJIS },
-	/* 2 KU 0xA2C5($(D"E(B)-0xA2EA($(D"j(B) -> 0xA2AE($B".(B) */
-	{ "\217\242\305", "\217\242\352", "\242\256", UJIS },
-	/* 2 KU 0xA2F2($(D"r(B)-0xA2FE($(D"~(B) -> 0xA2AE($B".(B) */
-	{ "\217\242\362", "\217\242\376", "\242\256", UJIS },
-	/* 6 KU 0xA6A1($(D&!(B)-0xA6E0($(D&`(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\241", "\217\246\340", "\242\256", UJIS },
-	/* 6 KU 0xA6E6($(D&f(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\346", NULL, "\242\256", UJIS },
-	/* 6 KU 0xA6E8($(D&h(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\350", NULL, "\242\256", UJIS },
-	/* 6 KU 0xA6EB($(D&k(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\353", NULL, "\242\256", UJIS },
-	/* 6 KU 0xA6ED($(D&m(B)-0xA6F0($(D&p(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\355", "\217\246\360", "\242\256", UJIS },
-	/* 6 KU 0xA6FD($(D&}(B)-0xA6FE($(D&~(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\375", "\217\246\376", "\242\256", UJIS },
-	/* 7 KU 0xA7A1($(D'!(B)-0xA7C1($(D'A(B) -> 0xA2AE($B".(B) */
-	{ "\217\247\241", "\217\247\301", "\242\256", UJIS },
-	/* 7 KU 0xA7CF($(D'O(B)-0xA7F1($(D'q(B) -> 0xA2AE($B".(B) */
-	{ "\217\247\317", "\217\247\361", "\242\256", UJIS },
-	/* 9 KU 0xA9A3($(D)#(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\243", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9A5($(D)%(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\245", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9A7($(D)'(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\247", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9AA($(D)*(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\252", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9AE($(D).(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\256", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9B1($(D)1(B)-0xA9C0($(D)@(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\261", "\217\251\300", "\242\256", UJIS },
-	/* 9 KU 0xA9D1($(D)Q(B)-0xA9FE($(D)~(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\321", "\217\251\376", "\242\256", UJIS },
-	/* 10 KU 0xAAB9($(D*9(B) -> 0xA2AE($B".(B) */
-	{ "\217\252\271", NULL, "\242\256", UJIS },
-	/* 10 KU 0xAAF8($(D*x(B)-0xAAFE($(D*~(B) -> 0xA2AE($B".(B) */
-	{ "\217\252\370", "\217\252\376", "\242\256", UJIS },
-	/* 11 KU 0xABBC($(D+<(B) -> 0xA2AE($B".(B) */
-	{ "\217\253\274", NULL, "\242\256", UJIS },
-	/* 11 KU 0xABC4($(D+D(B) -> 0xA2AE($B".(B) */
-	{ "\217\253\304", NULL, "\242\256", UJIS },
-	/* 11 KU 0xABF8($(D+x(B)-0xABFE($(D+~(B) -> 0xA2AE($B".(B) */
-	{ "\217\253\370", "\217\253\376", "\242\256", UJIS },
-	/* 77 KU 0xEDE4($(Dmd(B)-0xEDFE($(Dm~(B) -> 0xA2AE($B".(B) */
-	{ "\217\355\344", "\217\355\376", "\242\256", UJIS },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_ujis2000 = { eliminate_wrong_ujis2000, NULL };
-
-static convtab eliminate_wrong_ujis2004[] = {
-	/* JIS X 0213:2004 plane 1 for UJIS2004 */
-
-	/* no empty row */
-
-	/* sequences of empty columns */
-	/* 4 KU 0xA4FC($(Q$|(B)-0xA4FE($(Q$~(B) -> 0xA2AE($B".(B) */
-	{ "\244\374", "\244\376", "\242\256", UJIS },
-	/* 8 KU 0xA8DF($(Q(_(B)-0xA8E6($(Q(f(B) -> 0xA2AE($B".(B) */
-	{ "\250\337", "\250\346", "\242\256", UJIS },
-	/* 8 KU 0xA8FD($(Q(}(B)-0xA8FE($(Q(~(B) -> 0xA2AE($B".(B) */
-	{ "\250\375", "\250\376", "\242\256", UJIS },
-	/* 12 KU 0xACF4($(Q,t(B)-0xACFC($(Q,|(B) -> 0xA2AE($B".(B) */
-	{ "\254\364", "\254\374", "\242\256", UJIS },
-	/* 13 KU 0xADD8($(Q-X(B)-0xADDE($(Q-^(B) -> 0xA2AE($B".(B) */
-	{ "\255\330", "\255\336", "\242\256", UJIS },
-	/* 13 KU 0xADF0($(Q-p(B)-0xADF2($(Q-r(B) -> 0xA2AE($B".(B) */
-	{ "\255\360", "\255\362", "\242\256", UJIS },
-	/* 13 KU 0xADF4($(Q-t(B)-0xADF7($(Q-w(B) -> 0xA2AE($B".(B) */
-	{ "\255\364", "\255\367", "\242\256", UJIS },
-	/* 13 KU 0xADFA($(Q-z(B)-0xADFC($(Q-|(B) -> 0xA2AE($B".(B) */
-	{ "\255\372", "\255\374", "\242\256", UJIS },
-
-	/*
-	 * UJIS2004 shares G2 space by JIS X 0213:2004 plane 2 and
-	 * JIS X 0212:1990.  later has some empty rows and some empty
-	 * columns in particular rows.  JIS X 0213:2004 plane 2 shares
-	 * those empty rows.  So, totally UJIS2004 has no empty row.
-	 */
-
-	/* JIS X 0213:2004 plane 2 for UJIS2004 */
-	/* sequences of empty columns */
-	/* 94 KU 0xFEF7($(P~w(B)-0xFEFE($(P~~(B) -> 0xA2AE($B".(B) */
-	{ "\217\376\367", "\217\376\376", "\242\256", UJIS },
-
-	/* JIS X 0212:1990 for UJIS2004 */
-	/* sequences of empty columns */
-	/* 2 KU 0xA2A1($(D"!(B)-0xA2AE($(D".(B) -> 0xA2AE($B".(B) */
-	{ "\217\242\241", "\217\242\256", "\242\256", UJIS },
-	/* 2 KU 0xA2BA($(D":(B)-0xA2C1($(D"A(B) -> 0xA2AE($B".(B) */
-	{ "\217\242\272", "\217\242\301", "\242\256", UJIS },
-	/* 2 KU 0xA2C5($(D"E(B)-0xA2EA($(D"j(B) -> 0xA2AE($B".(B) */
-	{ "\217\242\305", "\217\242\352", "\242\256", UJIS },
-	/* 2 KU 0xA2F2($(D"r(B)-0xA2FE($(D"~(B) -> 0xA2AE($B".(B) */
-	{ "\217\242\362", "\217\242\376", "\242\256", UJIS },
-	/* 6 KU 0xA6A1($(D&!(B)-0xA6E0($(D&`(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\241", "\217\246\340", "\242\256", UJIS },
-	/* 6 KU 0xA6E6($(D&f(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\346", NULL, "\242\256", UJIS },
-	/* 6 KU 0xA6E8($(D&h(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\350", NULL, "\242\256", UJIS },
-	/* 6 KU 0xA6EB($(D&k(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\353", NULL, "\242\256", UJIS },
-	/* 6 KU 0xA6ED($(D&m(B)-0xA6F0($(D&p(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\355", "\217\246\360", "\242\256", UJIS },
-	/* 6 KU 0xA6FD($(D&}(B)-0xA6FE($(D&~(B) -> 0xA2AE($B".(B) */
-	{ "\217\246\375", "\217\246\376", "\242\256", UJIS },
-	/* 7 KU 0xA7A1($(D'!(B)-0xA7C1($(D'A(B) -> 0xA2AE($B".(B) */
-	{ "\217\247\241", "\217\247\301", "\242\256", UJIS },
-	/* 7 KU 0xA7CF($(D'O(B)-0xA7F1($(D'q(B) -> 0xA2AE($B".(B) */
-	{ "\217\247\317", "\217\247\361", "\242\256", UJIS },
-	/* 9 KU 0xA9A3($(D)#(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\243", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9A5($(D)%(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\245", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9A7($(D)'(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\247", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9AA($(D)*(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\252", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9AE($(D).(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\256", NULL, "\242\256", UJIS },
-	/* 9 KU 0xA9B1($(D)1(B)-0xA9C0($(D)@(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\261", "\217\251\300", "\242\256", UJIS },
-	/* 9 KU 0xA9D1($(D)Q(B)-0xA9FE($(D)~(B) -> 0xA2AE($B".(B) */
-	{ "\217\251\321", "\217\251\376", "\242\256", UJIS },
-	/* 10 KU 0xAAB9($(D*9(B) -> 0xA2AE($B".(B) */
-	{ "\217\252\271", NULL, "\242\256", UJIS },
-	/* 10 KU 0xAAF8($(D*x(B)-0xAAFE($(D*~(B) -> 0xA2AE($B".(B) */
-	{ "\217\252\370", "\217\252\376", "\242\256", UJIS },
-	/* 11 KU 0xABBC($(D+<(B) -> 0xA2AE($B".(B) */
-	{ "\217\253\274", NULL, "\242\256", UJIS },
-	/* 11 KU 0xABC4($(D+D(B) -> 0xA2AE($B".(B) */
-	{ "\217\253\304", NULL, "\242\256", UJIS },
-	/* 11 KU 0xABF8($(D+x(B)-0xABFE($(D+~(B) -> 0xA2AE($B".(B) */
-	{ "\217\253\370", "\217\253\376", "\242\256", UJIS },
-	/* 77 KU 0xEDE4($(Dmd(B)-0xEDFE($(Dm~(B) -> 0xA2AE($B".(B) */
-	{ "\217\355\344", "\217\355\376", "\242\256", UJIS },
-
-	/* NULL */
-	{ 0, 0, 0, 0 }
-};
-static convtable etable_ujis2004 = { eliminate_wrong_ujis2004, NULL };
-
 
 static int iso646p(cs)
 CHARSET cs;
@@ -1554,90 +4481,6 @@ CHARSET cs;
 	}
 }
 
-#if 0
-static char *
-quote_it(src, cs, search_type)
-	char *src;
-	CHARSET *cs;
-	int search_type;
-{
-	static char *buf = NULL;
-	static int size = 0;
-	int len = strlen_cs(src, cs) * 2;
-	char *dst;
-
-	if (len + 1 > size)
-	{
-		size = (len + 1 + 255) / 256 * 256;
-		if (buf)
-			free(buf);
-		buf = (char *) ecalloc(size, sizeof(char));
-	}
-	dst = buf;
-	while (*src != '\0')
-	{
-#if MSB_ENABLE
-		if (CSISASCII(*cs) || CSISWRONG(*cs))
-			*dst++ = *src++;
-		else
-			*dst++ = *src++ | 0x80;
-		cs++;
-#else
-		if (!CSISASCII(*cs++) && !(search_type & SRCH_NO_REGEX))
-		{
-			switch (*src) {
-			/* Basic Regular Expressions */
-			case '[':
-			case ']':
-			case '.':
-			case '*':
-			case '\\':
-			case '^':
-			case '$':
-#if (HAVE_POSIX_REGCOMP_CS || HAVE_POSIX_REGCOMP) && defined(REG_EXTENDED)
-			/* Extended Regular Expressions */
-			case '+':
-			case '?':
-			case '|':
-			case '(':
-			case ')':
-			case '{':
-			case '}':
-#endif
-#if HAVE_RE_COMP
-			/* No Extended Regular Expressions */
-#endif
-#if HAVE_REGCMP
-			/* Extended Regular Expressions */
-			case '+':
-			case '(':
-			case ')':
-			case '{':
-			case '}':
-#endif
-#if HAVE_V8_REGCOMP_CS || HAVE_V8_REGCOMP
-			/* Extended Regular Expressions */
-			case '+':
-			case '?':
-			case '|':
-			case '(':
-			case ')':
-#endif
-				*dst++ = '\\';
-				/* fall through */
-			default:
-				*dst++ = *src++;
-				break;
-			}
-		} else
-			*dst++ = *src++;
-#endif
-	}
-	*dst = '\0';
-	return (buf);
-}
-#endif
-
 /*
  * convert JIS C 6226-1978 into JIS X 0208:1990
  */
@@ -1671,18 +4514,18 @@ int flag;	/* quote regexp pattern */
 	}
 	/* convert codes into some traditional character sets */
 	if (CS2CHARSET(*ics) == JISX0208_78KANJI) {
-		/* convert JIS C 6226-1978 into JIS X 0208:1990 */
+		/* convert JIS C 6226-1978 into JIS X 0213:2004 */
 		ptab = find_convtab(&ctable_jisx0208_78_90, istr);
 		if (ptab) {
 			ostr[0] = ptab->output[0];
 			ostr[1] = ptab->output[1];
-			ocs[0] = ptab->charset;
-			ocs[1] = ptab->charset | REST_MASK;
+			ocs[0] = JISX02132004KANJI1;
+			ocs[1] = JISX02132004KANJI1 | REST_MASK;
 		} else {
 			ostr[0] = istr[0];
 			ostr[1] = istr[1];
-			ocs[0] = JISX0208_90KANJI;
-			ocs[1] = JISX0208_90KANJI | REST_MASK;
+			ocs[0] = JISX02132004KANJI1;
+			ocs[1] = JISX02132004KANJI1 | REST_MASK;
 		}
 		ostr[2] = NULCH;
 		ocs[2] = NULLCS;
@@ -1692,26 +4535,75 @@ int flag;	/* quote regexp pattern */
 		/*
 		 * JIS X 0208:1990 has two additional characters from JIS X
 		 * 0208-1983.  It's addition.  So, no need to change code.
-		 * We simply treat JIS X 0208-1983 as JIS X 0208:1990
 		 *
 		 * JIS X 0213:2000 has several additional characters from JIS
-		 * X 0208:1990.  Again, it's just addition.  We ignore them
-		 * and treat JIS X 0213:2000 as JIS X 0208:1990
+		 * X 0208:1990.  Again, it's just addition.
 		 *
 		 * JIS X 0213:2004 has 10 additional characters from JIS X
-		 * 0213:2000.  Again, it's just addition.  We ignore them
-		 * and treat JIS X 0213:2004 as JIS X 0208:1990
+		 * 0213:2000.  Again, it's just addition.
+		 *
+		 * We simply treat JIS X 0208-1983 as JIS X 0213:2004
 		 */
 		ostr[0] = istr[0];
 		ostr[1] = istr[1];
 		ostr[2] = NULCH;
-		ocs[0] = JISX0208_90KANJI;
-		ocs[1] = JISX0208_90KANJI | REST_MASK;
+		ocs[0] = JISX02132004KANJI1;
+		ocs[1] = JISX02132004KANJI1 | REST_MASK;
+		ocs[2] = NULLCS;
+	} else if (CS2CHARSET(*ics) == JISX0212KANJISUP) {
+		/* convert JIS X 0212-1990 into JIS X 0213:2004 */
+		ptab = find_convtab(&utable_jisx0212, istr);
+		if (ptab) {
+			int len = strlen(ptab->output);
+                        ostr[0] = ptab->output[0];
+                        ocs[0] = ptab->charset;
+                        for (i = 1; i < len; i++) {
+				ostr[i] = ptab->output[i];
+				ocs[i] = ptab->charset | REST_MASK;
+			}
+			ostr[i] = NULCH;
+			ocs[i] = NULLCS;
+		} else {
+			ostr[0] = istr[0];
+			ostr[1] = istr[1];
+			ocs[0] = JISX0212KANJISUP;
+			ocs[1] = JISX0212KANJISUP | REST_MASK;
+		}
+		ostr[2] = NULCH;
+		ocs[2] = NULLCS;
+	} else if (CS2CHARSET(*ics) == CP932) {
+		/* convert CP932 Extra character into JIS X 0213:2004 */
+		if (istr[0] < 0x2d) {
+			ostr[0] = istr[0];
+			ostr[1] = istr[1];
+			ocs[0] = JISX02132004KANJI1;
+			ocs[1] = JISX02132004KANJI1 | REST_MASK;
+		} else {
+			ptab = find_convtab(&utable_cp932, istr);
+			if (ptab) {
+				int len = strlen(ptab->output);
+				ostr[0] = ptab->output[0];
+				ocs[0] = ptab->charset;
+				for (i = 1; i < len; i++) {
+					ostr[i] = ptab->output[i];
+					ocs[i] = ptab->charset | REST_MASK;
+				}
+				ostr[i] = NULCH;
+				ocs[i] = NULLCS;
+			} else {
+				ostr[0] = istr[0];
+				ostr[1] = istr[1];
+				ocs[0] = CP932;
+				ocs[1] = CP932 | REST_MASK;
+			}
+		}
+		ostr[2] = NULCH;
 		ocs[2] = NULLCS;
 	} else if (CS2CHARSET(*ics) == JISX0201ROMAN) {
 		/* convert JIS X 0201:1976 into ASCII */
 		ptab = find_convtab(&utable_n_jisx0201roman, istr);
 		ostr[0] = istr[0];
+		ocs[0] = ics[0];
 		if (!ptab) {
 			ocs[0] = ASCII;
 		}
@@ -1721,6 +4613,7 @@ int flag;	/* quote regexp pattern */
 		/* convert domestic ISO 646 into ASCII */
 		ptab = find_convtab(&utable_n_iso646, istr);
 		ostr[0] = istr[0];
+		ocs[0] = ics[0];
 		if (!ptab) {
 			ocs[0] = ASCII;
 		}
@@ -1750,13 +4643,13 @@ CHARSET* ocs;
 
 	chconvert_cs(istr, ics, ostr, ocs);
 	/* unify codes */
-	if (CS2CHARSET(*ocs) == JISX0208_90KANJI) {
+	if (CS2CHARSET(*ocs) == JISX02132004KANJI1) {
 		/*
-		 * convert ASCII, GREEK and CYRILLIC character in
-		 * JIS X 0208-1990 into ASCII, ISO 8859-7 and ISO 8859-5
+		 * convert ASCII, LATIN, GREEK and CYRILLIC character in
+		 * JIS X 0213-2004 into ASCII, ISO 8859-*
 		 * respectively.
 		 */
-		ptab = find_convtab(&utable_jisx0208, ostr);
+		ptab = find_convtab(&utable_jisx0213, ostr);
 		if (ptab) {
 			int len = strlen(ptab->output);
 			assert(len <= (int)strlen(ostr));
@@ -1811,114 +4704,160 @@ CHARSET* cs2;
 		str2++;
 		cs2++;
 	} while (CSISREST(*cs1));
+
 	return 0;
 }
 
-int chisvalid_cs(istr, ics)
+/*
+ *  convert to valid KANJI charset
+ */
+static int convKANJI(ok, map, cs, c0, c1)
+int ok;
+int *map;
+int cs;
+int c0;
+int c1;
+{
+    int ucode;
+    int plane;
+    int kcode;
+
+    if (!ok) {
+	/*
+	 *  convert to UCS;
+	 */
+	ucode = map[(c0 - 0x21) * 94 + (c1 - 0x21)];
+	if (ucode == U_error)
+	    return 0;
+	plane = (ucode >> 16) & 0x7fff;
+
+	/*
+	 *  convert back to CS;
+	 */
+	if (plane == 0)
+	    kcode = unicode0_map[ucode & 0xffff];
+	else if (plane == 2)
+	    kcode = unicode2_map[ucode & 0xffff];
+	else
+	    return 0;
+	if (kcode == U_error)
+	    return 0;
+
+	/*
+	 *  found
+	 */
+	cs = UMAP_CS(kcode);
+	c0 = UMAP_CHAR(kcode) / 94 + 0x21;
+	c1 = UMAP_CHAR(kcode) % 94 + 0x21;
+    }
+	
+    return (cs << 16) | (c0 << 8) | c1;
+}
+
+/*
+ *  check and convert KANJI.
+ *  success return:  cs << 16 | c0 << c
+ *  fail return:     0
+ *  
+ */
+int checkKANJI(out, in, c0, c1)
+SETCHARSET out;
+SETCHARSET in;
+int c0;
+int c1;
+{
+    int ktype;
+
+    c0 &= 0x7f;
+    c1 &= 0x7f;
+    if (c0 < 0x21 || c0 > 0x7e || c1 < 0x21 || c1 > 0x7e)
+	return 0;
+
+    ktype = kanji_map[c0 - 0x21][c1 - 0x21];
+    if ((in & SCSJISC6226_1978) && (ktype & CHAR_JISC6226_1978)) {
+	if (out & SCSJISC6226_1978) {
+	    return (JISX0208_78KANJI << 16) | (c0 << 8) | c1;
+	}
+	char buf[3];
+	buf[0] = c0;
+	buf[1] = c1;
+	buf[2] = '\0';
+	jis78to90(buf);
+	return convKANJI(out & SCSJISX0208_1983, ucode_kanji1,
+			 JISX0208KANJI, c0, c1);
+    } else if ((in & SCSJISX0208_1983) && (ktype & CHAR_JISX0208_1983)) {
+	return convKANJI(out & SCSJISX0208_1983, ucode_kanji1,
+			 JISX0208KANJI, c0, c1);
+    } else if ((in & SCSJISX0208_1983) 
+	       && (c0 == 0x74 & (c1 == 0x25 || c1 == 0x26))) {
+	/* special hack for JIS83/JIS90 compatibily */
+	return convKANJI(out & SCSJISX0208_1990, ucode_kanji1,
+			 JISX0208_90KANJI, c0, c1);
+    } else if ((in & SCSJISX0208_1990) && (ktype & CHAR_JISX0208_1990)) {
+	return convKANJI(out & SCSJISX0208_1990, ucode_kanji1,
+			 JISX0208_90KANJI, c0, c1);
+    } else if ((in & SCSJISX0213_2000) && (ktype & CHAR_JISX0213_2000_1)) {
+	return convKANJI(out & SCSJISX0213_2000, ucode_kanji1, 
+			 JISX0213KANJI1, c0, c1);
+    } else if ((in & SCSJISX0213_2004) && (ktype & CHAR_JISX0213_2004_1)) {
+	return convKANJI(out & SCSJISX0213_2004, ucode_kanji1,
+			 JISX02132004KANJI1, c0, c1);
+    } else if ((in & SCSJISX0213_2ND) && (ktype & CHAR_JISX0213_2000_2)) {
+	return convKANJI(out & SCSJISX0213_2ND, ucode_kanji2,
+			 JISX0213KANJI2, c0, c1);
+    } else if ((in & SCSJISX0212_1990) && (ktype & CHAR_JISX0212_1990)) {
+	return convKANJI(out & SCSJISX0212_1990, ucode_kanji2,
+			 JISX0212KANJISUP, c0, c1);
+    } else if ((in & SCSCP932EX) 
+	       && (ucode_cp932[(c0-0x21)*94+(c1-0x21)] != U_error)) {
+	return convKANJI(out & SCSCP932EX, ucode_cp932,
+			 CP932, c0, c1);
+    }
+    return 0;
+}
+
+int chisvalid_cs(scs, istr, ics)
+SETCHARSET scs;
 char* istr;
 CHARSET* ics;
 {
 	int i;
 	convtab* ptab;
+	int c0, c1;
+	int ch = 0;
 
 	if (istr[0] == NULCH && CSISNULLCS(ics[0]))
 		return 0;
 
-	/* check wrong codes if it is some traditional character set */
+	c0 = istr[0] & 0x7f;
+	c1 = istr[1] & 0x7f;
+
 	if (CS2CHARSET(*ics) == JISX0208_78KANJI) {
-		ptab = find_convtab(&etable_jisx0208_78, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
+	    ch = checkKANJI(scs, SCSJISC6226_1978, c0, c1);
 	} else if (CS2CHARSET(*ics) == JISX0208KANJI) {
-		ptab = find_convtab(&etable_jisx0208_83, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
+	    ch = checkKANJI(scs, SCSJISX0208_1983, c0, c1);
 	} else if (CS2CHARSET(*ics) == JISX0208_90KANJI) {
-		/* eliminate wrong codes */
-		ptab = find_convtab(&etable_jisx0208_90, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
-	} else if (CS2CHARSET(*ics) == JISX0212KANJISUP) {
-		ptab = find_convtab(&etable_jisx0212, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
+	    ch = checkKANJI(scs, SCSJISX0208_1990, c0, c1);
 	} else if (CS2CHARSET(*ics) == JISX0213KANJI1) {
-		ptab = find_convtab(&etable_jisx0213_1, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
-	} else if (CS2CHARSET(*ics) == JISX0213KANJI2) {
-		ptab = find_convtab(&etable_jisx0213_2, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
+	    ch = checkKANJI(scs, SCSJISX0213_2000, c0, c1);
 	} else if (CS2CHARSET(*ics) == JISX02132004KANJI1) {
-		ptab = find_convtab(&etable_jisx02132004_1, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
-	} else if (CS2CHARSET(*ics) == JISX02132004KANJI2) {
-		ptab = find_convtab(&etable_jisx02132004_2, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
-	} else if (CS2CHARSET(*ics) == SJIS) {
-		/* eliminate wrong codes */
-		ptab = find_convtab(&etable_sjis, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
-	} else if (CS2CHARSET(*ics) == SJIS2000) {
-		/* eliminate wrong codes */
-		ptab = find_convtab(&etable_sjis2000, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
-	} else if (CS2CHARSET(*ics) == SJIS2004) {
-		/* eliminate wrong codes */
-		ptab = find_convtab(&etable_sjis2004, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
-	} else if (CS2CHARSET(*ics) == UJIS) {
-		/* eliminate wrong codes */
-		ptab = find_convtab(&etable_ujis, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
-		/* TODO: G2 */
-	} else if (CS2CHARSET(*ics) == UJIS2000) {
-		/* eliminate wrong codes */
-		ptab = find_convtab(&etable_ujis2000, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
-	} else if (CS2CHARSET(*ics) == UJIS2004) {
-		/* eliminate wrong codes */
-		ptab = find_convtab(&etable_ujis2004, istr);
-		if (ptab)
-			return 0;
-		else
-			return 1;
+	    ch = checkKANJI(scs, SCSJISX0213_2004, c0, c1);
+	} else if (CS2CHARSET(*ics) == JISX0213KANJI2) {
+	    ch = checkKANJI(scs, SCSJISX0213_2ND, c0, c1);
+	} else if (CS2CHARSET(*ics) == JISX0212KANJISUP) {
+	    ch = checkKANJI(scs, SCSJISX0212_1990, c0, c1);
+	} else {
+	    return 1;
 	}
-	return 1;
+
+	if (ch) {
+	    istr[0] = (ch >> 8) & 0x7f;
+	    ics[0] = (ch >> 16) & 0x7fff;
+	    istr[1] = ch & 0x7f;
+	    ics[1] = ics[0] | REST_MASK;
+	    return 1;
+	}
+	return 0;
 }
 
 #endif

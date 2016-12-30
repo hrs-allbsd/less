@@ -170,7 +170,7 @@ curr_byte(where)
 	POSITION pos;
 
 	pos = position(where);
-	while (pos == NULL_POSITION && where >= 0 && where < sc_height)
+	while (pos == NULL_POSITION && where >= 0 && where < sc_height-1)
 		pos = position(++where);
 	if (pos == NULL_POSITION)
 		pos = ch_length();
@@ -355,6 +355,7 @@ protochar(c, where, iseditproto)
 	case 't':	/* Truncate trailing spaces in the message */
 		while (mp > message && mp[-1] == ' ')
 			mp--;
+		*mp = '\0';
 		break;
 	case 'T':	/* Type of list */
 #if TAGS
@@ -531,7 +532,7 @@ pr_expand(proto, maxwidth)
 	}
 
 	if (mp == message)
-		return (NULL);
+		return ("");
 	if (maxwidth > 0 && mp >= message + maxwidth)
 	{
 		/*

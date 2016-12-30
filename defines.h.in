@@ -193,12 +193,12 @@
  * The value of this must equal one of the available value which can use as
  * LESSPLANESET environment variable or any escape sequence for setting up.
  */
-#define	DEFPLANESET	"ctext"
+#define	DEFPLANESET	"ascii"
 
 /*
  * DEFKEYCHARSET is name of the default character set for keyboard input.
  */
-#define	DEFKEYCHARSET	"japanese-iso7"
+#define	DEFKEYCHARSET	"japanese-utf8"
 
 /*
  * Sizes of various buffers.

@@ -47,6 +47,7 @@ static int hilites;		/* Number of hilites in this line */
 static char pendc;
 static POSITION pendpos;
 static char *end_ansi_chars;
+static char *mid_ansi_chars;
 
 static int pwidth();
 static int do_append();
@@ -78,6 +79,15 @@ init_line()
 	end_ansi_chars = lgetenv("LESSANSIENDCHARS");
 	if (end_ansi_chars == NULL || *end_ansi_chars == '\0')
 		end_ansi_chars = "m";
+
+	mid_ansi_chars = lgetenv("LESSANSIMIDCHARS");
+	if (mid_ansi_chars == NULL || *mid_ansi_chars == '\0')
+#ifdef ISO
+		mid_ansi_chars = "0123456789;[?!\"'# ";
+#else
+		mid_ansi_chars = "0123456789;[?!\"'#%()*+ ";
+#endif
+
 	linebuf = (char *) ecalloc(LINEBUF_SIZE, sizeof(char));
 	charset = (CHARSET *) ecalloc(LINEBUF_SIZE, sizeof(CHARSET));
 	attr = (char *) ecalloc(LINEBUF_SIZE, sizeof(char));
@@ -475,7 +485,7 @@ in_ansi_esc_seq()
 	{
 		if (linebuf[i] == ESC)
 			return (1);
-		if (is_ansi_end(linebuf[i]))
+		if (!is_ansi_middle(linebuf[i]))
 			return (0);
 	}
 	return (0);
@@ -489,6 +499,18 @@ is_ansi_end(c)
 	char c;
 {
 	return (strchr(end_ansi_chars, c) != NULL);
+}
+
+/*
+ * Is a characters in the ANSI escape sequence?
+ */
+	public int
+is_ansi_middle(c)
+	char c;
+{
+	if (is_ansi_end(c))
+		return (0);
+	return (strchr(mid_ansi_chars, c) != NULL);
 }
 
 /*
@@ -909,7 +931,8 @@ do_append(c, cs, n, pos)
 	} else if (CSISWRONG(cs) && control_char(c))
 	{
 	do_control_char:
-		if (ctldisp == OPT_ON || (ctldisp == OPT_ONPLUS && c == ESC))
+		if (ctldisp == OPT_ON
+		    || (ctldisp == OPT_ONPLUS && c == ESC && cs != WRONG_ESC))
 		{
 			/*
 			 * Output as a normal character.

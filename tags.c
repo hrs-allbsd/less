@@ -75,10 +75,10 @@ struct tag {
 static struct tag *curtag;
 
 #define TAG_INS(tp) \
-	(tp)->next = taglist.tl_first; \
-	(tp)->prev = TAG_END; \
-	taglist.tl_first->prev = (tp); \
-	taglist.tl_first = (tp);
+	(tp)->next = TAG_END;		\
+	(tp)->prev = taglist.tl_last;	\
+	taglist.tl_last->next = (tp);	\
+	taglist.tl_last = (tp);
 
 #define TAG_RM(tp) \
 	(tp)->next->prev = (tp)->prev; \
@@ -539,6 +539,7 @@ findgtag(tag, type)
 		while (fgets(buf, sizeof(buf), fp))
 		{
 			char *name, *file, *line;
+			int len;
 
 			if (sigs)
 			{
@@ -548,8 +549,9 @@ findgtag(tag, type)
 #endif
 				return TAG_INTR;
 			}
-			if (buf[strlen(buf) - 1] == '\n')
-				buf[strlen(buf) - 1] = 0;
+			len = strlen(buf);
+			if (len > 0 && buf[len-1] == '\n')
+				buf[len-1] = '\0';
 			else
 			{
 				int c;

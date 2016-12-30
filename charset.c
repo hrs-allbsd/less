@@ -62,141 +62,290 @@ struct charset {
 	{ "iso8",	NULL,       "8bcccb4c11bc4b95.15b2.16b.",
 		SCSASCII | SCSALLJIS | SCSOTHERISO,
 				ESISO7,		ESISO8,		ESISO8 },
+	{ "utf8",	NULL,  	    "8bcccbcc18b95.b126.b",
+		SCSASCII | SCSUTF8,
+				ESNOCONV,	ESUTF8,		ESUTF8 },
 # if JAPANESE
-	/* read JIS - recoginize all JIS */
-	{ "jis-iso7",	NULL,       "8bcccb4c11bc4b95.b",
+	/* read ISO-2022(7bit) */
+	{ "iso7-iso8",	NULL,       "8bcccb4c11bc4b95.b",
 		SCSASCII | SCSALLJIS | SCSOTHERISO,
+				ESISO7,		ESNONE,		ESISO8 },
+	{ "iso7-utf8",	NULL,       "8bcccb4c11bc4b95.b",
+		SCSASCII | SCSALLJIS | SCSOTHERISO,
+				ESISO7,		ESNONE,		ESUTF8 },
+
+	/* read ISO-2022(8bit) */
+	{ "iso8-iso7",	NULL,       "8bcccb4c11bc4b95.15b2.16b.",
+		SCSASCII | SCSALLJIS | SCSOTHERISO,
+				ESISO7,		ESISO8,		ESISO7 },
+	{ "iso8-jis83",	NULL,       "8bcccb4c11bc4b95.15b2.16b.",
+		SCSASCII | SCSALLJISTRAD,
+				ESISO7,		ESISO8,		ESJIS83 },
+	{ "iso8-utf8",	NULL,       "8bcccb4c11bc4b95.15b2.16b.",
+		SCSASCII | SCSALLJIS | SCSOTHERISO,
+				ESISO7,		ESISO8,		ESUTF8 },
+	{ "iso8-utf8j",	NULL,       "8bcccb4c11bc4b95.15b2.16b.",
+		SCSASCII | SCSALLJIS,
+				ESISO7,		ESISO8,		ESUTF8 },
+	{ "iso8-ujis",	NULL,       "8bcccb4c11bc4b95.15b2.16b.",
+		SCSASCII | SCSALLJIS,
+				ESISO7,		ESISO8,		ESUJIS },
+	{ "iso8-sjis",	NULL,       "8bcccb4c11bc4b95.15b2.16b.",
+		SCSASCII | SCSALLSJIS,
+				ESISO7,		ESISO8,		ESSJIS },
+	{ "iso8-cp932",	NULL,       "8bcccb4c11bc4b95.15b2.16b.",
+		SCSASCII | SCSCP932,
+				ESISO7,		ESISO8,		ESCP932 },
+
+	/* read ISO-2022 (JIS only) */
+	{ "jis-iso7",	NULL,       "8bcccb4c11bc4b95.b",
+		SCSASCII | SCSALLJIS,
 				ESISO7,		ESNONE,		ESISO7 },
+	{ "jis-iso8",	NULL,       "8bcccb4c11bc4b95.b",
+		SCSASCII | SCSALLJIS,
+				ESISO7,		ESNONE,		ESISO8 },
 	{ "jis-jis83",	NULL,       "8bcccb4c11bc4b95.b",
-		/* except plane 2 and supplement */
 		SCSASCII | SCSALLJISTRAD,
 				ESISO7,		ESNONE,		ESJIS83 },
+	{ "jis-utf8j",	NULL,       "8bcccb4c11bc4b95.b",
+		SCSASCII | SCSALLJIS,
+				ESISO7,		ESNONE,		ESUTF8 },
 	{ "jis-ujis",	NULL,       "8bcccb4c11bc4b95.b",
 		SCSASCII | SCSALLJIS,
 				ESISO7,		ESNONE,		ESUJIS },
 	{ "jis-sjis",	NULL,       "8bcccb4c11bc4b95.b",
-		/* recoginize all JIS except supplement */
 		SCSASCII | SCSALLSJIS,
 				ESISO7,		ESNONE,		ESSJIS },
+	{ "jis-cp932",	NULL,       "8bcccb4c11bc4b95.b",
+	  	SCSASCII | SCSCP932,
+				ESISO7,		ESNONE,		ESCP932 },
 
-	/* read UJIS - recoginize all JIS */
-	{ "ujis-ujis",	NULL,       "8bcccbcc18b95.15b2.17b94.b",
+	/* read UTF8 */
+	{ "utf8-iso7",	NULL,       "8bcccbcc18b95.b126.b",
+		SCSASCII | SCSALLJIS | SCSOTHERISO,
+				ESNOCONV,	ESUTF8,		ESISO7 },
+	{ "utf8-iso8",	NULL,       "8bcccbcc18b95.b126.b",
+		SCSASCII | SCSALLJIS | SCSOTHERISO,
+				ESNOCONV,	ESUTF8,		ESISO8 },
+	{ "utf8-jis83",	NULL,       "8bcccbcc18b95.b126.b",
+		SCSASCII | SCSALLJISTRAD,
+				ESNOCONV,	ESUTF8,		ESJIS83 },
+	{ "utf8-utf8j",	NULL,       "8bcccbcc18b95.b126.b",
 		SCSASCII | SCSALLJIS,
-				ESNOCONV,	ESUJIS,		ESUJIS },
+				ESNOCONV,	ESUTF8,		ESUTF8 },
+	{ "utf8-ujis",	NULL,       "8bcccbcc18b95.b126.b",
+		SCSASCII | SCSALLJIS,
+				ESNOCONV,	ESUTF8,		ESUJIS },
+	{ "utf8-sjis",	NULL,       "8bcccbcc18b95.b126.b",
+		SCSASCII | SCSALLSJIS,
+				ESNOCONV,	ESUTF8,		ESSJIS },
+	{ "utf8-cp932",	NULL,       "8bcccbcc18b95.b126.b",
+		SCSASCII | SCSCP932,
+				ESNOCONV,	ESUTF8,		ESCP932 },
+
+	/* read UJIS */
 	{ "ujis-iso7",	NULL,       "8bcccbcc18b95.15b2.17b94.b",
 		SCSASCII | SCSALLJIS,
 				ESNOCONV,	ESUJIS,		ESISO7 },
+	{ "ujis-iso8",	NULL,       "8bcccbcc18b95.15b2.17b94.b",
+		SCSASCII | SCSALLJIS,
+				ESNOCONV,	ESUJIS,		ESISO8 },
 	{ "ujis-jis83",	NULL,       "8bcccbcc18b95.15b2.17b94.b",
 		/* except plane 2 and supplement */
 		SCSASCII | SCSALLJISTRAD,
 				ESNOCONV,	ESUJIS,		ESJIS83 },
+	{ "ujis-utf8j",	NULL,       "8bcccbcc18b95.15b2.17b94.b",
+		SCSASCII | SCSALLJIS,
+				ESNOCONV,	ESUJIS,		ESUTF8 },
+	{ "ujis-ujis",	NULL,       "8bcccbcc18b95.15b2.17b94.b",
+		SCSASCII | SCSALLJIS,
+				ESNOCONV,	ESUJIS,		ESUJIS },
 	{ "ujis-sjis",	NULL,       "8bcccbcc18b95.15b2.17b94.b",
-		/* recoginize all JIS except supplement */
 		SCSASCII | SCSALLSJIS,
 				ESNOCONV,	ESUJIS,		ESSJIS },
+	{ "ujis-cp932",	NULL,       "8bcccbcc18b95.15b2.17b94.b",
+		SCSASCII | SCSCP932,
+				ESNOCONV,	ESUJIS,		ESCP932 },
 
-	/* read SJIS - recoginize all JIS except supplement */
-	{ "sjis-sjis",	NULL,       "8bcccbcc18b95.b125.3b",
-		SCSASCII | SCSALLSJIS,
-				ESNOCONV,	ESSJIS,		ESSJIS },
+	/* read SJIS */
 	{ "sjis-iso7",	NULL,       "8bcccbcc18b95.b125.3b",
 		SCSASCII | SCSALLSJIS,
 				ESNOCONV,	ESSJIS,		ESISO7 },
+	{ "sjis-iso8",	NULL,       "8bcccbcc18b95.b125.3b",
+		SCSASCII | SCSALLSJIS,
+				ESNOCONV,	ESSJIS,		ESISO8 },
 	{ "sjis-jis83",	NULL,       "8bcccbcc18b95.b125.3b",
-		/* except plane 2 and supplement */
 		SCSASCII | SCSALLJISTRAD,
 				ESNOCONV,	ESSJIS,		ESJIS83 },
+	{ "sjis-utf8j",	NULL,        "8bcccbcc18b95.b125.3b",
+		SCSASCII | SCSALLSJIS,
+				ESNOCONV,	ESSJIS,		ESUTF8 },
 	{ "sjis-ujis",	NULL,        "8bcccbcc18b95.b125.3b",
 		SCSASCII | SCSALLSJIS,
 				ESNOCONV,	ESSJIS,		ESUJIS },
+	{ "sjis-sjis",	NULL,        "8bcccbcc18b95.b125.3b",
+		SCSASCII | SCSALLSJIS,
+				ESNOCONV,	ESSJIS,		ESSJIS },
+	{ "sjis-cp932",	NULL,        "8bcccbcc18b95.b125.3b",
+		SCSASCII | SCSCP932,
+				ESNOCONV,	ESSJIS,		ESCP932 },
 
-	/* read all - recognize all JIS and ISO */
-	{ "japaneseiso7-iso7",	NULL,       "8bcccb4c11bc4b223.b",
+	/* read CP932 */
+	{ "cp932-iso7",		NULL,       "8bcccbcc18b95.b125.3b",
+		SCSASCII | SCSALLJIS,
+				ESNOCONV,	ESCP932,	ESISO7 },
+	{ "cp932-iso8",		NULL,       "8bcccbcc18b95.b125.3b",
+		SCSASCII | SCSALLJIS,
+				ESNOCONV,	ESCP932,	ESISO8 },
+	{ "cp932-jis83",	NULL,       "8bcccbcc18b95.b125.3b",
+		SCSASCII | SCSALLJISTRAD,
+				ESNOCONV,	ESCP932,	ESJIS83 },
+	{ "cp932-utf8j",	NULL,        "8bcccbcc18b95.b125.3b",
+		SCSASCII | SCSCP932,
+				ESNOCONV,	ESCP932,	ESUTF8 },
+	{ "cp932-ujis",		NULL,        "8bcccbcc18b95.b125.3b",
+		SCSASCII | SCSALLJIS,
+				ESNOCONV,	ESCP932,	ESUJIS },
+	{ "cp932-sjis",		NULL,        "8bcccbcc18b95.b125.3b",
+		SCSASCII | SCSALLSJIS,
+				ESNOCONV,	ESCP932,	ESSJIS },
+	{ "cp932-cp932",	NULL,        "8bcccbcc18b95.b125.3b",
+		SCSASCII | SCSCP932,
+				ESNOCONV,	ESCP932,	ESCP932 },
+
+	/* read all Japanese */
+	{ "japanese-iso7",	NULL,       "8bcccb4c11bc4b95.b127.b",
 		SCSASCII | SCSALLJIS | SCSOTHERISO,
 				ESISO7,		ESALLJA,	ESISO7 },
-
-	/* read all KANJI code sets - recognize all JIS */
-	{ "japanese-iso7",	NULL,       "8bcccb4c11bc4b95.b127.b",
+	{ "japanese-iso8",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJIS | SCSOTHERISO,
+				ESISO7,		ESALLJA,	ESISO8 },
+	{ "japanese-utf8",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJIS | SCSOTHERISO | SCSUTF8,
+				ESISO7,		ESALLJA,	ESUTF8 },
+	{ "japanese-utf8j",	NULL,       "8bcccb4c11bc4b95.b127.b",
 		SCSASCII | SCSALLJIS,
-				ESISO7,		ESALLJA,	ESISO7 },
-	{ "japanese-jis83",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		/* except plane 2 and supplement */
-		SCSASCII | SCSALLJISTRAD,
-				ESISO7,		ESALLJA,	ESJIS83 },
+				ESISO7,		ESALLJA,	ESUTF8 },
 	{ "japanese-ujis",	NULL,       "8bcccb4c11bc4b95.b127.b",
 		SCSASCII | SCSALLJIS,
 				ESISO7,		ESALLJA,	ESUJIS },
 	{ "japanese-sjis",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		/* recoginize all JIS except supplement */
 		SCSASCII | SCSALLSJIS,
 				ESISO7,		ESALLJA,	ESSJIS },
+	{ "japanese-cp932",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSCP932,
+				ESISO7,		ESALLJA,	ESCP932 },
 
-	/* read all KANJI before 1983 */
+	/* read all Japanese before 1983 */
 	{ "japanese83-iso7",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		SCSASCII | SCSJISX0201_1976 | SCSJISC6226_1978 |
-		SCSJISX0208_1983,
+		SCSASCII | SCSALLJISTRAD,
 				ESISO7,		ESALLJA,	ESISO7 },
+	{ "japanese83-iso8",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJISTRAD,
+				ESISO7,		ESALLJA,	ESISO8 },
 	{ "japanese83-jis83",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		SCSASCII | SCSJISX0201_1976 | SCSJISC6226_1978 |
-		SCSJISX0208_1983,
+		SCSASCII | SCSALLJISTRAD,
 				ESISO7,		ESALLJA,	ESJIS83 },
+	{ "japanese83-utf8j",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJISTRAD,
+				ESISO7,		ESALLJA,	ESUTF8 },
 	{ "japanese83-ujis",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		SCSASCII | SCSJISX0201_1976 | SCSJISC6226_1978 |
-		SCSJISX0208_1983,
+		SCSASCII | SCSALLJISTRAD,
 				ESISO7,		ESALLJA,	ESUJIS },
 	{ "japanese83-sjis",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		SCSASCII | SCSJISX0201_1976 | SCSJISC6226_1978 |
-		SCSJISX0208_1983,
+		SCSASCII | SCSALLJISTRAD,
 				ESISO7,		ESALLJA,	ESSJIS },
+	{ "japanese83-cp932",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJISTRAD,
+				ESISO7,		ESALLJA,	ESCP932 },
 
-	/* read all KANJI before 1990 */
+	/* read all Japanese before 1990 */
 	{ "japanese90-iso7",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		SCSASCII | SCSJISX0201_1976 | SCSJISC6226_1978 |
-		SCSJISX0208_1983 | SCSJISX0208_1990 | SCSJISX0212_1990,
+	  	SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 | SCSJISX0212_1990,
 				ESISO7,		ESALLJA,	ESISO7 },
-	{ "japanese90-jis83",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		/* except supplement */
-		SCSASCII | SCSJISX0201_1976 | SCSJISC6226_1978 |
-		SCSJISX0208_1983 | SCSJISX0208_1990,
-				ESISO7,		ESALLJA,	ESJIS83 },
+	{ "japanese90-iso8",	NULL,       "8bcccb4c11bc4b95.b127.b",
+	  	SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 | SCSJISX0212_1990,
+				ESISO7,		ESALLJA,	ESISO8 },
+	{ "japanese90-utf8j",	NULL,       "8bcccb4c11bc4b95.b127.b",
+	  	SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 | SCSJISX0212_1990,
+				ESISO7,		ESALLJA,	ESUTF8 },
 	{ "japanese90-ujis",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		SCSASCII | SCSJISX0201_1976 | SCSJISC6226_1978 |
-		SCSJISX0208_1983 | SCSJISX0208_1990 | SCSJISX0212_1990,
+	  	SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 | SCSJISX0212_1990,
 				ESISO7,		ESALLJA,	ESUJIS },
 	{ "japanese90-sjis",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		/* except supplement */
-		SCSASCII | SCSJISX0201_1976 | SCSJISC6226_1978 |
-		SCSJISX0208_1983 | SCSJISX0208_1990,
+		SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990,
 				ESISO7,		ESALLJA,	ESSJIS },
 
 	/* read all KANJI before 2000 */
-	{ "japanese00-iso7",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		SCSASCII | SCSJISX0201_1976 | SCSJISC6226_1978 |
-		SCSJISX0208_1983 | SCSJISX0208_1990 | SCSJISX0213_2000 |
-		SCSJISX0213_2ND | SCSJISX0212_1990,
+	{ "japanese90-iso7",	NULL,       "8bcccb4c11bc4b95.b127.b",
+	  	SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 |
+		SCSJISX0213_2000 | SCSJISX0213_2ND | SCSJISX0212_1990,
 				ESISO7,		ESALLJA,	ESISO7 },
-	{ "japanese00-jis83",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		/* except plane 2 and supplement */
-		SCSASCII | SCSJISX0201_1976 | SCSJISC6226_1978 |
-		SCSJISX0208_1983 | SCSJISX0208_1990 | SCSJISX0213_2000,
-				ESISO7,		ESALLJA,	ESJIS83 },
+	{ "japanese00-iso8",	NULL,       "8bcccb4c11bc4b95.b127.b",
+	  	SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 |
+		SCSJISX0213_2000 | SCSJISX0213_2ND | SCSJISX0212_1990,
+				ESISO7,		ESALLJA,	ESISO8 },
+	{ "japanese00-utf8j",	NULL,       "8bcccb4c11bc4b95.b127.b",
+	  	SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 |
+		SCSJISX0213_2000 | SCSJISX0213_2ND | SCSJISX0212_1990,
+				ESISO7,		ESALLJA,	ESUTF8 },
 	{ "japanese00-ujis",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		SCSASCII | SCSJISX0201_1976 | SCSJISC6226_1978 |
-		SCSJISX0208_1983 | SCSJISX0208_1990 | SCSJISX0213_2000 |
-		SCSJISX0213_2ND | SCSJISX0212_1990,
+	  	SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 |
+		SCSJISX0213_2000 | SCSJISX0213_2ND | SCSJISX0212_1990,
 				ESISO7,		ESALLJA,	ESUJIS },
 	{ "japanese00-sjis",	NULL,       "8bcccb4c11bc4b95.b127.b",
-		/* except supplement */
-		SCSASCII | SCSJISX0201_1976 | SCSJISC6226_1978 |
-		SCSJISX0208_1983 | SCSJISX0208_1990 | SCSJISX0213_2000 |
-		SCSJISX0213_2ND,
+	  	SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 |
+		SCSJISX0213_2000 | SCSJISX0213_2ND,
 				ESISO7,		ESALLJA,	ESSJIS },
+
+	/* read all Japanese page */
+	{ "japanesep1-iso7",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 |
+		SCSJISX0213_2000 | SCSJISX0213_2004,
+				ESISO7,		ESALLJA,	ESISO7 },
+	{ "japanesep1-iso8",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 |
+		SCSJISX0213_2000 | SCSJISX0213_2004,
+				ESISO7,		ESALLJA,	ESISO8 },
+	{ "japanesep1-jis83",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 |
+		SCSJISX0213_2000 | SCSJISX0213_2004,
+				ESISO7,		ESALLJA,	ESJIS83 },
+	{ "japanesep1-utf8j",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 |
+		SCSJISX0213_2000 | SCSJISX0213_2004,
+				ESISO7,		ESALLJA,	ESUTF8 },
+	{ "japanesep1-ujis",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJISTRAD | SCSJISX0208_1990 |
+		SCSJISX0213_2000 | SCSJISX0213_2004,
+				ESISO7,		ESALLJA,	ESUJIS },
+	{ "japanesep1-sjis",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLSJIS,
+				ESISO7,		ESALLJA,	ESSJIS },
+
+	/* read all Japanese (use CP932 insted of SJIS) */
+	{ "japanesecp932-iso7",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJIS | SCSOTHERISO,
+				ESISO7,		ESALLJACP932,	ESISO7 },
+	{ "japanesecp932-iso8",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJIS | SCSOTHERISO,
+				ESISO7,		ESALLJACP932,	ESISO8 },
+	{ "japanesecp932-utf8",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJIS | SCSOTHERISO | SCSCP932 | SCSUTF8,
+				ESISO7,		ESALLJACP932,	ESUTF8 },
+	{ "japanesecp932-utf8j",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJIS,
+				ESISO7,		ESALLJACP932,	ESUTF8 },
+	{ "japanesecp932-ujis",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLJIS,
+				ESISO7,		ESALLJACP932,	ESUJIS },
+	{ "japanesecp932-sjis",	NULL,       "8bcccb4c11bc4b95.b127.b",
+		SCSASCII | SCSALLSJIS,
+				ESISO7,		ESALLJACP932,	ESSJIS },
+	{ "japanesecp932-cp932",NULL,       "8bcccb4c11bc4b95.b127.b",
+	  	SCSASCII | SCSCP932,
+				ESISO7,		ESALLJACP932,	ESCP932 },
 # endif
-	{ "utf-8",	NULL,  "8bcccbcc18b.",
-		SCSUTF8,	ESUTF8,		ESUTF8,		ESUTF8 },
-#else
-	{ "utf-8",	&utf_mode,  "8bcccbcc18b.",
-		SCSUTF8,	ESNOCONV,	ESNOCONV,	ESNOCONV },
 #endif
 	{ NULL, NULL, NULL,
 		SCSASCII,	ESNOCONV,	ESNOCONV,	ESNOCONV },
@@ -213,13 +362,14 @@ struct charlocale {
 } charlocales[] = {
 	{ "C",			"ascii"	},
 	{ "wr_WR.ct",		"iso8"	},
-	{ "ja_JP.jis8",		"iso8"		},
+	{ "ja_JP.jis8",		"iso8"	},
 # if JAPANESE
-	{ "ja_JP.JIS",		"japanese-jis"	},
-	{ "ja_JP.jis7",		"japanese-jis"	},
+	{ "ja_JP.JIS",		"japanese-jis83" },
+	{ "ja_JP.jis7",		"japanese-jis83" },
 	{ "ja_JP.EUC",		"japanese-ujis"	},
 	{ "ja_JP.ujis",		"japanese-ujis"	},
 	{ "ja_JP.SJIS",		"japanese-sjis"	},
+	{ "ja_JP.Shift_JIS",	"japanese-sjis"	},
 	{ "ja_JP.mscode",	"japanese-sjis"	},
 /* Other local locales */
 #  ifdef _AIX
@@ -233,14 +383,15 @@ struct charlocale {
 	{ "japanese",		"japanese-sjis" },
 	{ "japanese.euc",	"japanese-ujis" },
 #  endif
-	{ "ja",			"japanese-ujis" },
-	{ "ja_JP",		"japanese-ujis" },
+	{ "ja",			"japanese-utf8" },
+	{ "ja_JP",		"japanese-utf8" },
 	{ "japan",		"japanese-ujis"	},
 	{ "Japan",		"japanese-ujis"	},
 	{ "japanese",		"japanese-ujis"	},
-	{ "Japanese",		"japanese-ujis"	},
-	/* DEC OSF/1's */
+	{ "ja_JP.utf-8",	"japanese-utf8"	},
+	{ "ja_JP.utf8",		"japanese-utf8"	},
 	{ "ja_JP.eucJP",	"japanese-ujis"	},
+	/* DEC OSF/1's */
 	{ "ja_JP.deckanji",	"japanese-ujis"	},
 	{ "ja_JP.sdeckanji",	"japanese-ujis"	},
 	/* BSDI's */
@@ -259,20 +410,50 @@ struct cs_alias {
 	{ "latin1",	"iso8859" },
 	{ "latin9",	"iso8859" },
 #if JAPANESE
-	{ "japaneseiso7",	"japaneseiso7-iso7" },
-	{ "japanese",		"japanese-iso7" },
-	{ "japanese-euc",	"japanese-ujis" },
+	{ "iso7-iso7",		"iso7" },
+	{ "iso8-iso8",		"iso8" },
+	{ "iso7-jis83",		"jis-jis83" },
 	{ "jis",		"jis-iso7" },
-	{ "jis-euc",		"jis-ujis" },
-	{ "ujis",		"ujis-ujis" },
+	{ "jis83",		"jis-jis83" },
+	{ "iso2022jp",		"jis-jis83" },
+	{ "iso-2022-jp",	"jis-jis83" },
+	{ "iso7-utf8j",		"jis-utf8j" },
+	{ "jis-utf8",		"jis-utf8j" },
+	{ "iso7-ujis",		"jis-ujis" },
+	{ "iso7-sjis",		"jis-sjis" },
+	{ "iso7-cp932",		"jis-cp932" },
+	{ "utf8-utf8",		"utf8" },
+	{ "utf8j",		"utf8-utf8j" },	
+	{ "utf-8",		"utf8" },
+	{ "ujis",		"ujis-ujis" },	
 	{ "euc",		"ujis-ujis" },
-	{ "euc-iso7",		"ujis-iso7" },
-	{ "ujis-jis",		"ujis-iso7" },
-	{ "euc-jis",		"ujis-iso7" },
-	{ "euc-sjis",		"ujis-sjis" },
-	{ "sjis-euc",		"sjis-ujis" },
-	{ "sjis",		"sjis-sjis" },
-	{ "sjis-jis",		"sjis-iso7" },
+	{ "euc-jp",		"ujis-ujis" },
+	{ "eucjp",		"ujis-ujis" },
+	{ "sjis",		"sjis-sjis" },	
+	{ "shift_jis",		"sjis-sjis" },
+	{ "shift-jis",		"sjis-sjis" },
+	{ "cp932",		"cp932-cp932" },
+	{ "windows-31j",	"cp932-cp932" },	
+	{ "japaneseiso7",	"japanese-iso7" },
+	{ "japaneseiso7-iso7",	"japanese-iso7" },
+	{ "japanese",		"japanese-iso7" },
+	{ "japanese-jis83",	"japanese83-jis83" },
+	{ "japanese90-jis83",	"japanese83-jis83" },
+	{ "japanese00-jis83",	"japanese83-jis83" },
+	{ "japanese83-utf8",	"japanese83-utf8j" },
+	{ "japanese90-utf8",	"japanese90-utf8j" },
+	{ "japanese00-utf8",	"japanese00-utf8j" },
+	{ "japanesep1-utf8",	"japanesep1-utf8j" },
+	{ "japanese-euc",	"japanese-ujis" },
+	{ "japanese83-euc",	"japanese83-ujis" },
+	{ "japanese90-euc",	"japanese90-ujis" },
+	{ "japanese90-euc",	"japanese00-ujis" },
+	{ "japanese-jis",	"japanese-iso7" },
+	{ "japanese83-jis",	"japanese83-iso7" },
+	{ "japanese90-jis",	"japanese90-iso7" },
+	{ "japanese00-jis",	"japanese00-iso7" },
+	{ "japanese90-cp932",	"japanese-cp932" },
+	{ "japanese00-cp932",	"japanese-cp932" },
 #endif
 	{ NULL, NULL }
 };
@@ -282,6 +463,7 @@ struct cs_alias {
 
 static char chardef[256];
 static char *binfmt = NULL;
+static char *utfbinfmt = NULL;
 public int binattr = AT_STANDOUT;
 public char* opt_charset = NULL;
 
@@ -318,12 +500,12 @@ search_charset(name)
 	{
 		score = 0;
 		n2 = strchr(p->name, '-');
-		if (strncmp(name, p->name, namelen) == 0) {
+		if (strncasecmp(name, p->name, namelen) == 0) {
 			score += namelen;
 			if ((int) strlen(p->name) == namelen)
 				score++; /* add bonus point for exactly match */
 		}
-		if (name2 && n2 && strncmp(name2, n2, name2len) == 0) {
+		if (name2 && n2 && strncasecmp(name2, n2, name2len) == 0) {
 			score += name2len - 1;	/* decrease score of '-' */
 			if ((int) strlen(n2) == name2len)
 				score++; /* add bonus point for exactly match */
@@ -449,7 +631,7 @@ icharset(name)
 	/* First see if the name is an alias. */
 	for (a = cs_aliases;  a->name != NULL;  a++)
 	{
-		if (strcmp(name, a->name) == 0)
+		if (strcasecmp(name, a->name) == 0)
 		{
 			name = a->oname;
 			break;
@@ -510,7 +692,7 @@ ilocale()
 		name = getenv("LANG");
 	for (p = charlocales; name && p->name != NULL; p++)
 	{
-		if (strcmp(name, p->name) == 0)
+		if (strcasecmp(name, p->name) == 0)
 		{
 			(void) icharset(p->charset);
 			return;
@@ -538,14 +720,37 @@ ilocale()
  * Define the printing format for control chars.
  */
    	public void
-setbinfmt(s)
+setbinfmt(s, fmtvarptr, default_fmt)
 	char *s;
+	char **fmtvarptr;
+	char *default_fmt;
 {
-	if (s == NULL || *s == '\0')
-		s = "*s<%X>";
+	if (s && utf_mode)
+	{
+		char *t = s;
+		while (*t)
+		{
+			if (*t < ' ' || *t > '~')
+			{
+				s = default_fmt;
+				goto attr;
+			}
+			t++;
+		}
+	}
+
+	/* %n is evil */
+	if (s == NULL 
+	    || *s == '\0'
+	    || (*s == '*' 
+		&& (s[1] == '\0' || s[2] == '\0' || strchr(s + 2, 'n')))
+	    || (*s != '*' && strchr(s, 'n')))
+		s = default_fmt;
+
 	/*
 	 * Select the attributes if it starts with "*".
 	 */
+ attr:
 	if (*s == '*')
 	{
 		switch (s[1])
@@ -558,7 +763,7 @@ setbinfmt(s)
 		}
 		s += 2;
 	}
-	binfmt = s;
+	*fmtvarptr = s;
 }
 
 /*
@@ -583,6 +788,42 @@ init_planeset()
 }
 
 /*
+ * Initialize UCS width
+ */
+	public void
+init_utfwidth(s)
+char *s;
+{
+	static struct st_ucsw {
+		char *name;
+		UWidth uw;
+	} ucsw[] = {
+		"none",     UWIDTH_NONE,
+		"normal",   UWIDTH_NORMAL,
+		"default",  UWIDTH_NORMAL,
+		"latin",    UWIDTH_NORMAL,
+		"cjk",      UWIDTH_CJK,
+		"ja",       UWIDTH_JA,
+		"japan",    UWIDTH_JA,
+		"japanese", UWIDTH_JA,
+		"almost",   UWIDTH_ALMOST,
+		"all",      UWIDTH_ALL,
+		NULL,       0,
+	}, *p;
+
+	if (!s)
+		return;
+	for (p = ucsw; p->name; ++ p) {
+		if (strcasecmp(p->name, s) == 0) {
+			set_utfwidth(p->uw);
+			return;
+		}
+	}
+
+	return;
+}
+
+/*
  * Initialize charset data structures.
  */
 	public void
@@ -591,8 +832,14 @@ init_charset()
 	register char *s;
 
 	s = lgetenv("LESSBINFMT");
-	setbinfmt(s);
-	
+	setbinfmt(s, &binfmt, "*s<%02X>");
+
+	s = lgetenv("LESSUTFBINFMT");
+	setbinfmt(s, &utfbinfmt, "<U+%04lX>");
+
+	s = lgetenv("JLESSUTFWIDTH");
+	init_utfwidth(s);
+
 #if JAPANESE
 	/*
 	 * See if option -K is defined.
@@ -633,8 +880,11 @@ init_charset()
 	    (s = lgetenv("LC_CTYPE")) != NULL ||
 	    (s = lgetenv("LANG")) != NULL)
 	{
-		if (strstr(s, "UTF-8") != NULL || strstr(s, "utf-8") != NULL)
-			if (icharset("utf-8"))
+		if (strstr(s, "UTF-8") != NULL 
+		    || strstr(s, "utf-8") != NULL
+		    || strstr(s, "UTF8") != NULL
+		    || strstr(s, "utf8") != NULL)
+			if (icharset("utf8"))
 				return;
 	}
 #endif
@@ -708,18 +958,26 @@ prchar(c, cs)
 	int c;
 	CHARSET cs;
 {
-	static char buf[8];
+	static char buf[32];
+	static unsigned long ucs = 0;
+	*buf = 0;
 
 	c &= 0377;
-	if (CSISWRONG(cs) && c > 127)
-		sprintf(buf, binfmt, c);
+	if (CS2CHARSET(cs) == WRONGUCS_H)
+		ucs = c & 0x1f;
+	else if (CS2CHARSET(cs) == WRONGUCS_M)
+		ucs = ucs << 6 | (c & 0x3f);
+	else if (CS2CHARSET(cs) == WRONGUCS_T)
+		snprintf(buf, sizeof(buf), utfbinfmt, ucs << 6 | (c & 0x3f));
+	else if (CSISWRONG(cs) && c > 127)
+		snprintf(buf, sizeof(buf), binfmt, c);
 	else if (!control_char(c))
-		sprintf(buf, "%c", c);
+		snprintf(buf, sizeof(buf), "%c", c);
 	else if (c == ESC)
-		sprintf(buf, "ESC");
+		snprintf(buf, sizeof(buf), "ESC");
 #if IS_EBCDIC_HOST
 	else if (!binary_char(c) && c < 64)
-		sprintf(buf, "^%c",
+		snprintf(buf,  sizeof(buf), "^%c",
 		/*
 		 * This array roughly inverts CONTROL() #defined in less.h,
 	 	 * and should be kept in sync with CONTROL() and IBM-1047.
@@ -731,9 +989,9 @@ prchar(c, cs)
 		"..V....D....TU.Z"[c]);
 #else
   	else if (c < 128 && !control_char(c ^ 0100))
-  		sprintf(buf, "^%c", c ^ 0100);
+  		snprintf(buf, sizeof(buf), "^%c", c ^ 0100);
 #endif
 	else
-		sprintf(buf, binfmt, c);
+		snprintf(buf, sizeof(buf), binfmt, c);
 	return (buf);
 }

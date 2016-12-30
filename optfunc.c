@@ -385,30 +385,36 @@ opt_Z(type, s)
 	switch (type)
 	{
 	case INIT:
-		if (opt_Z_var == OPT_ON)
-			init_def_priority(PSJIS);
-		else if (opt_Z_var == OPT_OFF)
+		if (opt_Z_var == OPT_OFF)
+			init_def_priority(PUTF8);
+		else if (opt_Z_var == OPT_ON)
 			init_def_priority(PUJIS);
+		else if (opt_Z_var == OPT_ONPLUS)
+			init_def_priority(PSJIS);
 		break;
 	case QUERY:
 		break;
 	case TOGGLE:
 		switch (get_priority(get_mulbuf(curr_ifile))) {
+		case PUTF8:
+			opt_Z_var = OPT_ON;
+			break;
+		case PUJIS:
+			opt_Z_var = OPT_ONPLUS;
+			break;
 		case PSJIS:
 			opt_Z_var = OPT_OFF;
 			break;
-		case PUJIS:
-			opt_Z_var = OPT_ON;
-			break;
 		case PNONE:
 		default:
-			opt_Z_var = OPT_ONPLUS;	/* we use this to mean error */
 			return;
 		}
-		if (opt_Z_var == OPT_ON)
-			init_def_priority(PSJIS);
-		else if (opt_Z_var == OPT_OFF)
+		if (opt_Z_var == OPT_OFF)
+			init_def_priority(PUTF8);
+		else if (opt_Z_var == OPT_ON)
 			init_def_priority(PUJIS);
+		else if (opt_Z_var == OPT_ONPLUS)
+			init_def_priority(PSJIS);
 		init_priority(get_mulbuf(curr_ifile));
 		break;
 	}

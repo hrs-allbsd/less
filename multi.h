@@ -121,6 +121,10 @@ typedef unsigned short CHARSET;
  */
 #define ASCII			(TYPE_94_CHARSET | FT2CS('B'))
 #define WRONGCS			(TYPE_94_CHARSET | FT2CS('~'))
+#define WRONG_ESC		(IRR2CS(1) | TYPE_94_CHARSET | FT2CS('~'))
+#define WRONGUCS_H		(IRR2CS(2) | TYPE_94N_CHARSET | FT2CS('~'))
+#define WRONGUCS_T		(IRR2CS(3) | TYPE_94N_CHARSET | FT2CS('~'))
+#define WRONGUCS_M		(IRR2CS(4) | TYPE_94N_CHARSET | FT2CS('~'))
 #if ISO
 #define JISX0201KANA		(TYPE_94_CHARSET | FT2CS('I'))
 #define JISX0201ROMAN		(TYPE_94_CHARSET | FT2CS('J'))
@@ -128,11 +132,17 @@ typedef unsigned short CHARSET;
 #define LATIN2			(TYPE_96_CHARSET | FT2CS('B'))
 #define LATIN3			(TYPE_96_CHARSET | FT2CS('C'))
 #define LATIN4			(TYPE_96_CHARSET | FT2CS('D'))
-#define GREEK			(TYPE_96_CHARSET | FT2CS('F'))
-#define ARABIC			(TYPE_96_CHARSET | FT2CS('G'))
-#define HEBREW			(TYPE_96_CHARSET | FT2CS('H'))
 #define CYRILLIC		(TYPE_96_CHARSET | FT2CS('L'))
+#define ARABIC			(TYPE_96_CHARSET | FT2CS('G'))
+#define GREEK			(TYPE_96_CHARSET | FT2CS('F'))
+#define HEBREW			(TYPE_96_CHARSET | FT2CS('H'))
 #define LATIN5			(TYPE_96_CHARSET | FT2CS('M'))
+#define LATIN6			(TYPE_96_CHARSET | FT2CS('V'))
+#define THAI			(TYPE_96_CHARSET | FT2CS('T'))
+#define LATIN7			(TYPE_96_CHARSET | FT2CS('Y'))
+#define LATIN8			(TYPE_96_CHARSET | FT2CS('_'))
+#define LATIN9			(TYPE_96_CHARSET | FT2CS('b'))
+#define LATIN10			(TYPE_96_CHARSET | FT2CS('f'))
 /*
  * JISX0208_78KANJI means JIS C 6226-1978
  * JISX0208KANJI means JIS X 0208-1983 (same as JIS C 6226-1983)
@@ -173,6 +183,10 @@ typedef unsigned short CHARSET;
 #define JISX0213KANJI2		(TYPE_94N_CHARSET | FT2CS('P'))
 #define JISX02132004KANJI1	(TYPE_94N_CHARSET | FT2CS('Q'))
 #define JISX02132004KANJI2	(TYPE_94N_CHARSET | FT2CS('P'))
+
+#define UTF8Z			(IRR2CS(0) | TYPE_94N_CHARSET | (FT_MASK-2))
+#define UTF8			(IRR2CS(1) | TYPE_94N_CHARSET | (FT_MASK-2))
+#define UTF8W			(IRR2CS(2) | TYPE_94N_CHARSET | (FT_MASK-2))
 #if JAPANESE
 /*
  * Special number for Japanese code set.  Only input_set use following with
@@ -191,11 +205,11 @@ typedef unsigned short CHARSET;
 #define SJIS			(IRR2CS(0) | TYPE_94N_CHARSET | FT_MASK)
 #define SJIS2000		(IRR2CS(1) | TYPE_94N_CHARSET | FT_MASK)
 #define SJIS2004		(IRR2CS(2) | TYPE_94N_CHARSET | FT_MASK)
+#define CP932			(IRR2CS(3) | TYPE_94N_CHARSET | FT_MASK)
 #define UJIS			(IRR2CS(0) | TYPE_94N_CHARSET | (FT_MASK-1))
 #define UJIS2000		(IRR2CS(1) | TYPE_94N_CHARSET | (FT_MASK-1))
 #define UJIS2004		(IRR2CS(2) | TYPE_94N_CHARSET | (FT_MASK-1))
 
-#define UTF8			(IRR2CS(0) | TYPE_94N_CHARSET | (FT_MASK-2))
 
 /*
  * Make SJIS/UJIS character set from mp.
@@ -279,6 +293,7 @@ typedef int SETCHARSET;
 					/* JIS X 0213:2004 */
 #define SCSOTHERISO		0x0100
 #define SCSUTF8			0x0200
+#define SCSCP932EX		0x0400  /* Shift_JIS Extended by IBM/NEC/MS */
 /*
  * SCSALLJIS - everything
  * SCSALLJISTRAD - everything except JIS X 0213 plane 2 and JIS X 0212.
@@ -287,11 +302,12 @@ typedef int SETCHARSET;
 #define SCSALLJIS	(SCSJISX0201_1976|SCSJISC6226_1978|SCSJISX0208_1983|\
 			 SCSJISX0208_1990|SCSJISX0213_2000|SCSJISX0213_2004|\
 			 SCSJISX0213_2ND|SCSJISX0212_1990)
-#define SCSALLJISTRAD	(SCSJISX0201_1976|SCSJISC6226_1978|SCSJISX0208_1983|\
-			 SCSJISX0208_1990|SCSJISX0213_2000|SCSJISX0213_2004)
+#define SCSALLJISTRAD	(SCSJISX0201_1976|SCSJISC6226_1978|SCSJISX0208_1983)
 #define SCSALLSJIS	(SCSJISX0201_1976|SCSJISC6226_1978|SCSJISX0208_1983|\
 			 SCSJISX0208_1990|SCSJISX0213_2000|SCSJISX0213_2004|\
 			 SCSJISX0213_2ND)
+#define SCSCP932	(SCSJISX0201_1976|SCSJISC6226_1978|SCSJISX0208_1983|\
+			 SCSJISX0208_1990|SCSCP932EX)
 
 /*
  * Definition of ENCSET.
@@ -330,7 +346,9 @@ typedef int ENCSET;
 #define ESSJIS		0x0010
 #define ESUJIS		0x0020
 #define ESUTF8		0x0040
-#define ESALLJA		(ESSJIS|ESUJIS|ESUTF8)
+#define ESCP932		0x0080
+#define ESALLJA		(ESISO8|ESUTF8|ESUJIS|ESSJIS)
+#define ESALLJACP932	(ESISO8|ESUTF8|ESUJIS|ESCP932)
 
 /*
  * J_PRIORITY: priority to select either UJIS or SJIS as encoding scheme.
@@ -341,6 +359,18 @@ typedef enum {
     PUTF8,
     PNONE
 } J_PRIORITY;
+
+/*
+ * Unicode Character Width
+ */
+typedef enum {
+    UWIDTH_NONE   = 0,
+    UWIDTH_NORMAL = 1,
+    UWIDTH_CJK    = 2,
+    UWIDTH_JA     = 3,
+    UWIDTH_ALMOST = 4,
+    UWIDTH_ALL    = 5,
+} UWidth;
 
 /*
  * A structure used as a return value in multi_parse().
@@ -367,6 +397,7 @@ extern void init_def_priority ();
 extern void init_priority ();
 extern J_PRIORITY get_priority ();
 extern void set_priority ();
+extern void set_utfwidth();
 extern MULBUF * new_multibuf ();
 extern void clear_multibuf ();
 extern void init_multibuf ();
@@ -391,4 +422,5 @@ extern void jis78to90();
 extern void chconvert_cs();
 extern void chunify_cs();
 extern int chcmp_cs();
+extern int checkKANJI();
 extern int chisvalid_cs();

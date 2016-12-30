@@ -786,6 +786,10 @@ cmd_edit(c)
 	case EC_LINEKILL:
 		not_in_completion();
 		return (cmd_kill());
+	case EC_ABORT:
+		not_in_completion();
+		(void) cmd_kill();
+		return (CC_QUIT);
 	case EC_W_BACKSPACE:
 		not_in_completion();
 		return (cmd_werase());
@@ -1159,7 +1163,7 @@ cmd_int()
 	register char *p;
 	LINENUM n = 0;
 
-	for (p = cmdbuf;  *p != '\0';  p++)
+	for (p = cmdbuf;  *p >= '0' && *p <= '9';  p++)
 		n = (10 * n) + (*p - '0');
 	return (n);
 }
