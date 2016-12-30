@@ -619,13 +619,14 @@ store_tab(attr, pos)
  * Returns 0 if ok, 1 if couldn't fit in buffer.
  */
 	public int
-pappend_multi(mbd)
+pappend_multi(mbd, mpos)
 	M_BUFDATA *mbd;
+	POSITION *mpos;
 {
 	char *cbuf = mbd->cbuf;
 	CHARSET *csbuf = mbd->csbuf;
 	int byte = mbd->byte;
-	POSITION pos = mbd->pos;
+	POSITION pos = *mpos;
 	int r;
 	int saved_curr;
 	int saved_column;

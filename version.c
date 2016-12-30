@@ -759,6 +759,13 @@ iso260 9/19/05	Changed the algorithm handling input and output character sets.
 iso261 2/24/06	Changed put_wrongmark function to make it work with new iso260
 		buffering semantics.  And applied a patch provied by Takuji.
 		Thanks to Takuji.
+iso262 2/24/06	Removed POSITION variable from member variables of M_BUFDATA.
+		It was added to make multi-byte character buffering function
+		work better with less.  However, it degraded abstraction level
+		of data structure (multi.h).  This time, add POSITION* as an
+		additional argument of few functions and keep data structure
+		as simple as possible.
+		This modification make regex_cs-lwp9k be able to compile.
 */
 
-char version[] = "382+iso261";
+char version[] = "382+iso262";

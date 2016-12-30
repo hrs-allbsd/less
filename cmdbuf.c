@@ -387,7 +387,7 @@ cmd_ichar(c)
 		char *p;
 		int i, j;
 
-		multi_parse(mp, c, NULL_POSITION, &mbd);
+		multi_parse(mp, c, NULL_POSITION, &mbd, NULL);
 		i = mbd.byte;
 		if (i > 0)
 			for ((s = &cmdbuf[strlen_cs(cmdbuf, cmdcs)]),

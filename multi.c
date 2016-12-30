@@ -1639,7 +1639,7 @@ m_position pos;
 	    while (lpos < pos) {
 		c = ch_forw_get();
 		assert(c != EOI && c != '\n');
-		multi_parse(mp, c, NULL_POSITION, NULL);
+		multi_parse(mp, c, NULL_POSITION, NULL, NULL);
 		lpos++;
 	    }
 	    ch_seek(pos);
@@ -1706,15 +1706,16 @@ m_position pos;
 /*
  * Buffering characters untile get a guarantee that it is right sequence.
  */
-void multi_parse(mp, c, pos, mbd)
+void multi_parse(mp, c, pos, mbd, mpos)
 MULBUF* mp;
 int c;
 m_position pos;
 M_BUFDATA* mbd;
+POSITION* mpos;
 {
     if (c < 0) {
-	if (mbd != NULL) {
-	    mbd->pos = mp->startpos;
+	if (mpos != NULL) {
+	    *mpos = mp->startpos;
 	}
 	/*
 	 * Force to flush all buffering characters.
@@ -1744,8 +1745,8 @@ M_BUFDATA* mbd;
 	INBUF(mp) = c;
 
 	mp->laststartpos = mp->startpos;
-	if (mbd != NULL) {
-	    mbd->pos = mp->startpos;
+	if (mpos != NULL) {
+	    *mpos = mp->startpos;
 	}
 
 	/*
@@ -1765,11 +1766,12 @@ M_BUFDATA* mbd;
 /*
  * Flush buffered data.
  */
-void multi_flush(mp, mbd)
+void multi_flush(mp, mbd, mpos)
 MULBUF* mp;
 M_BUFDATA* mbd;
+POSITION* mpos;
 {
-    multi_parse(mp, -1, NULL_POSITION, mbd);
+    multi_parse(mp, -1, NULL_POSITION, mbd, mpos);
 }
 
 /*
@@ -1778,7 +1780,7 @@ M_BUFDATA* mbd;
 void multi_discard(mp)
 MULBUF* mp;
 {
-    multi_parse(mp, -1, NULL_POSITION, NULL);
+    multi_parse(mp, -1, NULL_POSITION, NULL, NULL);
 }
 
 void set_codesets(mp, input, inputr)
@@ -2069,6 +2071,11 @@ int cs;
 		assert(cvindex == 2);
 		cvindex = 0;
 		cs = JISX0208KANJI;
+	} else if (cs == UTF8)
+	{
+		/* ? */
+		cvindex = 0;
+		return (nullcvbuffer);
 	} else
 	{
 		assert(0);
@@ -2158,6 +2165,11 @@ int cs;
 		cvbuffer[3] = '\0';
 		cvindex = 0;
 		return (cvbuffer);
+	} else if (cs == UTF8)
+	{
+		/* ? */
+		cvindex = 0;
+		return (nullcvbuffer);
 	}
 	assert(0);
 	cvindex = 0;
@@ -2252,6 +2264,11 @@ int cs;
 		cvbuffer[1] = c2 + (c2 >= 0x7f ? 1 : 0);
 		cvindex = 0;
 		return (cvbuffer);
+	} else if (cs == UTF8)
+	{
+		/* ? */
+		cvindex = 0;
+		return (nullcvbuffer);
 	}
 	assert(0);
 	cvindex = 0;
@@ -2301,6 +2318,11 @@ int cs;
 	{
 		cvindex = 0;
 		return (cvbuffer);
+	} else if (cs == UTF8)
+	{
+		/* ? */
+		cvindex = 0;
+		return (nullcvbuffer);
 	}
 	assert(0);
 	cvindex = 0;

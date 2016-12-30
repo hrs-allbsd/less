@@ -349,7 +349,6 @@ typedef struct {
 	char *cbuf;
 	CHARSET *csbuf;
 	int byte;
-	POSITION pos;
 } M_BUFDATA;
 
 /*

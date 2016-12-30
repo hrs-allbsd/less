@@ -59,6 +59,7 @@ forw_line(curr_pos)
 #if ISO
 	MULBUF* mp = get_mulbuf(curr_ifile);
 	M_BUFDATA mbd;
+	POSITION mpos;		/* buffered POSITION */
 	int ret;
 #endif
 
@@ -110,8 +111,8 @@ forw_line(curr_pos)
 		if (c == '\n' || c == EOI)
 		{
 #if ISO
-			multi_flush(mp, &mbd);
-			(void) pappend_multi(&mbd);
+			multi_flush(mp, &mbd, &mpos);
+			(void) pappend_multi(&mbd, &mpos);
 #endif
 			/*
 			 * End of the line.
@@ -125,8 +126,8 @@ forw_line(curr_pos)
 		 * Append the char to the line and get the next char.
 		 */
 #if ISO
-		multi_parse(mp, c, ch_tell()-1, &mbd);
-		ret = pappend_multi(&mbd);
+		multi_parse(mp, c, ch_tell()-1, &mbd, &mpos);
+		ret = pappend_multi(&mbd, &mpos);
 #else
 		ret = pappend(c, control_char(c) ? WRONGCS : ASCII, 1, ch_tell()-1);
 #endif
@@ -143,7 +144,8 @@ forw_line(curr_pos)
 				c = ch_forw_get();
 				while (c != '\n' && c != EOI)
 				{
-					multi_parse(mp, c, NULL_POSITION, NULL);
+					multi_parse(mp, c, NULL_POSITION,
+					    NULL, NULL);
 					c = ch_forw_get();
 				}
 				multi_discard(mp);
@@ -160,7 +162,7 @@ forw_line(curr_pos)
 			{
 #if ISO
 				multi_discard(mp);
-				new_pos = mbd.pos;
+				new_pos = mpos;
 #else
 				new_pos = ch_tell() - 1;
 #endif
@@ -210,6 +212,7 @@ back_line(curr_pos)
 #if ISO
 	MULBUF* mp = get_mulbuf(curr_ifile);
 	M_BUFDATA mbd;
+	POSITION mpos;		/* buffered POSITION */
 	int ret;
 #endif
 
@@ -329,15 +332,15 @@ back_line(curr_pos)
 		if (c == '\n')
 		{
 #if ISO
-			multi_flush(mp, &mbd);
-			(void) pappend_multi(&mbd);
+			multi_flush(mp, &mbd, &mpos);
+			(void) pappend_multi(&mbd, &mpos);
 #endif
 			endline = TRUE;
 			break;
 		}
 #if ISO
-		multi_parse(mp, c, ch_tell()-1, &mbd);
-		ret = pappend_multi(&mbd);
+		multi_parse(mp, c, ch_tell()-1, &mbd, &mpos);
+		ret = pappend_multi(&mbd, &mpos);
 #else
 		ret = pappend(c, control_char(c) ? WRONGCS : ASCII, 1, ch_tell()-1);
 #endif
@@ -359,7 +362,7 @@ back_line(curr_pos)
 			}
 #if ISO
 			pdone(0);
-			ret = ch_tell() - mbd.pos;
+			ret = ch_tell() - mpos;
 			new_pos -= ret;
 			while (--ret >= 0)
 				ch_back_get();

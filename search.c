@@ -299,7 +299,7 @@ cvt_text(odst, odstcs, osrc, osrccs, pos, ops)
 				if (*src == '\0')
 				{
 					/* flush buffer */
-					multi_flush(mp, &mbd);
+					multi_flush(mp, &mbd, NULL);
 					cbuf = mbd.cbuf;
 					csbuf = mbd.csbuf;
 					bufcount = mbd.byte;
@@ -308,7 +308,7 @@ cvt_text(odst, odstcs, osrc, osrccs, pos, ops)
 				{
 					/* make charset */
 					multi_parse(mp, (unsigned char) *src,
-						pos, &mbd);
+						pos, &mbd, NULL);
 					cbuf = mbd.cbuf;
 					csbuf = mbd.csbuf;
 					bufcount = mbd.byte;
