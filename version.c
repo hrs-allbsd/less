@@ -755,7 +755,10 @@ iso260 9/19/05	Changed the algorithm handling input and output character sets.
 		Now jless use two variables, one represents supporting
 		character sets for input stream, and the other represents
 		encoding scheme for output stream.
-		Changed to support JISX1983:2004.
+		Changed to support JISX0213:2004.
+iso261 2/24/06	Changed put_wrongmark function to make it work with new iso260
+		buffering semantics.  And applied a patch provied by Takuji.
+		Thanks to Takuji.
 */
 
-char version[] = "382+iso260";
+char version[] = "382+iso261";

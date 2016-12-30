@@ -320,6 +320,8 @@ MULBUF *mp;
     mp->multics[mp->intindex + 0] = JISX0208KANJI;
     mp->multics[mp->intindex + 1] = REST_MASK | JISX0208KANJI;
     mp->intindex += 2;
+    /* flush buffer */
+    mp->startpos = mp->lastpos + 1;
 }
 
 /*
@@ -354,6 +356,7 @@ MULBUF *mp;
 	case JISX0212KANJISUP:
 	case JISX0213KANJI1:
 	case JISX0213KANJI2:
+	case JISX02132004KANJI1:
 	case UJIS:
 	case UJIS2000:
 	case UJIS2004:
@@ -365,6 +368,7 @@ MULBUF *mp;
 	case GB2312:
 	case KSC5601:
 	default:
+	    put_wrongmark(mp);
 	    break;
 	}
     } else {
@@ -2120,7 +2124,8 @@ int cs;
 		cvindex = 0;
 		return (cvbuffer);
 	} else if (cs == JISX0208_78KANJI || cs == JISX0208KANJI ||
-		   cs == JISX0208_90KANJI || cs == JISX0213KANJI1)
+		   cs == JISX0208_90KANJI || cs == JISX0213KANJI1 ||
+		   cs == JISX02132004KANJI1)
 	{
 		if (cvindex == 1)
 			return (nullcvbuffer);
@@ -2191,7 +2196,8 @@ int cs;
 		cvindex = 0;
 		return (cvbuffer);
 	} else if (cs == JISX0208_78KANJI || cs == JISX0208KANJI ||
-		   cs == JISX0208_90KANJI || cs == JISX0213KANJI1)
+		   cs == JISX0208_90KANJI || cs == JISX0213KANJI1 ||
+		   cs == JISX02132004KANJI1)
 	{
 		register int c1, c2, c3;
 		static unsigned char table_sjis[] = {
@@ -2286,7 +2292,8 @@ int cs;
 		cvindex = 0;
 		return (cvbuffer);
 	} else if (cs == JISX0208_78KANJI || cs == JISX0208KANJI ||
-		   cs == JISX0208_90KANJI || cs == JISX0213KANJI1)
+		   cs == JISX0208_90KANJI || cs == JISX0213KANJI1 ||
+		   cs == JISX02132004KANJI1)
 	{
 		cvindex = 0;
 		return (cvbuffer);
