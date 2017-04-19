@@ -1,11 +1,10 @@
 /*
- * Copyright (C) 1984-2002  Mark Nudelman
+ * Copyright (C) 1984-2016  Mark Nudelman
  *
  * You may distribute under the terms of either the GNU General Public
  * License or the Less License, as specified in the README file.
  *
- * For more information about less, or for information on how to 
- * contact the author, see the README file.
+ * For more information, see the README file.
  */
 
 
@@ -26,6 +25,7 @@ static DWORD console_mode;
 
 public int tty;
 extern int sigs;
+extern int utf_mode;
 
 /*
  * Open keyboard for input.
@@ -132,6 +132,38 @@ getchr()
 			quit(QUIT_ERROR);
 		}
 #endif
+#if 0 /* allow entering arbitrary hex chars for testing */
+		/* ctrl-A followed by two hex chars makes a byte */
+	{
+		static int hex_in = 0;
+		static int hex_value = 0;
+		if (c == CONTROL('A'))
+		{
+			hex_in = 2;
+			result = 0;
+			continue;
+		}
+		if (hex_in > 0)
+		{
+			int v;
+			if (c >= '0' && c <= '9')
+				v = c - '0';
+			else if (c >= 'a' && c <= 'f')
+				v = c - 'a' + 10;
+			else if (c >= 'A' && c <= 'F')
+				v = c - 'A' + 10;
+			else
+				hex_in = 0;
+			hex_value = (hex_value << 4) | v;
+			if (--hex_in > 0)
+			{
+				result = 0;
+				continue;
+			}
+			c = hex_value;
+		}
+	}
+#endif
 		/*
 		 * Various parts of the program cannot handle
 		 * an input character of '\0'.
@@ -141,5 +173,5 @@ getchr()
 			c = '\340';
 	} while (result != 1);
 
-	return (c & 0377);
+	return (c & 0xFF);
 }

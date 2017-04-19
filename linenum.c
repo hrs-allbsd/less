@@ -1,11 +1,10 @@
 /*
- * Copyright (C) 1984-2002  Mark Nudelman
+ * Copyright (C) 1984-2016  Mark Nudelman
  *
  * You may distribute under the terms of either the GNU General Public
  * License or the Less License, as specified in the README file.
  *
- * For more information about less, or for information on how to 
- * contact the author, see the README file.
+ * For more information, see the README file.
  */
 
 
@@ -56,11 +55,9 @@ struct linenum_info
  * when we have a new one to insert and the table is full.
  */
 
-#define	NPOOL	50			/* Size of line number pool */
+#define	NPOOL	200			/* Size of line number pool */
 
 #define	LONGTIME	(2)		/* In seconds */
-
-public int lnloop = 0;			/* Are we in the line num loop? */
 
 static struct linenum_info anchor;	/* Anchor of the list */
 static struct linenum_info *freelist;	/* Anchor of the unused entries */
@@ -70,6 +67,7 @@ static struct linenum_info *spare;		/* We always keep one spare entry */
 extern int linenums;
 extern int sigs;
 extern int sc_height;
+extern int screen_trashed;
 
 /*
  * Initialize the line number structures.
@@ -214,17 +212,11 @@ add_lnum(linenum, pos)
 longloopmessage()
 {
 	ierror("Calculating line numbers", NULL_PARG);
-	/*
-	 * Set the lnloop flag here, so if the user interrupts while
-	 * we are calculating line numbers, the signal handler will 
-	 * turn off line numbers (linenums=0).
-	 */
-	lnloop = 1;
 }
 
 static int loopcount;
 #if HAVE_TIME
-static long startime;
+static time_type startime;
 #endif
 
 	static void
@@ -247,6 +239,22 @@ longish()
 		loopcount = -1;
 	}
 #endif
+}
+
+/*
+ * Turn off line numbers because the user has interrupted
+ * a lengthy line number calculation.
+ */
+	static void
+abort_long()
+{
+	if (linenums == OPT_ONPLUS)
+		/*
+		 * We were displaying line numbers, so need to repaint.
+		 */
+		screen_trashed = 1;
+	linenums = 0;
+	error("Line numbers turned off", NULL_PARG);
 }
 
 /*
@@ -314,12 +322,15 @@ find_linenum(pos)
 			/*
 			 * Allow a signal to abort this loop.
 			 */
-			cpos = forw_raw_line(cpos, (char **)NULL);
-			if (ABORT_SIGS() || cpos == NULL_POSITION)
+			cpos = forw_raw_line(cpos, (char **)NULL, (int *)NULL);
+			if (ABORT_SIGS()) {
+				abort_long();
+				return (0);
+			}
+			if (cpos == NULL_POSITION)
 				return (0);
 			longish();
 		}
-		lnloop = 0;
 		/*
 		 * We might as well cache it.
 		 */
@@ -343,12 +354,15 @@ find_linenum(pos)
 			/*
 			 * Allow a signal to abort this loop.
 			 */
-			cpos = back_raw_line(cpos, (char **)NULL);
-			if (ABORT_SIGS() || cpos == NULL_POSITION)
+			cpos = back_raw_line(cpos, (char **)NULL, (int *)NULL);
+			if (ABORT_SIGS()) {
+				abort_long();
+				return (0);
+			}
+			if (cpos == NULL_POSITION)
 				return (0);
 			longish();
 		}
-		lnloop = 0;
 		/*
 		 * We might as well cache it.
 		 */
@@ -398,8 +412,10 @@ find_pos(linenum)
 			/*
 			 * Allow a signal to abort this loop.
 			 */
-			cpos = forw_raw_line(cpos, (char **)NULL);
-			if (ABORT_SIGS() || cpos == NULL_POSITION)
+			cpos = forw_raw_line(cpos, (char **)NULL, (int *)NULL);
+			if (ABORT_SIGS())
+				return (NULL_POSITION);
+			if (cpos == NULL_POSITION)
 				return (NULL_POSITION);
 		}
 	} else
@@ -414,8 +430,10 @@ find_pos(linenum)
 			/*
 			 * Allow a signal to abort this loop.
 			 */
-			cpos = back_raw_line(cpos, (char **)NULL);
-			if (ABORT_SIGS() || cpos == NULL_POSITION)
+			cpos = back_raw_line(cpos, (char **)NULL, (int *)NULL);
+			if (ABORT_SIGS())
+				return (NULL_POSITION);
+			if (cpos == NULL_POSITION)
 				return (NULL_POSITION);
 		}
 	}

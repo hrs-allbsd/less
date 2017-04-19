@@ -1,11 +1,10 @@
 /*
- * Copyright (C) 1984-2002  Mark Nudelman
+ * Copyright (C) 1984-2016  Mark Nudelman
  *
  * You may distribute under the terms of either the GNU General Public
  * License or the Less License, as specified in the README file.
  *
- * For more information about less, or for information on how to 
- * contact the author, see the README file.
+ * For more information, see the README file.
  */
 
 
@@ -51,6 +50,8 @@
 extern int force_open;
 extern int secure;
 extern int use_lessopen;
+extern int ctldisp;
+extern int utf_mode;
 extern IFILE curr_ifile;
 extern IFILE old_ifile;
 #if SPACES_IN_FILENAMES
@@ -85,7 +86,7 @@ shell_unquote(str)
 	} else
 	{
 		char *esc = get_meta_escape();
-		int esclen = strlen(esc);
+		int esclen = (int) strlen(esc);
 		while (*str != '\0')
 		{
 			if (esclen > 0 && strncmp(str, esc, esclen) == 0)
@@ -149,7 +150,7 @@ shell_quote(s)
 	char *newstr;
 	int len;
 	char *esc = get_meta_escape();
-	int esclen = strlen(esc);
+	int esclen = (int) strlen(esc);
 	int use_quotes = 0;
 	int have_quotes = 0;
 
@@ -187,7 +188,7 @@ shell_quote(s)
 			 * We can't quote a string that contains quotes.
 			 */
 			return (NULL);
-		len = strlen(s) + 3;
+		len = (int) strlen(s) + 3;
 	}
 	/*
 	 * Allocate and construct the new string.
@@ -195,7 +196,7 @@ shell_quote(s)
 	newstr = p = (char *) ecalloc(len, sizeof(char));
 	if (use_quotes)
 	{
-		sprintf(newstr, "%c%s%c", openquote, s, closequote);
+		SNPRINTF3(newstr, len, "%c%s%c", openquote, s, closequote);
 	} else
 	{
 		while (*s != '\0')
@@ -226,6 +227,7 @@ dirfile(dirname, filename)
 {
 	char *pathname;
 	char *qpathname;
+	int len;
 	int f;
 
 	if (dirname == NULL || *dirname == '\0')
@@ -233,11 +235,11 @@ dirfile(dirname, filename)
 	/*
 	 * Construct the full pathname.
 	 */
-	pathname = (char *) calloc(strlen(dirname) + strlen(filename) + 2, 
-					sizeof(char));
+	len = (int) (strlen(dirname) + strlen(filename) + 2);
+	pathname = (char *) calloc(len, sizeof(char));
 	if (pathname == NULL)
 		return (NULL);
-	sprintf(pathname, "%s%s%s", dirname, PATHNAME_SEP, filename);
+	SNPRINTF3(pathname, len, "%s%s%s", dirname, PATHNAME_SEP, filename);
 	/*
 	 * Make sure the file exists.
 	 */
@@ -348,7 +350,7 @@ fexpand(s)
 				if (ifile == NULL_IFILE)
 					n++;
 				else
-					n += strlen(get_filename(ifile));
+					n += (int) strlen(get_filename(ifile));
 			}
 			/*
 			 * Else it is the first char in a string of
@@ -397,6 +399,7 @@ fexpand(s)
 	return (e);
 }
 
+
 #if TAB_COMPLETE_FILENAME
 
 /*
@@ -425,18 +428,23 @@ fcomplete(s)
 	 */
 	{
 		char *slash;
+		int len;
 		for (slash = s+strlen(s)-1;  slash > s;  slash--)
 			if (*slash == *PATHNAME_SEP || *slash == '/')
 				break;
-		fpat = (char *) ecalloc(strlen(s)+4, sizeof(char));
+		len = (int) strlen(s) + 4;
+		fpat = (char *) ecalloc(len, sizeof(char));
 		if (strchr(slash, '.') == NULL)
-			sprintf(fpat, "%s*.*", s);
+			SNPRINTF1(fpat, len, "%s*.*", s);
 		else
-			sprintf(fpat, "%s*", s);
+			SNPRINTF1(fpat, len, "%s*", s);
 	}
 #else
-	fpat = (char *) ecalloc(strlen(s)+2, sizeof(char));
-	sprintf(fpat, "%s*", s);
+	{
+	int len = (int) strlen(s) + 2;
+	fpat = (char *) ecalloc(len, sizeof(char));
+	SNPRINTF1(fpat, len, "%s*", s);
+	}
 #endif
 	qs = lglob(fpat);
 	s = shell_unquote(qs);
@@ -462,19 +470,42 @@ fcomplete(s)
 bin_file(f)
 	int f;
 {
-	int i;
 	int n;
-	unsigned char data[64];
+	int bin_count = 0;
+	char data[256];
+	char* p;
+	char* pend;
 
 	if (!seekable(f))
 		return (0);
-	if (lseek(f, (off_t)0, 0) == BAD_LSEEK)
+	if (lseek(f, (off_t)0, SEEK_SET) == BAD_LSEEK)
 		return (0);
 	n = read(f, data, sizeof(data));
-	for (i = 0;  i < n;  i++)
-		if (binary_char(data[i]))
-			return (1);
-	return (0);
+	if (n <= 0)
+		return (0);
+	if (utf_mode)
+	{
+		bin_count = utf_bin_count(data, n);
+	} else
+	{
+		pend = &data[n];
+		for (p = data;  p < pend;  )
+		{
+			LWCHAR c = step_char(&p, +1, pend);
+			if (ctldisp == OPT_ONPLUS && IS_CSI_START(c))
+			{
+				do {
+					c = step_char(&p, +1, pend);
+				} while (p < pend && is_ansi_middle(c));
+			} else if (binary_char(c))
+				bin_count++;
+		}
+	}
+	/*
+	 * Call it a binary file if there are more than 5 binary characters
+	 * in the first 256 bytes of the file.
+	 */
+	return (bin_count > 5);
 }
 
 /*
@@ -486,7 +517,7 @@ seek_filesize(f)
 {
 	off_t spos;
 
-	spos = lseek(f, (off_t)0, 2);
+	spos = lseek(f, (off_t)0, SEEK_END);
 	if (spos == BAD_LSEEK)
 		return (NULL_POSITION);
 	return ((POSITION) spos);
@@ -570,9 +601,9 @@ shellcmd(cmd)
 			fd = popen(cmd, "r");
 		} else
 		{
-			scmd = (char *) ecalloc(strlen(shell) + strlen(esccmd) + 5,
-						sizeof(char));
-			sprintf(scmd, "%s %s %s", shell, shell_coption(), esccmd);
+			int len = (int) (strlen(shell) + strlen(esccmd) + 5);
+			scmd = (char *) ecalloc(len, sizeof(char));
+			SNPRINTF3(scmd, len, "%s %s %s", shell, shell_coption(), esccmd);
 			free(esccmd);
 			fd = popen(scmd, "r");
 			free(scmd);
@@ -678,14 +709,14 @@ lglob(filename)
 	gfilename = (char *) ecalloc(len, sizeof(char));
 	p = gfilename;
 	do {
-		n = strlen(drive) + strlen(dir) + strlen(fnd.GLOB_NAME) + 1;
+		n = (int) (strlen(drive) + strlen(dir) + strlen(fnd.GLOB_NAME) + 1);
 		pathname = (char *) ecalloc(n, sizeof(char));
-		sprintf(pathname, "%s%s%s", drive, dir, fnd.GLOB_NAME);
+		SNPRINTF3(pathname, n, "%s%s%s", drive, dir, fnd.GLOB_NAME);
 		qpathname = shell_quote(pathname);
 		free(pathname);
 		if (qpathname != NULL)
 		{
-			n = strlen(qpathname);
+			n = (int) strlen(qpathname);
 			while (p - gfilename + n + 2 >= len)
 			{
 				/*
@@ -725,6 +756,7 @@ lglob(filename)
 	char *lessecho;
 	char *cmd;
 	char *esc;
+	int len;
 
 	esc = get_meta_escape();
 	if (strlen(esc) == 0)
@@ -741,8 +773,9 @@ lglob(filename)
 	/*
 	 * Invoke lessecho, and read its output (a globbed list of filenames).
 	 */
-	cmd = (char *) ecalloc(strlen(lessecho) + strlen(ofilename) + (7*strlen(metachars())) + 24, sizeof(char));
-	sprintf(cmd, "%s -p0x%x -d0x%x -e%s ", lessecho, openquote, closequote, esc);
+	len = (int) (strlen(lessecho) + strlen(ofilename) + (7*strlen(metachars())) + 24);
+	cmd = (char *) ecalloc(len, sizeof(char));
+	SNPRINTF4(cmd, len, "%s -p0x%x -d0x%x -e%s ", lessecho, openquote, closequote, esc);
 	free(esc);
 	for (s = metachars();  *s != '\0';  s++)
 		sprintf(cmd + strlen(cmd), "-n0x%x ", *s);
@@ -781,6 +814,32 @@ lglob(filename)
 }
 
 /*
+ * Return number of %s escapes in a string.
+ * Return a large number if there are any other % escapes besides %s.
+ */
+	static int
+num_pct_s(lessopen)
+	char *lessopen;
+{
+	int num = 0;
+
+	while (*lessopen != '\0')
+	{
+		if (*lessopen == '%')
+		{
+			if (lessopen[1] == '%')
+				++lessopen;
+			else if (lessopen[1] == 's')
+				++num;
+			else
+				return (999);
+		}
+		++lessopen;
+	}
+	return (num);
+}
+
+/*
  * See if we should open a "replacement file" 
  * instead of the file we're about to open.
  */
@@ -795,6 +854,7 @@ open_altfile(filename, pf, pfd)
 #else
 	char *lessopen;
 	char *cmd;
+	int len;
 	FILE *fd;
 #if HAVE_FILENO
 	int returnfd = 0;
@@ -805,26 +865,38 @@ open_altfile(filename, pf, pfd)
 	ch_ungetchar(-1);
 	if ((lessopen = lgetenv("LESSOPEN")) == NULL)
 		return (NULL);
-	if (strcmp(filename, "-") == 0)
-		return (NULL);
-	if (*lessopen == '|')
+	while (*lessopen == '|')
 	{
 		/*
 		 * If LESSOPEN starts with a |, it indicates 
 		 * a "pipe preprocessor".
 		 */
-#if HAVE_FILENO
-		lessopen++;
-		returnfd = 1;
-#else
+#if !HAVE_FILENO
 		error("LESSOPEN pipe is not supported", NULL_PARG);
 		return (NULL);
+#else
+		lessopen++;
+		returnfd++;
 #endif
 	}
+	if (*lessopen == '-') {
+		/*
+		 * Lessopen preprocessor will accept "-" as a filename.
+		 */
+		lessopen++;
+	} else {
+		if (strcmp(filename, "-") == 0)
+			return (NULL);
+	}
+	if (num_pct_s(lessopen) > 1)
+	{
+		error("Invalid LESSOPEN variable", NULL_PARG);
+		return (NULL);
+	}
 
-	cmd = (char *) ecalloc(strlen(lessopen) + strlen(filename) + 2, 
-			sizeof(char));
-	sprintf(cmd, lessopen, filename);
+	len = (int) (strlen(lessopen) + strlen(filename) + 2);
+	cmd = (char *) ecalloc(len, sizeof(char));
+	SNPRINTF1(cmd, len, lessopen, filename);
 	fd = shellcmd(cmd);
 	free(cmd);
 	if (fd == NULL)
@@ -849,9 +921,18 @@ open_altfile(filename, pf, pfd)
 		if (read(f, &c, 1) != 1)
 		{
 			/*
-			 * Pipe is empty.  This means there is no alt file.
+			 * Pipe is empty.
+			 * If more than 1 pipe char was specified,
+			 * the exit status tells whether the file itself 
+			 * is empty, or if there is no alt file.
+			 * If only one pipe char, just assume no alt file.
 			 */
-			pclose(fd);
+			int status = pclose(fd);
+			if (returnfd > 1 && status == 0) {
+				*pfd = NULL;
+				*pf = -1;
+				return (save(FAKE_EMPTYFILE));
+			}
 			return (NULL);
 		}
 		ch_ungetchar(c);
@@ -884,6 +965,7 @@ close_altfile(altfilename, filename, pipefd)
 	char *lessclose;
 	FILE *fd;
 	char *cmd;
+	int len;
 	
 	if (secure)
 		return;
@@ -900,9 +982,14 @@ close_altfile(altfilename, filename, pipefd)
 	}
 	if ((lessclose = lgetenv("LESSCLOSE")) == NULL)
 	     	return;
-	cmd = (char *) ecalloc(strlen(lessclose) + strlen(filename) + 
-			strlen(altfilename) + 2, sizeof(char));
-	sprintf(cmd, lessclose, filename, altfilename);
+	if (num_pct_s(lessclose) > 2) 
+	{
+		error("Invalid LESSCLOSE variable", NULL_PARG);
+		return;
+	}
+	len = (int) (strlen(lessclose) + strlen(filename) + strlen(altfilename) + 2);
+	cmd = (char *) ecalloc(len, sizeof(char));
+	SNPRINTF2(cmd, len, lessclose, filename, altfilename);
 	fd = shellcmd(cmd);
 	free(cmd);
 	if (fd != NULL)
@@ -956,7 +1043,7 @@ bad_file(filename)
 	register char *m = NULL;
 
 	filename = shell_unquote(filename);
-	if (is_dir(filename))
+	if (!force_open && is_dir(filename))
 	{
 		static char is_a_dir[] = " is a directory";
 
@@ -1023,3 +1110,22 @@ shell_coption()
 {
 	return ("-c");
 }
+
+/*
+ * Return last component of a pathname.
+ */
+	public char *
+last_component(name)
+	char *name;
+{
+	char *slash;
+
+	for (slash = name + strlen(name);  slash > name; )
+	{
+		--slash;
+		if (*slash == *PATHNAME_SEP || *slash == '/')
+			return (slash + 1);
+	}
+	return (name);
+}
+

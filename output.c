@@ -1,11 +1,10 @@
 /*
- * Copyright (C) 1984-2002  Mark Nudelman
+ * Copyright (C) 1984-2016  Mark Nudelman
  *
  * You may distribute under the terms of either the GNU General Public
  * License or the Less License, as specified in the README file.
  *
- * For more information about less, or for information on how to 
- * contact the author, see the README file.
+ * For more information, see the README file.
  */
 
 
@@ -21,6 +20,7 @@
 public int errmsgs;	/* Count of messages displayed by error() */
 public int need_clr;
 public int final_attr;
+public int at_prompt;
 
 extern int sigs;
 extern int sc_width;
@@ -28,14 +28,16 @@ extern int so_s_width, so_e_width;
 extern int screen_trashed;
 extern int any_display;
 extern int is_tty;
+extern int oldbot;
 
-#if MSDOS_COMPILER==BORLANDC || MSDOS_COMPILER==DJGPPC
+#if MSDOS_COMPILER==WIN32C || MSDOS_COMPILER==BORLANDC || MSDOS_COMPILER==DJGPPC
 extern int ctldisp;
 extern int nm_fg_color, nm_bg_color;
 extern int bo_fg_color, bo_bg_color;
 extern int ul_fg_color, ul_bg_color;
 extern int so_fg_color, so_bg_color;
 extern int bl_fg_color, bl_bg_color;
+extern int sgr_mode;
 #endif
 
 /*
@@ -47,7 +49,6 @@ put_line()
 	register int c;
 	register int i;
 	int a;
-	int curr_attr;
 
 	if (ABORT_SIGS())
 	{
@@ -58,49 +59,19 @@ put_line()
 		return;
 	}
 
-	curr_attr = AT_NORMAL;
+	final_attr = AT_NORMAL;
 
 	for (i = 0;  (c = gline(i, &a)) != '\0';  i++)
 	{
-		if (a != curr_attr)
-		{
-			/*
-			 * Changing attributes.
-			 * Display the exit sequence for the old attribute
-			 * and the enter sequence for the new one.
-			 */
-			switch (curr_attr)
-			{
-			case AT_UNDERLINE:	ul_exit();	break;
-			case AT_BOLD:		bo_exit();	break;
-			case AT_BLINK:		bl_exit();	break;
-			case AT_STANDOUT:	so_exit();	break;
-			}
-			switch (a)
-			{
-			case AT_UNDERLINE:	ul_enter();	break;
-			case AT_BOLD:		bo_enter();	break;
-			case AT_BLINK:		bl_enter();	break;
-			case AT_STANDOUT:	so_enter();	break;
-			}
-			curr_attr = a;
-		}
-		if (curr_attr == AT_INVIS)
-			continue;
+		at_switch(a);
+		final_attr = a;
 		if (c == '\b')
 			putbs();
 		else
 			putchr(c);
 	}
 
-	switch (curr_attr)
-	{
-	case AT_UNDERLINE:	ul_exit();	break;
-	case AT_BOLD:		bo_exit();	break;
-	case AT_BLINK:		bl_exit();	break;
-	case AT_STANDOUT:	so_exit();	break;
-	}
-	final_attr = curr_attr;
+	at_exit();
 }
 
 static char obuf[OUTBUF_SIZE];
@@ -128,56 +99,10 @@ flush()
 	register int n;
 	register int fd;
 
-	n = ob - obuf;
+	n = (int) (ob - obuf);
 	if (n == 0)
 		return;
-#if MSDOS_COMPILER==WIN32C
-	if (is_tty && any_display)
-	{
-		char *op;
-		DWORD nwritten = 0;
-		CONSOLE_SCREEN_BUFFER_INFO scr;
-		int row;
-		int col;
-		int olen;
-		extern HANDLE con_out;
 
-		olen = ob - obuf;
-		/*
-		 * There is a bug in Win32 WriteConsole() if we're
-		 * writing in the last cell with a different color.
-		 * To avoid color problems in the bottom line,
-		 * we scroll the screen manually, before writing.
-		 */
-		GetConsoleScreenBufferInfo(con_out, &scr);
-		col = scr.dwCursorPosition.X;
-		row = scr.dwCursorPosition.Y;
-		for (op = obuf;  op < obuf + olen;  op++)
-		{
-			if (*op == '\n')
-			{
-				col = 0;
-				row++;
-			} else if (*op == '\r')
-			{
-				col = 0;
-			} else
-			{
-				col++;
-				if (col >= sc_width)
-				{
-					col = 0;
-					row++;
-				}
-			}
-		}
-		if (row > scr.srWindow.Bottom)
-			win32_scroll_up(row - scr.srWindow.Bottom);
-		WriteConsole(con_out, obuf, olen, &nwritten, NULL);
-		ob = obuf;
-		return;
-	}
-#else
 #if MSDOS_COMPILER==MSOFTC
 	if (is_tty && any_display)
 	{
@@ -187,12 +112,12 @@ flush()
 		return;
 	}
 #else
-#if MSDOS_COMPILER==BORLANDC || MSDOS_COMPILER==DJGPPC
+#if MSDOS_COMPILER==WIN32C || MSDOS_COMPILER==BORLANDC || MSDOS_COMPILER==DJGPPC
 	if (is_tty && any_display)
 	{
 		*ob = '\0';
 		if (ctldisp != OPT_ONPLUS)
-			cputs(obuf);
+			WIN32textout(obuf, ob - obuf);
 		else
 		{
 			/*
@@ -202,149 +127,248 @@ flush()
 			 * the -D command-line option.
 			 */
 			char *anchor, *p, *p_next;
-			int buflen = ob - obuf;
-			unsigned char fg, bg, norm_attr;
-			/*
-			 * Only dark colors mentioned here, so that
-			 * bold has visible effect.
-			 */
+			static unsigned char fg, fgi, bg, bgi;
+			static unsigned char at;
+			unsigned char f, b;
+#if MSDOS_COMPILER==WIN32C
+			/* Screen colors used by 3x and 4x SGR commands. */
+			static unsigned char screen_color[] = {
+				0, /* BLACK */
+				FOREGROUND_RED,
+				FOREGROUND_GREEN,
+				FOREGROUND_RED|FOREGROUND_GREEN,
+				FOREGROUND_BLUE, 
+				FOREGROUND_BLUE|FOREGROUND_RED,
+				FOREGROUND_BLUE|FOREGROUND_GREEN,
+				FOREGROUND_BLUE|FOREGROUND_GREEN|FOREGROUND_RED
+			};
+#else
 			static enum COLORS screen_color[] = {
 				BLACK, RED, GREEN, BROWN,
 				BLUE, MAGENTA, CYAN, LIGHTGRAY
 			};
+#endif
 
-			/* Normal text colors are used as baseline. */
-			bg = nm_bg_color & 0xf;
-			fg = nm_fg_color & 0xf;
-			norm_attr = (bg << 4) | fg;
+			if (fg == 0 && bg == 0)
+			{
+				fg  = nm_fg_color & 7;
+				fgi = nm_fg_color & 8;
+				bg  = nm_bg_color & 7;
+				bgi = nm_bg_color & 8;
+			}
 			for (anchor = p_next = obuf;
-			     (p_next = memchr (p_next, ESC,
-					       buflen - (p_next - obuf)))
-			       != NULL; )
+			     (p_next = memchr(p_next, ESC, ob - p_next)) != NULL; )
 			{
 				p = p_next;
-
-				/*
-				 * Handle the null escape sequence
-				 * (ESC-[m), which is used to restore
-				 * the original color.
-				 */
-				if (p[1] == '[' && is_ansi_end(p[2]))
+				if (p[1] == '[')  /* "ESC-[" sequence */
 				{
-					textattr(norm_attr);
-					p += 3;
-					anchor = p_next = p;
-					continue;
-				}
-
-				if (p[1] == '[')	/* "Esc-[" sequence */
-				{
-					/*
-					 * If some chars seen since
-					 * the last escape sequence,
-					 * write it out to the screen
-					 * using current text attributes.
-					 */
 					if (p > anchor)
 					{
-						*p = '\0';
-						cputs (anchor);
-						*p = ESC;
+						/*
+						 * If some chars seen since
+						 * the last escape sequence,
+						 * write them out to the screen.
+						 */
+						WIN32textout(anchor, p-anchor);
 						anchor = p;
 					}
-					p += 2;
+					p += 2;  /* Skip the "ESC-[" */
+					if (is_ansi_end(*p))
+					{
+						/*
+						 * Handle null escape sequence
+						 * "ESC[m", which restores
+						 * the normal color.
+						 */
+						p++;
+						anchor = p_next = p;
+						fg  = nm_fg_color & 7;
+						fgi = nm_fg_color & 8;
+						bg  = nm_bg_color & 7;
+						bgi = nm_bg_color & 8;
+						at  = 0;
+						WIN32setcolors(nm_fg_color, nm_bg_color);
+						continue;
+					}
 					p_next = p;
+					at &= ~32;
+
+					/*
+					 * Select foreground/background colors
+					 * based on the escape sequence. 
+					 */
 					while (!is_ansi_end(*p))
 					{
 						char *q;
 						long code = strtol(p, &q, 10);
 
-						if (!*q)
+						if (*q == '\0')
 						{
 							/*
 							 * Incomplete sequence.
 							 * Leave it unprocessed
 							 * in the buffer.
 							 */
-							int slop = q - anchor;
+							int slop = (int) (q - anchor);
+							/* {{ strcpy args overlap! }} */
 							strcpy(obuf, anchor);
 							ob = &obuf[slop];
 							return;
 						}
 
-						if (q == p
-						    || code > 49 || code < 0
-						    || (!is_ansi_end(*q)
-							&& *q != ';'))
+						if (q == p ||
+						    code > 49 || code < 0 ||
+						    (!is_ansi_end(*q) && *q != ';'))
 						{
 							p_next = q;
 							break;
 						}
 						if (*q == ';')
+						{
 							q++;
+							at |= 32;
+						}
 
 						switch (code)
 						{
+						default:
+						/* case 0: all attrs off */
+							fg = nm_fg_color & 7;
+							bg = nm_bg_color & 7;
+							at &= 32;
+							/*
+							 * \e[0m use normal
+							 * intensities, but
+							 * \e[0;...m resets them
+							 */
+							if (at & 32)
+							{
+								fgi = 0;
+								bgi = 0;
+							} else
+							{
+								fgi = nm_fg_color & 8;
+								bgi = nm_bg_color & 8;
+							}
+							break;
 						case 1:	/* bold on */
-							fg = bo_fg_color;
-							bg = bo_bg_color;
+							fgi = 8;
+							at |= 1;
 							break;
 						case 3:	/* italic on */
-							fg = so_fg_color;
-							bg = so_bg_color;
+						case 7: /* inverse on */
+							at |= 2;
 							break;
 						case 4:	/* underline on */
-							fg = ul_fg_color;
-							bg = ul_bg_color;
+							bgi = 8;
+							at |= 4;
+							break;
+						case 5: /* slow blink on */
+						case 6: /* fast blink on */
+							bgi = 8;
+							at |= 8;
 							break;
 						case 8:	/* concealed on */
-							fg = (bg & 7) | 8;
+							at |= 16;
 							break;
-						case 0:	/* all attrs off */
-						case 22:/* bold off */
-						case 23:/* italic off */
-						case 24:/* underline off */
-							fg = nm_fg_color;
-							bg = nm_bg_color;
+						case 22: /* bold off */
+							fgi = 0;
+							at &= ~1;
+							break;
+						case 23: /* italic off */
+						case 27: /* inverse off */
+							at &= ~2;
+							break;
+						case 24: /* underline off */
+							bgi = 0;
+							at &= ~4;
+							break;
+						case 28: /* concealed off */
+							at &= ~16;
 							break;
 						case 30: case 31: case 32:
 						case 33: case 34: case 35:
 						case 36: case 37:
-							fg = (fg & 8) | (screen_color[code - 30]);
+							fg = screen_color[code - 30];
+							at |= 32;
 							break;
 						case 39: /* default fg */
-							fg = nm_fg_color;
+							fg = nm_fg_color & 7;
+							at |= 32;
 							break;
 						case 40: case 41: case 42:
 						case 43: case 44: case 45:
 						case 46: case 47:
-							bg = (bg & 8) | (screen_color[code - 40]);
+							bg = screen_color[code - 40];
+							at |= 32;
 							break;
-						case 49: /* default fg */
-							bg = nm_bg_color;
+						case 49: /* default bg */
+							bg = nm_bg_color & 7;
+							at |= 32;
 							break;
 						}
 						p = q;
 					}
-					if (is_ansi_end(*p) && p > p_next)
-					{
-						bg &= 15;
-						fg &= 15;
-						textattr ((bg << 4)| fg);
-						p_next = anchor = p + 1;
-					} else
+					if (!is_ansi_end(*p) || p == p_next)
 						break;
+					/*
+					 * In SGR mode, the ANSI sequence is
+					 * always honored; otherwise if an attr
+					 * is used by itself ("\e[1m" versus
+					 * "\e[1;33m", for example), set the
+					 * color assigned to that attribute.
+					 */
+					if (sgr_mode || (at & 32))
+					{
+						if (at & 2)
+						{
+							f = bg | bgi;
+							b = fg | fgi;
+						} else
+						{
+							f = fg | fgi;
+							b = bg | bgi;
+						}
+					} else
+					{
+						if (at & 1)
+						{
+							f = bo_fg_color;
+							b = bo_bg_color;
+						} else if (at & 2)
+						{
+							f = so_fg_color;
+							b = so_bg_color;
+						} else if (at & 4)
+						{
+							f = ul_fg_color;
+							b = ul_bg_color;
+						} else if (at & 8)
+						{
+							f = bl_fg_color;
+							b = bl_bg_color;
+						} else
+						{
+							f = nm_fg_color;
+							b = nm_bg_color;
+						}
+					}
+					if (at & 16)
+						f = b ^ 8;
+					f &= 0xf;
+					b &= 0xf;
+					WIN32setcolors(f, b);
+					p_next = anchor = p + 1;
 				} else
 					p_next++;
 			}
 
 			/* Output what's left in the buffer.  */
-			cputs (anchor);
+			WIN32textout(anchor, ob - anchor);
 		}
 		ob = obuf;
 		return;
 	}
-#endif
 #endif
 #endif
 	fd = (any_display) ? 1 : 2;
@@ -360,6 +384,25 @@ flush()
 putchr(c)
 	int c;
 {
+#if 0 /* fake UTF-8 output for testing */
+	extern int utf_mode;
+	if (utf_mode)
+	{
+		static char ubuf[MAX_UTF_CHAR_LEN];
+		static int ubuf_len = 0;
+		static int ubuf_index = 0;
+		if (ubuf_len == 0)
+		{
+			ubuf_len = utf_len(c);
+			ubuf_index = 0;
+		}
+		ubuf[ubuf_index++] = c;
+		if (ubuf_index < ubuf_len)
+			return c;
+		c = get_wchar(ubuf) & 0xFF;
+		ubuf_len = 0;
+	}
+#endif
 	if (need_clr)
 	{
 		need_clr = 0;
@@ -384,6 +427,7 @@ putchr(c)
 	if (ob >= &obuf[sizeof(obuf)-1])
 		flush();
 	*ob++ = c;
+	at_prompt = 0;
 	return (c);
 }
 
@@ -434,7 +478,7 @@ iprint_int(num)
 
 	inttoa(num, buf);
 	putstr(buf);
-	return (strlen(buf));
+	return ((int) strlen(buf));
 }
 
 /*
@@ -448,7 +492,7 @@ iprint_linenum(num)
 
 	linenumtoa(num, buf);
 	putstr(buf);
-	return (strlen(buf));
+	return ((int) strlen(buf));
 }
 
 /*
@@ -534,8 +578,11 @@ error(fmt, parg)
 
 	if (any_display && is_tty)
 	{
+		if (!oldbot)
+			squish_check();
+		at_exit();
 		clear_bot();
-		so_enter();
+		at_enter(AT_STANDOUT);
 		col += so_s_width;
 	}
 
@@ -548,11 +595,12 @@ error(fmt, parg)
 	}
 
 	putstr(return_to_continue);
-	so_exit();
+	at_exit();
 	col += sizeof(return_to_continue) + so_e_width;
 
 	get_return();
 	lower_left();
+    clear_eol();
 
 	if (col >= sc_width)
 		/*
@@ -578,11 +626,12 @@ ierror(fmt, parg)
 	char *fmt;
 	PARG *parg;
 {
+	at_exit();
 	clear_bot();
-	so_enter();
+	at_enter(AT_STANDOUT);
 	(void) less_printf(fmt, parg);
 	putstr(intr_to_abort);
-	so_exit();
+	at_exit();
 	flush();
 	need_clr = 1;
 }

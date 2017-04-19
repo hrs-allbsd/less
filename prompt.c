@@ -1,11 +1,10 @@
 /*
- * Copyright (C) 1984-2002  Mark Nudelman
+ * Copyright (C) 1984-2016  Mark Nudelman
  *
  * You may distribute under the terms of either the GNU General Public
  * License or the Less License, as specified in the README file.
  *
- * For more information about less, or for information on how to 
- * contact the author, see the README file.
+ * For more information, see the README file.
  */
 
 
@@ -22,7 +21,6 @@
 #include "position.h"
 
 extern int pr_type;
-extern int hit_eof;
 extern int new_file;
 extern int sc_width;
 extern int so_s_width, so_e_width;
@@ -30,6 +28,7 @@ extern int linenums;
 extern int hshift;
 extern int sc_height;
 extern int jump_sline;
+extern int less_is_more;
 extern IFILE curr_ifile;
 #if EDITOR
 extern char *editor;
@@ -52,6 +51,8 @@ static constant char h_proto[] =
   "HELP -- ?eEND -- Press g to see it again:Press RETURN for more., or q when done";
 static constant char w_proto[] =
   "Waiting for data";
+static constant char more_proto[] =
+  "--More--(?eEND ?x- Next\\: %x.:?pB%pB\\%:byte %bB?s/%s...%t)";
 
 public char *prproto[3];
 public char constant *eqproto = e_proto;
@@ -68,7 +69,7 @@ static char *mp;
 init_prompt()
 {
 	prproto[0] = save(s_proto);
-	prproto[1] = save(m_proto);
+	prproto[1] = save(less_is_more ? more_proto : m_proto);
 	prproto[2] = save(M_proto);
 	eqproto = save(e_proto);
 	hproto = save(h_proto);
@@ -84,9 +85,9 @@ ap_str(s)
 {
 	int len;
 
-	len = strlen(s);
+	len = (int) strlen(s);
 	if (mp + len >= message + PROMPT_SIZE)
-		len = message + PROMPT_SIZE - mp - 1;
+		len = (int) (message + PROMPT_SIZE - mp - 1);
 	strncpy(mp, s, len);
 	mp += len;
 	*mp = '\0';
@@ -164,7 +165,7 @@ curr_byte(where)
 	POSITION pos;
 
 	pos = position(where);
-	while (pos == NULL_POSITION && where >= 0 && where < sc_height)
+	while (pos == NULL_POSITION && where >= 0 && where < sc_height-1)
 		pos = position(++where);
 	if (pos == NULL_POSITION)
 		pos = ch_length();
@@ -193,14 +194,14 @@ cond(c, where)
 	case 'c':
 		return (hshift != 0);
 	case 'e':	/* At end of file? */
-		return (hit_eof);
+		return (eof_displayed());
 	case 'f':	/* Filename known? */
 		return (strcmp(get_filename(curr_ifile), "-") != 0);
 	case 'l':	/* Line number known? */
 	case 'd':	/* Same as l */
 		return (linenums);
 	case 'L':	/* Final line number known? */
-	case 'D':	/* Same as L */
+	case 'D':	/* Final page number known? */
 		return (linenums && ch_length() != NULL_POSITION);
 	case 'm':	/* More than one file? */
 #if TAGS
@@ -254,6 +255,9 @@ protochar(c, where, iseditproto)
 	LINENUM last_linenum;
 	IFILE h;
 
+#undef  PAGE_NUM
+#define PAGE_NUM(linenum)  ((((linenum) - 1) / (sc_height - 1)) + 1)
+
 	switch (c)
 	{
 	case 'b':	/* Current byte offset */
@@ -269,17 +273,26 @@ protochar(c, where, iseditproto)
 	case 'd':	/* Current page number */
 		linenum = currline(where);
 		if (linenum > 0 && sc_height > 1)
-			ap_linenum(((linenum - 1) / (sc_height - 1)) + 1);
+			ap_linenum(PAGE_NUM(linenum));
 		else
 			ap_quest();
 		break;
-	case 'D':	/* Last page number */
+	case 'D':	/* Final page number */
+		/* Find the page number of the last byte in the file (len-1). */
 		len = ch_length();
-		if (len == NULL_POSITION || len == ch_zero() ||
-		    (linenum = find_linenum(len)) <= 0)
+		if (len == NULL_POSITION)
 			ap_quest();
+		else if (len == 0)
+			/* An empty file has no pages. */
+			ap_linenum(0);
 		else
-			ap_linenum(((linenum - 1) / (sc_height - 1)) + 1);
+		{
+			linenum = find_linenum(len - 1);
+			if (linenum <= 0)
+				ap_quest();
+			else 
+				ap_linenum(PAGE_NUM(linenum));
+		}
 		break;
 #if EDITOR
 	case 'E':	/* Editor name */
@@ -288,6 +301,9 @@ protochar(c, where, iseditproto)
 #endif
 	case 'f':	/* File name */
 		ap_str(get_filename(curr_ifile));
+		break;
+	case 'F':	/* Last component of file name */
+		ap_str(last_component(get_filename(curr_ifile)));
 		break;
 	case 'i':	/* Index into list of files */
 #if TAGS
@@ -349,6 +365,7 @@ protochar(c, where, iseditproto)
 	case 't':	/* Truncate trailing spaces in the message */
 		while (mp > message && mp[-1] == ' ')
 			mp--;
+		*mp = '\0';
 		break;
 	case 'T':	/* Type of list */
 #if TAGS
@@ -375,9 +392,9 @@ protochar(c, where, iseditproto)
  * where to resume parsing the string.
  * We must keep track of nested IFs and skip them properly.
  */
-	static char *
+	static constant char *
 skipcond(p)
-	register char *p;
+	register constant char *p;
 {
 	register int iflevel;
 
@@ -433,9 +450,9 @@ skipcond(p)
 /*
  * Decode a char that represents a position on the screen.
  */
-	static char *
+	static constant char *
 wherechar(p, wp)
-	char *p;
+	char constant *p;
 	int *wp;
 {
 	switch (*p)
@@ -459,10 +476,10 @@ wherechar(p, wp)
  */
 	public char *
 pr_expand(proto, maxwidth)
-	char *proto;
+	constant char *proto;
 	int maxwidth;
 {
-	register char *p;
+	register constant char *p;
 	register int c;
 	int where;
 
@@ -518,7 +535,7 @@ pr_expand(proto, maxwidth)
 	}
 
 	if (mp == message)
-		return (NULL);
+		return ("");
 	if (maxwidth > 0 && mp >= message + maxwidth)
 	{
 		/*
@@ -549,9 +566,11 @@ eq_message()
 pr_string()
 {
 	char *prompt;
+	int type;
 
+	type = (!less_is_more) ? pr_type : pr_type ? 0 : 1;
 	prompt = pr_expand((ch_getflags() & CH_HELPFILE) ?
-				hproto : prproto[pr_type],
+				hproto : prproto[type],
 			sc_width-so_s_width-so_e_width-2);
 	new_file = 0;
 	return (prompt);
